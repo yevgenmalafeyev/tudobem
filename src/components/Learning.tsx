@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import { Exercise } from '@/types';
+import { isMobileDevice } from '@/utils/pwaDetection';
 
 type LearningMode = 'input' | 'multiple-choice';
 
@@ -20,7 +21,9 @@ export default function Learning() {
   const [userAnswer, setUserAnswer] = useState('');
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [multipleChoiceOptions, setMultipleChoiceOptions] = useState<string[]>([]);
-  const [learningMode, setLearningMode] = useState<LearningMode>('input');
+  const [learningMode, setLearningMode] = useState<LearningMode>(
+    typeof window !== 'undefined' && isMobileDevice() ? 'multiple-choice' : 'input'
+  );
   const [feedback, setFeedback] = useState<{
     isCorrect: boolean;
     explanation: string;
@@ -47,7 +50,7 @@ export default function Learning() {
         body: JSON.stringify({
           exercise,
           claudeApiKey: configuration.claudeApiKey,
-          explanationLanguage: configuration.explanationLanguage
+          explanationLanguage: configuration.appLanguage
         }),
       });
 
@@ -107,7 +110,7 @@ export default function Learning() {
         body: JSON.stringify({
           exercise,
           claudeApiKey: configuration.claudeApiKey,
-          explanationLanguage: configuration.explanationLanguage
+          explanationLanguage: configuration.appLanguage
         }),
       });
 
@@ -188,7 +191,7 @@ export default function Learning() {
           setDetailedExplanation(exercise.detailedExplanation);
         } else {
           // Multi-language explanations from database
-          const lang = configuration.explanationLanguage || 'pt';
+          const lang = configuration.appLanguage || 'pt';
           setDetailedExplanation(exercise.detailedExplanation[lang] || exercise.detailedExplanation.pt);
         }
       } else {
@@ -250,7 +253,7 @@ export default function Learning() {
           exercise: currentExercise,
           userAnswer: answerToCheck,
           claudeApiKey: configuration.claudeApiKey,
-          explanationLanguage: configuration.explanationLanguage
+          explanationLanguage: configuration.appLanguage
         }),
       });
 
@@ -298,6 +301,17 @@ export default function Learning() {
       }, 100);
     }
   }, [currentExercise, showAnswer]);
+
+  // Auto-forward to next question after 2 seconds on correct answer
+  useEffect(() => {
+    if (feedback?.isCorrect && showAnswer) {
+      const timer = setTimeout(() => {
+        moveToNextExercise();
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [feedback?.isCorrect, showAnswer, moveToNextExercise]);
 
   // Add global keypress listener for Enter key
   useEffect(() => {
@@ -441,7 +455,7 @@ export default function Learning() {
                             exercise: currentExercise,
                             userAnswer: option,
                             claudeApiKey: configuration.claudeApiKey,
-                            explanationLanguage: configuration.explanationLanguage
+                            explanationLanguage: configuration.appLanguage
                           }),
                         });
 

@@ -40,14 +40,9 @@ export const translations = {
     uk: 'Оберіть Теми'
   },
   appLanguageTitle: {
-    pt: 'Idioma da Interface',
-    en: 'Interface Language',
-    uk: 'Мова Інтерфейсу'
-  },
-  explanationLanguage: {
-    pt: 'Idioma das Explicações',
-    en: 'Explanation Language',
-    uk: 'Мова Пояснень'
+    pt: 'Idioma da Interface e Explicações',
+    en: 'Interface and Explanation Language',
+    uk: 'Мова Інтерфейсу та Пояснень'
   },
   installApp: {
     pt: 'Instalar Aplicação',
@@ -68,6 +63,11 @@ export const translations = {
     pt: 'Pode obter a sua chave API na',
     en: 'You can get your API key from',
     uk: 'Ви можете отримати ваш ключ API з'
+  },
+  apiKeyLocalHint: {
+    pt: 'A chave API é armazenada apenas localmente no seu computador',
+    en: 'API key is stored locally on your computer only',
+    uk: 'Ключ API зберігається лише локально на вашому комп\'ютері'
   },
   anthropicConsole: {
     pt: 'Consola Anthropic',
@@ -139,14 +139,14 @@ export const translations = {
   
   // Learning modes
   inputMode: {
-    pt: 'Modo de Entrada',
-    en: 'Input Mode',
-    uk: 'Режим Введення'
+    pt: 'Digitar Resposta',
+    en: 'Type Answer',
+    uk: 'Ввести Відповідь'
   },
   multipleChoiceMode: {
-    pt: 'Escolha Múltipla',
-    en: 'Multiple Choice',
-    uk: 'Множинний Вибір'
+    pt: 'Mostrar Opções',
+    en: 'Show Options',
+    uk: 'Показати Варіанти'
   },
   learningMode: {
     pt: 'Modo de Aprendizagem',

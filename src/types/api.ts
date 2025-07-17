@@ -1,4 +1,4 @@
-import { Exercise, LanguageLevel, ExplanationLanguage } from './index';
+import { Exercise, LanguageLevel, AppLanguage } from './index';
 
 export interface GenerateExerciseRequest {
   levels: LanguageLevel[];
@@ -15,7 +15,7 @@ export interface CheckAnswerRequest {
   exercise: Exercise;
   userAnswer: string;
   claudeApiKey?: string;
-  explanationLanguage?: ExplanationLanguage;
+  explanationLanguage?: AppLanguage;
 }
 
 export interface CheckAnswerResponse {
@@ -26,7 +26,7 @@ export interface CheckAnswerResponse {
 export interface GenerateMultipleChoiceRequest {
   exercise: Exercise;
   claudeApiKey?: string;
-  explanationLanguage?: ExplanationLanguage;
+  explanationLanguage?: AppLanguage;
 }
 
 export interface GenerateMultipleChoiceResponse {

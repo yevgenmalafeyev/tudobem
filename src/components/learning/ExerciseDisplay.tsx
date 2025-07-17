@@ -24,6 +24,11 @@ export default function ExerciseDisplay({
   setUserAnswer
 }: ExerciseDisplayProps) {
   const sentenceParts = exercise.sentence.split('___');
+  
+  // Create hint text for placeholder
+  const hintText = exercise.hint && (exercise.hint.infinitive || exercise.hint.person) 
+    ? `${exercise.hint.infinitive || ''}${exercise.hint.person ? (exercise.hint.infinitive ? ', ' : '') + exercise.hint.person : ''}`
+    : '?';
 
   return (
     <div className="exercise-container neo-card-sm text-base sm:text-lg lg:text-xl xl:text-2xl mb-3 sm:mb-4 lg:mb-6 leading-relaxed" style={{ color: 'var(--neo-text)' }}>
@@ -44,8 +49,8 @@ export default function ExerciseDisplay({
             type="text"
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
-            className="neo-inset text-center min-w-12 sm:min-w-16 lg:min-w-24 text-base sm:text-lg lg:text-xl xl:text-2xl"
-            placeholder="?"
+            className="neo-inset text-center min-w-12 sm:min-w-16 lg:min-w-24 text-base sm:text-lg lg:text-xl xl:text-2xl placeholder:text-gray-400 placeholder:opacity-70"
+            placeholder={hintText}
             disabled={showAnswer}
           />
         ) : (
@@ -55,11 +60,6 @@ export default function ExerciseDisplay({
         )}
       </span>
       {sentenceParts[1]}
-      {exercise.hint && (exercise.hint.infinitive || exercise.hint.person) && (
-        <span className="text-xs sm:text-sm lg:text-base ml-1 sm:ml-2" style={{ color: 'var(--neo-text-muted)' }}>
-          ({exercise.hint.infinitive}{exercise.hint.person ? `, ${exercise.hint.person}` : ''})
-        </span>
-      )}
     </div>
   );
 }

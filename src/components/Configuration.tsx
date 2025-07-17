@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
 import { topics } from '@/data/topics';
-import { LanguageLevel, ExplanationLanguage, AppLanguage } from '@/types';
+import { LanguageLevel, AppLanguage } from '@/types';
 import { t } from '@/utils/translations';
 import { isMobileDevice, checkPWASupport } from '@/utils/pwaDetection';
 import { getPWAButtonText } from '@/utils/pwaInstructions';
@@ -20,7 +20,6 @@ export default function Configuration({ onSave }: ConfigurationProps) {
   const [selectedLevels, setSelectedLevels] = useState<LanguageLevel[]>(configuration.selectedLevels);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(configuration.selectedTopics);
   const [claudeApiKey, setClaudeApiKey] = useState(configuration.claudeApiKey || '');
-  const [explanationLanguage, setExplanationLanguage] = useState<ExplanationLanguage>(configuration.explanationLanguage);
   const [appLanguage, setAppLanguage] = useState<AppLanguage>(configuration.appLanguage);
   const [showPWAModal, setShowPWAModal] = useState(false);
   const [showPWAButton, setShowPWAButton] = useState(false);
@@ -77,7 +76,6 @@ export default function Configuration({ onSave }: ConfigurationProps) {
       selectedLevels,
       selectedTopics,
       claudeApiKey: claudeApiKey.trim() || undefined,
-      explanationLanguage,
       appLanguage
     });
     
@@ -93,6 +91,91 @@ export default function Configuration({ onSave }: ConfigurationProps) {
         {t('configTitle', appLanguage)}
       </h1>
       
+      {/* Language Levels */}
+      <div className="neo-card mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
+          {t('selectLevels', appLanguage)}
+        </h2>
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
+          {levels.map(level => (
+            <button
+              key={level}
+              onClick={() => handleLevelToggle(level)}
+              className={`neo-button text-sm sm:text-base min-h-[44px] p-2 sm:p-3 ${
+                selectedLevels.includes(level)
+                  ? 'neo-button-primary'
+                  : ''
+              }`}
+            >
+              {level}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Topics */}
+      <div className="neo-card mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
+          {t('selectTopics', appLanguage)}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+          {availableTopics.map(topic => (
+            <label key={topic.id} className="neo-card-sm cursor-pointer hover:shadow-lg transition-shadow">
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <input
+                  type="checkbox"
+                  checked={selectedTopics.includes(topic.id)}
+                  onChange={() => handleTopicToggle(topic.id)}
+                  className="neo-checkbox mt-0.5"
+                />
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm sm:text-base font-medium block" style={{ color: 'var(--neo-text)' }}>{topic.namePt}</span>
+                  <span className="text-xs sm:text-sm block" style={{ color: 'var(--neo-text-muted)' }}>({topic.levels.join(', ')})</span>
+                </div>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Claude API Key */}
+      <div className="neo-card mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
+          {t('claudeApiKey', appLanguage)}
+        </h2>
+        <input
+          type="password"
+          value={claudeApiKey}
+          onChange={(e) => setClaudeApiKey(e.target.value)}
+          placeholder={t('apiKeyPlaceholder', appLanguage)}
+          className="neo-input w-full text-sm sm:text-base"
+        />
+        <p className="text-xs sm:text-sm mt-2" style={{ color: 'var(--neo-text-muted)' }}>
+          {t('apiKeyHelp', appLanguage)}{' '}
+          <a href="https://console.anthropic.com/" target="_blank" className="hover:underline" style={{ color: 'var(--neo-accent-text)' }}>
+            {t('anthropicConsole', appLanguage)}
+          </a>
+        </p>
+        <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--neo-text-muted)' }}>
+          💡 {t('apiKeyLocalHint', appLanguage)}
+        </p>
+      </div>
+
+      {/* PWA Install Button */}
+      {showPWAButton && (
+        <div className="neo-card mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
+            {t('installApp', appLanguage)}
+          </h2>
+          <button
+            onClick={() => setShowPWAModal(true)}
+            className="neo-button neo-button-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] w-full"
+          >
+            {getPWAButtonText(appLanguage)}
+          </button>
+        </div>
+      )}
+
       {/* App Language */}
       <div className="neo-card mb-6 sm:mb-8">
         <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
@@ -146,142 +229,6 @@ export default function Configuration({ onSave }: ConfigurationProps) {
           </label>
         </div>
       </div>
-
-      {/* Language Levels */}
-      <div className="neo-card mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-          {t('selectLevels', appLanguage)}
-        </h2>
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
-          {levels.map(level => (
-            <button
-              key={level}
-              onClick={() => handleLevelToggle(level)}
-              className={`neo-button text-sm sm:text-base min-h-[44px] p-2 sm:p-3 ${
-                selectedLevels.includes(level)
-                  ? 'neo-button-primary'
-                  : ''
-              }`}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Topics */}
-      <div className="neo-card mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-          {t('selectTopics', appLanguage)}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-          {availableTopics.map(topic => (
-            <label key={topic.id} className="neo-card-sm cursor-pointer hover:shadow-lg transition-shadow">
-              <div className="flex items-start space-x-2 sm:space-x-3">
-                <input
-                  type="checkbox"
-                  checked={selectedTopics.includes(topic.id)}
-                  onChange={() => handleTopicToggle(topic.id)}
-                  className="neo-checkbox mt-0.5"
-                />
-                <div className="flex-1 min-w-0">
-                  <span className="text-sm sm:text-base font-medium block" style={{ color: 'var(--neo-text)' }}>{topic.namePt}</span>
-                  <span className="text-xs sm:text-sm block" style={{ color: 'var(--neo-text-muted)' }}>({topic.levels.join(', ')})</span>
-                </div>
-              </div>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Explanation Language */}
-      <div className="neo-card mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-          {t('explanationLanguage', appLanguage)}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <label className="neo-card-sm cursor-pointer hover:shadow-lg transition-shadow">
-            <div className="flex items-center space-x-3">
-              <input
-                type="radio"
-                name="explanationLanguage"
-                value="pt"
-                checked={explanationLanguage === 'pt'}
-                onChange={(e) => setExplanationLanguage(e.target.value as ExplanationLanguage)}
-                className="w-5 h-5"
-              />
-              <span className="text-sm sm:text-base font-medium" style={{ color: 'var(--neo-text)' }}>
-                {t('portuguese', appLanguage)}
-              </span>
-            </div>
-          </label>
-          <label className="neo-card-sm cursor-pointer hover:shadow-lg transition-shadow">
-            <div className="flex items-center space-x-3">
-              <input
-                type="radio"
-                name="explanationLanguage"
-                value="en"
-                checked={explanationLanguage === 'en'}
-                onChange={(e) => setExplanationLanguage(e.target.value as ExplanationLanguage)}
-                className="w-5 h-5"
-              />
-              <span className="text-sm sm:text-base font-medium" style={{ color: 'var(--neo-text)' }}>
-                {t('english', appLanguage)}
-              </span>
-            </div>
-          </label>
-          <label className="neo-card-sm cursor-pointer hover:shadow-lg transition-shadow">
-            <div className="flex items-center space-x-3">
-              <input
-                type="radio"
-                name="explanationLanguage"
-                value="uk"
-                checked={explanationLanguage === 'uk'}
-                onChange={(e) => setExplanationLanguage(e.target.value as ExplanationLanguage)}
-                className="w-5 h-5"
-              />
-              <span className="text-sm sm:text-base font-medium" style={{ color: 'var(--neo-text)' }}>
-                {t('ukrainian', appLanguage)}
-              </span>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      {/* Claude API Key */}
-      <div className="neo-card mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-          {t('claudeApiKey', appLanguage)}
-        </h2>
-        <input
-          type="password"
-          value={claudeApiKey}
-          onChange={(e) => setClaudeApiKey(e.target.value)}
-          placeholder={t('apiKeyPlaceholder', appLanguage)}
-          className="neo-input w-full text-sm sm:text-base"
-        />
-        <p className="text-xs sm:text-sm mt-2" style={{ color: 'var(--neo-text-muted)' }}>
-          {t('apiKeyHelp', appLanguage)}{' '}
-          <a href="https://console.anthropic.com/" target="_blank" className="hover:underline" style={{ color: 'var(--neo-accent-text)' }}>
-            {t('anthropicConsole', appLanguage)}
-          </a>
-        </p>
-      </div>
-
-      {/* PWA Install Button */}
-      {showPWAButton && (
-        <div className="neo-card mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-            {t('installApp', appLanguage)}
-          </h2>
-          <button
-            onClick={() => setShowPWAModal(true)}
-            className="neo-button neo-button-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] w-full"
-          >
-            {getPWAButtonText(appLanguage)}
-          </button>
-        </div>
-      )}
 
       {/* Save Button */}
       <div className="text-center">

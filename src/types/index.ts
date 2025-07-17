@@ -14,7 +14,6 @@ export interface UserConfiguration {
   selectedLevels: LanguageLevel[];
   selectedTopics: string[];
   claudeApiKey?: string;
-  explanationLanguage: ExplanationLanguage;
   appLanguage: AppLanguage;
 }
 

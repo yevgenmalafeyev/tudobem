@@ -1,1 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192"><rect width="192" height="192" fill="#2563eb" rx="24"/><text x="96" y="120" font-family="Arial, sans-serif" font-size="80" font-weight="bold" text-anchor="middle" fill="white">PT</text></svg>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle with gradient -->
+  <circle 
+    cx="96" 
+    cy="96" 
+    r="86" 
+    fill="url(#bgGradient192)" 
+    stroke="#047857" 
+    stroke-width="8"
+  />
+  
+  <!-- Thumbs up icon representing "Tudobem" (all good) -->
+  <path 
+    d="M72 134c-5.3 0-9.6-4.3-9.6-9.6v-38.4c0-5.3 4.3-9.6 9.6-9.6h7.2l12-19.2c2.9-4.8 8.2-7.2 13.4-6.2 6.7 1.4 10.6 7.7 10.6 14.4v14.4h14.4c5.3 0 9.6 4.3 9.6 9.6l-7.2 33.6c-1 4.3-4.8 7.2-9.1 7.2H72z" 
+    fill="#ffffff" 
+    stroke="#e5e7eb" 
+    stroke-width="2"
+  />
+  
+  <!-- Portuguese flag accent - small decorative elements -->
+  <circle 
+    cx="58" 
+    cy="67" 
+    r="9.6" 
+    fill="#dc2626" 
+    opacity="0.8"
+  />
+  
+  <circle 
+    cx="134" 
+    cy="125" 
+    r="9.6" 
+    fill="#fbbf24" 
+    opacity="0.8"
+  />
+  
+  <!-- Success checkmark -->
+  <path 
+    d="M67 96l9.6 9.6 19.2-19.2" 
+    stroke="#10b981" 
+    stroke-width="8" 
+    fill="none" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>

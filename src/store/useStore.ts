@@ -36,7 +36,6 @@ const defaultConfiguration: UserConfiguration = {
   selectedLevels: ['A1'],
   selectedTopics: [],
   claudeApiKey: undefined,
-  explanationLanguage: 'pt',
   appLanguage: 'pt',
 };
 
