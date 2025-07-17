@@ -1,0 +1,57 @@
+import { NextRequest, NextResponse } from 'next/server';
+import Anthropic from '@anthropic-ai/sdk';
+import { ANTHROPIC_CONFIG } from '@/constants';
+import { generateBasicDistractors, processMultipleChoiceOptions } from '@/services/multipleChoiceService';
+import { shuffleArray } from '@/utils/arrays';
+import { generateMultipleChoicePrompt } from '@/utils/prompts';
+
+export async function POST(request: NextRequest) {
+  const { exercise, claudeApiKey, explanationLanguage = 'pt' } = await request.json();
+  
+  try {
+    if (!claudeApiKey) {
+      // Fallback: generate basic distractors without AI
+      const distractors = generateBasicDistractors(exercise.correctAnswer);
+      const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+      
+      return NextResponse.json({
+        options: shuffleArray(options)
+      });
+    }
+
+    const anthropic = new Anthropic({
+      apiKey: claudeApiKey,
+    });
+
+    const prompt = generateMultipleChoicePrompt(exercise, explanationLanguage);
+
+    const message = await anthropic.messages.create({
+      model: ANTHROPIC_CONFIG.model,
+      max_tokens: ANTHROPIC_CONFIG.maxTokens.multipleChoice,
+      messages: [
+        {
+          role: 'user',
+          content: prompt
+        }
+      ]
+    });
+
+    const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
+    const distractors = JSON.parse(responseText);
+    const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+
+    return NextResponse.json({ 
+      options: shuffleArray(options) 
+    });
+  } catch (error) {
+    console.error('Error generating multiple choice options:', error);
+    
+    // Fallback to basic distractors
+    const distractors = generateBasicDistractors(exercise.correctAnswer);
+    const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+    
+    return NextResponse.json({
+      options: shuffleArray(options)
+    });
+  }
+}

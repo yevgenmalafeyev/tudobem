@@ -1,0 +1,475 @@
+@import "tailwindcss";
+
+:root {
+  --background: #e8ecf3;
+  --foreground: #2c3e50;
+  
+  /* Neomorphism colors */
+  --neo-bg: #e8ecf3;
+  --neo-shadow-dark: #c5c9d0;
+  --neo-shadow-light: #ffffff;
+  --neo-text: #2c3e50;
+  --neo-text-muted: #6c7b8a;
+  --neo-accent: #9be8fa;
+  --neo-accent-hover: #7dd3f5;
+  --neo-accent-text: #027aeb;
+  --neo-success: #d4ed18;
+  --neo-success-hover: #c8e015;
+  --neo-success-text: #92a82f;
+  --neo-warning: #fcc0fa;
+  --neo-error: #e74c3c;
+  --neo-error-hover: #c0392b;
+  
+  /* Neomorphism shadows */
+  --neo-shadow-inset: inset 6px 6px 12px var(--neo-shadow-dark), inset -6px -6px 12px var(--neo-shadow-light);
+  --neo-shadow-outset: 6px 6px 12px var(--neo-shadow-dark), -6px -6px 12px var(--neo-shadow-light);
+  --neo-shadow-outset-sm: 3px 3px 6px var(--neo-shadow-dark), -3px -3px 6px var(--neo-shadow-light);
+  --neo-shadow-outset-lg: 10px 10px 20px var(--neo-shadow-dark), -10px -10px 20px var(--neo-shadow-light);
+  
+  /* Mobile adjustments */
+  --neo-shadow-mobile: 3px 3px 6px var(--neo-shadow-dark), -3px -3px 6px var(--neo-shadow-light);
+  --neo-shadow-mobile-inset: inset 3px 3px 6px var(--neo-shadow-dark), inset -3px -3px 6px var(--neo-shadow-light);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #2c3e50;
+    --foreground: #ecf0f1;
+    
+    --neo-bg: #2c3e50;
+    --neo-shadow-dark: #1a252f;
+    --neo-shadow-light: #3e5771;
+    --neo-text: #ecf0f1;
+    --neo-text-muted: #95a5a6;
+    --neo-accent: #9be8fa;
+    --neo-accent-hover: #b8f0fc;
+    --neo-accent-text: #027aeb;
+    --neo-success: #d4ed18;
+    --neo-success-hover: #e2f533;
+    --neo-success-text: #92a82f;
+    --neo-warning: #fcc0fa;
+    --neo-error: #e74c3c;
+    --neo-error-hover: #ec7063;
+    
+    --neo-shadow-inset: inset 6px 6px 12px var(--neo-shadow-dark), inset -6px -6px 12px var(--neo-shadow-light);
+    --neo-shadow-outset: 6px 6px 12px var(--neo-shadow-dark), -6px -6px 12px var(--neo-shadow-light);
+    --neo-shadow-outset-sm: 3px 3px 6px var(--neo-shadow-dark), -3px -3px 6px var(--neo-shadow-light);
+    --neo-shadow-outset-lg: 10px 10px 20px var(--neo-shadow-dark), -10px -10px 20px var(--neo-shadow-light);
+    
+    --neo-shadow-mobile: 3px 3px 6px var(--neo-shadow-dark), -3px -3px 6px var(--neo-shadow-light);
+    --neo-shadow-mobile-inset: inset 3px 3px 6px var(--neo-shadow-dark), inset -3px -3px 6px var(--neo-shadow-light);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* PWA safe area handling */
+.safe-area-inset {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Prevent zoom on input focus (iOS) */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  font-size: 16px !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better touch targets */
+button,
+[role="button"],
+input[type="checkbox"],
+input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Disable text selection on interactive elements */
+button,
+[role="button"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Remove tap highlight on iOS */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Neomorphism utility classes */
+.neo-inset {
+  background: var(--neo-bg);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow-inset);
+  border: none;
+}
+
+.neo-outset {
+  background: var(--neo-bg);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow-outset);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.neo-outset:hover {
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+.neo-outset:active {
+  box-shadow: var(--neo-shadow-inset);
+}
+
+.neo-outset-sm {
+  background: var(--neo-bg);
+  border-radius: 8px;
+  box-shadow: var(--neo-shadow-outset-sm);
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.neo-outset-lg {
+  background: var(--neo-bg);
+  border-radius: 16px;
+  box-shadow: var(--neo-shadow-outset-lg);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.neo-button {
+  background: var(--neo-bg);
+  color: var(--neo-text);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow-outset);
+  border: none;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.neo-button:hover {
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+.neo-button:active {
+  box-shadow: var(--neo-shadow-inset);
+}
+
+.neo-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+.neo-button-primary {
+  background: linear-gradient(135deg, var(--neo-accent), var(--neo-accent-hover));
+  color: white;
+}
+
+.neo-button-success {
+  background: linear-gradient(135deg, var(--neo-success), var(--neo-success-hover));
+  color: white;
+}
+
+.neo-button-error {
+  background: linear-gradient(135deg, var(--neo-error), var(--neo-error-hover));
+  color: white;
+}
+
+.neo-input {
+  background: var(--neo-bg);
+  color: var(--neo-text);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow-inset);
+  border: none;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.neo-input:focus {
+  box-shadow: var(--neo-shadow-inset), 0 0 0 2px var(--neo-accent);
+}
+
+textarea.neo-input {
+  resize: vertical;
+  min-height: 48px;
+  font-family: inherit;
+}
+
+.neo-card {
+  background: var(--neo-bg);
+  border-radius: 16px;
+  box-shadow: var(--neo-shadow-outset);
+  border: none;
+  padding: 24px;
+}
+
+.neo-card-sm {
+  background: var(--neo-bg);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow-outset-sm);
+  border: none;
+  padding: 16px;
+}
+
+.neo-card-lg {
+  background: var(--neo-bg);
+  border-radius: 20px;
+  box-shadow: var(--neo-shadow-outset-lg);
+  border: none;
+  padding: 32px;
+}
+
+.neo-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--neo-bg);
+  border-radius: 6px;
+  box-shadow: var(--neo-shadow-inset);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.neo-checkbox:checked {
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+.neo-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--neo-accent-text);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Radio button styles */
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--neo-bg);
+  border-radius: 50%;
+  box-shadow: var(--neo-shadow-inset);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="radio"]:checked {
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--neo-accent);
+  border-radius: 50%;
+}
+
+/* Enhanced mobile optimizations */
+@media (max-width: 768px) {
+  /* Improve visual hierarchy on mobile */
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Better container spacing */
+  .container {
+    padding: 0 12px;
+  }
+  .neo-outset,
+  .neo-button,
+  .neo-card,
+  .neo-card-sm,
+  .neo-card-lg {
+    box-shadow: var(--neo-shadow-mobile);
+  }
+  
+  .neo-inset,
+  .neo-input {
+    box-shadow: var(--neo-shadow-mobile-inset);
+  }
+  
+  .neo-outset:hover,
+  .neo-button:hover {
+    box-shadow: var(--neo-shadow-mobile);
+  }
+  
+  .neo-outset:active,
+  .neo-button:active {
+    box-shadow: var(--neo-shadow-mobile-inset);
+  }
+  
+  .neo-input:focus {
+    box-shadow: var(--neo-shadow-mobile-inset), 0 0 0 2px var(--neo-accent);
+  }
+  
+  /* Reduce padding on mobile for better space utilization */
+  .neo-card-lg {
+    padding: 16px;
+    border-radius: 16px;
+    margin: 8px;
+  }
+  
+  .neo-card {
+    padding: 12px;
+    border-radius: 12px;
+    margin: 6px;
+  }
+  
+  .neo-card-sm {
+    padding: 8px;
+    border-radius: 8px;
+    margin: 4px;
+  }
+  
+  /* Ensure touch targets are large enough on mobile */
+  .neo-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .neo-checkbox {
+    width: 22px;
+    height: 22px;
+  }
+  
+  input[type="radio"] {
+    width: 22px;
+    height: 22px;
+    box-shadow: var(--neo-shadow-mobile-inset);
+  }
+  
+  input[type="radio"]:checked {
+    box-shadow: var(--neo-shadow-mobile);
+  }
+  
+  /* Improved text sizing on mobile */
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  /* Better button spacing */
+  .neo-button {
+    margin: 4px 2px;
+  }
+  
+  /* Navigation improvements */
+  nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Exercise display improvements */
+  .exercise-container {
+    padding: 12px;
+    margin: 8px 0;
+  }
+  
+  /* Better input field sizing */
+  .neo-input {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+  
+  /* Improved multiple choice options */
+  .choice-option {
+    margin: 6px 0;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .neo-card-lg {
+    padding: 24px;
+    margin: 12px;
+  }
+  
+  .neo-card {
+    padding: 18px;
+    margin: 8px;
+  }
+  
+  .neo-button {
+    margin: 6px 4px;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  
+  .neo-card-lg {
+    padding: 32px;
+    margin: 16px;
+  }
+  
+  .neo-card {
+    padding: 24px;
+    margin: 12px;
+  }
+  
+  .neo-button {
+    margin: 8px 6px;
+  }
+  
+  /* Hover effects for desktop */
+  .neo-button:hover {
+    transform: translateY(-1px);
+  }
+  
+  .neo-card:hover {
+    transform: translateY(-2px);
+  }
+}
