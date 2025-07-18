@@ -31,6 +31,9 @@ export default function Learning() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [fallbackExercise, setFallbackExercise] = useState<Exercise | null>(null);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [showFallbackLoading, setShowFallbackLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
   // Analytics tracking
@@ -102,6 +105,32 @@ export default function Learning() {
     }
   }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, isGeneratingBatch]);
 
+  // Fetch fallback exercise from database
+  const fetchFallbackExercise = useCallback(async () => {
+    try {
+      const response = await fetch('/api/fallback-exercise', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          levels: configuration.selectedLevels,
+          topics: configuration.selectedTopics
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch fallback exercise');
+      }
+
+      const { fallbackExercise } = await response.json();
+      return fallbackExercise;
+    } catch (error) {
+      console.error('Error fetching fallback exercise:', error);
+      return null;
+    }
+  }, [configuration.selectedLevels, configuration.selectedTopics]);
+
   const generateMultipleChoiceOptions = useCallback(async (exercise: { correctAnswer: string; sentence: string; level: string; topic: string; hint?: { infinitive?: string; person?: string } }) => {
     if (learningMode !== 'multiple-choice') return;
     
@@ -135,6 +164,12 @@ export default function Learning() {
   }, [learningMode, configuration.claudeApiKey, configuration.appLanguage]);
 
   const generateNewExercise = useCallback(async () => {
+    // If user has interacted with fallback, don't replace it with fresh exercise
+    if (userInteracted && fallbackExercise) {
+      console.log('User has interacted with fallback, not replacing with fresh exercise');
+      return;
+    }
+
     setIsLoading(true);
     console.log('Generating exercise with configuration:', {
       levels: configuration.selectedLevels,
@@ -179,58 +214,98 @@ export default function Learning() {
         exercise = await response.json();
       }
 
-      setCurrentExercise(exercise);
-      setUserAnswer('');
-      setSelectedOption('');
-      setFeedback(null);
-      setShowAnswer(false);
-      
-      // Track exercise generation
-      trackExerciseGenerated(exercise);
-      
-      // Start response timer for analytics
-      startResponseTimer();
-      
-      // For batch exercises, the detailed explanation is already included
-      if (exercise.detailedExplanation) {
-        if (typeof exercise.detailedExplanation === 'string') {
-          setDetailedExplanation(exercise.detailedExplanation);
+      // Only set as current exercise if user hasn't interacted with fallback
+      if (!userInteracted) {
+        setCurrentExercise(exercise);
+        setUserAnswer('');
+        setSelectedOption('');
+        setFeedback(null);
+        setShowAnswer(false);
+        
+        // Track exercise generation
+        trackExerciseGenerated(exercise);
+        
+        // Start response timer for analytics
+        startResponseTimer();
+        
+        // For batch exercises, the detailed explanation is already included
+        if (exercise.detailedExplanation) {
+          if (typeof exercise.detailedExplanation === 'string') {
+            setDetailedExplanation(exercise.detailedExplanation);
+          } else {
+            // Multi-language explanations from database
+            const lang = configuration.appLanguage || 'pt';
+            setDetailedExplanation(exercise.detailedExplanation[lang] || exercise.detailedExplanation.pt);
+          }
         } else {
-          // Multi-language explanations from database
-          const lang = configuration.appLanguage || 'pt';
-          setDetailedExplanation(exercise.detailedExplanation[lang] || exercise.detailedExplanation.pt);
+          // Generate detailed explanation for fallback exercises
+          generateDetailedExplanation(exercise);
         }
-      } else {
-        // Generate detailed explanation for fallback exercises
-        generateDetailedExplanation(exercise);
-      }
-      
-      // For batch exercises, multiple choice options are already included
-      if (exercise.multipleChoiceOptions && learningMode === 'multiple-choice') {
-        setMultipleChoiceOptions(exercise.multipleChoiceOptions);
-      } else if (learningMode === 'multiple-choice') {
-        // Generate multiple choice options for fallback exercises
-        await generateMultipleChoiceOptions(exercise);
-      }
-      
-      // Focus input field after exercise is loaded (only in input mode)
-      if (learningMode === 'input') {
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 100);
+        
+        // For batch exercises, multiple choice options are already included
+        if (exercise.multipleChoiceOptions && learningMode === 'multiple-choice') {
+          setMultipleChoiceOptions(exercise.multipleChoiceOptions);
+        } else if (learningMode === 'multiple-choice') {
+          // Generate multiple choice options for fallback exercises
+          await generateMultipleChoiceOptions(exercise);
+        }
+        
+        // Clear fallback exercise since we have a fresh one
+        setFallbackExercise(null);
+        
+        // Focus input field after exercise is loaded (only in input mode)
+        if (learningMode === 'input') {
+          setTimeout(() => {
+            inputRef.current?.focus();
+          }, 100);
+        }
       }
     } catch (error) {
       console.error('Error generating exercise:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, learningMode, generateMultipleChoiceOptions, setCurrentExercise, exerciseQueue, generateDetailedExplanation, generateBatchExercises, configuration.appLanguage]);
+  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, learningMode, generateMultipleChoiceOptions, setCurrentExercise, exerciseQueue, generateDetailedExplanation, generateBatchExercises, configuration.appLanguage, userInteracted, fallbackExercise]);
 
   useEffect(() => {
-    if (!currentExercise) {
-      generateNewExercise();
+    if (!currentExercise && !fallbackExercise) {
+      // First try to get a fallback exercise from database
+      fetchFallbackExercise().then(async (fallback) => {
+        if (fallback) {
+          setFallbackExercise(fallback);
+          setCurrentExercise(fallback);
+          setUserAnswer('');
+          setSelectedOption('');
+          setFeedback(null);
+          setShowAnswer(false);
+          
+          // Handle explanations for fallback exercises
+          if (fallback.detailedExplanation) {
+            if (typeof fallback.detailedExplanation === 'string') {
+              setDetailedExplanation(fallback.detailedExplanation);
+            } else {
+              const lang = configuration.appLanguage || 'pt';
+              setDetailedExplanation(fallback.detailedExplanation[lang] || fallback.detailedExplanation.pt);
+            }
+          }
+          
+          // Handle multiple choice options for fallback exercises
+          if (fallback.multipleChoiceOptions && learningMode === 'multiple-choice') {
+            setMultipleChoiceOptions(fallback.multipleChoiceOptions);
+          } else if (learningMode === 'multiple-choice') {
+            await generateMultipleChoiceOptions(fallback);
+          }
+          
+          // Start generating fresh exercise in background
+          generateNewExercise();
+        } else {
+          // No fallback available, show loading animation
+          setShowFallbackLoading(true);
+          generateNewExercise();
+        }
+      });
     }
-  }, [currentExercise, generateNewExercise]);
+  }, [currentExercise, fallbackExercise, generateNewExercise, fetchFallbackExercise, configuration.appLanguage, learningMode, generateMultipleChoiceOptions]);
 
   // Initialize exercise queue when component mounts
   useEffect(() => {
@@ -294,6 +369,9 @@ export default function Learning() {
     setUserAnswer('');
     setSelectedOption('');
     setMultipleChoiceOptions([]);
+    setUserInteracted(false);
+    setFallbackExercise(null);
+    setShowFallbackLoading(false);
     
     // Clear current exercise to force generation of a new one
     setCurrentExercise(null);
@@ -349,6 +427,19 @@ export default function Learning() {
       generateMultipleChoiceOptions(currentExercise);
     }
   }, [currentExercise, learningMode, multipleChoiceOptions.length, generateMultipleChoiceOptions]);
+
+  if (showFallbackLoading && !currentExercise) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 mb-4" style={{ borderColor: 'var(--neo-accent)' }}></div>
+            {t('loadingExercise', configuration.appLanguage)}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading && !currentExercise) {
     return (
@@ -426,7 +517,13 @@ export default function Learning() {
                   ref={inputRef}
                   type="text"
                   value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
+                  onChange={(e) => {
+                    setUserAnswer(e.target.value);
+                    // Mark as interacted when user starts typing
+                    if (!userInteracted && e.target.value.length > 0) {
+                      setUserInteracted(true);
+                    }
+                  }}
                   className="neo-inset text-center min-w-16 sm:min-w-24 text-lg sm:text-xl lg:text-2xl"
                   placeholder="?"
                   disabled={showAnswer}
@@ -454,6 +551,10 @@ export default function Learning() {
                   key={index}
                   onClick={async () => {
                     setSelectedOption(option);
+                    // Mark as interacted when user selects an option
+                    if (!userInteracted) {
+                      setUserInteracted(true);
+                    }
                     // Auto-check answer when option is selected
                     setTimeout(async () => {
                       // Create a temporary answer check with the selected option
