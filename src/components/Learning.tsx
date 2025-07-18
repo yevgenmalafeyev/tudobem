@@ -47,8 +47,6 @@ export default function Learning() {
   const { 
     nextExercise, 
     queueLength,
-    isGeneratingBatch, 
-    generateBatchExercises, 
     consumeNextExercise,
     initializeQueue
   } = useBackgroundGeneration({
@@ -125,7 +123,7 @@ export default function Learning() {
     clearExplanation();
     
     // Consume the next exercise from queue
-    const nextFromQueue = consumeNextExercise();
+    consumeNextExercise();
     
     // Generate new exercise (will use from queue if available)
     generateNewExercise();

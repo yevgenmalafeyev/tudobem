@@ -1,7 +1,13 @@
 import { SupportedLanguage } from '@/lib/api-utils';
 
 export interface AnswerCheckingPromptParams {
-  exercise: any;
+  exercise: {
+    sentence: string;
+    correctAnswer: string;
+    level: string;
+    topic: string;
+    hint?: Record<string, string>;
+  };
   userAnswer: string;
   explanationLanguage: SupportedLanguage;
 }

@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { 
   parseRequestBody, 
   createApiResponse, 
-  createApiError, 
   callClaudeApi,
   withErrorHandling,
   FALLBACK_MESSAGES,
@@ -12,7 +11,13 @@ import { generateAnswerCheckingPrompt } from '@/utils/answer-checking-prompts';
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
   const { exercise, userAnswer, claudeApiKey, explanationLanguage = 'pt' } = await parseRequestBody<{
-    exercise: any;
+    exercise: {
+      sentence: string;
+      correctAnswer: string;
+      level: string;
+      topic: string;
+      hint?: Record<string, string>;
+    };
     userAnswer: string;
     claudeApiKey?: string;
     explanationLanguage?: SupportedLanguage;

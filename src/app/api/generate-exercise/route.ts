@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { topics } from '@/data/topics';
 import { getFallbackExercise, createExercise } from '@/services/exerciseService';
 import { generateExercisePrompt } from '@/utils/prompts';

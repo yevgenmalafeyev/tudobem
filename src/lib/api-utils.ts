@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import Anthropic from '@anthropic-ai/sdk';
 import { ANTHROPIC_CONFIG } from '@/constants';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -20,7 +20,7 @@ export function createApiError(message: string, status: number = 500): NextRespo
 export async function parseRequestBody<T>(request: NextRequest): Promise<T> {
   try {
     return await request.json();
-  } catch (error) {
+  } catch {
     throw new Error('Invalid JSON in request body');
   }
 }
@@ -77,7 +77,7 @@ export async function checkAdminAuthentication(): Promise<boolean> {
   }
 }
 
-export async function requireAdminAuth(request: NextRequest): Promise<NextResponse | null> {
+export async function requireAdminAuth(): Promise<NextResponse | null> {
   const isAuthenticated = await checkAdminAuthentication();
   
   if (!isAuthenticated) {
@@ -87,7 +87,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<NextRespon
   return null;
 }
 
-export function withErrorHandling<T extends any[]>(
+export function withErrorHandling<T extends unknown[]>(
   handler: (...args: T) => Promise<NextResponse>
 ) {
   return async (...args: T): Promise<NextResponse> => {

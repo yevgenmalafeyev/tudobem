@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { 
   parseRequestBody, 
   createApiResponse, 
@@ -26,12 +26,12 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   }
 });
 
-export const GET = withErrorHandling(async (_request: NextRequest) => {
+export const GET = withErrorHandling(async () => {
   const authenticated = await checkAdminAuthentication();
   return createApiResponse({ authenticated });
 });
 
-export const DELETE = withErrorHandling(async (_request: NextRequest) => {
+export const DELETE = withErrorHandling(async () => {
   await clearAdminSession();
   return createApiResponse({ success: true });
 });
