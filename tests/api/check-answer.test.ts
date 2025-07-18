@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/check-answer/route'
-import { server } from '@/src/__mocks__/server'
+import { server } from '../../src/__mocks__/server'
 
 // Mock Anthropic SDK
 jest.mock('@anthropic-ai/sdk', () => ({

@@ -9,6 +9,20 @@ global.Request = Request
 global.TextEncoder = require('util').TextEncoder
 global.TextDecoder = require('util').TextDecoder
 
+// Add TransformStream polyfill for MSW
+global.TransformStream = require('stream/web').TransformStream
+
+// Add BroadcastChannel polyfill for MSW
+global.BroadcastChannel = class BroadcastChannel {
+  constructor(name) {
+    this.name = name;
+  }
+  postMessage() {}
+  close() {}
+  addEventListener() {}
+  removeEventListener() {}
+}
+
 // Mock zustand persist
 jest.mock('zustand/middleware', () => ({
   persist: jest.fn((fn) => fn),

@@ -40,7 +40,7 @@ export function useExerciseGeneration({
         body: JSON.stringify({
           exercise,
           claudeApiKey: configuration.claudeApiKey,
-          explanationLanguage: configuration.explanationLanguage
+          explanationLanguage: configuration.appLanguage
         }),
       });
 
@@ -52,17 +52,13 @@ export function useExerciseGeneration({
       setMultipleChoiceOptions(result.options);
     } catch (error) {
       console.error('Error generating multiple choice options:', error);
-      // Fallback to basic options
-      const correctAnswer = exercise.correctAnswer;
-      const basicOptions = [
-        correctAnswer,
-        correctAnswer + 's',
-        correctAnswer.slice(0, -1) + 'a',
-        correctAnswer.slice(0, -2) + 'ou'
-      ];
-      setMultipleChoiceOptions(basicOptions);
+      // Fallback to basic options using the service
+      const { generateBasicDistractors, processMultipleChoiceOptions } = await import('@/services/multipleChoiceService');
+      const distractors = generateBasicDistractors(exercise.correctAnswer);
+      const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+      setMultipleChoiceOptions(options);
     }
-  }, [learningMode, configuration.claudeApiKey, configuration.explanationLanguage, setMultipleChoiceOptions]);
+  }, [learningMode, configuration.claudeApiKey, configuration.appLanguage, setMultipleChoiceOptions]);
 
   const generateNewExercise = useCallback(async () => {
     setIsLoading(true);

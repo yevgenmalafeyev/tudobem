@@ -5,6 +5,7 @@ import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import { Exercise } from '@/types';
 import { isMobileDevice } from '@/utils/pwaDetection';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 type LearningMode = 'input' | 'multiple-choice';
 
@@ -31,6 +32,9 @@ export default function Learning() {
   const [isLoading, setIsLoading] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Analytics tracking
+  const { trackExerciseGenerated, trackQuestionAnswered, trackModeChanged, startResponseTimer } = useAnalytics();
   
   // Background generation for faster transitions
   const [detailedExplanation, setDetailedExplanation] = useState<string>('');
@@ -64,7 +68,7 @@ export default function Learning() {
       console.error('Error generating detailed explanation:', error);
       setDetailedExplanation('');
     }
-  }, [configuration.claudeApiKey, configuration.explanationLanguage]);
+  }, [configuration.claudeApiKey, configuration.appLanguage]);
 
   // Generate batch exercises in background
   const generateBatchExercises = useCallback(async () => {
@@ -122,17 +126,13 @@ export default function Learning() {
       setMultipleChoiceOptions(result.options);
     } catch (error) {
       console.error('Error generating multiple choice options:', error);
-      // Fallback to basic options
-      const correctAnswer = exercise.correctAnswer;
-      const basicOptions = [
-        correctAnswer,
-        correctAnswer + 's',
-        correctAnswer.slice(0, -1) + 'a',
-        correctAnswer.slice(0, -2) + 'ou'
-      ];
-      setMultipleChoiceOptions(basicOptions);
+      // Fallback to basic options using the service
+      const { generateBasicDistractors, processMultipleChoiceOptions } = await import('@/services/multipleChoiceService');
+      const distractors = generateBasicDistractors(exercise.correctAnswer);
+      const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+      setMultipleChoiceOptions(options);
     }
-  }, [learningMode, configuration.claudeApiKey, configuration.explanationLanguage]);
+  }, [learningMode, configuration.claudeApiKey, configuration.appLanguage]);
 
   const generateNewExercise = useCallback(async () => {
     setIsLoading(true);
@@ -185,6 +185,12 @@ export default function Learning() {
       setFeedback(null);
       setShowAnswer(false);
       
+      // Track exercise generation
+      trackExerciseGenerated(exercise);
+      
+      // Start response timer for analytics
+      startResponseTimer();
+      
       // For batch exercises, the detailed explanation is already included
       if (exercise.detailedExplanation) {
         if (typeof exercise.detailedExplanation === 'string') {
@@ -218,7 +224,7 @@ export default function Learning() {
     } finally {
       setIsLoading(false);
     }
-  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, learningMode, generateMultipleChoiceOptions, setCurrentExercise, exerciseQueue, generateDetailedExplanation, generateBatchExercises, configuration.explanationLanguage]);
+  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, learningMode, generateMultipleChoiceOptions, setCurrentExercise, exerciseQueue, generateDetailedExplanation, generateBatchExercises, configuration.appLanguage]);
 
   useEffect(() => {
     if (!currentExercise) {
@@ -265,6 +271,9 @@ export default function Learning() {
       setFeedback(result);
       setShowAnswer(true);
 
+      // Track question answered
+      trackQuestionAnswered(currentExercise, answerToCheck, result.isCorrect);
+
       if (!result.isCorrect) {
         addIncorrectAnswer(currentExercise.correctAnswer);
       } else {
@@ -276,7 +285,7 @@ export default function Learning() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentExercise, userAnswer, selectedOption, learningMode, configuration.claudeApiKey, configuration.explanationLanguage, addIncorrectAnswer, addMasteredWord]);
+  }, [currentExercise, userAnswer, selectedOption, learningMode, configuration.claudeApiKey, configuration.appLanguage, addIncorrectAnswer, addMasteredWord]);
 
   const moveToNextExercise = useCallback(() => {
     // Reset all state for the new exercise
@@ -379,7 +388,10 @@ export default function Learning() {
               </span>
               <div className="flex neo-inset-sm rounded-lg p-1">
                 <button
-                  onClick={() => setLearningMode('input')}
+                  onClick={() => {
+                    setLearningMode('input');
+                    trackModeChanged('input');
+                  }}
                   className={`neo-button text-xs sm:text-sm px-2 sm:px-3 py-1 ${
                     learningMode === 'input' ? 'neo-button-primary' : ''
                   }`}
@@ -387,7 +399,10 @@ export default function Learning() {
                   {t('inputMode', configuration.appLanguage)}
                 </button>
                 <button
-                  onClick={() => setLearningMode('multiple-choice')}
+                  onClick={() => {
+                    setLearningMode('multiple-choice');
+                    trackModeChanged('multiple-choice');
+                  }}
                   className={`neo-button text-xs sm:text-sm px-2 sm:px-3 py-1 ${
                     learningMode === 'multiple-choice' ? 'neo-button-primary' : ''
                   }`}

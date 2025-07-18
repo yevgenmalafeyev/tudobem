@@ -65,7 +65,7 @@ export default function Learning() {
     clearExplanation 
   } = useDetailedExplanation({
     claudeApiKey: configuration.claudeApiKey,
-    explanationLanguage: configuration.explanationLanguage
+    explanationLanguage: configuration.appLanguage
   });
 
   const { generateNewExercise, generateMultipleChoiceOptions } = useExerciseGeneration({
@@ -116,7 +116,7 @@ export default function Learning() {
       exercise: currentExercise,
       userAnswer: getCurrentAnswer(),
       claudeApiKey: configuration.claudeApiKey,
-      explanationLanguage: configuration.explanationLanguage
+      explanationLanguage: configuration.appLanguage
     });
   }, [currentExercise, getCurrentAnswer, configuration, checkAnswer]);
 

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/generate-exercise/route'
-import { server } from '@/src/__mocks__/server'
+import { server } from '../../src/__mocks__/server'
 
 // Mock the getFallbackExercise function
 jest.mock('@/services/exerciseService', () => ({
