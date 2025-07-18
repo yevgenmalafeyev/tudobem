@@ -16,8 +16,8 @@ export default defineConfig({
   ],
   
   use: {
-    // Test against the deployed Vercel instance
-    baseURL: 'https://portuguese-learning-app-theta.vercel.app',
+    // Test against the deployed production instance
+    baseURL: 'https://tudobem.blaster.app',
     
     // More conservative settings for production testing
     trace: 'retain-on-failure',
