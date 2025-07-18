@@ -28,6 +28,36 @@ jest.mock('zustand/middleware', () => ({
   persist: jest.fn((fn) => fn),
 }))
 
+// Mock NextRequest for API testing
+jest.mock('next/server', () => ({
+  NextRequest: class NextRequest {
+    constructor(url, options = {}) {
+      this.url = url;
+      this.method = options.method || 'GET';
+      this.headers = new Map(Object.entries(options.headers || {}));
+      this.body = options.body;
+      this._body = options.body;
+    }
+    
+    async json() {
+      return JSON.parse(this._body);
+    }
+    
+    async text() {
+      return this._body;
+    }
+  },
+  NextResponse: {
+    json: (body, init) => {
+      const response = {
+        status: init?.status || 200,
+        json: async () => body,
+      };
+      return response;
+    },
+  },
+}));
+
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
