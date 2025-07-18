@@ -32,11 +32,12 @@ export function useAnswerChecking({
         throw new Error('Failed to check answer');
       }
 
-      const result: CheckAnswerResponse = await response.json();
-      setFeedback(result);
+      const result = await response.json();
+      const feedback = result.success ? result.data : result;
+      setFeedback(feedback);
       setShowAnswer(true);
 
-      if (!result.isCorrect) {
+      if (!feedback.isCorrect) {
         addIncorrectAnswer(request.exercise.correctAnswer);
       }
     } catch (error) {

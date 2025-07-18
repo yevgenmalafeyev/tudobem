@@ -49,7 +49,8 @@ export function useExerciseGeneration({
       }
 
       const result = await response.json();
-      setMultipleChoiceOptions(result.options);
+      const options = result.success ? result.data.options : result.options;
+      setMultipleChoiceOptions(options);
     } catch (error) {
       console.error('Error generating multiple choice options:', error);
       // Fallback to basic options using the service
@@ -89,7 +90,8 @@ export function useExerciseGeneration({
           throw new Error('Failed to generate exercise');
         }
 
-        exercise = await response.json();
+        const result = await response.json();
+        exercise = result.success ? result.data : result;
       }
 
       setCurrentExercise(exercise);

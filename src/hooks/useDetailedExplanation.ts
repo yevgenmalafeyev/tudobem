@@ -38,7 +38,8 @@ export function useDetailedExplanation({
       }
 
       const result = await response.json();
-      setDetailedExplanation(result.explanation || '');
+      const explanation = result.success ? result.data.explanation : result.explanation;
+      setDetailedExplanation(explanation || '');
     } catch (error) {
       console.error('Error generating detailed explanation:', error);
       setDetailedExplanation('');

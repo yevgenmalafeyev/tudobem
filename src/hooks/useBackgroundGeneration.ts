@@ -45,7 +45,8 @@ export function useBackgroundGeneration({
         throw new Error('Failed to generate batch exercises');
       }
 
-      const { exercises } = await response.json();
+      const result = await response.json();
+      const exercises = result.success ? result.data.exercises : result.exercises;
       setExerciseQueue(prev => [...prev, ...exercises]);
     } catch (error) {
       console.error('Error generating batch exercises:', error);
