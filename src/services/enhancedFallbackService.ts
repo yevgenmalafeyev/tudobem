@@ -33,7 +33,7 @@ export class EnhancedFallbackService {
 
       // Step 2: Fall back to static exercises
       console.log('⚠️ Enhanced fallback: No database exercises, using static');
-      const staticExercise = this.getStaticExercise(levels, topics, masteredWords);
+      const staticExercise = await this.getStaticExercise(levels, topics, masteredWords);
       if (staticExercise) {
         return this.convertToEnhancedExercise(staticExercise);
       }
@@ -46,7 +46,7 @@ export class EnhancedFallbackService {
       console.error('❌ Enhanced fallback error:', error);
       
       // Ultimate fallback to static exercises
-      const staticExercise = this.getStaticExercise(levels, topics, masteredWords);
+      const staticExercise = await this.getStaticExercise(levels, topics, masteredWords);
       return staticExercise ? this.convertToEnhancedExercise(staticExercise) : null;
     }
   }
@@ -86,7 +86,7 @@ export class EnhancedFallbackService {
       console.log(`⚠️ Enhanced fallback: Only ${filteredExercises.length} database exercises, supplementing with static`);
       
       const needed = count - filteredExercises.length;
-      const staticExercises = this.getStaticExerciseBatch(levels, topics, needed, masteredWords);
+      const staticExercises = await this.getStaticExerciseBatch(levels, topics, needed, masteredWords);
       const enhancedStaticExercises = staticExercises.map(ex => this.convertToEnhancedExercise(ex));
 
       return [...filteredExercises, ...enhancedStaticExercises];
@@ -95,7 +95,7 @@ export class EnhancedFallbackService {
       console.error('❌ Enhanced fallback batch error:', error);
       
       // Ultimate fallback to static exercises only
-      const staticExercises = this.getStaticExerciseBatch(levels, topics, count, masteredWords);
+      const staticExercises = await this.getStaticExerciseBatch(levels, topics, count, masteredWords);
       return staticExercises.map(ex => this.convertToEnhancedExercise(ex));
     }
   }
@@ -178,31 +178,67 @@ export class EnhancedFallbackService {
   }
 
   /**
-   * Get static exercise using existing service
+   * Get static exercise from database instead of hardcoded exercises
    */
-  private static getStaticExercise(
+  private static async getStaticExercise(
     levels: LanguageLevel[],
     topics: string[],
     masteredWords: Record<string, unknown>
-  ): Exercise | null {
-    return getFallbackExercise(levels, masteredWords, topics);
+  ): Promise<Exercise | null> {
+    console.log('📚 Enhanced fallback: Getting static exercise from database');
+    
+    try {
+      // Try to get from database first
+      const databaseExercises = await SmartDatabase.getExercises({
+        levels,
+        topics,
+        limit: 10 // Get some variety
+      });
+      
+      if (databaseExercises.length > 0) {
+        // Filter out mastered words
+        const filteredExercises = databaseExercises.filter(exercise => {
+          const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
+          return !masteredWords[wordKey];
+        });
+        
+        if (filteredExercises.length > 0) {
+          // Return a random exercise from the filtered set
+          const randomIndex = Math.floor(Math.random() * filteredExercises.length);
+          return this.convertToLegacyExercise(filteredExercises[randomIndex]);
+        }
+        
+        // If all are mastered, return a random one anyway
+        const randomIndex = Math.floor(Math.random() * databaseExercises.length);
+        return this.convertToLegacyExercise(databaseExercises[randomIndex]);
+      }
+      
+      // Fallback to legacy system only if database is empty
+      console.log('⚠️ Database empty, falling back to legacy static exercises');
+      return getFallbackExercise(levels, masteredWords, topics);
+      
+    } catch (error) {
+      console.error('❌ Error getting static exercise from database:', error);
+      // Ultimate fallback to legacy system
+      return getFallbackExercise(levels, masteredWords, topics);
+    }
   }
 
   /**
    * Get multiple static exercises
    */
-  private static getStaticExerciseBatch(
+  private static async getStaticExerciseBatch(
     levels: LanguageLevel[],
     topics: string[],
     count: number,
     masteredWords: Record<string, unknown>
-  ): Exercise[] {
+  ): Promise<Exercise[]> {
     const exercises: Exercise[] = [];
     const usedIds = new Set<string>();
 
     // Try to get the requested number of unique exercises
     for (let i = 0; i < count * 3 && exercises.length < count; i++) {
-      const exercise = this.getStaticExercise(levels, topics, masteredWords);
+      const exercise = await this.getStaticExercise(levels, topics, masteredWords);
       
       if (exercise && !usedIds.has(exercise.id)) {
         exercises.push(exercise);
@@ -211,6 +247,22 @@ export class EnhancedFallbackService {
     }
 
     return exercises;
+  }
+
+  /**
+   * Convert enhanced exercise back to legacy format
+   */
+  private static convertToLegacyExercise(exercise: EnhancedExercise): Exercise {
+    return {
+      id: exercise.id,
+      sentence: exercise.sentence,
+      gapIndex: exercise.gapIndex,
+      correctAnswer: exercise.correctAnswer,
+      topic: exercise.topic,
+      level: exercise.level,
+      hint: exercise.hint,
+      multipleChoiceOptions: exercise.multipleChoiceOptions
+    };
   }
 
   /**

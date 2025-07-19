@@ -6,6 +6,7 @@ import { useLearning } from '@/hooks/useLearning';
 import { useExerciseQueue } from '@/hooks/useExerciseQueue';
 import { useAnswerChecking } from '@/hooks/useAnswerChecking';
 import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
+import { EnhancedExercise } from '@/types/enhanced';
 import GenerationStatusIndicator from './GenerationStatusIndicator';
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
@@ -76,7 +77,7 @@ export default function Learning() {
   });
 
   // Generate multiple choice options for current exercise
-  const generateMultipleChoiceOptions = useCallback(async (exercise: any) => {
+  const generateMultipleChoiceOptions = useCallback(async (exercise: EnhancedExercise) => {
     if (learningMode !== 'multiple-choice') return;
     
     // Use the options from the enhanced exercise if available
@@ -176,8 +177,12 @@ export default function Learning() {
     return () => window.removeEventListener('keydown', handleGlobalKeyPress);
   }, [showAnswer, hasValidAnswer, handleCheckAnswer, handleNextExercise]);
 
-  // Loading state
-  if ((isLoading || queueLoading) && !currentExercise) {
+  // Loading state - improved logic to prevent question swapping
+  const isWaitingForAPI = configuration.claudeApiKey && 
+    (isLoading || queueLoading) && 
+    exerciseQueue.exercises.length === 0;
+  
+  if (isWaitingForAPI || ((isLoading || queueLoading) && !currentExercise)) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
