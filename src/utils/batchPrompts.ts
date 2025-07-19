@@ -115,9 +115,10 @@ export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => 
 
     // Validate explanations
     if (typeof exercise.explanations !== 'object' || 
-        !exercise.explanations.pt || 
-        !exercise.explanations.en || 
-        !exercise.explanations.uk) {
+        exercise.explanations === null ||
+        !(exercise.explanations as Record<string, unknown>).pt || 
+        !(exercise.explanations as Record<string, unknown>).en || 
+        !(exercise.explanations as Record<string, unknown>).uk) {
       console.error(`Exercise ${i}: Invalid explanations structure`);
       return false;
     }
