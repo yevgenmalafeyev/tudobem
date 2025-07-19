@@ -248,6 +248,11 @@ export const translations = {
     pt: 'A resposta correta é',
     en: 'The correct answer is',
     uk: 'Правильна відповідь'
+  },
+  explanation: {
+    pt: 'Explicação',
+    en: 'Explanation',
+    uk: 'Пояснення'
   }
 };
 
