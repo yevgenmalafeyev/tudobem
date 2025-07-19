@@ -124,7 +124,7 @@ export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => 
     }
 
     // Validate level
-    if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(exercise.level)) {
+    if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(exercise.level as string)) {
       console.error(`Exercise ${i}: Invalid level '${exercise.level}'`);
       return false;
     }
