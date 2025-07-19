@@ -3,10 +3,10 @@
 import { useEffect, useCallback } from 'react';
 import { t } from '@/utils/translations';
 import { useLearning } from '@/hooks/useLearning';
-import { useExerciseGeneration } from '@/hooks/useExerciseGeneration';
+import { useExerciseQueue } from '@/hooks/useExerciseQueue';
 import { useAnswerChecking } from '@/hooks/useAnswerChecking';
-import { useBackgroundGeneration } from '@/hooks/useBackgroundGeneration';
 import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
+import GenerationStatusIndicator from './GenerationStatusIndicator';
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
 import MultipleChoiceOptions from './learning/MultipleChoiceOptions';
@@ -43,17 +43,26 @@ export default function Learning() {
     focusInput
   } = useLearning();
 
-  // Background generation hook
-  const { 
-    nextExercise, 
-    queueLength,
-    consumeNextExercise,
-    initializeQueue
-  } = useBackgroundGeneration({
-    selectedLevels: configuration.selectedLevels,
-    selectedTopics: configuration.selectedTopics,
-    claudeApiKey: configuration.claudeApiKey,
-    masteredWords: {} // TODO: Get from store
+  // Exercise queue management
+  const {
+    exerciseQueue,
+    loadInitialBatch,
+    getNextExercise,
+    getCurrentExercise,
+    isLoading: queueLoading,
+    isBackgroundLoading,
+    generationSource,
+    queueStats
+  } = useExerciseQueue({
+    configuration,
+    onExerciseGenerated: (exercise) => {
+      setCurrentExercise(exercise);
+      generateExplanation(exercise);
+    },
+    onQueueEmpty: () => {
+      console.warn('Exercise queue is empty');
+      // Could trigger a new batch load here
+    }
   });
 
   // Detailed explanation hook
@@ -66,25 +75,26 @@ export default function Learning() {
     explanationLanguage: configuration.appLanguage
   });
 
-  const { generateNewExercise, generateMultipleChoiceOptions } = useExerciseGeneration({
-    configuration,
-    learningMode,
-    setCurrentExercise,
-    setMultipleChoiceOptions,
-    setIsLoading,
-    resetState,
-    focusInput,
-    preGeneratedExercise: nextExercise,
-    onExerciseGenerated: (exercise) => {
-      // Generate detailed explanation for the new exercise
-      generateExplanation(exercise);
-      
-      // Initialize queue if needed
-      if (queueLength === 0) {
-        initializeQueue();
-      }
+  // Generate multiple choice options for current exercise
+  const generateMultipleChoiceOptions = useCallback(async (exercise: any) => {
+    if (learningMode !== 'multiple-choice') return;
+    
+    // Use the options from the enhanced exercise if available
+    if (exercise.multipleChoiceOptions && exercise.multipleChoiceOptions.length > 0) {
+      setMultipleChoiceOptions(exercise.multipleChoiceOptions);
+      return;
     }
-  });
+    
+    // Fallback to generating options (for legacy exercises)
+    try {
+      const { generateBasicDistractors, processMultipleChoiceOptions } = await import('@/services/multipleChoiceService');
+      const distractors = generateBasicDistractors(exercise.correctAnswer);
+      const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
+      setMultipleChoiceOptions(options);
+    } catch (error) {
+      console.error('Error generating multiple choice options:', error);
+    }
+  }, [learningMode, setMultipleChoiceOptions]);
 
   const { checkAnswer } = useAnswerChecking({
     setFeedback,
@@ -93,12 +103,18 @@ export default function Learning() {
     addIncorrectAnswer
   });
 
-  // Load initial exercise
+  // Load initial batch and exercise
   useEffect(() => {
-    if (!currentExercise) {
-      generateNewExercise();
+    if (!currentExercise && exerciseQueue.exercises.length === 0) {
+      loadInitialBatch();
+    } else if (!currentExercise && exerciseQueue.exercises.length > 0) {
+      const nextExercise = getCurrentExercise();
+      if (nextExercise) {
+        setCurrentExercise(nextExercise);
+        generateExplanation(nextExercise);
+      }
     }
-  }, [currentExercise, generateNewExercise]);
+  }, [currentExercise, exerciseQueue.exercises.length, loadInitialBatch, getCurrentExercise, setCurrentExercise, generateExplanation]);
 
   // Focus input when component mounts and when new exercise is generated
   useEffect(() => {
@@ -122,12 +138,20 @@ export default function Learning() {
     // Clear current detailed explanation
     clearExplanation();
     
-    // Consume the next exercise from queue
-    consumeNextExercise();
+    // Get next exercise from queue
+    const nextExercise = getNextExercise();
     
-    // Generate new exercise (will use from queue if available)
-    generateNewExercise();
-  }, [generateNewExercise, clearExplanation, consumeNextExercise]);
+    if (nextExercise) {
+      setCurrentExercise(nextExercise);
+      resetState();
+      generateExplanation(nextExercise);
+      focusInput();
+    } else {
+      // No more exercises - could trigger a new batch load
+      console.warn('No more exercises available');
+      loadInitialBatch();
+    }
+  }, [getNextExercise, setCurrentExercise, resetState, generateExplanation, focusInput, clearExplanation, loadInitialBatch]);
 
   // Regenerate multiple choice options when mode changes
   useEffect(() => {
@@ -153,12 +177,16 @@ export default function Learning() {
   }, [showAnswer, hasValidAnswer, handleCheckAnswer, handleNextExercise]);
 
   // Loading state
-  if (isLoading && !currentExercise) {
+  if ((isLoading || queueLoading) && !currentExercise) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
           {t('loadingExercise', configuration.appLanguage)}
         </div>
+        <GenerationStatusIndicator
+          source={generationSource}
+          isBackgroundLoading={true}
+        />
       </div>
     );
   }
@@ -175,7 +203,20 @@ export default function Learning() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 relative">
+      {/* Generation Status Indicator */}
+      <GenerationStatusIndicator
+        source={generationSource}
+        isBackgroundLoading={isBackgroundLoading}
+        exerciseCount={queueStats.remaining}
+        totalGenerated={queueStats.totalGenerated}
+        currentProgress={{
+          completed: queueStats.completed,
+          total: queueStats.total,
+          progressPercentage: queueStats.progressPercentage
+        }}
+      />
+      
       <div className="neo-card-lg">
         {/* Header with level and mode toggle */}
         <div className="mb-4 sm:mb-6">

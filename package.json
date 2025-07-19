@@ -16,14 +16,24 @@
     "test:e2e:prod:ui": "playwright test --config=playwright.config.production.ts --ui",
     "test:smoke": "playwright test tests/e2e/production-smoke.spec.ts --config=playwright.config.production.ts",
     "test:levels": "playwright test tests/e2e/level-filtering.spec.ts",
-    "test:levels:prod": "playwright test tests/e2e/production-level-filtering.spec.ts --config=playwright.config.production.ts"
+    "test:levels:prod": "playwright test tests/e2e/production-level-filtering.spec.ts --config=playwright.config.production.ts",
+    "test:enhanced": "jest tests/integration/enhanced-exercise-system.test.ts",
+    "db:init": "npx tsx src/scripts/initializeDatabase.ts",
+    "db:migrate": "npx tsx src/scripts/migrateStaticExercises.ts migrate",
+    "db:validate": "npx tsx src/scripts/migrateStaticExercises.ts validate",
+    "db:rollback": "npx tsx src/scripts/migrateStaticExercises.ts rollback",
+    "db:setup": "npm run db:init && npm run db:migrate && npm run db:validate",
+    "enhanced:setup": "npm run db:setup",
+    "enhanced:test": "npm run test:enhanced"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",
+    "@types/pg": "^8.15.4",
     "@vercel/postgres": "^0.10.0",
     "jszip": "^3.10.1",
     "next": "15.4.1",
     "next-pwa": "^5.6.0",
+    "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "zustand": "^5.0.6"
@@ -45,6 +55,7 @@
     "msw": "^2.10.4",
     "playwright": "^1.54.1",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5",
     "whatwg-fetch": "^3.6.20"
   }

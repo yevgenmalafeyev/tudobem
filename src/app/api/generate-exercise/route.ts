@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { topics } from '@/data/topics';
 import { getFallbackExercise, createExercise } from '@/services/exerciseService';
+import { EnhancedFallbackService } from '@/services/enhancedFallbackService';
 import { generateExercisePrompt } from '@/utils/prompts';
 import { LanguageLevel } from '@/types';
 import { 
@@ -20,12 +21,14 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     levels: parsedLevels, 
     topics: parsedTopics, 
     claudeApiKey, 
-    masteredWords: parsedMasteredWords = {} 
+    masteredWords: parsedMasteredWords = {},
+    sessionId
   } = await parseRequestBody<{
     levels: LanguageLevel[];
     topics: string[];
     claudeApiKey?: string;
     masteredWords?: Record<string, unknown>;
+    sessionId?: string;
   }>(request);
   
   const levels = parsedLevels || [];
@@ -34,16 +37,34 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   
   console.log('Parsed data:', { levels, selectedTopics: selectedTopics?.length, hasApiKey: !!claudeApiKey, masteredWordsCount: Object.keys(masteredWords).length });
   
-  // If no Claude API key, use fallback exercises
+  // If no Claude API key, use enhanced fallback system
   if (!claudeApiKey) {
-    console.log('No API key, using fallback exercises');
-    const exercise = getFallbackExercise(levels || ['A1'], masteredWords, selectedTopics);
-    if (!exercise) {
-      console.error('No fallback exercise found for levels:', levels, 'and topics:', selectedTopics);
-      return createApiError(FALLBACK_MESSAGES.en.noExercises, 400);
+    console.log('No API key, using enhanced fallback system');
+    try {
+      const exercise = await EnhancedFallbackService.getExercise(
+        levels || ['A1'], 
+        selectedTopics, 
+        masteredWords,
+        sessionId
+      );
+      
+      if (!exercise) {
+        console.error('No enhanced fallback exercise found for levels:', levels, 'and topics:', selectedTopics);
+        return createApiError(FALLBACK_MESSAGES.en.noExercises, 400);
+      }
+      
+      console.log('Returning enhanced fallback exercise:', exercise.level, exercise.correctAnswer, exercise.topic, 'source:', exercise.source);
+      return createApiResponse(exercise);
+    } catch (error) {
+      console.error('Enhanced fallback failed, using legacy fallback:', error);
+      
+      // Ultimate fallback to legacy system
+      const exercise = getFallbackExercise(levels || ['A1'], masteredWords, selectedTopics);
+      if (!exercise) {
+        return createApiError(FALLBACK_MESSAGES.en.noExercises, 400);
+      }
+      return createApiResponse(exercise);
     }
-    console.log('Returning fallback exercise:', exercise.level, exercise.correctAnswer, exercise.topic);
-    return createApiResponse(exercise);
   }
 
   // Generate exercise using Claude AI
