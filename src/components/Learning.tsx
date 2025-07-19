@@ -7,6 +7,7 @@ import { useExerciseQueue } from '@/hooks/useExerciseQueue';
 import { useAnswerChecking } from '@/hooks/useAnswerChecking';
 import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
 import { EnhancedExercise } from '@/types/enhanced';
+import { Exercise } from '@/types';
 import GenerationStatusIndicator from './GenerationStatusIndicator';
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
@@ -77,7 +78,7 @@ export default function Learning() {
   });
 
   // Generate multiple choice options for current exercise
-  const generateMultipleChoiceOptions = useCallback(async (exercise: EnhancedExercise) => {
+  const generateMultipleChoiceOptions = useCallback(async (exercise: Exercise | EnhancedExercise) => {
     if (learningMode !== 'multiple-choice') return;
     
     // Use the options from the enhanced exercise if available

@@ -179,7 +179,7 @@ export class ExerciseDatabase {
         WHERE 1=1
       `;
 
-      const params: any[] = [];
+      const params: (string | number | string[])[] = [];
       let paramIndex = 1;
 
       // Add level filter

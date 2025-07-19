@@ -1,4 +1,5 @@
 import { LanguageLevel } from '@/types';
+import { EnhancedExercise } from '@/types/enhanced';
 
 /**
  * Generate comprehensive prompt for batch exercise creation
@@ -74,7 +75,7 @@ Generate ${count} high-quality exercises now:`;
 /**
  * Validate the structure of generated exercises
  */
-export const validateBatchExerciseResponse = (exercises: any[]): boolean => {
+export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => {
   if (!Array.isArray(exercises)) {
     console.error('Response is not an array');
     return false;
@@ -134,35 +135,40 @@ export const validateBatchExerciseResponse = (exercises: any[]): boolean => {
 /**
  * Post-process and clean up generated exercises
  */
-export const processGeneratedExercises = (exercises: any[]): any[] => {
+export const processGeneratedExercises = (exercises: unknown[]): EnhancedExercise[] => {
   return exercises.map((exercise, index) => {
+    const ex = exercise as Record<string, unknown>;
     // Ensure gapIndex is calculated correctly
-    const gapIndex = exercise.sentence.indexOf('___');
+    const gapIndex = (ex.sentence as string).indexOf('___');
     if (gapIndex === -1) {
       console.warn(`Exercise ${index}: No gap found, using provided gapIndex`);
     }
 
     // Clean up sentence (remove extra spaces, normalize)
-    const cleanSentence = exercise.sentence.replace(/\s+/g, ' ').trim();
+    const cleanSentence = (ex.sentence as string).replace(/\s+/g, ' ').trim();
 
     // Shuffle multiple choice options to randomize correct answer position
-    const shuffledOptions = [...exercise.multipleChoiceOptions].sort(() => Math.random() - 0.5);
+    const shuffledOptions = [...(ex.multipleChoiceOptions as string[])].sort(() => Math.random() - 0.5);
 
     // Ensure explanations are trimmed and properly formatted
+    const explanations = ex.explanations as Record<string, string>;
     const cleanExplanations = {
-      pt: exercise.explanations.pt?.trim() || '',
-      en: exercise.explanations.en?.trim() || '',
-      uk: exercise.explanations.uk?.trim() || ''
+      pt: explanations.pt?.trim() || '',
+      en: explanations.en?.trim() || '',
+      uk: explanations.uk?.trim() || ''
     };
 
     return {
-      ...exercise,
+      ...ex,
       sentence: cleanSentence,
-      gapIndex: gapIndex !== -1 ? gapIndex : exercise.gapIndex,
+      gapIndex: gapIndex !== -1 ? gapIndex : (ex.gapIndex as number),
       multipleChoiceOptions: shuffledOptions,
       explanations: cleanExplanations,
-      id: `generated-${Date.now()}-${index}` // Temporary ID for client-side use
-    };
+      id: `generated-${Date.now()}-${index}`, // Temporary ID for client-side use
+      source: 'ai',
+      difficultyScore: 0.5,
+      usageCount: 0
+    } as EnhancedExercise;
   });
 };
 
@@ -172,7 +178,7 @@ export const processGeneratedExercises = (exercises: any[]): any[] => {
 export const generateSupplementaryPrompt = (
   levels: LanguageLevel[],
   topics: string[],
-  existingExercises: any[],
+  existingExercises: EnhancedExercise[],
   needed: number
 ): string => {
   const usedAnswers = existingExercises.map(ex => ex.correctAnswer);
