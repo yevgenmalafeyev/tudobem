@@ -82,7 +82,7 @@ export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => 
   }
 
   for (let i = 0; i < exercises.length; i++) {
-    const exercise = exercises[i];
+    const exercise = exercises[i] as Record<string, unknown>;
     
     // Check required fields
     const requiredFields = ['sentence', 'correctAnswer', 'gapIndex', 'topic', 'level', 'multipleChoiceOptions', 'explanations'];
