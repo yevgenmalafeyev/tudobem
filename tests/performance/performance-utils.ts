@@ -148,7 +148,7 @@ export class PerformanceMeasurer {
         loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
         firstPaint: paint.find(p => p.name === 'first-paint')?.startTime || 0,
         firstContentfulPaint: paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
-        totalLoadTime: navigation.loadEventEnd - navigation.navigationStart
+        totalLoadTime: navigation.loadEventEnd - navigation.startTime
       };
     });
   }
