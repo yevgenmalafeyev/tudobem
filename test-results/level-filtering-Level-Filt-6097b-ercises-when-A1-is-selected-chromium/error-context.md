@@ -15,7 +15,7 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: Ela é professora. ✗ Incorreto Incorreto. A resposta correta é "é".
+  - text: Eu falo português. ✗ Incorreto Incorreto. A resposta correta é "falo".
   - button "Próximo Exercício"
   - paragraph: Prima Enter para a próxima pergunta
 - alert

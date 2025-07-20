@@ -15,7 +15,7 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: Ela é professora. ✗ Incorreto Incorreto. A resposta correta é "é".
+  - text: Nós temos uma casa grande. ✗ Incorreto Incorreto. A resposta correta é "temos".
   - button "Próximo Exercício"
   - paragraph: Prima Enter para a próxima pergunta
 - alert

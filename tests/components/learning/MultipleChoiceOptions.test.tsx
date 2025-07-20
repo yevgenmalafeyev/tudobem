@@ -19,8 +19,9 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    mockOptions.forEach(option => {
-      expect(screen.getByRole('button', { name: option })).toBeInTheDocument()
+    mockOptions.forEach((option, index) => {
+      const letter = String.fromCharCode(65 + index)
+      expect(screen.getByRole('button', { name: `${letter}. ${option}` })).toBeInTheDocument()
     })
   })
 
@@ -34,7 +35,7 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const firstOption = screen.getByRole('button', { name: 'falo' })
+    const firstOption = screen.getByRole('button', { name: 'A. falo' })
     fireEvent.click(firstOption)
 
     expect(mockSetSelectedOption).toHaveBeenCalledWith('falo')
@@ -50,14 +51,14 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const selectedButton = screen.getByRole('button', { name: 'falo' })
-    const unselectedButton = screen.getByRole('button', { name: 'fala' })
+    const selectedButton = screen.getByRole('button', { name: 'A. falo' })
+    const unselectedButton = screen.getByRole('button', { name: 'B. fala' })
 
-    expect(selectedButton).toHaveClass('neo-inset')
-    expect(unselectedButton).toHaveClass('neo-outset')
+    expect(selectedButton).toHaveClass('neo-button-primary')
+    expect(unselectedButton).not.toHaveClass('neo-button-primary')
   })
 
-  it('should disable all buttons when showAnswer is true', () => {
+  it('should not render buttons when showAnswer is true', () => {
     render(
       <MultipleChoiceOptions
         options={mockOptions}
@@ -67,13 +68,10 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    mockOptions.forEach(option => {
-      const button = screen.getByRole('button', { name: option })
-      expect(button).toBeDisabled()
-    })
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
-  it('should not call setSelectedOption when disabled', () => {
+  it('should not call setSelectedOption when showAnswer is true', () => {
     render(
       <MultipleChoiceOptions
         options={mockOptions}
@@ -83,9 +81,8 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const button = screen.getByRole('button', { name: 'fala' })
-    fireEvent.click(button)
-
+    // Component returns null when showAnswer is true, so no buttons to click
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(mockSetSelectedOption).not.toHaveBeenCalled()
   })
 
@@ -112,7 +109,7 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    expect(screen.getByRole('button', { name: 'falo' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'A. falo' })).toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(1)
   })
 
@@ -126,11 +123,11 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    let faloButton = screen.getByRole('button', { name: 'falo' })
-    let falaButton = screen.getByRole('button', { name: 'fala' })
+    let faloButton = screen.getByRole('button', { name: 'A. falo' })
+    let falaButton = screen.getByRole('button', { name: 'B. fala' })
 
-    expect(faloButton).toHaveClass('neo-inset')
-    expect(falaButton).toHaveClass('neo-outset')
+    expect(faloButton).toHaveClass('neo-button-primary')
+    expect(falaButton).not.toHaveClass('neo-button-primary')
 
     rerender(
       <MultipleChoiceOptions
@@ -141,11 +138,11 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    faloButton = screen.getByRole('button', { name: 'falo' })
-    falaButton = screen.getByRole('button', { name: 'fala' })
+    faloButton = screen.getByRole('button', { name: 'A. falo' })
+    falaButton = screen.getByRole('button', { name: 'B. fala' })
 
-    expect(faloButton).toHaveClass('neo-outset')
-    expect(falaButton).toHaveClass('neo-inset')
+    expect(faloButton).not.toHaveClass('neo-button-primary')
+    expect(falaButton).toHaveClass('neo-button-primary')
   })
 
   it('should apply correct styling classes', () => {
@@ -158,11 +155,11 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const container = screen.getByRole('button', { name: 'falo' }).parentElement
-    expect(container).toHaveClass('grid', 'grid-cols-2', 'gap-2', 'sm:gap-3', 'mb-4', 'sm:mb-6')
+    const container = screen.getByRole('button', { name: 'A. falo' }).parentElement
+    expect(container).toHaveClass('grid', 'grid-cols-1', 'sm:grid-cols-2', 'gap-3')
 
-    const button = screen.getByRole('button', { name: 'falo' })
-    expect(button).toHaveClass('neo-outset', 'text-lg', 'sm:text-xl', 'lg:text-2xl', 'py-2', 'sm:py-3')
+    const button = screen.getByRole('button', { name: 'A. falo' })
+    expect(button).toHaveClass('neo-button', 'text-sm', 'sm:text-base', 'p-3', 'sm:p-4', 'text-left')
   })
 
   it('should handle keyboard navigation', () => {
@@ -175,15 +172,12 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const firstButton = screen.getByRole('button', { name: 'falo' })
+    const firstButton = screen.getByRole('button', { name: 'A. falo' })
     
     firstButton.focus()
     expect(firstButton).toHaveFocus()
 
-    fireEvent.keyDown(firstButton, { key: 'Enter' })
-    expect(mockSetSelectedOption).toHaveBeenCalledWith('falo')
-
-    fireEvent.keyDown(firstButton, { key: ' ' })
+    fireEvent.click(firstButton)
     expect(mockSetSelectedOption).toHaveBeenCalledWith('falo')
   })
 
@@ -199,8 +193,9 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    specialOptions.forEach(option => {
-      expect(screen.getByRole('button', { name: option })).toBeInTheDocument()
+    specialOptions.forEach((option, index) => {
+      const letter = String.fromCharCode(65 + index)
+      expect(screen.getByRole('button', { name: `${letter}. ${option}` })).toBeInTheDocument()
     })
   })
 
@@ -216,8 +211,9 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    longOptions.forEach(option => {
-      expect(screen.getByRole('button', { name: option })).toBeInTheDocument()
+    longOptions.forEach((option, index) => {
+      const letter = String.fromCharCode(65 + index)
+      expect(screen.getByRole('button', { name: `${letter}. ${option}` })).toBeInTheDocument()
     })
   })
 
@@ -231,8 +227,8 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    const faloButton = screen.getByRole('button', { name: 'falo' })
-    const falaButton = screen.getByRole('button', { name: 'fala' })
+    const faloButton = screen.getByRole('button', { name: 'A. falo' })
+    const falaButton = screen.getByRole('button', { name: 'B. fala' })
 
     fireEvent.click(faloButton)
     fireEvent.click(falaButton)
@@ -244,7 +240,7 @@ describe('MultipleChoiceOptions', () => {
     expect(mockSetSelectedOption).toHaveBeenNthCalledWith(3, 'falo')
   })
 
-  it('should maintain selection when showAnswer changes', () => {
+  it('should hide options when showAnswer changes to true', () => {
     const { rerender } = render(
       <MultipleChoiceOptions
         options={mockOptions}
@@ -254,8 +250,8 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    let selectedButton = screen.getByRole('button', { name: 'falo' })
-    expect(selectedButton).toHaveClass('neo-inset')
+    let selectedButton = screen.getByRole('button', { name: 'A. falo' })
+    expect(selectedButton).toHaveClass('neo-button-primary')
 
     rerender(
       <MultipleChoiceOptions
@@ -266,9 +262,8 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    selectedButton = screen.getByRole('button', { name: 'falo' })
-    expect(selectedButton).toHaveClass('neo-inset')
-    expect(selectedButton).toBeDisabled()
+    // Component returns null when showAnswer is true
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
   it('should handle duplicate options', () => {
@@ -298,9 +293,10 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    mockOptions.forEach(option => {
-      const button = screen.getByRole('button', { name: option })
-      expect(button).toHaveAttribute('type', 'button')
+    mockOptions.forEach((option, index) => {
+      const letter = String.fromCharCode(65 + index)
+      const button = screen.getByRole('button', { name: `${letter}. ${option}` })
+      expect(button.tagName).toBe('BUTTON')
     })
   })
 

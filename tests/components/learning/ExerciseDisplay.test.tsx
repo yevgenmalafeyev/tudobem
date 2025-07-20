@@ -38,8 +38,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('Eu')).toBeInTheDocument()
-    expect(screen.getByText('português.')).toBeInTheDocument()
+    expect(screen.getByText(/Eu/)).toBeInTheDocument()
+    expect(screen.getByText(/português\./)).toBeInTheDocument()
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
@@ -57,8 +57,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('Eu')).toBeInTheDocument()
-    expect(screen.getByText('português.')).toBeInTheDocument()
+    expect(screen.getByText(/Eu/)).toBeInTheDocument()
+    expect(screen.getByText(/português\./)).toBeInTheDocument()
     expect(screen.getByText('?')).toBeInTheDocument()
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
@@ -168,7 +168,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('(falar, 1ª pessoa)')).toBeInTheDocument()
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('placeholder', 'falar, 1ª pessoa')
   })
 
   it('should render hint with only infinitive', () => {
@@ -193,7 +194,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('(falar)')).toBeInTheDocument()
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('placeholder', 'falar')
   })
 
   it('should not render hint when no infinitive or person', () => {
@@ -253,7 +255,7 @@ describe('ExerciseDisplay', () => {
     )
 
     const answerSpan = screen.getByText('falo')
-    expect(answerSpan).toHaveStyle('color: var(--neo-success)')
+    expect(answerSpan).toHaveStyle('color: var(--neo-success-text)')
   })
 
   it('should apply correct styling for incorrect answer', () => {
@@ -293,9 +295,10 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('Eu')).toBeInTheDocument()
-    expect(screen.getByText('português.')).toBeInTheDocument()
-    expect(screen.queryByText(/\(/)).not.toBeInTheDocument()
+    expect(screen.getByText(/Eu/)).toBeInTheDocument()
+    expect(screen.getByText(/português\./)).toBeInTheDocument()
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('placeholder', '?')
   })
 
   it('should handle exercise with gap at the beginning', () => {
@@ -319,7 +322,7 @@ describe('ExerciseDisplay', () => {
     )
 
     expect(screen.getByRole('textbox')).toBeInTheDocument()
-    expect(screen.getByText('falo português.')).toBeInTheDocument()
+    expect(screen.getByText(/falo português\./)).toBeInTheDocument()
   })
 
   it('should handle exercise with gap at the end', () => {
@@ -342,8 +345,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('Eu falo')).toBeInTheDocument()
-    expect(screen.getByText('.')).toBeInTheDocument()
+    expect(screen.getByText(/Eu falo/)).toBeInTheDocument()
+    expect(screen.getByText(/\./)).toBeInTheDocument()
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
@@ -362,7 +365,7 @@ describe('ExerciseDisplay', () => {
     )
 
     const input = screen.getByRole('textbox')
-    expect(input).toHaveAttribute('placeholder', '?')
+    expect(input).toHaveAttribute('placeholder', 'falar, 1ª pessoa')
   })
 
   it('should apply responsive classes', () => {
@@ -379,8 +382,8 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    const container = screen.getByText('Eu').parentElement
-    expect(container).toHaveClass('text-lg', 'sm:text-xl', 'lg:text-2xl')
+    const container = screen.getByText(/Eu/).closest('.exercise-container')
+    expect(container).toHaveClass('text-base', 'sm:text-lg', 'lg:text-xl', 'xl:text-2xl')
   })
 
   it('should handle complex hint information', () => {
@@ -406,6 +409,7 @@ describe('ExerciseDisplay', () => {
       />
     )
 
-    expect(screen.getByText('(falar, 1ª pessoa singular)')).toBeInTheDocument()
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('placeholder', 'falar, 1ª pessoa singular')
   })
 })

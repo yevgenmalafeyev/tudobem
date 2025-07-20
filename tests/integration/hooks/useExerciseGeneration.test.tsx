@@ -1,10 +1,22 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { useExerciseGeneration } from '@/hooks/useExerciseGeneration'
-import { server } from '@/src/__mocks__/server'
+import { server } from '@/__mocks__/server'
+import { http, HttpResponse } from 'msw'
+
+// Mock the store
+jest.mock('@/store/useStore', () => ({
+  useStore: () => ({
+    progress: {
+      masteredWords: {},
+      incorrectAnswers: {},
+      reviewQueue: []
+    }
+  })
+}))
 
 // Mock the configuration
 const mockConfiguration = {
-  levels: ['A1', 'A2'],
+  selectedLevels: ['A1', 'A2'],
   selectedTopics: ['present-indicative'],
   topicNames: ['Present Indicative'],
   explanationLanguage: 'en' as const,
@@ -65,8 +77,8 @@ describe('useExerciseGeneration hook', () => {
   it('should handle API error and fallback to offline exercise', async () => {
     // Mock API error
     server.use(
-      rest.post('/api/generate-exercise', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json({ error: 'API Error' }))
+      http.post('/api/generate-exercise', () => {
+        return HttpResponse.json({ error: 'API Error' }, { status: 500 })
       })
     )
 
@@ -107,7 +119,12 @@ describe('useExerciseGeneration hook', () => {
       }
     }
 
-    const { result } = renderHook(() => useExerciseGeneration(mockProps))
+    const multipleChoiceProps = {
+      ...mockProps,
+      learningMode: 'multiple-choice' as const
+    }
+
+    const { result } = renderHook(() => useExerciseGeneration(multipleChoiceProps))
 
     await act(async () => {
       await result.current.generateMultipleChoiceOptions(mockExercise)
@@ -125,8 +142,8 @@ describe('useExerciseGeneration hook', () => {
   it('should handle multiple choice generation error with fallback', async () => {
     // Mock API error
     server.use(
-      rest.post('/api/generate-multiple-choice', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json({ error: 'API Error' }))
+      http.post('/api/generate-multiple-choice', () => {
+        return HttpResponse.json({ error: 'API Error' }, { status: 500 })
       })
     )
 
@@ -143,7 +160,12 @@ describe('useExerciseGeneration hook', () => {
       }
     }
 
-    const { result } = renderHook(() => useExerciseGeneration(mockProps))
+    const multipleChoiceProps = {
+      ...mockProps,
+      learningMode: 'multiple-choice' as const
+    }
+
+    const { result } = renderHook(() => useExerciseGeneration(multipleChoiceProps))
 
     await act(async () => {
       await result.current.generateMultipleChoiceOptions(mockExercise)
@@ -163,9 +185,9 @@ describe('useExerciseGeneration hook', () => {
     let requestBody: any
     
     server.use(
-      rest.post('/api/generate-exercise', async (req, res, ctx) => {
-        requestBody = await req.json()
-        return res(ctx.json({
+      http.post('/api/generate-exercise', async ({ request }) => {
+        requestBody = await request.json()
+        return HttpResponse.json({
           id: 'test-exercise-1',
           sentence: 'Eu ___ português.',
           gapIndex: 1,
@@ -176,7 +198,7 @@ describe('useExerciseGeneration hook', () => {
             infinitive: 'falar',
             form: 'present indicative'
           }
-        }))
+        })
       })
     )
 
@@ -189,10 +211,9 @@ describe('useExerciseGeneration hook', () => {
     await waitFor(() => {
       expect(requestBody).toEqual({
         levels: ['A1', 'A2'],
-        selectedTopics: ['present-indicative'],
-        topicNames: ['Present Indicative'],
+        topics: ['present-indicative'],
         claudeApiKey: 'test-key',
-        explanationLanguage: 'en'
+        masteredWords: {}
       })
     })
   })
@@ -201,11 +222,11 @@ describe('useExerciseGeneration hook', () => {
     let requestBody: any
     
     server.use(
-      rest.post('/api/generate-multiple-choice', async (req, res, ctx) => {
-        requestBody = await req.json()
-        return res(ctx.json({
+      http.post('/api/generate-multiple-choice', async ({ request }) => {
+        requestBody = await request.json()
+        return HttpResponse.json({
           options: ['falo', 'fala', 'falamos', 'falam']
-        }))
+        })
       })
     )
 
@@ -222,7 +243,12 @@ describe('useExerciseGeneration hook', () => {
       }
     }
 
-    const { result } = renderHook(() => useExerciseGeneration(mockProps))
+    const multipleChoiceProps = {
+      ...mockProps,
+      learningMode: 'multiple-choice' as const
+    }
+
+    const { result } = renderHook(() => useExerciseGeneration(multipleChoiceProps))
 
     await act(async () => {
       await result.current.generateMultipleChoiceOptions(mockExercise)
@@ -282,8 +308,8 @@ describe('useExerciseGeneration hook', () => {
   it('should handle network errors gracefully', async () => {
     // Mock network error
     server.use(
-      rest.post('/api/generate-exercise', (req, res, ctx) => {
-        return res.networkError('Network error')
+      http.post('/api/generate-exercise', () => {
+        return HttpResponse.error()
       })
     )
 
@@ -303,8 +329,8 @@ describe('useExerciseGeneration hook', () => {
   it('should handle invalid API response gracefully', async () => {
     // Mock invalid response
     server.use(
-      rest.post('/api/generate-exercise', (req, res, ctx) => {
-        return res(ctx.json({ invalid: 'response' }))
+      http.post('/api/generate-exercise', () => {
+        return HttpResponse.json({ invalid: 'response' })
       })
     )
 
@@ -321,6 +347,3 @@ describe('useExerciseGeneration hook', () => {
     })
   })
 })
-
-// Need to import rest for the test
-import { rest } from 'msw'

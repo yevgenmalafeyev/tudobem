@@ -15,12 +15,12 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: Eu ? português.
-  - button "A. falo"
-  - button "B. falas"
-  - button "C. fala"
-  - button "D. falamos"
-  - button "Verificar Resposta"
+  - text: Ela ? professora.
+  - button "A. é"
+  - button "B. está"
+  - button "C. era"
+  - button "D. seja"
+  - button "Verificar Resposta" [disabled]
   - paragraph: Prima Enter para verificar a resposta
 - alert
 ```

@@ -111,6 +111,55 @@ export function useExerciseGeneration({
       focusInput();
     } catch (error) {
       console.error('Error generating exercise:', error);
+      // Fallback to offline exercise
+      try {
+        const { getFallbackExercise } = await import('@/services/exerciseService');
+        const fallbackExercise = getFallbackExercise(
+          configuration.selectedLevels,
+          progress.masteredWords,
+          configuration.selectedTopics
+        );
+        
+        if (fallbackExercise) {
+          setCurrentExercise(fallbackExercise);
+          resetState();
+          
+          // Generate multiple choice options if in multiple choice mode
+          if (learningMode === 'multiple-choice') {
+            await generateMultipleChoiceOptions(fallbackExercise);
+          }
+          
+          // Notify parent about exercise generation
+          if (onExerciseGenerated) {
+            onExerciseGenerated(fallbackExercise);
+          }
+          
+          // Focus input field after exercise is loaded (only in input mode)
+          focusInput();
+        } else {
+          // If no fallback exercise for the exact levels/topics, try with A1 as ultimate fallback
+          const ultimateFallback = getFallbackExercise(['A1'], progress.masteredWords, []);
+          if (ultimateFallback) {
+            setCurrentExercise(ultimateFallback);
+            resetState();
+            
+            // Generate multiple choice options if in multiple choice mode
+            if (learningMode === 'multiple-choice') {
+              await generateMultipleChoiceOptions(ultimateFallback);
+            }
+            
+            // Notify parent about exercise generation
+            if (onExerciseGenerated) {
+              onExerciseGenerated(ultimateFallback);
+            }
+            
+            // Focus input field after exercise is loaded (only in input mode)
+            focusInput();
+          }
+        }
+      } catch (fallbackError) {
+        console.error('Error with fallback exercise:', fallbackError);
+      }
     } finally {
       setIsLoading(false);
     }

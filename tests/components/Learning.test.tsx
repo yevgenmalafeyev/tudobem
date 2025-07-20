@@ -3,61 +3,88 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Learning from '@/components/Learning'
 
+// Create a mock function that can be modified in tests
+const mockUseLearning = jest.fn()
+
 // Mock all the hooks used by Learning component
 jest.mock('@/hooks/useLearning', () => ({
-  useLearning: () => ({
-    // State
-    userAnswer: '',
-    selectedOption: null,
-    multipleChoiceOptions: [],
-    learningMode: 'input' as const,
-    feedback: null,
-    isLoading: false,
-    showAnswer: false,
-    inputRef: { current: null },
-    currentExercise: {
-      id: '1',
-      sentence: 'Eu ___ português.',
-      gapIndex: 1,
-      correctAnswer: 'falo',
-      topic: 'present-indicative',
-      level: 'A1' as const,
-      hint: {
-        infinitive: 'falar',
-        form: 'present indicative'
-      }
-    },
-    configuration: {
-      selectedLevels: ['A1'],
-      selectedTopics: ['present-indicative'],
-      claudeApiKey: 'test-key',
-      appLanguage: 'en'
-    },
-    
-    // Actions
-    setUserAnswer: jest.fn(),
-    setSelectedOption: jest.fn(),
-    setMultipleChoiceOptions: jest.fn(),
-    setLearningMode: jest.fn(),
-    setFeedback: jest.fn(),
-    setIsLoading: jest.fn(),
-    setShowAnswer: jest.fn(),
-    setCurrentExercise: jest.fn(),
-    addIncorrectAnswer: jest.fn(),
-    resetState: jest.fn(),
-    getCurrentAnswer: jest.fn(() => ''),
-    hasValidAnswer: jest.fn(() => false),
-    focusInput: jest.fn()
-  })
+  useLearning: () => mockUseLearning()
 }))
+
+// Default mock implementation
+const defaultUseLearningMock = {
+  // State
+  userAnswer: '',
+  selectedOption: null,
+  multipleChoiceOptions: [],
+  learningMode: 'input' as const,
+  feedback: null,
+  isLoading: false,
+  showAnswer: false,
+  inputRef: { current: null },
+  currentExercise: {
+    id: '1',
+    sentence: 'Eu ___ português.',
+    gapIndex: 1,
+    correctAnswer: 'falo',
+    topic: 'present-indicative',
+    level: 'A1' as const,
+    hint: {
+      infinitive: 'falar',
+      form: 'present indicative'
+    }
+  },
+  configuration: {
+    selectedLevels: ['A1'],
+    selectedTopics: ['present-indicative'],
+    claudeApiKey: 'test-key',
+    appLanguage: 'en'
+  },
+  
+  // Actions
+  setUserAnswer: jest.fn(),
+  setSelectedOption: jest.fn(),
+  setMultipleChoiceOptions: jest.fn(),
+  setLearningMode: jest.fn(),
+  setFeedback: jest.fn(),
+  setIsLoading: jest.fn(),
+  setShowAnswer: jest.fn(),
+  setCurrentExercise: jest.fn(),
+  addIncorrectAnswer: jest.fn(),
+  resetState: jest.fn(),
+  getCurrentAnswer: jest.fn(() => ''),
+  hasValidAnswer: jest.fn(() => false),
+  focusInput: jest.fn()
+}
 
 jest.mock('@/hooks/useExerciseQueue', () => ({
   useExerciseQueue: () => ({
-    exerciseQueue: [],
+    exerciseQueue: {
+      exercises: [],
+      currentIndex: 0,
+      isBackgroundLoading: false,
+      nextBatchLoading: false,
+      generationSource: 'ai',
+      sessionId: 'test-session',
+      totalGenerated: 0
+    },
     queueStatus: 'idle' as const,
     isGenerating: false,
+    isLoading: false,
+    isBackgroundLoading: false,
+    generationSource: 'ai',
     clearQueue: jest.fn(),
-    addToQueue: jest.fn()
+    addToQueue: jest.fn(),
+    loadInitialBatch: jest.fn(),
+    getCurrentExercise: jest.fn(),
+    getNextExercise: jest.fn(),
+    queueStats: {
+      total: 0,
+      completed: 0,
+      remaining: 0,
+      progressPercentage: 0,
+      totalGenerated: 0
+    }
   })
 }))
 
@@ -87,7 +114,7 @@ jest.mock('@/components/learning/ModeToggle', () => {
     return (
       <button 
         data-testid="mode-toggle" 
-        onClick={() => onModeChange(mode === 'input' ? 'multiple-choice' : 'input')}
+        onClick={() => onModeChange && onModeChange(mode === 'input' ? 'multiple-choice' : 'input')}
       >
         {mode === 'input' ? 'Switch to Multiple Choice' : 'Switch to Input'}
       </button>
@@ -134,6 +161,8 @@ jest.mock('@/utils/translations', () => ({
 describe('Learning Component', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    // Set default mock implementation
+    mockUseLearning.mockReturnValue(defaultUseLearningMock)
   })
 
   it('should render without crashing', () => {
@@ -166,7 +195,7 @@ describe('Learning Component', () => {
     render(<Learning />)
     
     const modeToggle = screen.getByTestId('mode-toggle')
-    expect(modeToggle).toHaveTextContent('Switch to Multiple Choice')
+    expect(modeToggle).toHaveTextContent('Switch to Input')
     
     fireEvent.click(modeToggle)
     // The mock doesn't actually change the mode, but we can verify the button exists
@@ -175,9 +204,8 @@ describe('Learning Component', () => {
 
   it('should render multiple choice options when in multiple choice mode', () => {
     // Mock the learning mode to be multiple-choice
-    const mockUseLearning = require('@/hooks/useLearning').useLearning as jest.Mock
     mockUseLearning.mockReturnValue({
-      ...mockUseLearning(),
+      ...defaultUseLearningMock,
       learningMode: 'multiple-choice',
       multipleChoiceOptions: ['falo', 'fala', 'falamos', 'falam']
     })
@@ -190,13 +218,12 @@ describe('Learning Component', () => {
   it('should not render multiple choice options when in input mode', () => {
     render(<Learning />)
     
-    expect(screen.getByTestId('multiple-choice-options')).toBeInTheDocument()
+    expect(screen.queryByTestId('multiple-choice-options')).not.toBeInTheDocument()
   })
 
   it('should show feedback when available', () => {
-    const mockUseLearning = require('@/hooks/useLearning').useLearning as jest.Mock
     mockUseLearning.mockReturnValue({
-      ...mockUseLearning(),
+      ...defaultUseLearningMock,
       feedback: {
         isCorrect: true,
         explanation: 'Correct! Well done.'
@@ -209,29 +236,28 @@ describe('Learning Component', () => {
   })
 
   it('should handle missing exercise gracefully', () => {
-    const mockUseLearning = require('@/hooks/useLearning').useLearning as jest.Mock
     mockUseLearning.mockReturnValue({
-      ...mockUseLearning(),
+      ...defaultUseLearningMock,
       currentExercise: null
     })
 
     render(<Learning />)
     
-    // Should still render the basic structure
-    expect(screen.getByTestId('generation-status-indicator')).toBeInTheDocument()
-    expect(screen.getByTestId('mode-toggle')).toBeInTheDocument()
+    // Should show error state when no exercise is available
+    expect(screen.getByText('loadingError')).toBeInTheDocument()
   })
 
   it('should show loading state appropriately', () => {
-    const mockUseLearning = require('@/hooks/useLearning').useLearning as jest.Mock
     mockUseLearning.mockReturnValue({
-      ...mockUseLearning(),
-      isLoading: true
+      ...defaultUseLearningMock,
+      isLoading: true,
+      currentExercise: null  // No exercise while loading
     })
 
     render(<Learning />)
     
-    // Components should still render even when loading
-    expect(screen.getByTestId('action-buttons')).toBeInTheDocument()
+    // Should show loading state with generation status indicator
+    expect(screen.getByText('loadingExercise')).toBeInTheDocument()
+    expect(screen.getByTestId('generation-status-indicator')).toBeInTheDocument()
   })
 })

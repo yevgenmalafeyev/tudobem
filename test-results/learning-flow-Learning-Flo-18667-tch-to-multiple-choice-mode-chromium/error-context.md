@@ -15,11 +15,11 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: Ela ? professora.
-  - button "A. é"
-  - button "B. está"
-  - button "C. era"
-  - button "D. seja"
+  - text: "? casa é muito bonita."
+  - button "A. A"
+  - button "B. o"
+  - button "C. a"
+  - button "D. os"
   - button "Verificar Resposta" [disabled]
   - paragraph: Prima Enter para verificar a resposta
 - alert

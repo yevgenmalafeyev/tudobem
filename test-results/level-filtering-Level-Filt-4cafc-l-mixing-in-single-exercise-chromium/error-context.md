@@ -15,9 +15,9 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: O menino
-  - textbox "estar"
-  - text: alto.
+  - text: Eu
+  - textbox "falar"
+  - text: português.
   - button "Verificar Resposta" [disabled]
   - paragraph: Prima Enter para verificar a resposta
 - alert

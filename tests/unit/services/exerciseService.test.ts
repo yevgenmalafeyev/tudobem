@@ -8,7 +8,7 @@ describe('exerciseService', () => {
       
       levels.forEach(level => {
         expect(fallbackExercises[level]).toBeDefined()
-        expect(fallbackExercises[level]).toHaveLength(expect.any(Number))
+        expect(fallbackExercises[level].length).toBeGreaterThan(0)
       })
     })
 
@@ -127,7 +127,7 @@ describe('exerciseService', () => {
       
       expect(exercise).toHaveProperty('id')
       expect(exercise).toHaveProperty('sentence', exerciseData.sentence)
-      expect(exercise).toHaveProperty('gapIndex', 1)
+      expect(exercise).toHaveProperty('gapIndex', 3)
       expect(exercise).toHaveProperty('correctAnswer', exerciseData.correctAnswer)
       expect(exercise).toHaveProperty('topic', exerciseData.topic)
       expect(exercise).toHaveProperty('level', exerciseData.level)

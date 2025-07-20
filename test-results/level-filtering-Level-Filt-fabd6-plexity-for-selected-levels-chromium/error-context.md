@@ -15,7 +15,7 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: Nós temos uma casa grande. ✗ Incorreto Incorreto. A resposta correta é "temos".
+  - text: A casa é muito bonita. ✗ Incorreto Incorreto. A resposta correta é "A".
   - button "Próximo Exercício"
   - paragraph: Prima Enter para a próxima pergunta
 - alert

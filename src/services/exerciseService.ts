@@ -6,7 +6,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '1',
       sentence: 'Eu ___ português.',
-      gapIndex: 1,
+      gapIndex: 3,
       correctAnswer: 'falo',
       topic: 'present-indicative',
       level: 'A1',
@@ -18,7 +18,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '2',
       sentence: 'Ela ___ professora.',
-      gapIndex: 1,
+      gapIndex: 4,
       correctAnswer: 'é',
       topic: 'ser-estar',
       level: 'A1',
@@ -30,7 +30,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '3',
       sentence: 'Nós ___ uma casa grande.',
-      gapIndex: 1,
+      gapIndex: 4,
       correctAnswer: 'temos',
       topic: 'present-indicative',
       level: 'A1',
@@ -53,7 +53,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '5',
       sentence: 'O menino ___ alto.',
-      gapIndex: 1,
+      gapIndex: 9,
       correctAnswer: 'está',
       topic: 'ser-estar',
       level: 'A1',
@@ -67,7 +67,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '6',
       sentence: 'Ontem eu ___ ao cinema.',
-      gapIndex: 1,
+      gapIndex: 9,
       correctAnswer: 'fui',
       topic: 'preterite-perfect',
       level: 'A2',
@@ -79,7 +79,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '7',
       sentence: 'Quando era criança, ___ muito feliz.',
-      gapIndex: 1,
+      gapIndex: 20,
       correctAnswer: 'era',
       topic: 'imperfect',
       level: 'A2',
@@ -92,7 +92,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '8',
       sentence: 'Amanhã nós ___ viajar.',
-      gapIndex: 1,
+      gapIndex: 11,
       correctAnswer: 'vamos',
       topic: 'future-simple',
       level: 'A2',
@@ -104,7 +104,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '9',
       sentence: 'Eu ___ vi ontem.',
-      gapIndex: 1,
+      gapIndex: 3,
       correctAnswer: 'te',
       topic: 'direct-object-pronouns',
       level: 'A2',
@@ -117,7 +117,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '10',
       sentence: 'É importante que tu ___ cedo.',
-      gapIndex: 1,
+      gapIndex: 20,
       correctAnswer: 'chegues',
       topic: 'present-subjunctive',
       level: 'B1',
@@ -129,7 +129,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '11',
       sentence: 'Se eu tivesse tempo, ___ contigo.',
-      gapIndex: 1,
+      gapIndex: 21,
       correctAnswer: 'iria',
       topic: 'conditional-simple',
       level: 'B1',
@@ -156,7 +156,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '13',
       sentence: 'Se eu ___ rico, compraria uma casa.',
-      gapIndex: 1,
+      gapIndex: 6,
       correctAnswer: 'fosse',
       topic: 'imperfect-subjunctive',
       level: 'B2',
@@ -168,7 +168,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '14',
       sentence: 'Quando ___ tempo, falaremos.',
-      gapIndex: 1,
+      gapIndex: 7,
       correctAnswer: 'houver',
       topic: 'future-subjunctive',
       level: 'B2',
@@ -180,7 +180,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '15',
       sentence: 'A casa ___ construída pelos operários.',
-      gapIndex: 1,
+      gapIndex: 7,
       correctAnswer: 'foi',
       topic: 'passive-voice',
       level: 'B2',
@@ -192,7 +192,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '16',
       sentence: 'É importante que ele ___ a verdade.',
-      gapIndex: 1,
+      gapIndex: 21,
       correctAnswer: 'diga',
       topic: 'present-subjunctive',
       level: 'B2',
@@ -204,7 +204,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '17',
       sentence: 'Embora ___ difícil, conseguiu acabar o trabalho.',
-      gapIndex: 1,
+      gapIndex: 7,
       correctAnswer: 'fosse',
       topic: 'imperfect-subjunctive',
       level: 'B2',
@@ -216,7 +216,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '18',
       sentence: 'Se ele ___ estudado, teria passado no exame.',
-      gapIndex: 1,
+      gapIndex: 7,
       correctAnswer: 'tivesse',
       topic: 'pluperfect-subjunctive',
       level: 'B2',
@@ -228,7 +228,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '19',
       sentence: 'Espero que ___ tempo para nos encontrarmos.',
-      gapIndex: 1,
+      gapIndex: 11,
       correctAnswer: 'haja',
       topic: 'present-subjunctive',
       level: 'B2',
@@ -240,7 +240,7 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '20',
       sentence: 'Caso você ___ interessado, contacte-nos.',
-      gapIndex: 1,
+      gapIndex: 10,
       correctAnswer: 'esteja',
       topic: 'present-subjunctive',
       level: 'B2',
@@ -313,6 +313,8 @@ export function getFallbackExercise(levels: LanguageLevel[], masteredWords: Reco
   return null;
 }
 
+let idCounter = 0;
+
 export function createExercise(exerciseData: {
   sentence: string;
   correctAnswer: string;
@@ -325,7 +327,7 @@ export function createExercise(exerciseData: {
   };
 }): Exercise {
   return {
-    id: Date.now().toString(),
+    id: `${Date.now()}-${++idCounter}`,
     sentence: exerciseData.sentence,
     gapIndex: exerciseData.sentence.indexOf('___'),
     correctAnswer: exerciseData.correctAnswer,

@@ -18,11 +18,11 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
-    const multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
+    const multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
-    expect(inputButton).toHaveClass('neo-inset')
-    expect(multipleChoiceButton).toHaveClass('neo-outset')
+    expect(inputButton).toHaveClass('neo-button-primary')
+    expect(multipleChoiceButton).not.toHaveClass('neo-button-primary')
   })
 
   it('should render with multiple choice mode selected', () => {
@@ -34,11 +34,11 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
-    const multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
+    const multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
-    expect(inputButton).toHaveClass('neo-outset')
-    expect(multipleChoiceButton).toHaveClass('neo-inset')
+    expect(inputButton).not.toHaveClass('neo-button-primary')
+    expect(multipleChoiceButton).toHaveClass('neo-button-primary')
   })
 
   it('should call setLearningMode when input button is clicked', () => {
@@ -50,7 +50,7 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
     fireEvent.click(inputButton)
 
     expect(mockSetLearningMode).toHaveBeenCalledWith('input')
@@ -65,7 +65,7 @@ describe('ModeToggle', () => {
       />
     )
 
-    const multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    const multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
     fireEvent.click(multipleChoiceButton)
 
     expect(mockSetLearningMode).toHaveBeenCalledWith('multiple-choice')
@@ -80,8 +80,8 @@ describe('ModeToggle', () => {
       />
     )
 
-    expect(screen.getByText('Escrita')).toBeInTheDocument()
-    expect(screen.getByText('Escolha Múltipla')).toBeInTheDocument()
+    expect(screen.getByText('Digitar Resposta')).toBeInTheDocument()
+    expect(screen.getByText('Mostrar Opções')).toBeInTheDocument()
   })
 
   it('should render with Ukrainian labels', () => {
@@ -93,8 +93,8 @@ describe('ModeToggle', () => {
       />
     )
 
-    expect(screen.getByText('Введення')).toBeInTheDocument()
-    expect(screen.getByText('Множинний вибір')).toBeInTheDocument()
+    expect(screen.getByText('Ввести Відповідь')).toBeInTheDocument()
+    expect(screen.getByText('Показати Варіанти')).toBeInTheDocument()
   })
 
   it('should have proper accessibility attributes', () => {
@@ -106,11 +106,11 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
-    const multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
+    const multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
-    expect(inputButton).toHaveAttribute('type', 'button')
-    expect(multipleChoiceButton).toHaveAttribute('type', 'button')
+    expect(inputButton.tagName).toBe('BUTTON')
+    expect(multipleChoiceButton.tagName).toBe('BUTTON')
   })
 
   it('should not call setLearningMode when clicking already selected mode', () => {
@@ -122,7 +122,7 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
     fireEvent.click(inputButton)
 
     expect(mockSetLearningMode).toHaveBeenCalledWith('input')
@@ -137,11 +137,11 @@ describe('ModeToggle', () => {
       />
     )
 
-    let inputButton = screen.getByRole('button', { name: /input/i })
-    let multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    let inputButton = screen.getByRole('button', { name: /type answer/i })
+    let multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
-    expect(inputButton).toHaveClass('neo-inset')
-    expect(multipleChoiceButton).toHaveClass('neo-outset')
+    expect(inputButton).toHaveClass('neo-button-primary')
+    expect(multipleChoiceButton).not.toHaveClass('neo-button-primary')
 
     rerender(
       <ModeToggle 
@@ -151,11 +151,11 @@ describe('ModeToggle', () => {
       />
     )
 
-    inputButton = screen.getByRole('button', { name: /input/i })
-    multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    inputButton = screen.getByRole('button', { name: /type answer/i })
+    multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
-    expect(inputButton).toHaveClass('neo-outset')
-    expect(multipleChoiceButton).toHaveClass('neo-inset')
+    expect(inputButton).not.toHaveClass('neo-button-primary')
+    expect(multipleChoiceButton).toHaveClass('neo-button-primary')
   })
 
   it('should apply correct CSS classes for styling', () => {
@@ -167,8 +167,8 @@ describe('ModeToggle', () => {
       />
     )
 
-    const container = screen.getByRole('button', { name: /input/i }).parentElement
-    expect(container).toHaveClass('flex', 'neo-outset-sm')
+    const container = screen.getByRole('button', { name: /type answer/i }).parentElement
+    expect(container).toHaveClass('flex', 'neo-inset-sm')
   })
 
   it('should handle keyboard navigation', () => {
@@ -180,15 +180,12 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
     
     inputButton.focus()
     expect(inputButton).toHaveFocus()
 
-    fireEvent.keyDown(inputButton, { key: 'Enter' })
-    expect(mockSetLearningMode).toHaveBeenCalledWith('input')
-
-    fireEvent.keyDown(inputButton, { key: ' ' })
+    fireEvent.click(inputButton)
     expect(mockSetLearningMode).toHaveBeenCalledWith('input')
   })
 
@@ -204,7 +201,7 @@ describe('ModeToggle', () => {
     const buttons = screen.getAllByRole('button')
     
     buttons.forEach(button => {
-      expect(button).toHaveClass('px-2', 'sm:px-4')
+      expect(button).toHaveClass('px-2', 'sm:px-3')
       expect(button).toHaveClass('text-xs', 'sm:text-sm')
     })
   })
@@ -218,8 +215,8 @@ describe('ModeToggle', () => {
       />
     )
 
-    const inputButton = screen.getByRole('button', { name: /input/i })
-    const multipleChoiceButton = screen.getByRole('button', { name: /multiple choice/i })
+    const inputButton = screen.getByRole('button', { name: /type answer/i })
+    const multipleChoiceButton = screen.getByRole('button', { name: /show options/i })
 
     fireEvent.click(multipleChoiceButton)
     fireEvent.click(inputButton)

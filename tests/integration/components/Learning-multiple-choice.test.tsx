@@ -75,15 +75,15 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     })
 
     // Check that correct answer is available as an option
-    const correctOption = screen.getByText('falo')
+    const correctOption = screen.getByText(/A\.\s*falo/)
     expect(correctOption).toBeInTheDocument()
     expect(correctOption.closest('button')).toBeInTheDocument()
   })
@@ -95,16 +95,16 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
       // Should still show options even when API fails
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     })
 
     // Check that correct answer is still available
-    const correctOption = screen.getByText('falo')
+    const correctOption = screen.getByText(/A\.\s*falo/)
     expect(correctOption).toBeInTheDocument()
   })
 
@@ -120,12 +120,12 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
       // Should generate fallback options that include correct answer
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     })
   })
 
@@ -157,11 +157,11 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('a')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*a/)).toBeInTheDocument()
     })
   })
 
@@ -193,11 +193,11 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('não')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*não/)).toBeInTheDocument()
     })
   })
 
@@ -213,15 +213,15 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     })
 
     // Select the correct answer
-    const correctOption = screen.getByText('falo')
+    const correctOption = screen.getByText(/A\.\s*falo/)
     fireEvent.click(correctOption)
 
     // Should be selectable
@@ -256,11 +256,11 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('responsabilidade')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*responsabilidade/)).toBeInTheDocument()
     })
   })
 
@@ -292,11 +292,11 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('é')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*é/)).toBeInTheDocument()
     })
   })
 
@@ -312,15 +312,15 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     })
 
     // Count occurrences of 'falo' buttons
-    const faloButtons = screen.getAllByText('falo')
+    const faloButtons = screen.getAllByText(/A\.\s*falo/)
     expect(faloButtons).toHaveLength(1) // Should only appear once
   })
 
@@ -335,12 +335,12 @@ describe('Learning Component - Multiple Choice Options', () => {
     render(<Learning />)
 
     // Switch to multiple choice mode
-    const multipleChoiceButton = screen.getByText('Show options')
+    const multipleChoiceButton = screen.getByText('Show Options')
     fireEvent.click(multipleChoiceButton)
 
     await waitFor(() => {
       // Should still show fallback options including correct answer
-      expect(screen.getByText('falo')).toBeInTheDocument()
+      expect(screen.getByText(/A\.\s*falo/)).toBeInTheDocument()
     }, { timeout: 3000 })
   })
 })

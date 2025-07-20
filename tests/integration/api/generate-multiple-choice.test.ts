@@ -137,14 +137,11 @@ describe('/api/generate-multiple-choice', () => {
       body: 'invalid json'
     })
 
-    // The test framework throws during JSON parsing, so we catch it
-    try {
-      const response = await POST(request)
-      expect(response.status).toBe(500)
-    } catch (error) {
-      // In the test environment, invalid JSON throws immediately
-      expect(error).toBeInstanceOf(SyntaxError)
-    }
+    const response = await POST(request)
+    const data = await response.json()
+    
+    expect(response.status).toBe(400)
+    expect(data.error).toBe('Invalid JSON in request body')
   })
 
   it('should always return correct answer in options regardless of input', async () => {

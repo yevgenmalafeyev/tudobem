@@ -52,21 +52,7 @@ describe('/api/check-answer', () => {
   })
 
   it('should check incorrect answer', async () => {
-    // Mock Anthropic to return incorrect response
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{
-            type: 'text',
-            text: JSON.stringify({
-              isCorrect: false,
-              explanation: 'Incorrect. The correct answer is "falo".'
-            })
-          }]
-        })
-      }
-    }))
+    // The manual mock automatically detects wrong answers and returns incorrect response
 
     const requestBody = {
       exercise: mockExercise,
@@ -171,18 +157,12 @@ describe('/api/check-answer', () => {
   })
 
   it('should handle API failure with fallback', async () => {
-    // Mock Anthropic to throw error
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockRejectedValue(new Error('API Error'))
-      }
-    }))
+    // For API failure test, we can test with invalid API key which triggers fallback
 
     const requestBody = {
       exercise: mockExercise,
       userAnswer: 'falo',
-      claudeApiKey: 'test-key',
+      claudeApiKey: 'invalid-key-triggers-error',
       explanationLanguage: 'en'
     }
 

@@ -15,7 +15,7 @@
   - text: "A1 Modo de Aprendizagem:"
   - button "Digitar Resposta"
   - button "Mostrar Opções"
-  - text: O menino está alto. ✗ Incorreto Incorreto. A resposta correta é "está".
+  - text: Nós temos uma casa grande. ✗ Incorreto Incorreto. A resposta correta é "temos".
   - button "Próximo Exercício"
   - paragraph: Prima Enter para a próxima pergunta
 - alert

@@ -18,9 +18,13 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText('Correct! You used the right form.')
-    expect(feedbackElement).toBeInTheDocument()
-    expect(feedbackElement).toHaveStyle('color: var(--neo-success)')
+    const correctText = screen.getByText('✓ Correct!')
+    expect(correctText).toBeInTheDocument()
+    expect(correctText).toHaveStyle('color: var(--neo-success-text)')
+    
+    const explanationText = screen.getByText('Correct! You used the right form.')
+    expect(explanationText).toBeInTheDocument()
+    expect(explanationText).toHaveStyle('color: var(--neo-text)')
   })
 
   it('should render incorrect feedback with red styling', () => {
@@ -31,9 +35,13 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText('Incorrect. The correct answer is "falo".')
-    expect(feedbackElement).toBeInTheDocument()
-    expect(feedbackElement).toHaveStyle('color: var(--neo-error)')
+    const incorrectText = screen.getByText('✗ Incorrect')
+    expect(incorrectText).toBeInTheDocument()
+    expect(incorrectText).toHaveStyle('color: var(--neo-error)')
+    
+    const explanationText = screen.getByText('Incorrect. The correct answer is "falo".')
+    expect(explanationText).toBeInTheDocument()
+    expect(explanationText).toHaveStyle('color: var(--neo-text)')
   })
 
   it('should apply correct CSS classes', () => {
@@ -44,8 +52,11 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText('Correct!')
-    expect(feedbackElement).toHaveClass('neo-inset', 'text-lg', 'sm:text-xl', 'p-3', 'sm:p-4', 'mb-4', 'sm:mb-6')
+    const correctText = screen.getByText('✓ Correct!')
+    expect(correctText).toHaveClass('font-semibold', 'mb-2', 'text-sm', 'sm:text-base')
+    
+    const container = correctText.closest('.neo-inset')
+    expect(container).toHaveClass('neo-inset', 'mb-4', 'sm:mb-6', 'p-3', 'sm:p-4')
   })
 
   it('should handle empty explanation', () => {
@@ -56,8 +67,13 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText('')
-    expect(feedbackElement).toBeInTheDocument()
+    const correctText = screen.getByText('✓ Correct!')
+    expect(correctText).toBeInTheDocument()
+    
+    // The explanation div should exist but be empty
+    const explanationDiv = correctText.nextElementSibling
+    expect(explanationDiv).toBeInTheDocument()
+    expect(explanationDiv).toHaveTextContent('')
   })
 
   it('should handle long explanations', () => {
@@ -116,8 +132,10 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText(feedback.explanation)
-    expect(feedbackElement).toBeInTheDocument()
+    // Text with newlines may be split by React rendering
+    expect(screen.getByText(/Incorrect\./)).toBeInTheDocument()
+    expect(screen.getByText(/The correct answer is "falo"\./)).toBeInTheDocument()
+    expect(screen.getByText(/This is the first person singular form\./)).toBeInTheDocument()
   })
 
   it('should handle feedback with quotes', () => {
@@ -140,10 +158,12 @@ describe('FeedbackDisplay', () => {
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
-    const feedbackElement = screen.getByText('Correct!')
-    expect(feedbackElement).toHaveClass('text-lg', 'sm:text-xl')
-    expect(feedbackElement).toHaveClass('p-3', 'sm:p-4')
-    expect(feedbackElement).toHaveClass('mb-4', 'sm:mb-6')
+    const correctText = screen.getByText('✓ Correct!')
+    expect(correctText).toHaveClass('text-sm', 'sm:text-base')
+    
+    const container = correctText.closest('.neo-inset')
+    expect(container).toHaveClass('p-3', 'sm:p-4')
+    expect(container).toHaveClass('mb-4', 'sm:mb-6')
   })
 
   it('should handle feedback object with additional properties', () => {
@@ -177,13 +197,13 @@ describe('FeedbackDisplay', () => {
       <FeedbackDisplay feedback={correctFeedback} appLanguage="en" />
     )
 
-    let feedbackElement = screen.getByText('Correct!')
-    expect(feedbackElement).toHaveStyle('color: var(--neo-success)')
+    let correctText = screen.getByText('✓ Correct!')
+    expect(correctText).toHaveStyle('color: var(--neo-success-text)')
 
     rerender(<FeedbackDisplay feedback={incorrectFeedback} appLanguage="en" />)
 
-    feedbackElement = screen.getByText('Incorrect!')
-    expect(feedbackElement).toHaveStyle('color: var(--neo-error)')
+    let incorrectText = screen.getByText('✗ Incorrect')
+    expect(incorrectText).toHaveStyle('color: var(--neo-error)')
   })
 
   it('should handle explanation with markup-like content', () => {

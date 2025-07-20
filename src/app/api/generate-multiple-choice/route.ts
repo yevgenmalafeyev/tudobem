@@ -6,7 +6,17 @@ import { shuffleArray } from '@/utils/arrays';
 import { generateMultipleChoicePrompt } from '@/utils/prompts';
 
 export async function POST(request: NextRequest) {
-  const { exercise, claudeApiKey, explanationLanguage = 'pt' } = await request.json();
+  let requestData;
+  try {
+    requestData = await request.json();
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Invalid JSON in request body' },
+      { status: 400 }
+    );
+  }
+  
+  const { exercise, claudeApiKey, explanationLanguage = 'pt' } = requestData;
   
   // Validate required data
   if (!exercise || exercise.correctAnswer === undefined || exercise.correctAnswer === null) {

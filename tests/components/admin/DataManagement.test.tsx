@@ -23,10 +23,14 @@ describe('DataManagement Component', () => {
     
     // Clean up any document spies
     jest.restoreAllMocks()
+    
+    // Ensure DOM is clean
+    document.body.innerHTML = ''
   })
 
   afterEach(() => {
     jest.restoreAllMocks()
+    document.body.innerHTML = ''
   })
 
   it('should render basic structure', () => {
@@ -74,33 +78,18 @@ describe('DataManagement Component', () => {
     
     ;(fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      blob: () => Promise.resolve(mockBlob)
+      blob: jest.fn().mockResolvedValue(mockBlob),
+      json: jest.fn(),
+      text: jest.fn(),
+      status: 200,
+      statusText: 'OK'
     })
-
-    // Mock document methods before render
-    const mockClick = jest.fn()
-    const mockAppendChild = jest.fn()
-    const mockRemoveChild = jest.fn()
-    const mockElement = {
-      href: '',
-      download: '',
-      click: mockClick,
-      setAttribute: jest.fn(),
-      getAttribute: jest.fn(),
-      removeAttribute: jest.fn()
-    }
-    
-    const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue(mockElement as any)
-    const appendChildSpy = jest.spyOn(document.body, 'appendChild').mockImplementation(mockAppendChild)
-    const removeChildSpy = jest.spyOn(document.body, 'removeChild').mockImplementation(mockRemoveChild)
 
     render(<DataManagement />)
     
     const exportButton = screen.getByRole('button', { name: /Export Database/ })
     
-    await act(async () => {
-      fireEvent.click(exportButton)
-    })
+    fireEvent.click(exportButton)
 
     await waitFor(() => {
       expect(screen.getByText('✅ Export completed successfully!')).toBeInTheDocument()
@@ -110,17 +99,17 @@ describe('DataManagement Component', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     })
-    
-    // Clean up spies
-    createElementSpy.mockRestore()
-    appendChildSpy.mockRestore()
-    removeChildSpy.mockRestore()
   })
 
   it('should handle successful import', async () => {
+    const mockJson = jest.fn().mockResolvedValue({ count: 25 });
     ;(fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ count: 25 })
+      json: mockJson,
+      blob: jest.fn(),
+      text: jest.fn(),
+      status: 200,
+      statusText: 'OK'
     })
 
     render(<DataManagement />)
@@ -150,7 +139,11 @@ describe('DataManagement Component', () => {
     ;(fetch as jest.Mock).mockImplementation(() => 
       new Promise(resolve => setTimeout(() => resolve({
         ok: true,
-        blob: () => Promise.resolve(new Blob(['test'], { type: 'application/zip' }))
+        blob: jest.fn().mockResolvedValue(new Blob(['test'], { type: 'application/zip' })),
+        json: jest.fn(),
+        text: jest.fn(),
+        status: 200,
+        statusText: 'OK'
       }), 100))
     )
 
@@ -158,12 +151,12 @@ describe('DataManagement Component', () => {
     
     const exportButton = screen.getByRole('button', { name: /Export Database/ })
     
-    await act(async () => {
-      fireEvent.click(exportButton)
-    })
+    fireEvent.click(exportButton)
     
-    expect(screen.getByText('Exporting...')).toBeInTheDocument()
-    expect(exportButton).toBeDisabled()
+    await waitFor(() => {
+      expect(screen.getByText('Exporting...')).toBeInTheDocument()
+      expect(exportButton).toBeDisabled()
+    })
 
     await waitFor(() => {
       expect(screen.getByText('✅ Export completed successfully!')).toBeInTheDocument()

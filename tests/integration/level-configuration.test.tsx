@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw'
 
 // Mock the configuration store with different level configurations
 const createMockConfiguration = (levels: string[]) => ({
-  levels,
+  selectedLevels: levels,
   selectedTopics: ['present-indicative'],
   topicNames: ['Present Indicative'],
   explanationLanguage: 'en' as const,
