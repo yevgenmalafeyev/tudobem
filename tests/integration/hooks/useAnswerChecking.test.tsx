@@ -81,7 +81,7 @@ describe('useAnswerChecking hook', () => {
       })
       expect(mockSetShowAnswer).toHaveBeenCalledWith(true)
       expect(mockSetIsLoading).toHaveBeenCalledWith(false)
-      expect(mockAddIncorrectAnswer).toHaveBeenCalledWith(mockExercise, 'fala')
+      expect(mockAddIncorrectAnswer).toHaveBeenCalledWith('fala')
     })
   })
 
@@ -115,19 +115,7 @@ describe('useAnswerChecking hook', () => {
     })
   })
 
-  it('should use correct API parameters', async () => {
-    let requestBody: any
-    
-    server.use(
-      http.post('/api/check-answer', async (req, res, ctx) => {
-        requestBody = await req.json()
-        return res(ctx.json({
-          isCorrect: true,
-          explanation: 'Correto!'
-        }))
-      })
-    )
-
+  it('should validate answers locally without API calls', async () => {
     const { result } = renderHook(() => useAnswerChecking(mockProps))
 
     await act(async () => {
@@ -140,12 +128,13 @@ describe('useAnswerChecking hook', () => {
     })
 
     await waitFor(() => {
-      expect(requestBody).toEqual({
-        exercise: mockExercise,
-        userAnswer: 'falo',
-        claudeApiKey: 'test-key',
-        explanationLanguage: 'en'
+      expect(mockSetIsLoading).toHaveBeenCalledWith(true)
+      expect(mockSetFeedback).toHaveBeenCalledWith({
+        isCorrect: true,
+        explanation: 'Correct! Well done.'
       })
+      expect(mockSetShowAnswer).toHaveBeenCalledWith(true)
+      expect(mockSetIsLoading).toHaveBeenCalledWith(false)
     })
   })
 
@@ -296,7 +285,7 @@ describe('useAnswerChecking hook', () => {
     })
 
     await waitFor(() => {
-      expect(mockAddIncorrectAnswer).toHaveBeenCalledWith(mockExercise, 'fala')
+      expect(mockAddIncorrectAnswer).toHaveBeenCalledWith('fala')
     })
   })
 
@@ -318,18 +307,6 @@ describe('useAnswerChecking hook', () => {
   })
 
   it('should handle different explanation languages', async () => {
-    let requestBody: any
-    
-    server.use(
-      http.post('/api/check-answer', async (req, res, ctx) => {
-        requestBody = await req.json()
-        return res(ctx.json({
-          isCorrect: true,
-          explanation: 'Correto!'
-        }))
-      })
-    )
-
     const { result } = renderHook(() => useAnswerChecking(mockProps))
 
     await act(async () => {
@@ -342,7 +319,10 @@ describe('useAnswerChecking hook', () => {
     })
 
     await waitFor(() => {
-      expect(requestBody.explanationLanguage).toBe('pt')
+      expect(mockSetFeedback).toHaveBeenCalledWith({
+        isCorrect: true,
+        explanation: 'Correto! Muito bem.'
+      })
     })
   })
 
@@ -358,12 +338,10 @@ describe('useAnswerChecking hook', () => {
       })
     })
 
-    await waitFor(() => {
-      expect(mockSetFeedback).toHaveBeenCalledWith({
-        isCorrect: false,
-        explanation: expect.any(String)
-      })
-      expect(mockAddIncorrectAnswer).toHaveBeenCalledWith(mockExercise, '')
-    })
+    // Should not call any feedback functions for empty answers
+    expect(mockSetFeedback).not.toHaveBeenCalled()
+    expect(mockSetShowAnswer).not.toHaveBeenCalled()
+    expect(mockSetIsLoading).not.toHaveBeenCalled()
+    expect(mockAddIncorrectAnswer).not.toHaveBeenCalled()
   })
 })

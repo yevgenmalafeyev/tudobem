@@ -32,28 +32,8 @@ jest.mock('@/utils/prompts', () => ({
   generateExercisePrompt: jest.fn(() => 'Mock prompt for exercise generation')
 }))
 
-// Mock Anthropic SDK
-jest.mock('@anthropic-ai/sdk', () => ({
-  Anthropic: jest.fn().mockImplementation(() => ({
-    messages: {
-      create: jest.fn().mockResolvedValue({
-        content: [{
-          type: 'text',
-          text: JSON.stringify({
-            sentence: 'Eu ___ português.',
-            correctAnswer: 'falo',
-            topic: 'present-indicative',
-            level: 'A1',
-            hint: {
-              infinitive: 'falar',
-              form: 'present indicative'
-            }
-          })
-        }]
-      })
-    }
-  }))
-}))
+// Mock Anthropic SDK - using manual mock in __mocks__ directory
+jest.mock('@anthropic-ai/sdk')
 
 // Start MSW server
 beforeAll(() => server.listen())
@@ -107,9 +87,10 @@ describe('/api/generate-exercise', () => {
 
     expect(response.status).toBe(200)
     expect(data).toHaveProperty('success', true)
-    expect(data.data).toHaveProperty('id', 'fallback-1')
+    expect(data.data).toHaveProperty('id')
     expect(data.data).toHaveProperty('sentence')
     expect(data.data).toHaveProperty('correctAnswer')
+    expect(data.data).toHaveProperty('source', 'static')
   })
 
   it('should return error for invalid request body', async () => {
@@ -129,7 +110,7 @@ describe('/api/generate-exercise', () => {
 
   it('should handle API failure with fallback', async () => {
     // Mock Anthropic to throw error
-    const { Anthropic } = require('@anthropic-ai/sdk')
+    const Anthropic = require('@anthropic-ai/sdk')
     Anthropic.mockImplementation(() => ({
       messages: {
         create: jest.fn().mockRejectedValue(new Error('API Error'))

@@ -2,22 +2,8 @@ import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/check-answer/route'
 import { server } from '../../src/__mocks__/server'
 
-// Mock Anthropic SDK
-jest.mock('@anthropic-ai/sdk', () => ({
-  Anthropic: jest.fn().mockImplementation(() => ({
-    messages: {
-      create: jest.fn().mockResolvedValue({
-        content: [{
-          type: 'text',
-          text: JSON.stringify({
-            isCorrect: true,
-            explanation: 'Correct! You used the right form of the verb.'
-          })
-        }]
-      })
-    }
-  }))
-}))
+// Mock Anthropic SDK - using manual mock in __mocks__ directory
+jest.mock('@anthropic-ai/sdk')
 
 // Start MSW server
 beforeAll(() => server.listen())

@@ -1,15 +1,22 @@
 import { renderHook, act } from '@testing-library/react'
 import { useLearning } from '@/hooks/useLearning'
 
-// Mock the configuration store
-jest.mock('@/store/configurationStore', () => ({
-  useConfigurationStore: () => ({
-    levels: ['A1', 'A2'],
-    selectedTopics: ['present-indicative'],
-    topicNames: ['Present Indicative'],
-    explanationLanguage: 'en',
-    claudeApiKey: 'test-key',
-    appLanguage: 'en'
+// Mock the store
+jest.mock('@/store/useStore', () => ({
+  useStore: () => ({
+    configuration: {
+      selectedLevels: ['A1', 'A2'],
+      selectedTopics: ['present-indicative'],
+      claudeApiKey: 'test-key',
+      appLanguage: 'en'
+    },
+    isConfigured: true,
+    currentExercise: null,
+    progress: {
+      incorrectAnswers: {},
+      reviewQueue: [],
+      masteredWords: {}
+    }
   })
 }))
 

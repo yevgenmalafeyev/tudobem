@@ -15,10 +15,10 @@ test.describe('Learning Flow', () => {
     await expect(page.locator('text=___ ')).toBeVisible()
     
     // Check that input field is present
-    await expect(page.locator('input[type="text"]')).toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeVisible()
     
     // Check that check answer button is present
-    await expect(page.locator('text=Check Answer')).toBeVisible()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeVisible()
   })
 
   test('should complete input mode exercise flow', async ({ page }) => {
@@ -26,10 +26,10 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Fill in the answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Click check answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -38,13 +38,13 @@ test.describe('Learning Flow', () => {
     await expect(page.locator('.neo-inset')).toBeVisible()
     
     // Check that next exercise button appears
-    await expect(page.locator('text=Next Exercise')).toBeVisible()
+    await expect(page.locator('[data-testid="next-exercise-button"]')).toBeVisible()
     
     // Click next exercise
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Check that input field is focused and empty
-    await expect(page.locator('input[type="text"]')).toHaveValue('')
+    await expect(page.locator('[data-testid="exercise-input"]')).toHaveValue('')
   })
 
   test('should switch to multiple choice mode', async ({ page }) => {
@@ -52,10 +52,10 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Click on multiple choice mode
-    await page.click('text=Multiple Choice')
+    await page.click('[data-testid="multiple-choice-mode-toggle"]')
     
     // Check that input field is no longer visible
-    await expect(page.locator('input[type="text"]')).not.toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).not.toBeVisible()
     
     // Check that question mark is displayed
     await expect(page.locator('text=?')).toBeVisible()
@@ -69,7 +69,7 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Switch to multiple choice mode
-    await page.click('text=Multiple Choice')
+    await page.click('[data-testid="multiple-choice-mode-toggle"]')
     
     // Wait for options to load
     await page.waitForSelector('button:has-text("falo")', { timeout: 10000 })
@@ -81,7 +81,7 @@ test.describe('Learning Flow', () => {
     await expect(page.locator('button:has-text("falo")')).toHaveClass(/neo-inset/)
     
     // Click check answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -90,7 +90,7 @@ test.describe('Learning Flow', () => {
     await expect(page.locator('.neo-inset')).toBeVisible()
     
     // Check that next exercise button appears
-    await expect(page.locator('text=Next Exercise')).toBeVisible()
+    await expect(page.locator('[data-testid="next-exercise-button"]')).toBeVisible()
   })
 
   test('should handle incorrect answers', async ({ page }) => {
@@ -98,10 +98,10 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Fill in an incorrect answer
-    await page.fill('input[type="text"]', 'incorrect')
+    await page.fill('[data-testid="exercise-input"]', 'incorrect')
     
     // Click check answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -112,7 +112,7 @@ test.describe('Learning Flow', () => {
     await expect(feedback).toHaveCSS('color', 'rgb(185, 28, 28)') // error color
     
     // Check that next exercise button appears
-    await expect(page.locator('text=Next Exercise')).toBeVisible()
+    await expect(page.locator('[data-testid="next-exercise-button"]')).toBeVisible()
   })
 
   test('should handle keyboard shortcuts', async ({ page }) => {
@@ -120,10 +120,10 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Fill in the answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Press Enter to check answer
-    await page.press('input[type="text"]', 'Enter')
+    await page.press('[data-testid="exercise-input"]', 'Enter')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -135,7 +135,7 @@ test.describe('Learning Flow', () => {
     await page.press('body', 'Enter')
     
     // Check that input field is focused and empty
-    await expect(page.locator('input[type="text"]')).toHaveValue('')
+    await expect(page.locator('[data-testid="exercise-input"]')).toHaveValue('')
   })
 
   test('should disable check answer button when input is empty', async ({ page }) => {
@@ -143,19 +143,19 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that check answer button is disabled
-    await expect(page.locator('text=Check Answer')).toBeDisabled()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeDisabled()
     
     // Fill in some text
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Check that check answer button is now enabled
-    await expect(page.locator('text=Check Answer')).toBeEnabled()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeEnabled()
     
     // Clear the input
-    await page.fill('input[type="text"]', '')
+    await page.fill('[data-testid="exercise-input"]', '')
     
     // Check that check answer button is disabled again
-    await expect(page.locator('text=Check Answer')).toBeDisabled()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeDisabled()
   })
 
   test('should show loading state', async ({ page }) => {
@@ -163,10 +163,10 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Fill in the answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Click check answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Check for loading state (might be brief)
     try {
@@ -206,24 +206,24 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Complete first exercise
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Complete second exercise
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Complete third exercise
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
     
     // Check that we can continue the flow
-    await expect(page.locator('text=Next Exercise')).toBeVisible()
+    await expect(page.locator('[data-testid="next-exercise-button"]')).toBeVisible()
   })
 
   test('should handle mode switching mid-session', async ({ page }) => {
@@ -231,20 +231,20 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Start in input mode
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Switch to multiple choice mode
-    await page.click('text=Multiple Choice')
+    await page.click('[data-testid="multiple-choice-mode-toggle"]')
     
     // Wait for options to load
     await page.waitForSelector('button:has-text("falo")', { timeout: 10000 })
     
     // Select an option
     await page.click('button:has-text("falo")')
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
     
     // Check that feedback is displayed
@@ -259,14 +259,14 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that elements are still visible and usable
-    await expect(page.locator('input[type="text"]')).toBeVisible()
-    await expect(page.locator('text=Check Answer')).toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeVisible()
     
     // Fill in the answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Click check answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -292,10 +292,10 @@ test.describe('Learning Flow', () => {
     await expect(page.locator('text=___ ')).toBeVisible()
     
     // Fill in the answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Click check answer (should use fallback logic)
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback to appear
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -309,23 +309,23 @@ test.describe('Learning Flow', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Switch to multiple choice mode
-    await page.click('text=Multiple Choice')
+    await page.click('[data-testid="multiple-choice-mode-toggle"]')
     
     // Complete an exercise
     await page.waitForSelector('button:has-text("falo")', { timeout: 10000 })
     await page.click('button:has-text("falo")')
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Check that mode is still multiple choice
     await expect(page.locator('text=?')).toBeVisible()
-    await expect(page.locator('input[type="text"]')).not.toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).not.toBeVisible()
     
     // Switch back to input mode
-    await page.click('text=Input')
+    await page.click('[data-testid="input-mode-toggle"]')
     
     // Check that input field is now visible
-    await expect(page.locator('input[type="text"]')).toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeVisible()
   })
 })

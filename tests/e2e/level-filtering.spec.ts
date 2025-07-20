@@ -23,13 +23,13 @@ test.describe('Level Filtering', () => {
     // Generate multiple exercises and verify levels
     for (let i = 0; i < 5; i++) {
       // Complete current exercise
-      await page.fill('input[type="text"]', 'test')
-      await page.click('text=Check Answer')
+      await page.fill('[data-testid="exercise-input"]', 'test')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
-      await page.click('text=Next Exercise')
+      await page.click('[data-testid="next-exercise-button"]')
       
       // Wait for new exercise
-      await page.waitForSelector('input[type="text"]')
+      await page.waitForSelector('[data-testid="exercise-input"]')
       
       // Check level is still valid
       const newLevel = await levelBadge.textContent()
@@ -61,13 +61,13 @@ test.describe('Level Filtering', () => {
     })
     
     // Complete an exercise to trigger API call
-    await page.fill('input[type="text"]', 'test')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'test')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Wait for new exercise
-    await page.waitForSelector('input[type="text"]')
+    await page.waitForSelector('[data-testid="exercise-input"]')
     
     // Check that the level is B1 as specified in the mock
     const levelBadge = page.locator('[data-testid="exercise-level"], .neo-outset-sm').first()
@@ -143,8 +143,8 @@ test.describe('Level Filtering', () => {
     // Generate multiple exercises and track levels
     for (let i = 0; i < 8; i++) {
       // Complete current exercise
-      await page.fill('input[type="text"]', 'test')
-      await page.click('text=Check Answer')
+      await page.fill('[data-testid="exercise-input"]', 'test')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
       
       // Record the level before moving to next
@@ -154,8 +154,8 @@ test.describe('Level Filtering', () => {
         observedLevels.push(level.trim())
       }
       
-      await page.click('text=Next Exercise')
-      await page.waitForSelector('input[type="text"]')
+      await page.click('[data-testid="next-exercise-button"]')
+      await page.waitForSelector('[data-testid="exercise-input"]')
     }
     
     // Verify we got exercises from multiple levels
@@ -179,8 +179,8 @@ test.describe('Level Filtering', () => {
     // Generate multiple exercises using fallback logic
     for (let i = 0; i < 10; i++) {
       // Complete current exercise
-      await page.fill('input[type="text"]', 'test')
-      await page.click('text=Check Answer')
+      await page.fill('[data-testid="exercise-input"]', 'test')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
       
       // Record the level
@@ -190,8 +190,8 @@ test.describe('Level Filtering', () => {
         observedLevels.push(level.trim())
       }
       
-      await page.click('text=Next Exercise')
-      await page.waitForSelector('input[type="text"]')
+      await page.click('[data-testid="next-exercise-button"]')
+      await page.waitForSelector('[data-testid="exercise-input"]')
     }
     
     // Verify all fallback exercises have valid levels
@@ -220,11 +220,11 @@ test.describe('Level Filtering', () => {
     })
     
     // Trigger an exercise generation
-    await page.fill('input[type="text"]', 'test')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'test')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
-    await page.waitForSelector('input[type="text"]')
+    await page.click('[data-testid="next-exercise-button"]')
+    await page.waitForSelector('[data-testid="exercise-input"]')
     
     // Verify the request contains valid level parameters
     expect(capturedRequest).toBeTruthy()
@@ -278,20 +278,20 @@ test.describe('Level Filtering', () => {
     })
     
     // Test A1 level content
-    await page.fill('input[type="text"]', 'test')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'test')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
     
     // Check for simple vocabulary and structure
     const exerciseText = await page.locator('.neo-card-lg').textContent()
     expect(exerciseText).toContain('português') // Simple, common word
     
-    await page.click('text=Next Exercise')
-    await page.waitForSelector('input[type="text"]')
+    await page.click('[data-testid="next-exercise-button"]')
+    await page.waitForSelector('[data-testid="exercise-input"]')
     
     // Test B2 level content  
-    await page.fill('input[type="text"]', 'test')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'test')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
     
     // Check for complex vocabulary and structure
@@ -327,11 +327,11 @@ test.describe('Level Filtering', () => {
       }
       
       // Move to next exercise
-      await page.fill('input[type="text"]', 'test')
-      await page.click('text=Check Answer')
+      await page.fill('[data-testid="exercise-input"]', 'test')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
-      await page.click('text=Next Exercise')
-      await page.waitForSelector('input[type="text"]')
+      await page.click('[data-testid="next-exercise-button"]')
+      await page.waitForSelector('[data-testid="exercise-input"]')
     }
     
     // Verify we collected level data
@@ -357,11 +357,11 @@ test.describe('Level Filtering', () => {
     })
     
     // Should still work with fallback
-    await page.fill('input[type="text"]', 'test')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'test')
+    await page.click('[data-testid="check-answer-button"]')
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
-    await page.click('text=Next Exercise')
-    await page.waitForSelector('input[type="text"]')
+    await page.click('[data-testid="next-exercise-button"]')
+    await page.waitForSelector('[data-testid="exercise-input"]')
     
     // Should display a valid level (fallback)
     const levelBadge = page.locator('[data-testid="exercise-level"], .neo-outset-sm').first()
@@ -383,11 +383,11 @@ test.describe('Level Filtering', () => {
         levelsInInputMode.push(level.trim())
       }
       
-      await page.fill('input[type="text"]', 'test')
-      await page.click('text=Check Answer')
+      await page.fill('[data-testid="exercise-input"]', 'test')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
-      await page.click('text=Next Exercise')
-      await page.waitForSelector('input[type="text"]')
+      await page.click('[data-testid="next-exercise-button"]')
+      await page.waitForSelector('[data-testid="exercise-input"]')
     }
     
     // Switch to multiple choice mode
@@ -405,9 +405,9 @@ test.describe('Level Filtering', () => {
       // Select first available option
       const firstOption = page.locator('button').filter({ hasNotText: /Check Answer|Next Exercise|Input|Multiple Choice/ }).first()
       await firstOption.click()
-      await page.click('text=Check Answer')
+      await page.click('[data-testid="check-answer-button"]')
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
-      await page.click('text=Next Exercise')
+      await page.click('[data-testid="next-exercise-button"]')
       await page.waitForSelector('button:has-text("falo"), button:has-text("fala"), button:has-text("é")', { timeout: 15000 })
     }
     

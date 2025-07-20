@@ -52,6 +52,7 @@ export default function ExerciseDisplay({
             className="neo-inset text-center min-w-12 sm:min-w-16 lg:min-w-24 text-base sm:text-lg lg:text-xl xl:text-2xl placeholder:text-gray-400 placeholder:opacity-70"
             placeholder={hintText}
             disabled={showAnswer}
+            data-testid="exercise-input"
           />
         ) : (
           <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold" style={{ color: 'var(--neo-accent-text)' }}>

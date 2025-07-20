@@ -129,10 +129,11 @@ export default function DataManagement() {
         
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--neo-text)' }}>
+            <label htmlFor="import-file" className="block text-sm font-medium mb-2" style={{ color: 'var(--neo-text)' }}>
               Select ZIP file to import
             </label>
             <input
+              id="import-file"
               type="file"
               accept=".zip"
               onChange={handleFileChange}

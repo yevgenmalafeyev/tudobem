@@ -67,7 +67,7 @@ export function useAnswerChecking({
       setShowAnswer(true);
 
       if (!feedback.isCorrect) {
-        addIncorrectAnswer(request.exercise.correctAnswer);
+        addIncorrectAnswer(request.userAnswer);
       }
       
     } catch (error) {
@@ -83,7 +83,7 @@ export function useAnswerChecking({
       setShowAnswer(true);
       
       if (!isCorrect) {
-        addIncorrectAnswer(request.exercise.correctAnswer);
+        addIncorrectAnswer(request.userAnswer);
       }
     } finally {
       setIsLoading(false);

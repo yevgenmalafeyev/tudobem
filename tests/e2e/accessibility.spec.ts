@@ -27,7 +27,7 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that input field is focused initially
-    await expect(page.locator('input[type="text"]')).toBeFocused()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeFocused()
     
     // Tab through interactive elements
     await page.keyboard.press('Tab')
@@ -62,7 +62,7 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that form elements have proper labels
-    const inputField = page.locator('input[type="text"]')
+    const inputField = page.locator('[data-testid="exercise-input"]')
     
     // Check for aria-label or associated label
     const hasAriaLabel = await inputField.getAttribute('aria-label')
@@ -96,12 +96,12 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that text is visible (basic visibility test)
-    await expect(page.locator('text=Check Answer')).toBeVisible()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeVisible()
     
     // Check that feedback colors are distinguishable
     // Fill in correct answer
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -115,11 +115,11 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that all interactive elements are visible
-    await expect(page.locator('input[type="text"]')).toBeVisible()
-    await expect(page.locator('text=Check Answer')).toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeVisible()
     
     // Check that borders and outlines are visible
-    const inputField = page.locator('input[type="text"]')
+    const inputField = page.locator('[data-testid="exercise-input"]')
     const boundingBox = await inputField.boundingBox()
     expect(boundingBox).toBeTruthy()
   })
@@ -132,8 +132,8 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Complete an exercise to trigger any animations
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -150,13 +150,13 @@ test.describe('Accessibility', () => {
     // (simulated by programmatic clicks)
     
     // Voice command: "Click Input"
-    await page.click('text=Input')
+    await page.click('[data-testid="input-mode-toggle"]')
     
     // Voice command: "Type falo"
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Voice command: "Click Check Answer"
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -204,8 +204,8 @@ test.describe('Accessibility', () => {
     }
     
     // Trigger state change
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -222,12 +222,12 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Check that elements are still usable at high zoom
-    await expect(page.locator('input[type="text"]')).toBeVisible()
-    await expect(page.locator('text=Check Answer')).toBeVisible()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeVisible()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeVisible()
     
     // Test functionality at high zoom
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -256,16 +256,16 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Try to submit without filling in answer
-    await page.click('text=Check Answer')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Check that button is disabled (no error should occur)
-    await expect(page.locator('text=Check Answer')).toBeDisabled()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeDisabled()
     
     // Fill in answer
-    await page.fill('input[type="text"]', 'falo')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
     
     // Button should now be enabled
-    await expect(page.locator('text=Check Answer')).toBeEnabled()
+    await expect(page.locator('[data-testid="check-answer-button"]')).toBeEnabled()
   })
 
   test('should provide skip links if needed', async ({ page }) => {
@@ -291,8 +291,8 @@ test.describe('Accessibility', () => {
     await page.waitForSelector('.neo-card-lg')
     
     // Complete an exercise to trigger dynamic content
-    await page.fill('input[type="text"]', 'falo')
-    await page.click('text=Check Answer')
+    await page.fill('[data-testid="exercise-input"]', 'falo')
+    await page.click('[data-testid="check-answer-button"]')
     
     // Wait for feedback (dynamic content)
     await page.waitForSelector('.neo-inset', { timeout: 10000 })
@@ -301,9 +301,9 @@ test.describe('Accessibility', () => {
     await expect(page.locator('.neo-inset')).toBeVisible()
     
     // Go to next exercise (more dynamic content)
-    await page.click('text=Next Exercise')
+    await page.click('[data-testid="next-exercise-button"]')
     
     // Check that input field is focused
-    await expect(page.locator('input[type="text"]')).toBeFocused()
+    await expect(page.locator('[data-testid="exercise-input"]')).toBeFocused()
   })
 })

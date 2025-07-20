@@ -26,6 +26,7 @@ export default function ActionButtons({
             onClick={onCheckAnswer}
             disabled={!hasValidAnswer || isLoading}
             className="neo-button neo-button-primary w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base min-h-[44px]"
+            data-testid="check-answer-button"
           >
             {isLoading ? t('checking', appLanguage) : t('checkAnswer', appLanguage)}
           </button>
@@ -39,6 +40,7 @@ export default function ActionButtons({
             onClick={onNextExercise}
             disabled={isLoading}
             className="neo-button neo-button-success w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base min-h-[44px]"
+            data-testid="next-exercise-button"
           >
             {isLoading ? t('loading', appLanguage) : t('nextExercise', appLanguage)}
           </button>

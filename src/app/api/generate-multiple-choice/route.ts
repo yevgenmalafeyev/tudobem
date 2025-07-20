@@ -8,6 +8,14 @@ import { generateMultipleChoicePrompt } from '@/utils/prompts';
 export async function POST(request: NextRequest) {
   const { exercise, claudeApiKey, explanationLanguage = 'pt' } = await request.json();
   
+  // Validate required data
+  if (!exercise || exercise.correctAnswer === undefined || exercise.correctAnswer === null) {
+    return NextResponse.json(
+      { error: 'Exercise data with correctAnswer is required' },
+      { status: 400 }
+    );
+  }
+  
   try {
     if (!claudeApiKey) {
       // Fallback: generate basic distractors without AI

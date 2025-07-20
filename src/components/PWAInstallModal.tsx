@@ -27,7 +27,10 @@ export default function PWAInstallModal({ isOpen, onClose, language }: PWAInstal
     if (isOpen) {
       const info = detectPlatform();
       setDeviceInfo(info);
-      setSelectedPlatform(info.platform);
+      setShowAllPlatforms(false);
+      if (info) {
+        setSelectedPlatform(info.platform);
+      }
     }
   }, [isOpen]);
 

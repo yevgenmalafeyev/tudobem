@@ -20,6 +20,7 @@ export default function ModeToggle({ learningMode, setLearningMode, appLanguage 
           className={`neo-button text-xs sm:text-sm px-2 sm:px-3 py-1 ${
             learningMode === 'input' ? 'neo-button-primary' : ''
           }`}
+          data-testid="input-mode-toggle"
         >
           {t('inputMode', appLanguage)}
         </button>
@@ -28,6 +29,7 @@ export default function ModeToggle({ learningMode, setLearningMode, appLanguage 
           className={`neo-button text-xs sm:text-sm px-2 sm:px-3 py-1 ${
             learningMode === 'multiple-choice' ? 'neo-button-primary' : ''
           }`}
+          data-testid="multiple-choice-mode-toggle"
         >
           {t('multipleChoiceMode', appLanguage)}
         </button>

@@ -18,13 +18,18 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setIsLoading(true);
     setError('');
 
-    const success = await onLogin(username, password);
-    
-    if (!success) {
-      setError('Invalid username or password');
+    try {
+      const success = await onLogin(username, password);
+      
+      if (!success) {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred during login');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (

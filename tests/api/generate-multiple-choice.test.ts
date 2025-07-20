@@ -5,21 +5,14 @@ import { server } from '../../src/__mocks__/server'
 // Mock the services
 jest.mock('@/services/multipleChoiceService', () => ({
   generateBasicDistractors: jest.fn(() => ['fala', 'falamos', 'falam']),
-  processMultipleChoiceOptions: jest.fn(() => ['falo', 'fala', 'falamos', 'falam'])
+  processMultipleChoiceOptions: jest.fn((correctAnswer, distractors) => {
+    // Always include the correct answer plus the distractors
+    return [correctAnswer, ...distractors].slice(0, 4)
+  })
 }))
 
-// Mock Anthropic SDK
-jest.mock('@anthropic-ai/sdk', () => ({
-  Anthropic: jest.fn().mockImplementation(() => ({
-    messages: {
-      create: jest.fn().mockResolvedValue({
-        content: [{
-          text: JSON.stringify(['fala', 'falamos', 'falam'])
-        }]
-      })
-    }
-  }))
-}))
+// Mock Anthropic SDK - using manual mock in __mocks__ directory
+jest.mock('@anthropic-ai/sdk')
 
 // Start MSW server
 beforeAll(() => server.listen())
@@ -67,12 +60,7 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should return fallback options when API fails', async () => {
     // Mock Anthropic to throw error
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockRejectedValue(new Error('API Error'))
-      }
-    }))
+    mockCreate.mockRejectedValueOnce(new Error('API Error'))
 
     const requestBody = {
       exercise: mockExercise,
@@ -166,12 +154,7 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should handle invalid API key', async () => {
     // Mock Anthropic to throw authentication error
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockRejectedValue(new Error('Authentication failed'))
-      }
-    }))
+    mockCreate.mockRejectedValueOnce(new Error('Authentication failed'))
 
     const requestBody = {
       exercise: mockExercise,
@@ -194,16 +177,11 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should handle malformed AI response', async () => {
     // Mock Anthropic to return invalid JSON
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{
-            text: 'Invalid JSON response'
-          }]
-        })
-      }
-    }))
+    mockCreate.mockResolvedValueOnce({
+      content: [{
+        text: 'Invalid JSON response'
+      }]
+    })
 
     const requestBody = {
       exercise: mockExercise,
@@ -317,16 +295,11 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should handle network timeout', async () => {
     // Mock Anthropic to simulate timeout
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockImplementation(() => 
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 100)
-          )
-        )
-      }
-    }))
+    mockCreate.mockImplementationOnce(() => 
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout')), 100)
+      )
+    )
 
     const requestBody = {
       exercise: mockExercise,
@@ -349,18 +322,13 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should handle AI response with non-array data', async () => {
     // Mock Anthropic to return invalid array
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{
-            text: JSON.stringify({
-              options: ['fala', 'falamos', 'falam']
-            })
-          }]
+    mockCreate.mockResolvedValueOnce({
+      content: [{
+        text: JSON.stringify({
+          options: ['fala', 'falamos', 'falam']
         })
-      }
-    }))
+      }]
+    })
 
     const requestBody = {
       exercise: mockExercise,
@@ -383,16 +351,11 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should handle AI response with empty array', async () => {
     // Mock Anthropic to return empty array
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{
-            text: JSON.stringify([])
-          }]
-        })
-      }
-    }))
+    mockCreate.mockResolvedValueOnce({
+      content: [{
+        text: JSON.stringify([])
+      }]
+    })
 
     const requestBody = {
       exercise: mockExercise,
@@ -444,16 +407,11 @@ describe('/api/generate-multiple-choice', () => {
 
   it('should filter out invalid distractors', async () => {
     // Mock Anthropic to return array with invalid entries
-    const { Anthropic } = require('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{
-            text: JSON.stringify(['fala', '', null, 'falamos', 'falo', 'falam'])
-          }]
-        })
-      }
-    }))
+    mockCreate.mockResolvedValueOnce({
+      content: [{
+        text: JSON.stringify(['fala', '', null, 'falamos', 'falo', 'falam'])
+      }]
+    })
 
     const requestBody = {
       exercise: mockExercise,
