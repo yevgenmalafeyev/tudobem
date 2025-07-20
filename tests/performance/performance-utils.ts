@@ -191,16 +191,16 @@ export class PerformanceMeasurer {
    * Measure custom timing between two points
    */
   async measureCustomTiming(startMark: string, endMark: string): Promise<number> {
-    return await this.page.evaluate((start, end) => {
+    return await this.page.evaluate((data: {start: string, end: string}) => {
       try {
-        performance.mark(end);
-        performance.measure(`${start}-to-${end}`, start, end);
-        const measure = performance.getEntriesByName(`${start}-to-${end}`)[0];
+        performance.mark(data.end);
+        performance.measure(`${data.start}-to-${data.end}`, data.start, data.end);
+        const measure = performance.getEntriesByName(`${data.start}-to-${data.end}`)[0];
         return measure.duration;
       } catch (e) {
         return 0;
       }
-    }, startMark, endMark);
+    }, {start: startMark, end: endMark});
   }
 
   /**
