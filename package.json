@@ -28,7 +28,8 @@
     "db:rollback": "npx tsx src/scripts/migrateStaticExercises.ts rollback",
     "db:setup": "npm run db:init && npm run db:migrate && npm run db:validate",
     "enhanced:setup": "npm run db:setup",
-    "enhanced:test": "npm run test:enhanced"
+    "enhanced:test": "npm run test:enhanced",
+    "prepare": "husky"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",
@@ -55,6 +56,7 @@
     "dotenv": "^17.2.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
+    "husky": "^9.1.7",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
     "msw": "^2.10.4",

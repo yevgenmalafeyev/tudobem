@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Exit on any error
+set -e
+
+echo "🔍 Running pre-commit checks..."
+
+# Check if we're in the right directory
+if [ ! -f "package.json" ]; then
+    echo "❌ Error: package.json not found. Are you in the project root?"
+    exit 1
+fi
+
+echo "📝 Checking TypeScript types..."
+
+# Run TypeScript compiler in check mode (no emit), using build config that excludes test files
+npx tsc --noEmit -p tsconfig.build.json
+
+if [ $? -eq 0 ]; then
+    echo "✅ TypeScript check passed!"
+else
+    echo "❌ TypeScript errors found! Please fix them before committing."
+    echo "💡 Tip: Run 'npx tsc --noEmit' to see the errors."
+    exit 1
+fi
+
+echo "🎨 Running ESLint..."
+
+# Run ESLint
+npm run lint
+
+if [ $? -eq 0 ]; then
+    echo "✅ ESLint check passed!"
+else
+    echo "❌ ESLint errors found! Please fix them before committing."
+    exit 1
+fi
+
+echo "✨ Pre-commit checks passed!"
