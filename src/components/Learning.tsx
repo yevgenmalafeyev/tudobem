@@ -110,13 +110,13 @@ export default function Learning() {
     if (!currentExercise && exerciseQueue.exercises.length === 0) {
       loadInitialBatch();
     } else if (!currentExercise && exerciseQueue.exercises.length > 0) {
-      const nextExercise = getCurrentExercise();
+      const nextExercise = getNextExercise(); // Use getNextExercise to properly advance the queue
       if (nextExercise) {
         setCurrentExercise(nextExercise);
         generateExplanation(nextExercise);
       }
     }
-  }, [currentExercise, exerciseQueue.exercises.length, loadInitialBatch, getCurrentExercise, setCurrentExercise, generateExplanation]);
+  }, [currentExercise, exerciseQueue.exercises.length, loadInitialBatch, getNextExercise, setCurrentExercise, generateExplanation]);
 
   // Focus input when component mounts and when new exercise is generated
   useEffect(() => {
