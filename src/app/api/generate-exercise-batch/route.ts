@@ -231,8 +231,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
               const timeoutTime = Date.now();
               console.log('⏰ [DEBUG] API timeout triggered at:', new Date(timeoutTime).toISOString());
               console.log('⏰ [DEBUG] Total time before timeout:', timeoutTime - aiStartTime, 'ms');
-              reject(new Error('Claude API call timeout after 25 seconds'));
-            }, 25000);
+              reject(new Error('Claude API call timeout after 35 seconds'));
+            }, 35000);
           });
           
           console.log('📦 [DEBUG] About to start Promise.race...');

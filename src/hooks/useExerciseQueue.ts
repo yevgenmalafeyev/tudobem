@@ -36,11 +36,13 @@ export function useExerciseQueue({
   }
 
   /**
-   * Load initial batch of exercises
+   * Load initial batch of exercises with retry logic
    */
-  const loadInitialBatch = useCallback(async (): Promise<boolean> => {
+  const loadInitialBatch = useCallback(async (retryCount: number = 0): Promise<boolean> => {
+    const maxRetries = 2;
     const startTime = Date.now();
-    console.log('🚀 [DEBUG] Loading initial exercise batch at', new Date().toISOString());
+    console.log('🚀 [DEBUG] Loading initial exercise batch at', new Date().toISOString(), 
+                `(attempt ${retryCount + 1}/${maxRetries + 1})`);
     console.log('🚀 [DEBUG] Configuration:', {
       levels: configuration.selectedLevels,
       topicsCount: configuration.selectedTopics?.length,
@@ -74,12 +76,12 @@ export function useExerciseQueue({
       console.log('🚀 [DEBUG] About to fetch /api/generate-exercise-batch...');
       const fetchStartTime = Date.now();
       
-      // Add timeout to prevent infinite loading
+      // Add timeout to prevent infinite loading - increased for Claude AI calls
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
-        console.error('🚀 [DEBUG] Request timeout after 30 seconds');
+        console.error('🚀 [DEBUG] Request timeout after 45 seconds');
         controller.abort();
-      }, 30000); // 30 second timeout
+      }, 45000); // 45 second timeout for Claude AI generation
       
       const response = await fetch('/api/generate-exercise-batch', {
         method: 'POST',
@@ -132,13 +134,28 @@ export function useExerciseQueue({
       return true;
     } catch (error) {
       console.error('❌ [DEBUG] Failed to load initial batch after', Date.now() - startTime, 'ms:', error);
-      console.log('🚀 [DEBUG] Setting loading state to false due to error...');
       
-      // Handle timeout errors specifically
-      if (error instanceof Error && error.name === 'AbortError') {
+      // Handle timeout errors and network errors specifically
+      const isTimeoutError = error instanceof Error && error.name === 'AbortError';
+      const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+      
+      if (isTimeoutError) {
         console.error('🚀 [DEBUG] Request was aborted due to timeout');
+      } else if (isNetworkError) {
+        console.error('🚀 [DEBUG] Network error detected');
       }
       
+      // Retry on timeout or network errors (but not on HTTP errors)
+      if ((isTimeoutError || isNetworkError) && retryCount < maxRetries) {
+        console.log(`🔄 [DEBUG] Retrying in 2 seconds... (attempt ${retryCount + 1}/${maxRetries})`);
+        setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+        
+        // Wait 2 seconds before retry
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return loadInitialBatch(retryCount + 1);
+      }
+      
+      console.log('🚀 [DEBUG] Setting loading state to false due to error...');
       setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
       return false;
     }
@@ -171,11 +188,20 @@ export function useExerciseQueue({
         priority: 'background'
       };
 
+      // Add timeout for background requests too
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        console.error('🔄 [DEBUG] Background request timeout after 45 seconds');
+        controller.abort();
+      }, 45000);
+      
       const response = await fetch('/api/generate-exercise-batch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(request)
+        body: JSON.stringify(request),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
