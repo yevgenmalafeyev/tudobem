@@ -295,7 +295,7 @@ export function useExerciseQueue({
   // Auto-reset queue when configuration changes
   useEffect(() => {
     resetQueue();
-  }, [configuration.selectedLevels, configuration.selectedTopics, resetQueue]);
+  }, [configuration.selectedLevels, configuration.selectedTopics]); // Remove resetQueue from dependencies
 
   return {
     exerciseQueue,
