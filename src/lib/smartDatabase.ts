@@ -15,11 +15,19 @@ import { LanguageLevel } from '@/types';
 export class SmartDatabase {
   private static isLocalMode(): boolean {
     const url = process.env.POSTGRES_URL;
-    return !!(url && (url.includes('localhost') || url.includes('127.0.0.1')));
+    const isLocal = !!(url && (url.includes('localhost') || url.includes('127.0.0.1')));
+    console.log('🗄️ [DEBUG] SmartDatabase mode check:', {
+      postgresUrl: url ? `${url.substring(0, 30)}...` : 'NOT_SET',
+      isLocal,
+      databaseType: isLocal ? 'LocalDatabase' : 'ExerciseDatabase'
+    });
+    return isLocal;
   }
 
   private static getActiveDatabase() {
-    return this.isLocalMode() ? LocalDatabase : ExerciseDatabase;
+    const db = this.isLocalMode() ? LocalDatabase : ExerciseDatabase;
+    console.log('🗄️ [DEBUG] Using database adapter:', this.isLocalMode() ? 'Local' : 'Vercel');
+    return db;
   }
 
   /**
@@ -48,7 +56,16 @@ export class SmartDatabase {
    * Get exercises by level and topic with filtering
    */
   static async getExercises(filter: ExerciseFilter): Promise<EnhancedExercise[]> {
-    return this.getActiveDatabase().getExercises(filter);
+    console.log('🗄️ [DEBUG] SmartDatabase.getExercises called with filter:', filter);
+    const startTime = Date.now();
+    try {
+      const result = await this.getActiveDatabase().getExercises(filter);
+      console.log('🗄️ [DEBUG] SmartDatabase.getExercises completed in', Date.now() - startTime, 'ms, returned', result.length, 'exercises');
+      return result;
+    } catch (error) {
+      console.error('🗄️ [DEBUG] SmartDatabase.getExercises failed after', Date.now() - startTime, 'ms:', error);
+      throw error;
+    }
   }
 
   /**

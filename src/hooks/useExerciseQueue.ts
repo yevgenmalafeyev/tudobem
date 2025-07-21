@@ -39,8 +39,16 @@ export function useExerciseQueue({
    * Load initial batch of exercises
    */
   const loadInitialBatch = useCallback(async (): Promise<boolean> => {
-    console.log('🚀 Loading initial exercise batch...');
+    const startTime = Date.now();
+    console.log('🚀 [DEBUG] Loading initial exercise batch at', new Date().toISOString());
+    console.log('🚀 [DEBUG] Configuration:', {
+      levels: configuration.selectedLevels,
+      topicsCount: configuration.selectedTopics?.length,
+      hasApiKey: !!configuration.claudeApiKey,
+      masteredWordsCount: Object.keys(progress.masteredWords).length
+    });
     
+    console.log('🚀 [DEBUG] Setting loading state to true...');
     setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: true }));
     
     try {
@@ -53,24 +61,54 @@ export function useExerciseQueue({
         sessionId: exerciseQueue.sessionId,
         priority: 'immediate'
       };
+      console.log('🚀 [DEBUG] Request payload prepared:', {
+        levels: request.levels,
+        topicsCount: request.topics?.length,
+        hasApiKey: !!request.claudeApiKey,
+        sessionId: request.sessionId,
+        count: request.count
+      });
 
+      console.log('🚀 [DEBUG] About to fetch /api/generate-exercise-batch...');
+      const fetchStartTime = Date.now();
+      
+      // Add timeout to prevent infinite loading
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        console.error('🚀 [DEBUG] Request timeout after 30 seconds');
+        controller.abort();
+      }, 30000); // 30 second timeout
+      
       const response = await fetch('/api/generate-exercise-batch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(request)
+        body: JSON.stringify(request),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+      console.log('🚀 [DEBUG] Fetch completed in', Date.now() - fetchStartTime, 'ms, status:', response.status);
 
       if (!response.ok) {
+        console.error('🚀 [DEBUG] HTTP error response:', response.status, response.statusText);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
+      console.log('🚀 [DEBUG] Parsing response JSON...');
       const result = await response.json();
+      console.log('🚀 [DEBUG] Response parsed:', {
+        success: result.success,
+        hasData: !!result.data,
+        exerciseCount: result.data?.exercises?.length || 0,
+        source: result.data?.source
+      });
       
       if (!result.success) {
+        console.error('🚀 [DEBUG] API returned failure:', result.error);
         throw new Error(result.error || 'Failed to generate exercises');
       }
 
       const exercises: EnhancedExercise[] = result.data.exercises;
+      console.log('🚀 [DEBUG] Setting exercise queue with', exercises.length, 'exercises...');
       
       setExerciseQueue(prev => ({
         ...prev,
@@ -81,16 +119,24 @@ export function useExerciseQueue({
         totalGenerated: result.data.generatedCount
       }));
 
-      console.log(`✅ Loaded ${exercises.length} exercises (source: ${result.data.source})`);
+      console.log(`✅ [DEBUG] Loaded ${exercises.length} exercises (source: ${result.data.source}) in ${Date.now() - startTime}ms total`);
       
       // Trigger callback with first exercise
       if (exercises.length > 0 && onExerciseGenerated) {
+        console.log('🚀 [DEBUG] Triggering onExerciseGenerated callback...');
         onExerciseGenerated(exercises[0]);
       }
 
       return true;
     } catch (error) {
-      console.error('❌ Failed to load initial batch:', error);
+      console.error('❌ [DEBUG] Failed to load initial batch after', Date.now() - startTime, 'ms:', error);
+      console.log('🚀 [DEBUG] Setting loading state to false due to error...');
+      
+      // Handle timeout errors specifically
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.error('🚀 [DEBUG] Request was aborted due to timeout');
+      }
+      
       setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
       return false;
     }
