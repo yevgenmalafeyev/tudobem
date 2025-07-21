@@ -26,13 +26,14 @@ fi
 
 echo "🎨 Running ESLint..."
 
-# Run ESLint
-npm run lint
+# Run ESLint with max-warnings 0 to treat warnings as errors, excluding build directories
+npx eslint src --ext js,jsx,ts,tsx --max-warnings 0
 
 if [ $? -eq 0 ]; then
-    echo "✅ ESLint check passed!"
+    echo "✅ ESLint check passed! No errors or warnings."
 else
-    echo "❌ ESLint errors found! Please fix them before committing."
+    echo "❌ ESLint errors or warnings found! Please fix them before committing."
+    echo "💡 Tip: Run 'npm run lint' to see all issues."
     exit 1
 fi
 
