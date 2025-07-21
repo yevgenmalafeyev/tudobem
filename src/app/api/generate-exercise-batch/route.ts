@@ -36,22 +36,17 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     vercelEnv: process.env.VERCEL_ENV || 'NOT_SET'
   });
   
-  try {
-    console.log('📦 [DEBUG] Step 1: Parsing request body...');
-    const {
-      levels: parsedLevels,
-      topics: parsedTopics,
-      claudeApiKey,
-      masteredWords: parsedMasteredWords = {},
-      count = 10,
-      sessionId,
-      priority = 'immediate'
-    } = await parseRequestBody<BatchGenerationRequest>(request);
-    console.log('📦 [DEBUG] Step 1: Request body parsed successfully');
-  } catch (parseError) {
-    console.error('📦 [DEBUG] Step 1: Failed to parse request body:', parseError);
-    throw parseError;
-  }
+  console.log('📦 [DEBUG] Step 1: Parsing request body...');
+  const {
+    levels: parsedLevels,
+    topics: parsedTopics,
+    claudeApiKey,
+    masteredWords: parsedMasteredWords = {},
+    count = 10,
+    sessionId,
+    priority = 'immediate'
+  } = await parseRequestBody<BatchGenerationRequest>(request);
+  console.log('📦 [DEBUG] Step 1: Request body parsed successfully');
   
   const levels = parsedLevels || ['A1'];
   const selectedTopics = parsedTopics || [];
