@@ -24,7 +24,7 @@ async function testWithRealApiKey() {
   
   const testPayload = {
     levels: ['A1'],
-    topics: ['present-indicative'],
+    topics: ['presente-indicativo-regulares'],
     claudeApiKey: apiKey, // Your real API key
     masteredWords: {},
     count: 3,

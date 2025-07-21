@@ -6,7 +6,7 @@ import { EnhancedExercise } from '@/types/enhanced';
  */
 export const generateBatchExercisePrompt = (
   levels: LanguageLevel[], 
-  topics: string[], 
+  topicIds: string[], 
   topicNames: string[],
   masteredWords: Record<string, unknown>,
   count: number = 10
@@ -19,6 +19,7 @@ Generate exactly ${count} diverse fill-in-the-blank exercises with the following
 
 **TARGET LEVELS**: ${levels.join(', ')} (CEFR framework)
 **TOPICS**: ${topicNames.join(', ')}
+**TOPIC IDS** (use these exact IDs in your JSON response): ${topicIds.join(', ')}
 **AVOID THESE MASTERED WORDS**: ${masteredWordsList.length > 0 ? masteredWordsList.join(', ') : 'None'}
 
 For each exercise, provide:
@@ -54,7 +55,7 @@ For each exercise, provide:
     "sentence": "Eu ___ ao cinema ontem à noite.",
     "correctAnswer": "fui", 
     "gapIndex": 1,
-    "topic": "preterite-perfect",
+    "topic": "preterito-perfeito-simples",
     "level": "A2",
     "hint": {
       "infinitive": "ir",

@@ -26,20 +26,38 @@ export async function parseRequestBody<T>(request: NextRequest): Promise<T> {
 }
 
 export function extractJsonFromClaudeResponse(responseText: string): string {
-  const startIndex = responseText.indexOf('{');
-  if (startIndex === -1) {
+  // Look for array first, then object
+  const arrayStartIndex = responseText.indexOf('[');
+  const objectStartIndex = responseText.indexOf('{');
+  
+  // Determine which JSON structure appears first (or if only one exists)
+  let startIndex: number;
+  let startChar: string;
+  let endChar: string;
+  
+  if (arrayStartIndex !== -1 && (objectStartIndex === -1 || arrayStartIndex < objectStartIndex)) {
+    // Array comes first or is the only JSON structure
+    startIndex = arrayStartIndex;
+    startChar = '[';
+    endChar = ']';
+  } else if (objectStartIndex !== -1) {
+    // Object comes first or is the only JSON structure
+    startIndex = objectStartIndex;
+    startChar = '{';
+    endChar = '}';
+  } else {
     throw new Error('No JSON found in Claude response');
   }
   
-  let braceCount = 0;
+  let bracketCount = 0;
   let endIndex = startIndex;
   
   for (let i = startIndex; i < responseText.length; i++) {
-    if (responseText[i] === '{') {
-      braceCount++;
-    } else if (responseText[i] === '}') {
-      braceCount--;
-      if (braceCount === 0) {
+    if (responseText[i] === startChar) {
+      bracketCount++;
+    } else if (responseText[i] === endChar) {
+      bracketCount--;
+      if (bracketCount === 0) {
         endIndex = i;
         break;
       }
@@ -55,20 +73,25 @@ export async function callClaudeApi(
   maxTokens: number = ANTHROPIC_CONFIG.maxTokens.exercise,
   model: string = ANTHROPIC_CONFIG.model
 ): Promise<string> {
-  console.log('🤖 [CLAUDE_API] Starting Claude API call...');
+  const callStartTime = Date.now();
+  console.log('🤖 [CLAUDE_API] Starting Claude API call at:', new Date().toISOString());
   console.log('🤖 [CLAUDE_API] API Key present:', !!apiKey);
   console.log('🤖 [CLAUDE_API] API Key length:', apiKey?.length || 0);
-  console.log('🤖 [CLAUDE_API] API Key prefix:', apiKey?.substring(0, 10) + '...' || 'NO_KEY');
+  console.log('🤖 [CLAUDE_API] API Key prefix:', apiKey?.substring(0, 15) + '...' || 'NO_KEY');
+  console.log('🤖 [CLAUDE_API] API Key valid format:', apiKey?.startsWith('sk-ant-') || false);
   console.log('🤖 [CLAUDE_API] Model:', model);
   console.log('🤖 [CLAUDE_API] Max tokens:', maxTokens);
   console.log('🤖 [CLAUDE_API] Prompt length:', prompt.length);
   
   try {
+    const clientCreateStart = Date.now();
     const anthropic = new Anthropic({ apiKey });
-    console.log('🤖 [CLAUDE_API] Anthropic client created successfully');
+    const clientCreateDuration = Date.now() - clientCreateStart;
+    console.log('🤖 [CLAUDE_API] Anthropic client created successfully in:', clientCreateDuration, 'ms');
     
+    console.log('🤖 [CLAUDE_API] About to make API request at:', new Date().toISOString());
     const requestStart = Date.now();
-    console.log('🤖 [CLAUDE_API] Making API request...');
+    console.log('🤖 [CLAUDE_API] Making API request to model:', model);
     
     const message = await anthropic.messages.create({
       model,
@@ -76,8 +99,12 @@ export async function callClaudeApi(
       messages: [{ role: 'user', content: prompt }]
     });
     
-    const requestDuration = Date.now() - requestStart;
-    console.log('🤖 [CLAUDE_API] API request completed in:', requestDuration, 'ms');
+    const requestEnd = Date.now();
+    const requestDuration = requestEnd - requestStart;
+    const totalDuration = requestEnd - callStartTime;
+    console.log('🤖 [CLAUDE_API] API request completed at:', new Date(requestEnd).toISOString());
+    console.log('🤖 [CLAUDE_API] API request duration:', requestDuration, 'ms');
+    console.log('🤖 [CLAUDE_API] Total call duration:', totalDuration, 'ms');
     console.log('🤖 [CLAUDE_API] Response received, content type:', message.content[0]?.type);
     console.log('🤖 [CLAUDE_API] Response length:', message.content[0]?.type === 'text' ? message.content[0].text.length : 0);
     

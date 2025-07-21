@@ -222,21 +222,36 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
         try {
           const aiStartTime = Date.now();
           console.log('📦 [DEBUG] Calling Claude API with timeout protection...');
+          console.log('📦 [DEBUG] Starting timeout race at:', new Date().toISOString());
           
-          // Add timeout wrapper for Claude API call
+          // Add timeout wrapper for Claude API call with detailed timing
           const claudeApiCall = callClaudeApi(claudeApiKey, prompt);
           const apiTimeout = new Promise<never>((_, reject) => {
             setTimeout(() => {
+              const timeoutTime = Date.now();
+              console.log('⏰ [DEBUG] API timeout triggered at:', new Date(timeoutTime).toISOString());
+              console.log('⏰ [DEBUG] Total time before timeout:', timeoutTime - aiStartTime, 'ms');
               reject(new Error('Claude API call timeout after 25 seconds'));
             }, 25000);
           });
           
+          console.log('📦 [DEBUG] About to start Promise.race...');
+          const raceStartTime = Date.now();
           const responseText = await Promise.race([claudeApiCall, apiTimeout]);
-          console.log('📦 [DEBUG] Claude API call completed in', Date.now() - aiStartTime, 'ms');
+          const raceEndTime = Date.now();
+          console.log('📦 [DEBUG] Promise.race completed at:', new Date(raceEndTime).toISOString());
+          console.log('📦 [DEBUG] Claude API call completed in', raceEndTime - aiStartTime, 'ms');
+          console.log('📦 [DEBUG] Race duration:', raceEndTime - raceStartTime, 'ms');
           console.log('📝 [DEBUG] Claude AI response received, length:', responseText.length);
+          console.log('📝 [DEBUG] Raw Claude response:', responseText.substring(0, 500) + '...');
           
           const jsonString = extractJsonFromClaudeResponse(responseText);
+          console.log('📝 [DEBUG] Extracted JSON string:', jsonString.substring(0, 500) + '...');
+          
           const exerciseData = JSON.parse(jsonString);
+          console.log('📝 [DEBUG] Parsed exercise data type:', typeof exerciseData);
+          console.log('📝 [DEBUG] Parsed exercise data is array:', Array.isArray(exerciseData));
+          console.log('📝 [DEBUG] Parsed exercise data:', JSON.stringify(exerciseData).substring(0, 500) + '...');
           
           // Validate the response
           if (!validateBatchExerciseResponse(exerciseData)) {
