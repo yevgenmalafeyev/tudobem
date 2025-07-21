@@ -57,7 +57,7 @@ async function generateFallbackExercises(levels: LanguageLevel[], count: number)
         uk: "Ми використовуємо 'falo' для першої особи однини в теперішньому часі."
       },
       hint: { infinitive: "falar", form: "1st person singular present" },
-      source: 'fallback',
+      source: 'static',
       difficultyScore: 0.3,
       usageCount: 0
     }];

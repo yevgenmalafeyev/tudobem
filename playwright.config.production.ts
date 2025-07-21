@@ -27,6 +27,22 @@ export default defineConfig({
     // Longer timeouts for production environment
     actionTimeout: 15000,
     navigationTimeout: 30000,
+    
+    // SSL and security settings
+    ignoreHTTPSErrors: true,
+    
+    // Add browser headers to avoid bot detection
+    extraHTTPHeaders: {
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none',
+      'Upgrade-Insecure-Requests': '1'
+    }
   },
 
   // Test against multiple browsers in production
@@ -35,9 +51,20 @@ export default defineConfig({
       name: 'Desktop Chrome',
       use: { 
         ...devices['Desktop Chrome'],
-        // Disable web security for production testing if needed
+        // Better browser mimicking for production + SSL handling
         launchOptions: {
-          args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
+          args: [
+            '--no-first-run',
+            '--disable-blink-features=AutomationControlled',
+            '--disable-features=VizDisplayCompositor',
+            '--enable-features=NetworkService',
+            '--ignore-certificate-errors',
+            '--ignore-ssl-errors',
+            '--ignore-certificate-errors-spki-list',
+            '--ignore-certificate-errors-policy',
+            '--disable-web-security',
+            '--allow-running-insecure-content'
+          ]
         }
       },
     },
