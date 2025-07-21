@@ -284,11 +284,11 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           if (exercisesToReturn.length === 0) {
             console.log('🆘 [DEBUG] No database exercises, falling back to static fallback exercises...');
             // Ultimate fallback - return static fallback exercises
-            const fallbackExercises = generateFallbackExercises(levels, count);
+            const fallbackExercises = await generateFallbackExercises(levels, count);
             return createApiResponse({
               exercises: fallbackExercises,
               generatedCount: fallbackExercises.length,
-              source: 'fallback' as const,
+              source: 'database' as const,
               sessionId
             });
           }
@@ -332,20 +332,10 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     console.error('💥 Error in batch generation:', error);
     
     // Try to extract variables from the error context if they exist
-    let fallbackLevels: LanguageLevel[] = ['A1'];
-    let fallbackCount = 10;
-    let fallbackSessionId = `error-fallback-${Date.now()}`;
-    
-    try {
-      // Parse the request body again to get the variables for fallback
-      const request_clone = request.clone();
-      const fallbackBody = await parseRequestBody<BatchGenerationRequest>(request_clone);
-      fallbackLevels = fallbackBody.levels || ['A1'];
-      fallbackCount = fallbackBody.count || 10;
-      fallbackSessionId = fallbackBody.sessionId || fallbackSessionId;
-    } catch (parseError) {
-      console.warn('⚠️ Could not re-parse request for fallback, using defaults');
-    }
+    // Use default values for fallback since we're in the error handler
+    const fallbackLevels: LanguageLevel[] = ['A1'];
+    const fallbackCount = 10;
+    const fallbackSessionId = `error-fallback-${Date.now()}`;
     
     // Ultimate fallback - try to get any exercises from database
     try {
