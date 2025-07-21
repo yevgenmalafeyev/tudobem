@@ -8,7 +8,7 @@ export interface EnhancedExercise extends Exercise {
     en: string;
     uk: string;
   };
-  source?: 'ai' | 'database' | 'static';
+  source?: 'ai' | 'database' | 'static' | 'fallback';
   difficultyScore?: number;
   usageCount?: number;
   createdAt?: Date;
@@ -32,7 +32,7 @@ export interface BatchGenerationResponse {
   data: {
     exercises: EnhancedExercise[];
     generatedCount: number;
-    source: 'ai' | 'database' | 'mixed';
+    source: 'ai' | 'database' | 'mixed' | 'fallback';
     sessionId: string;
   };
   error?: string;

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { ExerciseDatabase } from '@/lib/database';
 
@@ -8,7 +8,7 @@ async function checkAdminAuth(): Promise<boolean> {
   return adminSession?.value === 'authenticated';
 }
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     // Check admin authentication
     const isAuthenticated = await checkAdminAuth();

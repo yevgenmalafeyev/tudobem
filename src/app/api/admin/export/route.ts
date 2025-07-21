@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { sql } from '@vercel/postgres';
 import JSZip from 'jszip';
@@ -9,7 +9,7 @@ async function checkAdminAuth(): Promise<boolean> {
   return adminSession?.value === 'authenticated';
 }
 
-export async function POST(_request: NextRequest) {
+export async function POST() {
   try {
     // Check admin authentication
     const isAuthenticated = await checkAdminAuth();

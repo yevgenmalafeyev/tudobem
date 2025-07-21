@@ -49,13 +49,13 @@ export const GenerationStatusIndicator: React.FC<GenerationStatusProps> = ({
         };
       case 'database':
         return {
-          icon: '📚',
-          text: 'Library',
-          color: 'text-blue-600', 
-          bgColor: 'bg-blue-50',
-          borderColor: 'border-blue-200',
-          description: 'From curated question database',
-          status: 'Questions from database library'
+          icon: '⚠️',
+          text: 'Fallback',
+          color: 'text-yellow-600', 
+          bgColor: 'bg-yellow-50',
+          borderColor: 'border-yellow-200',
+          description: 'Using database questions (AI key missing or API unreachable)',
+          status: 'Fallback: Database questions'
         };
       case 'mixed':
         return {
@@ -69,13 +69,13 @@ export const GenerationStatusIndicator: React.FC<GenerationStatusProps> = ({
         };
       case 'fallback':
         return {
-          icon: '🔄',
-          text: 'Offline',
-          color: 'text-orange-600',
-          bgColor: 'bg-orange-50',
-          borderColor: 'border-orange-200',
-          description: 'Offline mode - static questions',
-          status: 'Offline mode active'
+          icon: '🆘',
+          text: 'Emergency',
+          color: 'text-red-600',
+          bgColor: 'bg-red-50',
+          borderColor: 'border-red-200',
+          description: 'Emergency fallback - basic static questions',
+          status: 'Emergency: Static questions'
         };
     }
   };
@@ -199,10 +199,10 @@ export const GenerationStatusIndicator: React.FC<GenerationStatusProps> = ({
 
           {/* Help Text */}
           <div className="mt-2 pt-2 border-t border-gray-200 text-gray-500 text-xs">
-            {source === 'ai' && 'Questions tailored to your level and progress'}
-            {source === 'database' && 'Curated questions from our library'}
-            {source === 'mixed' && 'Best of AI generation and curated content'}
-            {source === 'fallback' && 'Working offline with static questions'}
+            {source === 'ai' && 'Fresh questions generated specifically for you'}
+            {source === 'database' && 'Please add your Claude API key for fresh questions'}
+            {source === 'mixed' && 'Combination of fresh AI and database questions'}
+            {source === 'fallback' && 'Basic questions - please check your connection'}
           </div>
         </div>
       )}

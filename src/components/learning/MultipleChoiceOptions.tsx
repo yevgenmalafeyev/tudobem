@@ -28,7 +28,6 @@ export default function MultipleChoiceOptions({
               color: selectedOption === option ? 'var(--neo-text-inverted)' : 'var(--neo-text)'
             }}
             data-testid="multiple-choice-option"
-            aria-selected={selectedOption === option}
           >
             {String.fromCharCode(65 + index)}. {option}
           </button>

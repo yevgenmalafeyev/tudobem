@@ -3,7 +3,6 @@ import {
   EnhancedExercise, 
   ExerciseFilter, 
   UsageStats, 
-  ExerciseSession,
   GenerationQueueRecord 
 } from '@/types/enhanced';
 import { LanguageLevel } from '@/types';

@@ -2,9 +2,7 @@ import { Pool, Client } from 'pg';
 import { 
   EnhancedExercise, 
   ExerciseFilter, 
-  UsageStats, 
-  ExerciseSession,
-  GenerationQueueRecord 
+  UsageStats
 } from '@/types/enhanced';
 import { LanguageLevel } from '@/types';
 

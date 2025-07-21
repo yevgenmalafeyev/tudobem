@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SmartDatabase } from '@/lib/smartDatabase';
 import { EnhancedFallbackService } from '@/services/enhancedFallbackService';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   const startTime = Date.now();
   console.log('🔄 [DEBUG] Exercise migration endpoint called at', new Date().toISOString());
   

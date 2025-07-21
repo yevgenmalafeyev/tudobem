@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface UsageStats {
   totalUsers: number;
@@ -20,11 +20,7 @@ export default function UsageAnalytics() {
   const [error, setError] = useState('');
   const [timeRange, setTimeRange] = useState('7d');
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setIsLoading(true);
     setError('');
 
@@ -42,7 +38,11 @@ export default function UsageAnalytics() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [timeRange, fetchAnalytics]);
 
   const formatNumber = (num: number) => {
     return num.toLocaleString();

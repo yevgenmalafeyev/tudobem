@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const deviceType = getDeviceTypeFromUserAgent(userAgent);
     
     // Get country from IP (simplified - in production you'd use a geolocation service)
-    const country = getCountryFromIP(ipAddress);
+    const country = getCountryFromIP();
 
     // Create or update session
     await AnalyticsDatabase.createOrUpdateSession({
@@ -73,7 +73,7 @@ function getDeviceTypeFromUserAgent(userAgent: string): string {
   return 'Desktop';
 }
 
-function getCountryFromIP(ipAddress: string): string {
+function getCountryFromIP(): string {
   // Simplified country detection - in production you'd use a proper geolocation service
   // For now, return a default value
   return 'Unknown';

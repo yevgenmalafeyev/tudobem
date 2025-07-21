@@ -65,6 +65,8 @@ export function useExerciseQueue({
         levels: request.levels,
         topicsCount: request.topics?.length,
         hasApiKey: !!request.claudeApiKey,
+        apiKeyLength: request.claudeApiKey?.length || 0,
+        apiKeyPrefix: request.claudeApiKey?.substring(0, 15) + '...' || 'NO_KEY',
         sessionId: request.sessionId,
         count: request.count
       });
@@ -295,7 +297,7 @@ export function useExerciseQueue({
   // Auto-reset queue when configuration changes
   useEffect(() => {
     resetQueue();
-  }, [configuration.selectedLevels, configuration.selectedTopics]); // Remove resetQueue from dependencies
+  }, [configuration.selectedLevels, configuration.selectedTopics, resetQueue]);
 
   return {
     exerciseQueue,

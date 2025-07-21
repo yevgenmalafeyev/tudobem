@@ -47,7 +47,7 @@ export default function Configuration({ onSave }: ConfigurationProps) {
       // Auto-select all available topics (existing + new)
       return [...validExistingTopics, ...newTopics];
     });
-  }, [selectedLevels]);
+  }, [selectedLevels, availableTopics]);
 
   useEffect(() => {
     // Check if PWA button should be shown

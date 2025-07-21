@@ -1,5 +1,5 @@
 import { ExerciseDatabase } from '@/lib/exerciseDatabase';
-import { QueueItem, BatchGenerationRequest, GenerationQueueRecord } from '@/types/enhanced';
+import { BatchGenerationRequest, GenerationQueueRecord } from '@/types/enhanced';
 import { callClaudeApi, extractJsonFromClaudeResponse } from '@/lib/api-utils';
 import { generateBatchExercisePrompt, validateBatchExerciseResponse, processGeneratedExercises } from '@/utils/batchPrompts';
 import { topics } from '@/data/topics';
@@ -119,7 +119,7 @@ export class ExerciseQueueService {
    * Generate exercises for a queue item
    */
   private static async generateExercisesForQueueItem(item: GenerationQueueRecord): Promise<void> {
-    const { levels, topics: selectedTopics, userSessionId } = item;
+    const { levels, topics: selectedTopics } = item;
     
     console.log(`🎯 Generating exercises for levels: ${levels.join(', ')}, topics: ${selectedTopics.join(', ')}`);
 
@@ -229,7 +229,6 @@ export class ExerciseQueueService {
    */
   static async cleanupOldQueueItems(olderThanHours: number = 24): Promise<void> {
     try {
-      const cutoffDate = new Date(Date.now() - (olderThanHours * 60 * 60 * 1000));
       
       // This would require a new database method
       console.log(`🧹 Cleaning up queue items older than ${olderThanHours} hours`);

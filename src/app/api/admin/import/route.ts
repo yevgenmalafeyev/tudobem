@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     
     try {
       exercises = JSON.parse(questionsData);
-    } catch (_error) {
+    } catch {
       return NextResponse.json({ error: 'Invalid JSON format' }, { status: 400 });
     }
 

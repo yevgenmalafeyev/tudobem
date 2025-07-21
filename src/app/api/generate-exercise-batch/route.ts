@@ -3,8 +3,7 @@ import { SmartDatabase } from '@/lib/smartDatabase';
 import { 
   generateBatchExercisePrompt, 
   validateBatchExerciseResponse,
-  processGeneratedExercises,
-  generateSupplementaryPrompt
+  processGeneratedExercises
 } from '@/utils/batchPrompts';
 import { topics } from '@/data/topics';
 import { 
@@ -13,8 +12,7 @@ import {
   createApiError, 
   callClaudeApi,
   extractJsonFromClaudeResponse,
-  withErrorHandling,
-  FALLBACK_MESSAGES
+  withErrorHandling
 } from '@/lib/api-utils';
 import { 
   BatchGenerationRequest, 
@@ -35,8 +33,7 @@ async function generateFallbackExercises(levels: LanguageLevel[], count: number)
       levels, 
       [], // No specific topics filter for ultimate fallback
       count,
-      {}, // No mastered words filter for ultimate fallback
-      `fallback-${Date.now()}` // Generate session ID for tracking
+      {} // No mastered words filter for ultimate fallback
     );
     console.log('🆘 [DEBUG] Generated', fallbackExercises.length, 'fallback exercises');
     return fallbackExercises;
@@ -161,14 +158,22 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     
     console.log('📦 [DEBUG] Step 4: Starting exercise processing...');
     
-    // Step 4: Determine how many new exercises we need to generate
+    // Step 4: PRIORITIZE AI GENERATION - Try AI first if API key is available
     let exercisesToReturn: EnhancedExercise[] = [];
-    let generationSource: 'ai' | 'database' | 'mixed' = 'database';
+    let generationSource: 'ai' | 'database' | 'mixed' | 'fallback' = 'ai';
     
-    console.log('📦 [DEBUG] Step 4a: Checking if we have enough database exercises...');
-    if (databaseExercises.length >= count) {
-      console.log('📦 [DEBUG] Step 4a: Sufficient database exercises found');
-      // We have enough in database
+    console.log('📦 [DEBUG] Step 4: PRIORITIZING AI GENERATION...');
+    
+    if (!claudeApiKey) {
+      console.log('📦 [DEBUG] Step 4a: No API key provided - using database fallback');
+      console.log('⚠️ [DEBUG] API key check details:', {
+        claudeApiKey: claudeApiKey,
+        type: typeof claudeApiKey,
+        length: claudeApiKey?.length || 0,
+        truthy: !!claudeApiKey
+      });
+      
+      // Fallback to database exercises
       exercisesToReturn = databaseExercises
         .filter(ex => !masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
         .slice(0, count);
@@ -182,38 +187,51 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
         exercisesToReturn.push(...masteredExercises);
       }
       
-      console.log(`✅ Using ${exercisesToReturn.length} exercises from database`);
-    } else {
-      // We need to generate some new exercises
-      const neededCount = count - databaseExercises.length;
-      console.log('📦 [DEBUG] Step 4b: Need to generate AI exercises');
-      console.log(`🤖 [DEBUG] Need to generate ${neededCount} new exercises`);
+      generationSource = 'database';
+      console.log(`⚠️ Using ${exercisesToReturn.length} exercises from database (no API key)`);
       
-      if (!claudeApiKey) {
-        console.log('📦 [DEBUG] Step 4b: No API key provided');
-        console.log('⚠️ [DEBUG] No API key provided, returning only database exercises');
-        exercisesToReturn = databaseExercises.slice(0, count);
-        generationSource = 'database';
-      } else {
-        // Generate new exercises using Claude AI
-        console.log('📦 [DEBUG] Step 4c: Starting AI generation process...');
-        const topicNames = topics
-          .filter(topic => selectedTopics.includes(topic.id))
-          .map(topic => topic.name);
-        console.log('📦 [DEBUG] Topic names extracted:', topicNames);
+    } else {
+      console.log('📦 [DEBUG] Step 4b: API key present - attempting AI generation');
+      console.log('📦 [DEBUG] API key details:', {
+        type: typeof claudeApiKey,
+        length: claudeApiKey.length,
+        prefix: claudeApiKey.substring(0, 15) + '...',
+        valid: claudeApiKey.startsWith('sk-ant-')
+      });
+      // Generate fresh exercises using Claude AI
+      console.log('📦 [DEBUG] Step 4c: Starting FRESH AI generation process...');
+      const topicNames = topics
+        .filter(topic => selectedTopics.includes(topic.id))
+        .map(topic => topic.name);
+      console.log('📦 [DEBUG] Topic names extracted:', topicNames);
 
-        console.log('📦 [DEBUG] Generating prompt...');
-        const prompt = databaseExercises.length > 0
-          ? generateSupplementaryPrompt(levels, selectedTopics, databaseExercises, neededCount)
-          : generateBatchExercisePrompt(levels, selectedTopics, topicNames, masteredWords, neededCount);
-        console.log('📦 [DEBUG] Prompt generated, length:', prompt.length);
+      console.log('📦 [DEBUG] Generating prompt for FRESH exercises...');
+      // Always generate fresh exercises, don't supplement existing ones
+      const prompt = generateBatchExercisePrompt(levels, selectedTopics, topicNames, masteredWords, count);
+      console.log('📦 [DEBUG] Prompt generated for', count, 'fresh exercises, length:', prompt.length);
         
         console.log('🚀 [DEBUG] About to call Claude AI...');
+        console.log('🚀 [DEBUG] Pre-API call state:', {
+          promptLength: prompt.length,
+          claudeApiKeyPresent: !!claudeApiKey,
+          claudeApiKeyLength: claudeApiKey.length,
+          claudeApiKeyValid: claudeApiKey.startsWith('sk-ant-'),
+          timestamp: new Date().toISOString()
+        });
         
         try {
           const aiStartTime = Date.now();
-          console.log('📦 [DEBUG] Calling Claude API...');
-          const responseText = await callClaudeApi(claudeApiKey, prompt);
+          console.log('📦 [DEBUG] Calling Claude API with timeout protection...');
+          
+          // Add timeout wrapper for Claude API call
+          const claudeApiCall = callClaudeApi(claudeApiKey, prompt);
+          const apiTimeout = new Promise<never>((_, reject) => {
+            setTimeout(() => {
+              reject(new Error('Claude API call timeout after 25 seconds'));
+            }, 25000);
+          });
+          
+          const responseText = await Promise.race([claudeApiCall, apiTimeout]);
           console.log('📦 [DEBUG] Claude API call completed in', Date.now() - aiStartTime, 'ms');
           console.log('📝 [DEBUG] Claude AI response received, length:', responseText.length);
           
@@ -251,12 +269,12 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
             });
           }
           
-          console.log(`✅ Generated ${validExercises.length} valid exercises`);
+          console.log(`✅ Generated ${validExercises.length} FRESH AI exercises`);
           
-          // Save new exercises to database for future use (with timeout)
+          // Save new exercises to database for future fallback use (with timeout)
           if (validExercises.length > 0) {
             try {
-              console.log('💾 Saving new exercises to database...');
+              console.log('💾 Saving new AI exercises to database for future fallback...');
               const saveStartTime = Date.now();
               await withTimeout(
                 SmartDatabase.saveExerciseBatch(validExercises),
@@ -270,31 +288,45 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
             }
           }
           
-          // Combine database and generated exercises
-          exercisesToReturn = [...databaseExercises, ...validExercises].slice(0, count);
-          generationSource = databaseExercises.length > 0 ? 'mixed' : 'ai';
+          // Return ONLY fresh AI-generated exercises
+          exercisesToReturn = validExercises.slice(0, count);
+          generationSource = 'ai';
+          console.log(`🤖 SUCCESS: Returning ${exercisesToReturn.length} FRESH AI exercises`);
           
         } catch (aiError) {
           console.error('❌ AI generation failed:', aiError);
+          console.log('🔄 [DEBUG] Falling back to database exercises due to AI failure');
           
-          // Fallback to database exercises only
-          exercisesToReturn = databaseExercises.slice(0, count);
+          // Fallback to database exercises when AI fails
+          exercisesToReturn = databaseExercises
+            .filter(ex => !masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
+            .slice(0, count);
+          
+          if (exercisesToReturn.length < count) {
+            // Not enough non-mastered exercises, include some mastered ones
+            const remainingNeeded = count - exercisesToReturn.length;
+            const masteredExercises = databaseExercises
+              .filter(ex => masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
+              .slice(0, remainingNeeded);
+            exercisesToReturn.push(...masteredExercises);
+          }
+          
           generationSource = 'database';
+          console.log(`🔄 FALLBACK: Using ${exercisesToReturn.length} database exercises (AI failed)`);
           
           if (exercisesToReturn.length === 0) {
-            console.log('🆘 [DEBUG] No database exercises, falling back to static fallback exercises...');
+            console.log('🆘 [DEBUG] No database exercises available, using static fallback...');
             // Ultimate fallback - return static fallback exercises
             const fallbackExercises = await generateFallbackExercises(levels, count);
             return createApiResponse({
               exercises: fallbackExercises,
               generatedCount: fallbackExercises.length,
-              source: 'database' as const,
+              source: 'fallback' as const,
               sessionId
             });
           }
         }
       }
-    }
     
     // Step 3: Shuffle the final exercise list for variety
     const shuffledExercises = exercisesToReturn.sort(() => Math.random() - 0.5);

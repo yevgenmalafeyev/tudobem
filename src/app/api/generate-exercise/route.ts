@@ -21,14 +21,12 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     levels: parsedLevels, 
     topics: parsedTopics, 
     claudeApiKey, 
-    masteredWords: parsedMasteredWords = {},
-    sessionId
+    masteredWords: parsedMasteredWords = {}
   } = await parseRequestBody<{
     levels: LanguageLevel[];
     topics: string[];
     claudeApiKey?: string;
     masteredWords?: Record<string, unknown>;
-    sessionId?: string;
   }>(request);
   
   const levels = parsedLevels || [];
@@ -44,8 +42,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       const exercise = await EnhancedFallbackService.getExercise(
         levels || ['A1'], 
         selectedTopics, 
-        masteredWords,
-        sessionId
+        masteredWords
       );
       
       if (!exercise) {

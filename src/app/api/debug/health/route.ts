@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SmartDatabase } from '@/lib/smartDatabase';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const startTime = Date.now();
   console.log('🔍 [DEBUG] Health check endpoint called at', new Date().toISOString());
   

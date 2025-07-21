@@ -50,7 +50,6 @@ export default function Learning() {
     exerciseQueue,
     loadInitialBatch,
     getNextExercise,
-    getCurrentExercise,
     isLoading: queueLoading,
     isBackgroundLoading,
     generationSource,

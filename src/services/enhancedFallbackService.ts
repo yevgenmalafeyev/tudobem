@@ -18,14 +18,13 @@ export class EnhancedFallbackService {
   static async getExercise(
     levels: LanguageLevel[], 
     topics: string[] = [],
-    masteredWords: Record<string, unknown> = {},
-    sessionId?: string
+    masteredWords: Record<string, unknown> = {}
   ): Promise<EnhancedExercise | null> {
     console.log('🔄 Enhanced fallback: Getting exercise', { levels, topics: topics.length });
     
     try {
       // Step 1: Try database first
-      const databaseExercise = await this.getDatabaseExercise(levels, topics, masteredWords, sessionId);
+      const databaseExercise = await this.getDatabaseExercise(levels, topics, masteredWords);
       if (databaseExercise) {
         console.log('✅ Enhanced fallback: Using database exercise');
         return databaseExercise;
@@ -58,8 +57,7 @@ export class EnhancedFallbackService {
     levels: LanguageLevel[],
     topics: string[] = [],
     count: number = 10,
-    masteredWords: Record<string, unknown> = {},
-    sessionId?: string
+    masteredWords: Record<string, unknown> = {}
   ): Promise<EnhancedExercise[]> {
     console.log('📦 Enhanced fallback: Getting exercise batch', { levels, topics: topics.length, count });
     
@@ -110,7 +108,7 @@ export class EnhancedFallbackService {
       const allStaticExercises: EnhancedExercise[] = [];
       
       // Convert all static exercises to enhanced format
-      for (const [level, exercises] of Object.entries(fallbackExercises)) {
+      for (const [, exercises] of Object.entries(fallbackExercises)) {
         for (const exercise of exercises) {
           const enhanced = this.convertToEnhancedExercise(exercise);
           enhanced.source = 'static';
@@ -136,8 +134,7 @@ export class EnhancedFallbackService {
   private static async getDatabaseExercise(
     levels: LanguageLevel[],
     topics: string[],
-    masteredWords: Record<string, unknown>,
-    sessionId?: string
+    masteredWords: Record<string, unknown>
   ): Promise<EnhancedExercise | null> {
     try {
       const exercises = await SmartDatabase.getExercises({
@@ -163,11 +160,6 @@ export class EnhancedFallbackService {
 
       // Return the least used exercise
       const selectedExercise = availableExercises[0]; // Already sorted by usage count
-      
-      // Mark as used if we have an ID and session
-      if (selectedExercise.id && sessionId) {
-        await SmartDatabase.markExerciseUsed(selectedExercise.id, sessionId, false);
-      }
 
       return selectedExercise;
       
@@ -322,7 +314,7 @@ export class EnhancedFallbackService {
   /**
    * Generate basic explanation in the specified language
    */
-  private static generateBasicExplanation(exercise: Exercise, lang: 'pt' | 'en' | 'uk'): string {
+  private static generateBasicExplanation(exercise: Exercise, _lang: 'pt' | 'en' | 'uk'): string {
     const templates = {
       pt: {
         default: `A resposta correta é "${exercise.correctAnswer}".`,
@@ -341,7 +333,7 @@ export class EnhancedFallbackService {
       }
     };
 
-    const template = templates[lang];
+    const template = templates[_lang];
     
     // Choose template based on topic
     if (exercise.topic.includes('verb') || exercise.hint?.infinitive) {

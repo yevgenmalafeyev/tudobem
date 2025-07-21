@@ -55,15 +55,51 @@ export async function callClaudeApi(
   maxTokens: number = ANTHROPIC_CONFIG.maxTokens.exercise,
   model: string = ANTHROPIC_CONFIG.model
 ): Promise<string> {
-  const anthropic = new Anthropic({ apiKey });
+  console.log('🤖 [CLAUDE_API] Starting Claude API call...');
+  console.log('🤖 [CLAUDE_API] API Key present:', !!apiKey);
+  console.log('🤖 [CLAUDE_API] API Key length:', apiKey?.length || 0);
+  console.log('🤖 [CLAUDE_API] API Key prefix:', apiKey?.substring(0, 10) + '...' || 'NO_KEY');
+  console.log('🤖 [CLAUDE_API] Model:', model);
+  console.log('🤖 [CLAUDE_API] Max tokens:', maxTokens);
+  console.log('🤖 [CLAUDE_API] Prompt length:', prompt.length);
   
-  const message = await anthropic.messages.create({
-    model,
-    max_tokens: maxTokens,
-    messages: [{ role: 'user', content: prompt }]
-  });
-
-  return message.content[0].type === 'text' ? message.content[0].text : '';
+  try {
+    const anthropic = new Anthropic({ apiKey });
+    console.log('🤖 [CLAUDE_API] Anthropic client created successfully');
+    
+    const requestStart = Date.now();
+    console.log('🤖 [CLAUDE_API] Making API request...');
+    
+    const message = await anthropic.messages.create({
+      model,
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: prompt }]
+    });
+    
+    const requestDuration = Date.now() - requestStart;
+    console.log('🤖 [CLAUDE_API] API request completed in:', requestDuration, 'ms');
+    console.log('🤖 [CLAUDE_API] Response received, content type:', message.content[0]?.type);
+    console.log('🤖 [CLAUDE_API] Response length:', message.content[0]?.type === 'text' ? message.content[0].text.length : 0);
+    
+    if (message.content[0]?.type === 'text') {
+      console.log('🤖 [CLAUDE_API] SUCCESS: Text response received');
+      return message.content[0].text;
+    } else {
+      console.error('🤖 [CLAUDE_API] ERROR: No text content in response');
+      throw new Error('No text content in Claude API response');
+    }
+    
+  } catch (error) {
+    console.error('🤖 [CLAUDE_API] ERROR: API call failed:', error);
+    console.error('🤖 [CLAUDE_API] Error type:', error?.constructor?.name);
+    console.error('🤖 [CLAUDE_API] Error message:', error instanceof Error ? error.message : 'Unknown error');
+    
+    if (error instanceof Error && 'status' in error) {
+      console.error('🤖 [CLAUDE_API] HTTP Status:', (error as Error & { status?: number }).status);
+    }
+    
+    throw error;
+  }
 }
 
 export async function checkAdminAuthentication(): Promise<boolean> {

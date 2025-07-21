@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SmartDatabase } from '@/lib/smartDatabase';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   const startTime = Date.now();
   console.log('🗄️ [DEBUG] Database initialization endpoint called at', new Date().toISOString());
   
