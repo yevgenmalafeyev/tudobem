@@ -118,7 +118,7 @@ export default function Learning() {
       console.log('🚀 [DEBUG] Calling loadInitialBatch immediately on mount...');
       loadInitialBatch();
     }
-  }, []); // Empty dependency - only run on mount
+  }, [loadInitialBatch, currentExercise, exerciseQueue.exercises.length, configuration.claudeApiKey]); // Include all dependencies
   
   // Handle queue exercises when available
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function Learning() {
         generateExplanation(nextExercise);
       }
     }
-  }, [exerciseQueue.exercises.length, currentExercise]); // Only depend on queue length and current exercise
+  }, [exerciseQueue.exercises.length, currentExercise, getNextExercise, setCurrentExercise, generateExplanation]); // Include all dependencies
 
   // Focus input when component mounts and when new exercise is generated
   useEffect(() => {

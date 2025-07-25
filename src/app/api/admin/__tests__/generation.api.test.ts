@@ -1,5 +1,17 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
+// Mock Request interface for testing
+interface MockRequest {
+  json(): Promise<Record<string, unknown>>;
+}
+
+// Type for test results that contain level property
+interface LevelResult {
+  level: string;
+  status?: string;
+  neededCount?: number;
+}
+
 // Mock environment variables for testing
 process.env.NODE_ENV = 'test';
 
@@ -98,13 +110,13 @@ describe('Exercise Generation API Routes', () => {
     it('should generate exercises successfully', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos', 'substantivos'],
           levels: ['A1', 'A2'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -125,13 +137,13 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -144,13 +156,13 @@ describe('Exercise Generation API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           // missing topics
           levels: ['A1'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -163,13 +175,13 @@ describe('Exercise Generation API Routes', () => {
     it('should validate count range', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1'],
           count: 25 // too high
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -182,13 +194,13 @@ describe('Exercise Generation API Routes', () => {
     it('should validate language levels', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1', 'INVALID'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -203,13 +215,13 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -224,13 +236,13 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -245,13 +257,13 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -267,7 +279,7 @@ describe('Exercise Generation API Routes', () => {
     it('should auto-generate exercises successfully', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           targetCounts: {
             'A1': 50,
@@ -275,7 +287,7 @@ describe('Exercise Generation API Routes', () => {
           },
           topics: ['verbos', 'substantivos']
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -293,11 +305,11 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           targetCounts: { 'A1': 50 }
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -310,11 +322,11 @@ describe('Exercise Generation API Routes', () => {
     it('should validate target counts', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           // missing targetCounts
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -327,13 +339,13 @@ describe('Exercise Generation API Routes', () => {
     it('should validate target count values', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           targetCounts: {
             'A1': 1500 // too high
           }
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -346,20 +358,20 @@ describe('Exercise Generation API Routes', () => {
     it('should skip levels that already meet targets', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           targetCounts: {
             'A1': 15 // current is 20, so target already met
           }
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
       expect(responseData.success).toBe(true);
-      const a1Result = responseData.data.results.find((r: any) => r.level === 'A1');
+      const a1Result = responseData.data.results.find((r: LevelResult) => r.level === 'A1');
       expect(a1Result.status).toBe('target_met');
       expect(a1Result.neededCount).toBe(0);
     });
@@ -369,11 +381,11 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           targetCounts: { 'A1': 50 }
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();

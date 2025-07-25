@@ -44,6 +44,7 @@ async function registerHandler(request: NextRequest) {
     const user = await UserDatabase.registerUser(username, password, email);
 
     // Return user data without password hash
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash, ...userResponse } = user;
     
     return createApiResponse({

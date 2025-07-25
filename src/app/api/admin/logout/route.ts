@@ -1,8 +1,7 @@
-import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { createApiResponse, withErrorHandling } from '@/lib/api-utils';
 
-async function adminLogoutHandler(request: NextRequest) {
+async function adminLogoutHandler() {
   try {
     const cookieStore = await cookies();
     
@@ -12,7 +11,7 @@ async function adminLogoutHandler(request: NextRequest) {
     return createApiResponse({
       message: 'Admin logout successful'
     });
-  } catch (error) {
+  } catch {
     // Always clear the cookie even if there's an error
     const cookieStore = await cookies();
     cookieStore.delete('admin-session');

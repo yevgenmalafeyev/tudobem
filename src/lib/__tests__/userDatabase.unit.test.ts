@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { UserDatabase, User, UserExerciseAttempt } from '../userDatabase';
+import { UserDatabase } from '../userDatabase';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -166,7 +166,7 @@ describe('UserDatabase Unit Tests', () => {
 
     beforeEach(() => {
       // Mock bcrypt.compare to return true for correct password
-      jest.spyOn(bcrypt, 'compare').mockImplementation(async (password: string, hash: string) => {
+      jest.spyOn(bcrypt, 'compare').mockImplementation(async (password: string) => {
         return password === 'testpassword123';
       });
     });
@@ -187,7 +187,7 @@ describe('UserDatabase Unit Tests', () => {
       expect(result.token).toBeDefined();
 
       // Verify JWT token contains correct data
-      const decoded = jwt.verify(result.token, process.env.JWT_SECRET!) as any;
+      const decoded = jwt.verify(result.token, process.env.JWT_SECRET!) as { userId: string; username: string; iat: number; exp: number };
       expect(decoded.userId).toBe(mockUser.id);
       expect(decoded.username).toBe(mockUser.username);
     });

@@ -151,7 +151,7 @@ async function generateExercisesHandler(request: NextRequest) {
     }
 
     // Save new exercises to database
-    let dbExercises = [];
+    let dbExercises: unknown[] = [];
     if (savedExercises.length > 0) {
       dbExercises = await ExerciseDatabase.saveBatchExercises(savedExercises);
     }
@@ -163,7 +163,8 @@ async function generateExercisesHandler(request: NextRequest) {
         saved: savedExercises.length,
         duplicates: duplicateCount
       },
-      exercises: dbExercises.map(ex => ({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      exercises: dbExercises.map((ex: any) => ({
         id: ex.id,
         sentence: ex.sentence,
         correctAnswer: ex.correct_answer,

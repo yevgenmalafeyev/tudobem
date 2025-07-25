@@ -23,7 +23,6 @@ function getPool(): Pool {
 }
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { LanguageLevel } from '@/types';
 
 export interface User {
   id: string;
@@ -252,7 +251,7 @@ export class UserDatabase {
   static async verifyToken(token: string): Promise<User | null> {
     try {
       // Verify JWT token
-      const decoded = jwt.verify(token, this.JWT_SECRET) as any;
+      jwt.verify(token, this.JWT_SECRET);
       
       // Check if session exists in database and hasn't expired
       const sessionResult = await sql`

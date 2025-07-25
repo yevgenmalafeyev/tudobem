@@ -30,7 +30,7 @@ export default function Configuration({ onSave }: ConfigurationProps) {
 
   useEffect(() => {
     let isMounted = true;
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | null = null;
     
     // Auto-select topics when levels change
     // Debounce to prevent updates during component unmounting

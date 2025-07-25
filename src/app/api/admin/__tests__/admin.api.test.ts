@@ -1,5 +1,11 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
+// Mock Request interface for testing
+interface MockRequest {
+  json(): Promise<Record<string, unknown>>;
+}
+
+
 // Mock environment variables for testing
 process.env.NODE_ENV = 'test';
 
@@ -67,12 +73,12 @@ describe('Admin API Routes', () => {
     it('should login admin with correct credentials', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'admin',
           password: '321admin123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -91,12 +97,12 @@ describe('Admin API Routes', () => {
     it('should reject invalid credentials', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'admin',
           password: 'wrongpassword'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -109,12 +115,12 @@ describe('Admin API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'admin'
           // missing password
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -127,12 +133,12 @@ describe('Admin API Routes', () => {
     it('should reject wrong username', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'wrongadmin',
           password: '321admin123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -147,7 +153,9 @@ describe('Admin API Routes', () => {
     it('should logout admin successfully', async () => {
       const { POST } = await import('../logout/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -165,7 +173,9 @@ describe('Admin API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -180,7 +190,9 @@ describe('Admin API Routes', () => {
     it('should get API key when authenticated', async () => {
       const { GET } = await import('../api-key/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -198,7 +210,9 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../api-key/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -213,11 +227,11 @@ describe('Admin API Routes', () => {
     it('should update API key when authenticated', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           apiKey: 'sk-ant-api03-new-test-key'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -232,11 +246,11 @@ describe('Admin API Routes', () => {
     it('should validate API key format', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           apiKey: 'invalid-api-key'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -249,11 +263,11 @@ describe('Admin API Routes', () => {
     it('should require API key', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           // missing apiKey
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -268,11 +282,11 @@ describe('Admin API Routes', () => {
       
       const { POST } = await import('../api-key/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           apiKey: 'sk-ant-api03-test-key'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -287,7 +301,9 @@ describe('Admin API Routes', () => {
     it('should get admin statistics when authenticated', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -312,7 +328,9 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -327,7 +345,9 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();

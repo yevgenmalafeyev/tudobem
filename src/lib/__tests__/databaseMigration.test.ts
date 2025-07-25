@@ -21,7 +21,7 @@ describe('Database Migration', () => {
       await sql`DELETE FROM user_sessions WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'migration_test_%')`;
       await sql`DELETE FROM users WHERE username LIKE 'migration_test_%'`;
       await sql`DELETE FROM exercises WHERE topic = 'migration_test'`;
-    } catch (error) {
+    } catch {
       // Ignore errors if tables don't exist yet
     }
   }
@@ -47,36 +47,39 @@ describe('Database Migration', () => {
           default: row.column_default
         });
         return acc;
-      }, {} as Record<string, any[]>);
+      }, {} as Record<string, Array<{column: string; type: string; nullable: boolean; default: string | null}>>);
+
+      // Define column type for better TypeScript inference
+      type ColumnInfo = {column: string; type: string; nullable: boolean; default: string | null};
 
       // Verify users table structure
       expect(tableStructure.users).toBeDefined();
       const usersTable = tableStructure.users;
-      expect(usersTable.find(col => col.column === 'id')).toBeDefined();
-      expect(usersTable.find(col => col.column === 'username')).toBeDefined();
-      expect(usersTable.find(col => col.column === 'password_hash')).toBeDefined();
-      expect(usersTable.find(col => col.column === 'email')).toBeDefined();
-      expect(usersTable.find(col => col.column === 'created_at')).toBeDefined();
-      expect(usersTable.find(col => col.column === 'is_active')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'id')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'username')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'password_hash')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'email')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'created_at')).toBeDefined();
+      expect(usersTable.find((col: ColumnInfo) => col.column === 'is_active')).toBeDefined();
 
       // Verify user_exercise_attempts table structure
       expect(tableStructure.user_exercise_attempts).toBeDefined();
       const attemptsTable = tableStructure.user_exercise_attempts;
-      expect(attemptsTable.find(col => col.column === 'user_id')).toBeDefined();
-      expect(attemptsTable.find(col => col.column === 'exercise_id')).toBeDefined();
-      expect(attemptsTable.find(col => col.column === 'is_correct')).toBeDefined();
-      expect(attemptsTable.find(col => col.column === 'user_answer')).toBeDefined();
+      expect(attemptsTable.find((col: ColumnInfo) => col.column === 'user_id')).toBeDefined();
+      expect(attemptsTable.find((col: ColumnInfo) => col.column === 'exercise_id')).toBeDefined();
+      expect(attemptsTable.find((col: ColumnInfo) => col.column === 'is_correct')).toBeDefined();
+      expect(attemptsTable.find((col: ColumnInfo) => col.column === 'user_answer')).toBeDefined();
 
       // Verify admin_config table structure
       expect(tableStructure.admin_config).toBeDefined();
       const adminTable = tableStructure.admin_config;
-      expect(adminTable.find(col => col.column === 'claude_api_key')).toBeDefined();
+      expect(adminTable.find((col: ColumnInfo) => col.column === 'claude_api_key')).toBeDefined();
 
       // Verify user_sessions table structure
       expect(tableStructure.user_sessions).toBeDefined();
       const sessionsTable = tableStructure.user_sessions;
-      expect(sessionsTable.find(col => col.column === 'session_token')).toBeDefined();
-      expect(sessionsTable.find(col => col.column === 'expires_at')).toBeDefined();
+      expect(sessionsTable.find((col: ColumnInfo) => col.column === 'session_token')).toBeDefined();
+      expect(sessionsTable.find((col: ColumnInfo) => col.column === 'expires_at')).toBeDefined();
     });
 
     it('should create exercise system tables', async () => {
@@ -236,7 +239,7 @@ describe('Database Migration', () => {
 
       // Create attempt and session
       await UserDatabase.recordAttempt(user.id, exercises[0].id, true, 'estás');
-      const loginResult = await UserDatabase.loginUser('migration_test_cascade', 'testpassword');
+      await UserDatabase.loginUser('migration_test_cascade', 'testpassword');
 
       // Verify data exists
       let attemptResult = await sql`

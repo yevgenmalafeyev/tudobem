@@ -1,5 +1,10 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
+// Mock Request interface for testing
+interface MockRequest {
+  json(): Promise<Record<string, unknown>>;
+}
+
 // Mock environment variables for testing
 process.env.JWT_SECRET = 'test-jwt-secret-key';
 process.env.NODE_ENV = 'test';
@@ -67,13 +72,13 @@ describe('Progress API Routes', () => {
     it('should record attempt successfully', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -97,13 +102,13 @@ describe('Progress API Routes', () => {
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -118,13 +123,13 @@ describe('Progress API Routes', () => {
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -138,13 +143,13 @@ describe('Progress API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           // missing isCorrect
           userAnswer: 'answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -157,13 +162,13 @@ describe('Progress API Routes', () => {
     it('should validate isCorrect is boolean', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           isCorrect: 'true', // string instead of boolean
           userAnswer: 'answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -178,13 +183,13 @@ describe('Progress API Routes', () => {
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'answer'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -199,7 +204,9 @@ describe('Progress API Routes', () => {
     it('should return user progress successfully', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -221,7 +228,9 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -236,7 +245,9 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -252,7 +263,9 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();

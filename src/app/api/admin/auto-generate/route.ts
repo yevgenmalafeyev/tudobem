@@ -242,9 +242,8 @@ async function autoGenerateExercisesHandler(request: NextRequest) {
         }
 
         // Save new exercises to database
-        let dbExercises = [];
         if (savedExercises.length > 0) {
-          dbExercises = await ExerciseDatabase.saveBatchExercises(savedExercises);
+          await ExerciseDatabase.saveBatchExercises(savedExercises);
         }
 
         console.log(`🤖 [AUTO-GEN] Level ${level}: Generated ${validExercises.length}, Saved ${savedExercises.length}, Duplicates ${duplicateCount}`);

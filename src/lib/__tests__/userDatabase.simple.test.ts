@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -34,7 +34,7 @@ describe('UserDatabase TDD Implementation Tests', () => {
       expect(token).toBeDefined();
       expect(typeof token).toBe('string');
       
-      const decoded = jwt.verify(token, secret) as any;
+      const decoded = jwt.verify(token, secret) as { userId: string; username: string; iat: number; exp: number };
       expect(decoded.userId).toBe(payload.userId);
       expect(decoded.username).toBe(payload.username);
     });
@@ -66,8 +66,6 @@ describe('UserDatabase TDD Implementation Tests', () => {
 
   describe('Database Schema Validation', () => {
     it('should define correct User interface structure', () => {
-      const { User } = require('../userDatabase');
-      
       // Test that TypeScript interfaces compile correctly
       const mockUser = {
         id: 'uuid-string',

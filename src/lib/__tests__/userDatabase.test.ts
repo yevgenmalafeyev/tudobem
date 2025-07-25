@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals';
+import { describe, it, expect, beforeEach, beforeAll, afterAll } from '@jest/globals';
 import { sql } from '@vercel/postgres';
-import { UserDatabase, User, UserExerciseAttempt } from '../userDatabase';
+import { UserDatabase, User } from '../userDatabase';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -30,7 +30,7 @@ describe('UserDatabase', () => {
       await sql`DELETE FROM user_exercise_attempts WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'test_%')`;
       await sql`DELETE FROM user_sessions WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'test_%')`;
       await sql`DELETE FROM users WHERE username LIKE 'test_%'`;
-    } catch (error) {
+    } catch {
       // Ignore errors if tables don't exist yet
     }
   }
@@ -166,7 +166,7 @@ describe('UserDatabase', () => {
       expect(result.user.username).toBe('test_login_user');
 
       // Verify JWT token
-      const decoded = jwt.verify(result.token, process.env.JWT_SECRET!) as any;
+      const decoded = jwt.verify(result.token, process.env.JWT_SECRET!) as { userId: string; username: string; iat: number; exp: number };
       expect(decoded.userId).toBe(testUser.id);
       expect(decoded.username).toBe('test_login_user');
     });
@@ -339,7 +339,7 @@ describe('UserDatabase', () => {
 
     it('should get database statistics', async () => {
       // Create a test user and attempt
-      const testUser = await UserDatabase.registerUser('test_stats_user', 'testpassword123');
+      await UserDatabase.registerUser('test_stats_user', 'testpassword123');
       
       const stats = await UserDatabase.getDatabaseStats();
 
@@ -351,7 +351,7 @@ describe('UserDatabase', () => {
     });
 
     it('should cleanup expired sessions', async () => {
-      const testUser = await UserDatabase.registerUser('test_cleanup_user', 'testpassword123');
+      await UserDatabase.registerUser('test_cleanup_user', 'testpassword123');
       const loginResult = await UserDatabase.loginUser('test_cleanup_user', 'testpassword123');
 
       // Manually expire the session

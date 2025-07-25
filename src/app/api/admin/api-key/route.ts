@@ -6,7 +6,7 @@ interface UpdateApiKeyRequest {
   apiKey: string;
 }
 
-async function getApiKeyHandler(request: NextRequest) {
+async function getApiKeyHandler() {
   // Check admin authentication
   const authError = await requireAdminAuth();
   if (authError) return authError;
@@ -47,7 +47,7 @@ async function updateApiKeyHandler(request: NextRequest) {
     // Initialize database if needed
     await UserDatabase.initializeTables();
     
-    await UserDatabase.updateClaudeApiKey(apiKey);
+    await UserDatabase.setClaudeApiKey(apiKey);
     
     return createApiResponse({
       message: 'Claude API key updated successfully',

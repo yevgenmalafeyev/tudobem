@@ -109,20 +109,14 @@ export async function callClaudeApi(
   maxTokens: number = ANTHROPIC_CONFIG.maxTokens.exercise,
   model: string = ANTHROPIC_CONFIG.model
 ): Promise<string> {
-  const callStartTime = Date.now();
-  
   try {
     const anthropic = new Anthropic({ apiKey });
-    const requestStart = Date.now();
     
     const message = await anthropic.messages.create({
       model,
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }]
     });
-    
-    const requestEnd = Date.now();
-    const requestDuration = requestEnd - requestStart;
     
     if (message.content[0]?.type === 'text') {
       return message.content[0].text;

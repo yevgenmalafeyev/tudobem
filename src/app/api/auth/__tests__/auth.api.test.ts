@@ -1,5 +1,10 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 
+// Mock Request interface for testing
+interface MockRequest {
+  json(): Promise<Record<string, unknown>>;
+}
+
 // Mock environment variables for testing
 process.env.JWT_SECRET = 'test-jwt-secret-key';
 process.env.NODE_ENV = 'test';
@@ -46,13 +51,13 @@ describe('Authentication API Routes', () => {
     it('should register a new user successfully', async () => {
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'testuser',
           password: 'TestPass123',
           email: 'test@example.com'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -68,12 +73,12 @@ describe('Authentication API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: '',
           password: 'TestPass123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -86,12 +91,12 @@ describe('Authentication API Routes', () => {
     it('should validate username format', async () => {
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'ab', // too short
           password: 'TestPass123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -104,12 +109,12 @@ describe('Authentication API Routes', () => {
     it('should validate password strength', async () => {
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'testuser',
           password: 'weak' // too weak
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -122,13 +127,13 @@ describe('Authentication API Routes', () => {
     it('should validate email format', async () => {
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'testuser',
           password: 'TestPass123',
           email: 'invalid-email'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -143,12 +148,12 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../register/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'existinguser',
           password: 'TestPass123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -163,12 +168,12 @@ describe('Authentication API Routes', () => {
     it('should login user successfully', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'testuser',
           password: 'TestPass123'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -188,12 +193,12 @@ describe('Authentication API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'testuser'
           // missing password
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -208,12 +213,12 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../login/route');
       
-      const mockRequest = {
+      const mockRequest: MockRequest = {
         json: () => Promise.resolve({
           username: 'wronguser',
           password: 'wrongpass'
         })
-      } as any;
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -228,7 +233,9 @@ describe('Authentication API Routes', () => {
     it('should logout user successfully', async () => {
       const { POST } = await import('../logout/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -245,7 +252,9 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -260,7 +269,9 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -276,7 +287,9 @@ describe('Authentication API Routes', () => {
     it('should verify valid session', async () => {
       const { GET } = await import('../verify/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -294,7 +307,9 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -309,7 +324,9 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -325,7 +342,9 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = {} as any;
+      const mockRequest: MockRequest = {
+        json: () => Promise.resolve({})
+      };
 
       const response = await GET(mockRequest);
       const responseData = await response.json();

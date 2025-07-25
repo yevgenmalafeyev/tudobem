@@ -1,9 +1,8 @@
-import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { UserDatabase } from '@/lib/userDatabase';
 import { createApiResponse, createApiError, withErrorHandling } from '@/lib/api-utils';
 
-async function verifyHandler(request: NextRequest) {
+async function verifyHandler() {
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('session-token')?.value;
@@ -22,13 +21,14 @@ async function verifyHandler(request: NextRequest) {
     }
 
     // Return user data without password hash
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash, ...userResponse } = user;
     
     return createApiResponse({
       user: userResponse,
       valid: true
     });
-  } catch (error) {
+  } catch {
     // Clear cookie on any error
     const cookieStore = await cookies();
     cookieStore.delete('session-token');
