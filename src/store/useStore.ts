@@ -34,8 +34,14 @@ interface AppState {
 
 const defaultConfiguration: UserConfiguration = {
   selectedLevels: ['A1'],
-  selectedTopics: [],
-  claudeApiKey: undefined,
+  selectedTopics: [
+    'verbo-estar',
+    'presente-indicativo-regulares', 
+    'verbo-ter',
+    'artigos-definidos-indefinidos',
+    'pronomes-pessoais'
+  ], // Default A1 topics so users can start immediately
+  claudeApiKey: undefined, // Optional in database-driven mode
   appLanguage: 'pt',
 };
 
@@ -51,12 +57,14 @@ export const useStore = create<AppState>()(
       configuration: defaultConfiguration,
       progress: defaultProgress,
       currentExercise: null,
-      isConfigured: false,
+      isConfigured: true, // Default to true since we have valid default configuration
       collections: [],
       
       setConfiguration: (config) => set({ 
         configuration: config,
-        isConfigured: true 
+        // Configuration is complete if user has selected levels and topics
+        // API key is optional for database-driven mode
+        isConfigured: config.selectedLevels.length > 0 && config.selectedTopics.length > 0
       }),
       
       setCurrentExercise: (exercise) => set({ currentExercise: exercise }),

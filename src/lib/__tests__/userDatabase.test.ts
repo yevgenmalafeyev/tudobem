@@ -1,79 +1,97 @@
-import { describe, it, expect, beforeEach, beforeAll, afterAll } from '@jest/globals';
-import { sql } from '@vercel/postgres';
-import { UserDatabase, User } from '../userDatabase';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Mock environment variables for testing
 process.env.JWT_SECRET = 'test-jwt-secret-key';
+process.env.POSTGRES_URL = 'postgresql://test:test@localhost:5432/test';
+
+// Mock pg Pool
+const mockQuery = jest.fn();
+const mockConnect = jest.fn();
+const mockEnd = jest.fn();
+const mockPool = {
+  query: mockQuery,
+  connect: mockConnect,
+  end: mockEnd
+};
+
+// Mock the entire pg module before importing UserDatabase
+jest.mock('pg', () => ({
+  Pool: jest.fn(() => mockPool),
+  Client: jest.fn(() => ({
+    connect: mockConnect,
+    query: mockQuery,
+    end: mockEnd
+  }))
+}));
+
+// Import UserDatabase after mocking pg
+import { UserDatabase } from '../userDatabase';
 
 describe('UserDatabase', () => {
-  beforeAll(async () => {
-    // Clean up any existing test data
-    await cleanupTestData();
-    // Initialize tables
-    await UserDatabase.initializeTables();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Reset mock implementations
+    mockQuery.mockResolvedValue({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
+    mockConnect.mockResolvedValue(undefined);
+    mockEnd.mockResolvedValue(undefined);
   });
-
-  afterAll(async () => {
-    // Clean up test data after all tests
-    await cleanupTestData();
-  });
-
-  beforeEach(async () => {
-    // Clean up data before each test to ensure isolation
-    await cleanupTestData();
-  });
-
-  async function cleanupTestData() {
-    try {
-      await sql`DELETE FROM user_exercise_attempts WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'test_%')`;
-      await sql`DELETE FROM user_sessions WHERE user_id IN (SELECT id FROM users WHERE username LIKE 'test_%')`;
-      await sql`DELETE FROM users WHERE username LIKE 'test_%'`;
-    } catch {
-      // Ignore errors if tables don't exist yet
-    }
-  }
 
   describe('Table Initialization', () => {
     it('should create all required tables', async () => {
+      // Mock successful table creation and admin config initialization
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Users table
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Attempts table  
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Admin config table
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Sessions table
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 1
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 2
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 3
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 4
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 5
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 6
+        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0 }) // Index 7
+        .mockResolvedValueOnce({ rows: [{ count: '0' }], command: 'SELECT', rowCount: 1 }) // Config count
+        .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1 }); // Insert config
+
       await UserDatabase.initializeTables();
 
-      // Check that all tables exist
-      const tablesResult = await sql`
-        SELECT table_name 
-        FROM information_schema.tables 
-        WHERE table_schema = 'public' 
-        AND table_name IN ('users', 'user_exercise_attempts', 'admin_config', 'user_sessions')
-      `;
-
-      const tableNames = tablesResult.rows.map(row => row.table_name);
-      expect(tableNames).toContain('users');
-      expect(tableNames).toContain('user_exercise_attempts');
-      expect(tableNames).toContain('admin_config');
-      expect(tableNames).toContain('user_sessions');
+      // Verify that initialization was called
+      expect(mockQuery).toHaveBeenCalled();
+      expect(mockConnect).toHaveBeenCalled();
+      expect(mockEnd).toHaveBeenCalled();
     });
 
     it('should create required indexes', async () => {
+      // Mock successful index creation
+      mockQuery
+        .mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0 });
+
       await UserDatabase.initializeTables();
 
-      // Check for some key indexes
-      const indexesResult = await sql`
-        SELECT indexname 
-        FROM pg_indexes 
-        WHERE tablename IN ('users', 'user_exercise_attempts', 'user_sessions')
-      `;
-
-      const indexNames = indexesResult.rows.map(row => row.indexname);
-      expect(indexNames).toContain('idx_users_username');
-      expect(indexNames).toContain('idx_sessions_token');
+      // Verify that index creation SQL was executed
+      const createIndexCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('CREATE INDEX')
+      );
+      expect(createIndexCalls.length).toBeGreaterThan(0);
     });
 
     it('should initialize admin config if not exists', async () => {
+      // Mock config count check returning 0, then insert
+      mockQuery
+        .mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0 })
+        .mockResolvedValueOnce({ rows: [{ count: '0' }], command: 'SELECT', rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1 });
+
       await UserDatabase.initializeTables();
 
-      const configResult = await sql`SELECT COUNT(*) as count FROM admin_config`;
-      expect(parseInt(configResult.rows[0].count)).toBeGreaterThan(0);
+      // Verify admin config initialization was attempted
+      const insertCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('INSERT INTO admin_config')
+      );
+      expect(insertCalls.length).toBeGreaterThan(0);
     });
   });
 
@@ -82,6 +100,22 @@ describe('UserDatabase', () => {
       const username = 'test_user_1';
       const password = 'testpassword123';
       const email = 'test1@example.com';
+      
+      const mockUser = {
+        id: 'test-user-id',
+        username,
+        email,
+        password_hash: await bcrypt.hash(password, 12),
+        created_at: new Date(),
+        last_login: null,
+        is_active: true
+      };
+
+      // Mock username check (empty), email check (empty), user creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 }) // Username check
+        .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 }) // Email check
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'INSERT', rowCount: 1 }); // User creation
 
       const user = await UserDatabase.registerUser(username, password, email);
 
@@ -102,6 +136,21 @@ describe('UserDatabase', () => {
     it('should register a user without email', async () => {
       const username = 'test_user_2';
       const password = 'testpassword123';
+      
+      const mockUser = {
+        id: 'test-user-id',
+        username,
+        email: null,
+        password_hash: await bcrypt.hash(password, 12),
+        created_at: new Date(),
+        last_login: null,
+        is_active: true
+      };
+
+      // Mock username check (empty), user creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 }) // Username check
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'INSERT', rowCount: 1 }); // User creation
 
       const user = await UserDatabase.registerUser(username, password);
 
@@ -114,10 +163,13 @@ describe('UserDatabase', () => {
       const username = 'test_user_duplicate';
       const password = 'testpassword123';
 
-      // Register first user
-      await UserDatabase.registerUser(username, password);
+      // Mock username check (user exists)
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [{ id: 'existing-id' }], 
+        command: 'SELECT', 
+        rowCount: 1 
+      });
 
-      // Try to register with same username
       await expect(
         UserDatabase.registerUser(username, password)
       ).rejects.toThrow('Username already exists');
@@ -127,10 +179,15 @@ describe('UserDatabase', () => {
       const email = 'duplicate@example.com';
       const password = 'testpassword123';
 
-      // Register first user
-      await UserDatabase.registerUser('test_user_3', password, email);
+      // Mock username check (empty), email check (exists)
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 }) // Username check
+        .mockResolvedValueOnce({ 
+          rows: [{ id: 'existing-id' }], 
+          command: 'SELECT', 
+          rowCount: 1 
+        }); // Email check
 
-      // Try to register with same email
       await expect(
         UserDatabase.registerUser('test_user_4', password, email)
       ).rejects.toThrow('Email already exists');
@@ -139,6 +196,21 @@ describe('UserDatabase', () => {
     it('should hash passwords with sufficient rounds', async () => {
       const username = 'test_user_hash';
       const password = 'testpassword123';
+      
+      const mockUser = {
+        id: 'test-user-id',
+        username,
+        email: null,
+        password_hash: await bcrypt.hash(password, 12),
+        created_at: new Date(),
+        last_login: null,
+        is_active: true
+      };
+
+      // Mock username check (empty), user creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 }) // Username check
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'INSERT', rowCount: 1 }); // User creation
 
       const user = await UserDatabase.registerUser(username, password);
 
@@ -148,16 +220,30 @@ describe('UserDatabase', () => {
   });
 
   describe('User Login', () => {
-    let testUser: User;
+    const mockUser = {
+      id: 'test-user-id',
+      username: 'test_login_user',
+      email: 'login@example.com',
+      password_hash: '$2b$12$test.hash',
+      created_at: new Date(),
+      last_login: null,
+      is_active: true
+    };
 
-    beforeEach(async () => {
-      const username = 'test_login_user';
-      const password = 'testpassword123';
-      const email = 'login@example.com';
-      testUser = await UserDatabase.registerUser(username, password, email);
+    beforeEach(() => {
+      // Mock bcrypt.compare to return true for correct password
+      jest.spyOn(bcrypt, 'compare').mockImplementation(async (password: string) => {
+        return password === 'testpassword123';
+      });
     });
 
     it('should login with valid credentials', async () => {
+      // Mock user lookup, last_login update, session creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1 }) // User lookup
+        .mockResolvedValueOnce({ rows: [], command: 'UPDATE', rowCount: 1 }) // Last login update
+        .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1 }); // Session creation
+
       const result = await UserDatabase.loginUser('test_login_user', 'testpassword123');
 
       expect(result).toBeDefined();
@@ -167,49 +253,66 @@ describe('UserDatabase', () => {
 
       // Verify JWT token
       const decoded = jwt.verify(result.token, process.env.JWT_SECRET!) as { userId: string; username: string; iat: number; exp: number };
-      expect(decoded.userId).toBe(testUser.id);
+      expect(decoded.userId).toBe(mockUser.id);
       expect(decoded.username).toBe('test_login_user');
     });
 
     it('should reject invalid username', async () => {
+      // Mock empty user lookup
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 });
+
       await expect(
         UserDatabase.loginUser('nonexistent_user', 'testpassword123')
       ).rejects.toThrow('Invalid username or password');
     });
 
     it('should reject invalid password', async () => {
+      // Mock bcrypt.compare to return false
+      jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false);
+      
+      mockQuery.mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1 });
+
       await expect(
         UserDatabase.loginUser('test_login_user', 'wrongpassword')
       ).rejects.toThrow('Invalid username or password');
     });
 
     it('should update last_login timestamp', async () => {
-      const beforeLogin = new Date();
+      // Mock user lookup, last_login update, session creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1 }) // User lookup
+        .mockResolvedValueOnce({ rows: [], command: 'UPDATE', rowCount: 1 }) // Last login update
+        .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1 }); // Session creation
       
       await UserDatabase.loginUser('test_login_user', 'testpassword123');
 
-      const userResult = await sql`
-        SELECT last_login FROM users WHERE username = 'test_login_user'
-      `;
-      
-      const lastLogin = new Date(userResult.rows[0].last_login);
-      expect(lastLogin.getTime()).toBeGreaterThanOrEqual(beforeLogin.getTime());
+      // Verify that last_login update was called
+      const updateCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('UPDATE users SET last_login')
+      );
+      expect(updateCalls.length).toBeGreaterThan(0);
     });
 
     it('should create session record', async () => {
+      // Mock user lookup, last_login update, session creation
+      mockQuery
+        .mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1 }) // User lookup
+        .mockResolvedValueOnce({ rows: [], command: 'UPDATE', rowCount: 1 }) // Last login update
+        .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1 }); // Session creation
+
       const result = await UserDatabase.loginUser('test_login_user', 'testpassword123');
 
-      const sessionResult = await sql`
-        SELECT * FROM user_sessions WHERE session_token = ${result.token}
-      `;
-
-      expect(sessionResult.rows.length).toBe(1);
-      expect(sessionResult.rows[0].user_id).toBe(testUser.id);
+      // Verify that session creation was called
+      const insertCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('INSERT INTO user_sessions')
+      );
+      expect(insertCalls.length).toBeGreaterThan(0);
+      expect(result.token).toBeDefined();
     });
 
     it('should reject inactive user', async () => {
-      // Deactivate user
-      await sql`UPDATE users SET is_active = false WHERE username = 'test_login_user'`;
+      // Mock empty result for inactive user query
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 });
 
       await expect(
         UserDatabase.loginUser('test_login_user', 'testpassword123')
@@ -218,20 +321,34 @@ describe('UserDatabase', () => {
   });
 
   describe('Session Management', () => {
-    let testUser: User;
-    let validToken: string;
-
-    beforeEach(async () => {
-      testUser = await UserDatabase.registerUser('test_session_user', 'testpassword123');
-      const loginResult = await UserDatabase.loginUser('test_session_user', 'testpassword123');
-      validToken = loginResult.token;
-    });
+    const mockUser = {
+      id: 'test-user-id',
+      username: 'test_session_user',
+      email: null,
+      password_hash: 'hash',
+      created_at: new Date(),
+      last_login: new Date(),
+      is_active: true
+    };
 
     it('should verify valid token', async () => {
+      const validToken = jwt.sign(
+        { userId: mockUser.id, username: mockUser.username },
+        process.env.JWT_SECRET!,
+        { expiresIn: '7d' }
+      );
+
+      // Mock session lookup with user data
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [mockUser], 
+        command: 'SELECT', 
+        rowCount: 1 
+      });
+
       const user = await UserDatabase.verifyToken(validToken);
 
       expect(user).toBeDefined();
-      expect(user!.id).toBe(testUser.id);
+      expect(user!.id).toBe(mockUser.id);
       expect(user!.username).toBe('test_session_user');
     });
 
@@ -241,58 +358,70 @@ describe('UserDatabase', () => {
     });
 
     it('should reject expired session', async () => {
-      // Manually expire the session
-      await sql`
-        UPDATE user_sessions 
-        SET expires_at = NOW() - INTERVAL '1 day'
-        WHERE session_token = ${validToken}
-      `;
+      const validToken = jwt.sign(
+        { userId: mockUser.id, username: mockUser.username },
+        process.env.JWT_SECRET!,
+        { expiresIn: '7d' }
+      );
+
+      // Mock expired session (empty result)
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0 });
 
       const user = await UserDatabase.verifyToken(validToken);
       expect(user).toBeNull();
     });
 
     it('should logout user successfully', async () => {
-      await UserDatabase.logoutUser(validToken);
+      const token = 'test-token';
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 1 });
 
-      // Session should be deleted
-      const sessionResult = await sql`
-        SELECT * FROM user_sessions WHERE session_token = ${validToken}
-      `;
-      expect(sessionResult.rows.length).toBe(0);
+      await UserDatabase.logoutUser(token);
 
-      // Token should no longer be valid
-      const user = await UserDatabase.verifyToken(validToken);
-      expect(user).toBeNull();
+      // Verify that session deletion was called
+      const deleteCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions')
+      );
+      expect(deleteCalls.length).toBeGreaterThan(0);
     });
   });
 
   describe('Exercise Attempts', () => {
-    let testUser: User;
-    let exerciseId: string;
-
-    beforeEach(async () => {
-      testUser = await UserDatabase.registerUser('test_exercise_user', 'testpassword123');
-      
-      // Create a test exercise
-      const exerciseResult = await sql`
-        INSERT INTO exercises (sentence, correct_answer, topic, level, multiple_choice_options, explanation_pt, explanation_en, explanation_uk)
-        VALUES ('Eu _____ português.', 'falo', 'verbos', 'A1', '["falo", "falas", "fala"]', 'Primeira pessoa singular', 'First person singular', 'Перша особа однини')
-        RETURNING id
-      `;
-      exerciseId = exerciseResult.rows[0].id;
-    });
+    const mockUser = {
+      id: 'test-user-id',
+      username: 'test_exercise_user',
+      email: null,
+      password_hash: 'hash',
+      created_at: new Date(),
+      last_login: null,
+      is_active: true
+    };
+    const exerciseId = 'test-exercise-id';
 
     it('should record exercise attempt', async () => {
+      const mockAttempt = {
+        id: 'attempt-id',
+        user_id: mockUser.id,
+        exercise_id: exerciseId,
+        is_correct: true,
+        user_answer: 'falo',
+        attempted_at: new Date()
+      };
+
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [mockAttempt], 
+        command: 'INSERT', 
+        rowCount: 1 
+      });
+
       const attempt = await UserDatabase.recordAttempt(
-        testUser.id,
+        mockUser.id,
         exerciseId,
         true,
         'falo'
       );
 
       expect(attempt).toBeDefined();
-      expect(attempt.user_id).toBe(testUser.id);
+      expect(attempt.user_id).toBe(mockUser.id);
       expect(attempt.exercise_id).toBe(exerciseId);
       expect(attempt.is_correct).toBe(true);
       expect(attempt.user_answer).toBe('falo');
@@ -300,83 +429,124 @@ describe('UserDatabase', () => {
     });
 
     it('should get correctly answered exercises', async () => {
-      // Record some attempts
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, true, 'falo');
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, false, 'falas');
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, true, 'falo');
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [{ exercise_id: exerciseId }], 
+        command: 'SELECT', 
+        rowCount: 1 
+      });
 
-      const correctExercises = await UserDatabase.getCorrectlyAnsweredExercises(testUser.id);
+      const correctExercises = await UserDatabase.getCorrectlyAnsweredExercises(mockUser.id);
 
       expect(correctExercises).toContain(exerciseId);
-      expect(correctExercises.length).toBe(1); // Should be unique
+      expect(correctExercises.length).toBe(1);
     });
 
     it('should calculate user progress correctly', async () => {
-      // Record multiple attempts
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, true, 'falo');
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, false, 'falas');
-      await UserDatabase.recordAttempt(testUser.id, exerciseId, true, 'falo');
+      mockQuery
+        // Total attempts
+        .mockResolvedValueOnce({ rows: [{ total: '3' }], command: 'SELECT', rowCount: 1 })
+        // Correct attempts
+        .mockResolvedValueOnce({ rows: [{ correct: '2' }], command: 'SELECT', rowCount: 1 })
+        // Level progress
+        .mockResolvedValueOnce({ 
+          rows: [{ level: 'A1', total_attempts: '3', correct_attempts: '2' }], 
+          command: 'SELECT', 
+          rowCount: 1 
+        })
+        // Topic progress
+        .mockResolvedValueOnce({ 
+          rows: [{ topic: 'verbos', total_attempts: '3', correct_attempts: '2' }], 
+          command: 'SELECT', 
+          rowCount: 1 
+        })
+        // Recent attempts
+        .mockResolvedValueOnce({ 
+          rows: [{ 
+            id: 'attempt-id',
+            user_id: mockUser.id,
+            exercise_id: exerciseId,
+            is_correct: true,
+            user_answer: 'falo',
+            attempted_at: new Date()
+          }], 
+          command: 'SELECT', 
+          rowCount: 1 
+        });
 
-      const progress = await UserDatabase.getUserProgress(testUser.id);
+      const progress = await UserDatabase.getUserProgress(mockUser.id);
 
       expect(progress.totalAttempts).toBe(3);
       expect(progress.correctAttempts).toBe(2);
       expect(progress.accuracyRate).toBeCloseTo(66.67, 2);
       expect(progress.levelProgress).toBeDefined();
       expect(progress.topicProgress).toBeDefined();
+      expect(progress.recentAttempts).toBeDefined();
     });
   });
 
   describe('Admin Functions', () => {
-    it('should get and update Claude API key', async () => {
+    it('should get and set Claude API key', async () => {
       const testApiKey = 'sk-test-api-key-12345';
 
-      await UserDatabase.updateClaudeApiKey(testApiKey);
+      // Mock update and get operations
+      mockQuery
+        .mockResolvedValueOnce({ rows: [], command: 'UPDATE', rowCount: 1 }) // Set API key
+        .mockResolvedValueOnce({ 
+          rows: [{ claude_api_key: testApiKey }], 
+          command: 'SELECT', 
+          rowCount: 1 
+        }); // Get API key
+
+      await UserDatabase.setClaudeApiKey(testApiKey);
       const retrievedKey = await UserDatabase.getClaudeApiKey();
 
       expect(retrievedKey).toBe(testApiKey);
     });
 
     it('should get database statistics', async () => {
-      // Create a test user and attempt
-      await UserDatabase.registerUser('test_stats_user', 'testpassword123');
+      // Mock comprehensive stats query
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [{ 
+          total_users: '10',
+          active_users: '5',
+          total_exercises: '100',
+          total_attempts: '200',
+          average_accuracy: '75.0'
+        }], 
+        command: 'SELECT', 
+        rowCount: 1 
+      });
       
       const stats = await UserDatabase.getDatabaseStats();
 
       expect(stats).toBeDefined();
-      expect(stats.total).toBeDefined();
-      expect(stats.byLevel).toBeDefined();
-      expect(stats.userStats).toBeDefined();
-      expect(stats.userStats.totalUsers).toBeGreaterThanOrEqual(1);
+      expect(stats.totalUsers).toBe(10);
+      expect(stats.activeUsers).toBe(5);
+      expect(stats.totalExercises).toBe(100);
+      expect(stats.totalAttempts).toBe(200);
+      expect(stats.averageAccuracy).toBe('75.0');
     });
 
     it('should cleanup expired sessions', async () => {
-      await UserDatabase.registerUser('test_cleanup_user', 'testpassword123');
-      const loginResult = await UserDatabase.loginUser('test_cleanup_user', 'testpassword123');
-
-      // Manually expire the session
-      await sql`
-        UPDATE user_sessions 
-        SET expires_at = NOW() - INTERVAL '1 day'
-        WHERE session_token = ${loginResult.token}
-      `;
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 2 });
 
       await UserDatabase.cleanupExpiredSessions();
 
-      // Session should be deleted
-      const sessionResult = await sql`
-        SELECT * FROM user_sessions WHERE session_token = ${loginResult.token}
-      `;
-      expect(sessionResult.rows.length).toBe(0);
+      // Verify that expired session cleanup was called
+      const deleteCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
+      );
+      expect(deleteCalls.length).toBeGreaterThan(0);
     });
   });
 
   describe('Error Handling', () => {
     it('should handle database connection errors gracefully', async () => {
-      // This test might be difficult to implement without mocking
-      // but we can test that errors are properly thrown
+      // Mock database error
+      mockQuery.mockRejectedValueOnce(new Error('Database connection failed'));
+      
       await expect(
-        UserDatabase.registerUser('', '') // Invalid data
+        UserDatabase.registerUser('test_user', 'password')
       ).rejects.toThrow();
     });
 

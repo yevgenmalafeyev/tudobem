@@ -74,6 +74,26 @@ export const translations = {
     en: 'Anthropic Console',
     uk: 'Консоль Anthropic'
   },
+  optional: {
+    pt: 'opcional',
+    en: 'optional',
+    uk: 'опціонально'
+  },
+  readyToStart: {
+    pt: 'Pronto para começar!',
+    en: 'Ready to start!',
+    uk: 'Готовий почати!'
+  },
+  databaseExercisesAvailable: {
+    pt: 'Pode começar a aprender imediatamente com exercícios da base de dados.',
+    en: 'You can start learning immediately with database exercises.',
+    uk: 'Ви можете негайно почати навчання з вправами з бази даних.'
+  },
+  apiKeyOptionalNote: {
+    pt: 'A chave API só é necessária para administradores gerarem novos exercícios.',
+    en: 'API key is only needed for administrators to generate new exercises.',
+    uk: 'Ключ API потрібен лише адміністраторам для генерації нових вправ.'
+  },
   saveAndStart: {
     pt: 'Guardar Configuração e Começar a Aprender',
     en: 'Save Configuration & Start Learning',

@@ -175,11 +175,19 @@ export default function Configuration({ onSave }: ConfigurationProps) {
         </div>
       </div>
 
-      {/* Claude API Key */}
-      <div className="neo-card mb-6 sm:mb-8">
-        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
-          {t('claudeApiKey', appLanguage)}
+      {/* Claude API Key - Optional for Advanced Features */}
+      <div className="neo-card mb-6 sm:mb-8 opacity-75">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--neo-text)' }}>
+          {t('claudeApiKey', appLanguage)} <span className="text-sm font-normal opacity-75">({t('optional', appLanguage)})</span>
         </h2>
+        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--neo-accent-bg)', border: '1px solid var(--neo-accent)' }}>
+          <p className="text-sm" style={{ color: 'var(--neo-accent-text)' }}>
+            ✅ <strong>{t('readyToStart', appLanguage)}</strong> {t('databaseExercisesAvailable', appLanguage)}
+          </p>
+          <p className="text-xs mt-1" style={{ color: 'var(--neo-text-muted)' }}>
+            {t('apiKeyOptionalNote', appLanguage)}
+          </p>
+        </div>
         <input
           type="password"
           value={claudeApiKey}
@@ -192,9 +200,6 @@ export default function Configuration({ onSave }: ConfigurationProps) {
           <a href="https://console.anthropic.com/" target="_blank" className="hover:underline" style={{ color: 'var(--neo-accent-text)' }}>
             {t('anthropicConsole', appLanguage)}
           </a>
-        </p>
-        <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--neo-text-muted)' }}>
-          💡 {t('apiKeyLocalHint', appLanguage)}
         </p>
       </div>
 

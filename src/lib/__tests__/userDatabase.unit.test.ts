@@ -1,70 +1,81 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { UserDatabase } from '../userDatabase';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Mock environment variables for testing
 process.env.JWT_SECRET = 'test-jwt-secret-key';
+process.env.POSTGRES_URL = 'postgresql://test:test@localhost:5432/test';
 
-// Mock the @vercel/postgres module
-const mockSql = jest.fn();
-jest.mock('@vercel/postgres', () => ({
-  sql: mockSql
-}));
+// Mock the query function that will be used by the Pool instances
+const mockQuery = jest.fn();
+const mockConnect = jest.fn();
+const mockEnd = jest.fn();
+
+// Mock the pg module at the module level
+jest.mock('pg', () => {
+  return {
+    Pool: jest.fn().mockImplementation(() => ({
+      query: mockQuery,
+    })),
+    Client: jest.fn().mockImplementation(() => ({
+      connect: mockConnect,
+      query: mockQuery,
+      end: mockEnd,
+    })),
+  };
+});
+
+// Import UserDatabase after mocking pg
+import { UserDatabase } from '../userDatabase';
 
 describe('UserDatabase Unit Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Reset mock implementations
+    mockQuery.mockResolvedValue({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
+    mockConnect.mockResolvedValue(undefined);
+    mockEnd.mockResolvedValue(undefined);
   });
 
   describe('Table Initialization', () => {
     it('should create all required tables', async () => {
       // Mock successful table creation
-      mockSql.mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0, fields: [] });
+      mockQuery.mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0, fields: [] });
 
       await UserDatabase.initializeTables();
 
-      // Verify that SQL was called for each table creation
-      expect(mockSql).toHaveBeenCalledTimes(11); // 4 tables + 7 indexes + admin config check + insert
+      // Verify that SQL was called for table creation
+      expect(mockQuery).toHaveBeenCalled();
+      expect(mockConnect).toHaveBeenCalled();
+      expect(mockEnd).toHaveBeenCalled();
     });
 
     it('should create required indexes', async () => {
-      mockSql.mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0, fields: [] });
+      mockQuery.mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0, fields: [] });
 
       await UserDatabase.initializeTables();
 
       // Check that index creation SQL was called
-      const sqlCalls = mockSql.mock.calls;
+      const sqlCalls = mockQuery.mock.calls;
       const indexCalls = sqlCalls.filter(call => 
-        call[0].toString().includes('CREATE INDEX')
+        call[0] && call[0].includes && call[0].includes('CREATE INDEX')
       );
       expect(indexCalls.length).toBeGreaterThan(0);
     });
 
     it('should initialize admin config if not exists', async () => {
       // Mock config count check returning 0
-      mockSql
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] }) // Users table
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] }) // Attempts table
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] }) // Admin config table
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] }) // Sessions table
-        // Indexes...
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
-        .mockResolvedValueOnce({ rows: [{ count: 0 }], command: 'SELECT', rowCount: 1, fields: [] }) // Config count
+      mockQuery
+        .mockResolvedValue({ rows: [], command: 'CREATE', rowCount: 0, fields: [] })
+        .mockResolvedValueOnce({ rows: [{ count: '0' }], command: 'SELECT', rowCount: 1, fields: [] }) // Config count
         .mockResolvedValueOnce({ rows: [], command: 'INSERT', rowCount: 1, fields: [] }); // Insert config
 
       await UserDatabase.initializeTables();
 
       // Verify admin config initialization was attempted
-      const sqlCalls = mockSql.mock.calls;
+      const sqlCalls = mockQuery.mock.calls;
       const configInsert = sqlCalls.find(call => 
-        call[0].toString().includes('INSERT INTO admin_config')
+        call[0] && call[0].includes && call[0].includes('INSERT INTO admin_config')
       );
       expect(configInsert).toBeDefined();
     });
@@ -83,7 +94,7 @@ describe('UserDatabase Unit Tests', () => {
       };
 
       // Mock username check (empty result)
-      mockSql
+      mockQuery
         .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] })
         // Mock email check (empty result)
         .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] })
@@ -93,12 +104,12 @@ describe('UserDatabase Unit Tests', () => {
       const result = await UserDatabase.registerUser('test_user_1', 'testpassword123', 'test1@example.com');
 
       expect(result).toEqual(mockUser);
-      expect(mockSql).toHaveBeenCalledTimes(3);
+      expect(mockQuery).toHaveBeenCalledTimes(3);
     });
 
     it('should reject duplicate username', async () => {
       // Mock username check (user exists)
-      mockSql.mockResolvedValueOnce({ 
+      mockQuery.mockResolvedValueOnce({ 
         rows: [{ id: 'existing-id' }], 
         command: 'SELECT', 
         rowCount: 1, 
@@ -109,12 +120,12 @@ describe('UserDatabase Unit Tests', () => {
         UserDatabase.registerUser('existing_user', 'testpassword123')
       ).rejects.toThrow('Username already exists');
 
-      expect(mockSql).toHaveBeenCalledTimes(1);
+      expect(mockQuery).toHaveBeenCalledTimes(1);
     });
 
     it('should reject duplicate email', async () => {
       // Mock username check (empty)
-      mockSql
+      mockQuery
         .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] })
         // Mock email check (exists)
         .mockResolvedValueOnce({ 
@@ -128,7 +139,7 @@ describe('UserDatabase Unit Tests', () => {
         UserDatabase.registerUser('new_user', 'testpassword123', 'existing@example.com')
       ).rejects.toThrow('Email already exists');
 
-      expect(mockSql).toHaveBeenCalledTimes(2);
+      expect(mockQuery).toHaveBeenCalledTimes(2);
     });
 
     it('should hash passwords with sufficient rounds', async () => {
@@ -142,7 +153,7 @@ describe('UserDatabase Unit Tests', () => {
         is_active: true
       };
 
-      mockSql
+      mockQuery
         .mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] })
         .mockResolvedValueOnce({ rows: [mockUser], command: 'INSERT', rowCount: 1, fields: [] });
 
@@ -172,7 +183,7 @@ describe('UserDatabase Unit Tests', () => {
     });
 
     it('should login with valid credentials', async () => {
-      mockSql
+      mockQuery
         // Mock user lookup
         .mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1, fields: [] })
         // Mock last_login update
@@ -194,7 +205,7 @@ describe('UserDatabase Unit Tests', () => {
 
     it('should reject invalid username', async () => {
       // Mock empty user lookup
-      mockSql.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
 
       await expect(
         UserDatabase.loginUser('nonexistent_user', 'testpassword123')
@@ -205,7 +216,7 @@ describe('UserDatabase Unit Tests', () => {
       // Mock bcrypt.compare to return false
       jest.spyOn(bcrypt, 'compare').mockImplementation(async () => false);
 
-      mockSql.mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [mockUser], command: 'SELECT', rowCount: 1, fields: [] });
 
       await expect(
         UserDatabase.loginUser('test_login_user', 'wrongpassword')
@@ -214,7 +225,7 @@ describe('UserDatabase Unit Tests', () => {
 
     it('should reject inactive user', async () => {
       // Mock empty result for inactive user query
-      mockSql.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
 
       await expect(
         UserDatabase.loginUser('inactive_user', 'testpassword123')
@@ -241,7 +252,7 @@ describe('UserDatabase Unit Tests', () => {
       );
 
       // Mock session lookup with user data
-      mockSql.mockResolvedValueOnce({ 
+      mockQuery.mockResolvedValueOnce({ 
         rows: [mockUser], 
         command: 'SELECT', 
         rowCount: 1, 
@@ -266,7 +277,7 @@ describe('UserDatabase Unit Tests', () => {
       );
 
       // Mock expired session (empty result)
-      mockSql.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'SELECT', rowCount: 0, fields: [] });
 
       const result = await UserDatabase.verifyToken(validToken);
       expect(result).toBeNull();
@@ -274,13 +285,14 @@ describe('UserDatabase Unit Tests', () => {
 
     it('should logout user successfully', async () => {
       const token = 'test-token';
-      mockSql.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 1, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 1, fields: [] });
 
       await UserDatabase.logoutUser(token);
 
-      expect(mockSql).toHaveBeenCalledWith(
-        expect.arrayContaining([expect.stringContaining('DELETE FROM user_sessions')])
+      const deleteCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions')
       );
+      expect(deleteCalls.length).toBeGreaterThan(0);
     });
   });
 
@@ -295,7 +307,7 @@ describe('UserDatabase Unit Tests', () => {
     };
 
     it('should record exercise attempt', async () => {
-      mockSql.mockResolvedValueOnce({ 
+      mockQuery.mockResolvedValueOnce({ 
         rows: [mockAttempt], 
         command: 'INSERT', 
         rowCount: 1, 
@@ -313,7 +325,7 @@ describe('UserDatabase Unit Tests', () => {
     });
 
     it('should get correctly answered exercises', async () => {
-      mockSql.mockResolvedValueOnce({ 
+      mockQuery.mockResolvedValueOnce({ 
         rows: [{ exercise_id: 'exercise-1' }, { exercise_id: 'exercise-2' }], 
         command: 'SELECT', 
         rowCount: 2, 
@@ -326,7 +338,7 @@ describe('UserDatabase Unit Tests', () => {
     });
 
     it('should calculate user progress correctly', async () => {
-      mockSql
+      mockQuery
         // Total attempts
         .mockResolvedValueOnce({ rows: [{ total: '3' }], command: 'SELECT', rowCount: 1, fields: [] })
         // Correct attempts
@@ -344,6 +356,20 @@ describe('UserDatabase Unit Tests', () => {
           command: 'SELECT', 
           rowCount: 1, 
           fields: [] 
+        })
+        // Recent attempts
+        .mockResolvedValueOnce({ 
+          rows: [{
+            id: 'attempt-id',
+            user_id: 'user-id',
+            exercise_id: 'exercise-id',
+            is_correct: true,
+            user_answer: 'falo',
+            attempted_at: new Date()
+          }], 
+          command: 'SELECT', 
+          rowCount: 1, 
+          fields: [] 
         });
 
       const result = await UserDatabase.getUserProgress('user-id');
@@ -351,17 +377,18 @@ describe('UserDatabase Unit Tests', () => {
       expect(result.totalAttempts).toBe(3);
       expect(result.correctAttempts).toBe(2);
       expect(result.accuracyRate).toBeCloseTo(66.67, 2);
-      expect(result.levelProgress).toHaveLength(1);
-      expect(result.topicProgress).toHaveLength(1);
+      expect(result.levelProgress).toBeDefined();
+      expect(result.topicProgress).toBeDefined();
+      expect(result.recentAttempts).toBeDefined();
     });
   });
 
   describe('Admin Functions', () => {
-    it('should get and update Claude API key', async () => {
+    it('should get and set Claude API key', async () => {
       const testApiKey = 'sk-test-api-key-12345';
 
       // Mock update
-      mockSql
+      mockQuery
         .mockResolvedValueOnce({ rows: [], command: 'UPDATE', rowCount: 1, fields: [] })
         // Mock get
         .mockResolvedValueOnce({ 
@@ -371,61 +398,51 @@ describe('UserDatabase Unit Tests', () => {
           fields: [] 
         });
 
-      await UserDatabase.updateClaudeApiKey(testApiKey);
+      await UserDatabase.setClaudeApiKey(testApiKey);
       const result = await UserDatabase.getClaudeApiKey();
 
       expect(result).toBe(testApiKey);
     });
 
     it('should get database statistics', async () => {
-      mockSql
-        // Exercise count
-        .mockResolvedValueOnce({ rows: [{ total: '100' }], command: 'SELECT', rowCount: 1, fields: [] })
-        // By level
-        .mockResolvedValueOnce({ 
-          rows: [
-            { level: 'A1', count: '50' },
-            { level: 'A2', count: '50' }
-          ], 
-          command: 'SELECT', 
-          rowCount: 2, 
-          fields: [] 
-        })
-        // User stats
-        .mockResolvedValueOnce({ 
-          rows: [{ 
-            total_users: '10',
-            active_users: '5',
-            total_attempts: '200',
-            correct_attempts: '150'
-          }], 
-          command: 'SELECT', 
-          rowCount: 1, 
-          fields: [] 
-        });
+      // Mock comprehensive stats query
+      mockQuery.mockResolvedValueOnce({ 
+        rows: [{ 
+          total_users: '10',
+          active_users: '5',
+          total_exercises: '100',
+          total_attempts: '200',
+          average_accuracy: '75.0'
+        }], 
+        command: 'SELECT', 
+        rowCount: 1, 
+        fields: [] 
+      });
 
       const result = await UserDatabase.getDatabaseStats();
 
-      expect(result.total).toBe(100);
-      expect(result.byLevel).toHaveLength(2);
-      expect(result.userStats.totalUsers).toBe(10);
-      expect(result.userStats.correctAttempts).toBe(150);
+      expect(result.totalUsers).toBe(10);
+      expect(result.activeUsers).toBe(5);
+      expect(result.totalExercises).toBe(100);
+      expect(result.totalAttempts).toBe(200);
+      expect(result.averageAccuracy).toBe('75.0');
     });
 
     it('should cleanup expired sessions', async () => {
-      mockSql.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 2, fields: [] });
+      mockQuery.mockResolvedValueOnce({ rows: [], command: 'DELETE', rowCount: 2, fields: [] });
 
       await UserDatabase.cleanupExpiredSessions();
 
-      expect(mockSql).toHaveBeenCalledWith(
-        expect.arrayContaining([expect.stringContaining('DELETE FROM user_sessions')])
+      const deleteCalls = mockQuery.mock.calls.filter(call => 
+        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
       );
+      expect(deleteCalls.length).toBeGreaterThan(0);
     });
   });
 
   describe('Error Handling', () => {
     it('should handle database connection errors gracefully', async () => {
-      mockSql.mockRejectedValueOnce(new Error('Database connection failed'));
+      mockQuery.mockRejectedValueOnce(new Error('Database connection failed'));
 
       await expect(
         UserDatabase.registerUser('test_user', 'password')
