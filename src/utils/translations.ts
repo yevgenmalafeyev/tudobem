@@ -111,6 +111,11 @@ export const translations = {
     en: 'Error loading exercise',
     uk: 'Помилка завантаження вправи'
   },
+  tryAgain: {
+    pt: 'Tentar novamente',
+    en: 'Try again',
+    uk: 'Спробувати знову'
+  },
   correct: {
     pt: 'Correto!',
     en: 'Correct!',

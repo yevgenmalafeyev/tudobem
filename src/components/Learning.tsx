@@ -192,12 +192,10 @@ export default function Learning() {
     return () => window.removeEventListener('keydown', handleGlobalKeyPress);
   }, [showAnswer, hasValidAnswer, handleCheckAnswer, handleNextExercise]);
 
-  // Loading state - improved logic to prevent question swapping
-  const isWaitingForAPI = configuration.claudeApiKey && 
-    (isLoading || queueLoading) && 
-    exerciseQueue.exercises.length === 0;
+  // Loading state - show loading instead of error during initial load
+  const isInitialLoading = !currentExercise && (isLoading || queueLoading || exerciseQueue.exercises.length === 0);
   
-  if (isWaitingForAPI || ((isLoading || queueLoading) && !currentExercise)) {
+  if (isInitialLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
@@ -211,12 +209,33 @@ export default function Learning() {
     );
   }
 
-  // Error state
-  if (!currentExercise) {
+  // Error state - only show if loading is not in progress and there's no exercise
+  const hasLoadingFailed = !currentExercise && !isLoading && !queueLoading && exerciseQueue.exercises.length === 0;
+  
+  if (hasLoadingFailed) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="neo-card text-xl" style={{ color: 'var(--neo-error)' }}>
           {t('loadingError', configuration.appLanguage)}
+        </div>
+        <div className="mt-4">
+          <button 
+            onClick={() => loadInitialBatch()} 
+            className="neo-button neo-button-primary"
+          >
+            {t('tryAgain', configuration.appLanguage)}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Final safety check - this should not happen with improved loading logic
+  if (!currentExercise) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
+          {t('loadingExercise', configuration.appLanguage)}
         </div>
       </div>
     );
@@ -242,7 +261,7 @@ export default function Learning() {
         <div className="mb-4 sm:mb-6">
           <div className="flex justify-between items-center mb-4">
             <span className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1" style={{ color: 'var(--neo-accent-text)' }}>
-              {currentExercise.level}
+              {currentExercise?.level || 'A1'}
             </span>
             
             <ModeToggle 
