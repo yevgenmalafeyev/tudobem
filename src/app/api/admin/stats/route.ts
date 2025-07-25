@@ -1,41 +1,44 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server';
+import { UserDatabase } from '@/lib/userDatabase';
 import { ExerciseDatabase } from '@/lib/database';
+import { createApiResponse, withErrorHandling, requireAdminAuth } from '@/lib/api-utils';
 
-async function checkAdminAuth(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const adminSession = cookieStore.get('admin-session');
-  return adminSession?.value === 'authenticated';
-}
+async function getAdminStatsHandler(request: NextRequest) {
+  // Check admin authentication
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
 
-export async function GET() {
   try {
-    // Check admin authentication
-    const isAuthenticated = await checkAdminAuth();
-    if (!isAuthenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get statistics from database
-    const stats = await ExerciseDatabase.getStats();
-
-    // Format the response
-    const response = {
-      total: parseInt(stats.total as string),
-      byLevel: stats.byLevel.map(item => ({
-        level: item.level,
-        count: parseInt(item.count as string)
-      })),
-      byTopic: stats.byTopic.map(item => ({
-        topic: item.topic,
-        count: parseInt(item.count as string)
-      }))
-    };
-
-    return NextResponse.json(response);
-
+    // Initialize databases if needed
+    await UserDatabase.initializeTables();
+    await ExerciseDatabase.initializeTables();
+    
+    // Get database statistics
+    const userStats = await UserDatabase.getDatabaseStats();
+    const exerciseStats = await ExerciseDatabase.getStats();
+    
+    return createApiResponse({
+      database: {
+        exercises: exerciseStats,
+        users: userStats.userStats,
+        system: {
+          totalExercises: userStats.total,
+          exercisesByLevel: userStats.byLevel
+        }
+      },
+      summary: {
+        totalUsers: userStats.userStats.totalUsers,
+        activeUsers: userStats.userStats.activeUsers,
+        totalExercises: userStats.total,
+        totalAttempts: userStats.userStats.totalAttempts,
+        overallAccuracy: userStats.userStats.totalAttempts > 0 
+          ? ((userStats.userStats.correctAttempts / userStats.userStats.totalAttempts) * 100).toFixed(2)
+          : '0'
+      }
+    });
   } catch (error) {
-    console.error('Stats error:', error);
-    return NextResponse.json({ error: 'Failed to fetch statistics' }, { status: 500 });
+    throw error;
   }
 }
+
+export const GET = withErrorHandling(getAdminStatsHandler);

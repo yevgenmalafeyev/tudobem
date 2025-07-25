@@ -104,18 +104,33 @@ export default function Learning() {
     addIncorrectAnswer
   });
 
-  // Load initial batch and exercise
+  // Load initial batch and exercise - separate effects to avoid dependency issues
   useEffect(() => {
+    console.log('🚀 [DEBUG] Learning mount effect triggered:', {
+      hasCurrentExercise: !!currentExercise,
+      exerciseQueueLength: exerciseQueue.exercises.length,
+      hasApiKey: !!configuration.claudeApiKey,
+      apiKeyLength: configuration.claudeApiKey?.length || 0
+    });
+    
+    // Only trigger initial load if we have no exercise and no queue
     if (!currentExercise && exerciseQueue.exercises.length === 0) {
+      console.log('🚀 [DEBUG] Calling loadInitialBatch immediately on mount...');
       loadInitialBatch();
-    } else if (!currentExercise && exerciseQueue.exercises.length > 0) {
-      const nextExercise = getNextExercise(); // Use getNextExercise to properly advance the queue
+    }
+  }, []); // Empty dependency - only run on mount
+  
+  // Handle queue exercises when available
+  useEffect(() => {
+    if (!currentExercise && exerciseQueue.exercises.length > 0) {
+      console.log('🚀 [DEBUG] Getting next exercise from queue...');
+      const nextExercise = getNextExercise();
       if (nextExercise) {
         setCurrentExercise(nextExercise);
         generateExplanation(nextExercise);
       }
     }
-  }, [currentExercise, exerciseQueue.exercises.length, loadInitialBatch, getNextExercise, setCurrentExercise, generateExplanation]);
+  }, [exerciseQueue.exercises.length, currentExercise]); // Only depend on queue length and current exercise
 
   // Focus input when component mounts and when new exercise is generated
   useEffect(() => {

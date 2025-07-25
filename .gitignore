@@ -42,8 +42,29 @@ next-env.d.ts
 
 # local configuration (contains API keys)
 local-config.json
-test-results.json
+
+# test results and logs
+test-results*.json
 test-config-generation-results.json
 server.log
 dev.log
 dev.pid
+*.log
+
+# test reports and artifacts
+test-results/
+test-reports/
+playwright-report/
+test-report.txt
+
+# debug files
+admin-page-debug.png
+debug-*.js
+debug-*.ts
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

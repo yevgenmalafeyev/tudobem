@@ -26,9 +26,16 @@ export async function parseRequestBody<T>(request: NextRequest): Promise<T> {
 }
 
 export function extractJsonFromClaudeResponse(responseText: string): string {
+  console.log('🔍 [DEBUG] Extracting JSON from response length:', responseText.length);
+  console.log('🔍 [DEBUG] Response start:', responseText.substring(0, 200));
+  console.log('🔍 [DEBUG] Response end:', responseText.substring(responseText.length - 200));
+  
   // Look for array first, then object
   const arrayStartIndex = responseText.indexOf('[');
   const objectStartIndex = responseText.indexOf('{');
+  
+  console.log('🔍 [DEBUG] Array start index:', arrayStartIndex);
+  console.log('🔍 [DEBUG] Object start index:', objectStartIndex);
   
   // Determine which JSON structure appears first (or if only one exists)
   let startIndex: number;
@@ -40,11 +47,13 @@ export function extractJsonFromClaudeResponse(responseText: string): string {
     startIndex = arrayStartIndex;
     startChar = '[';
     endChar = ']';
+    console.log('🔍 [DEBUG] Using array extraction');
   } else if (objectStartIndex !== -1) {
     // Object comes first or is the only JSON structure
     startIndex = objectStartIndex;
     startChar = '{';
     endChar = '}';
+    console.log('🔍 [DEBUG] Using object extraction');
   } else {
     throw new Error('No JSON found in Claude response');
   }
@@ -64,7 +73,34 @@ export function extractJsonFromClaudeResponse(responseText: string): string {
     }
   }
   
-  return responseText.substring(startIndex, endIndex + 1);
+  // If we didn't find a closing bracket, the response might be truncated
+  if (endIndex === startIndex) {
+    console.log('🔍 [DEBUG] No closing bracket found, response might be truncated');
+    console.log('🔍 [DEBUG] Full response:', responseText);
+    
+    // Try to find the last valid JSON structure in the response
+    const lastValidJson = responseText.lastIndexOf('}');
+    if (lastValidJson > startIndex) {
+      endIndex = lastValidJson;
+      console.log('🔍 [DEBUG] Using last } as end point at index:', endIndex);
+      
+      // Add closing bracket if we're extracting an array
+      if (startChar === '[') {
+        const extracted = responseText.substring(startIndex, endIndex + 1) + ']';
+        console.log('🔍 [DEBUG] Reconstructed JSON with closing bracket');
+        return extracted;
+      }
+    } else {
+      throw new Error('Response appears to be truncated - no valid JSON structure found');
+    }
+  }
+  
+  const extracted = responseText.substring(startIndex, endIndex + 1);
+  console.log('🔍 [DEBUG] Extracted JSON length:', extracted.length);
+  console.log('🔍 [DEBUG] Extracted JSON start:', extracted.substring(0, 200));
+  console.log('🔍 [DEBUG] Extracted JSON end:', extracted.substring(extracted.length - 200));
+  
+  return extracted;
 }
 
 export async function callClaudeApi(
@@ -74,24 +110,10 @@ export async function callClaudeApi(
   model: string = ANTHROPIC_CONFIG.model
 ): Promise<string> {
   const callStartTime = Date.now();
-  console.log('🤖 [CLAUDE_API] Starting Claude API call at:', new Date().toISOString());
-  console.log('🤖 [CLAUDE_API] API Key present:', !!apiKey);
-  console.log('🤖 [CLAUDE_API] API Key length:', apiKey?.length || 0);
-  console.log('🤖 [CLAUDE_API] API Key prefix:', apiKey?.substring(0, 15) + '...' || 'NO_KEY');
-  console.log('🤖 [CLAUDE_API] API Key valid format:', apiKey?.startsWith('sk-ant-') || false);
-  console.log('🤖 [CLAUDE_API] Model:', model);
-  console.log('🤖 [CLAUDE_API] Max tokens:', maxTokens);
-  console.log('🤖 [CLAUDE_API] Prompt length:', prompt.length);
   
   try {
-    const clientCreateStart = Date.now();
     const anthropic = new Anthropic({ apiKey });
-    const clientCreateDuration = Date.now() - clientCreateStart;
-    console.log('🤖 [CLAUDE_API] Anthropic client created successfully in:', clientCreateDuration, 'ms');
-    
-    console.log('🤖 [CLAUDE_API] About to make API request at:', new Date().toISOString());
     const requestStart = Date.now();
-    console.log('🤖 [CLAUDE_API] Making API request to model:', model);
     
     const message = await anthropic.messages.create({
       model,
@@ -101,15 +123,8 @@ export async function callClaudeApi(
     
     const requestEnd = Date.now();
     const requestDuration = requestEnd - requestStart;
-    const totalDuration = requestEnd - callStartTime;
-    console.log('🤖 [CLAUDE_API] API request completed at:', new Date(requestEnd).toISOString());
-    console.log('🤖 [CLAUDE_API] API request duration:', requestDuration, 'ms');
-    console.log('🤖 [CLAUDE_API] Total call duration:', totalDuration, 'ms');
-    console.log('🤖 [CLAUDE_API] Response received, content type:', message.content[0]?.type);
-    console.log('🤖 [CLAUDE_API] Response length:', message.content[0]?.type === 'text' ? message.content[0].text.length : 0);
     
     if (message.content[0]?.type === 'text') {
-      console.log('🤖 [CLAUDE_API] SUCCESS: Text response received');
       return message.content[0].text;
     } else {
       console.error('🤖 [CLAUDE_API] ERROR: No text content in response');

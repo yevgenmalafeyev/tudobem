@@ -18,6 +18,7 @@ const customJestConfig = {
     '<rootDir>/tests/e2e/', 
     '<rootDir>/tests/functional/',
     '<rootDir>/tests/performance/',
+    '<rootDir>/tests/production/',
     '<rootDir>/debug-production.spec.ts',
     '<rootDir>/tests/integration/enhanced-exercise-system.test.ts'
   ],

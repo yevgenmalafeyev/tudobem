@@ -1,6 +1,35 @@
 import { test, expect } from '@playwright/test';
+import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';
 
 test.describe('Fallback Exercise System', () => {
+  let errorMonitor: E2EErrorMonitor;
+  
+  test.beforeEach(async ({ page }) => {
+    // Setup comprehensive error monitoring
+    errorMonitor = await setupErrorMonitoring(page);
+  });
+
+  test.afterEach(async () => {
+    // Validate no critical errors occurred during test
+    try {
+      await validateNoErrors(errorMonitor, {
+        allowWarnings: true, // Allow React warnings for now
+        allowNetworkErrors: true, // Allow network errors for fallback testing
+        customPatterns: [
+          'dispatchSetStateInternal',
+          'getRootForUpdatedFiber', 
+          'handleLevelToggle',
+          'Configuration.useEffect'
+        ]
+      });
+    } catch (error) {
+      console.error('🚨 Error validation failed:', error.message);
+      throw error;
+    } finally {
+      errorMonitor.stopMonitoring();
+    }
+  });
+  
   test('learning mode loads and shows exercise or loading state', async ({ page }) => {
     // Navigate to the learning page
     await page.goto('/');

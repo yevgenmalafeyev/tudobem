@@ -27,6 +27,8 @@ export function useExerciseQueue({
 
   const backgroundLoadingRef = useRef(false);
   const hasTriggeredBackgroundRef = useRef(false);
+  const mountedRef = useRef(true);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   /**
    * Generate unique session ID for tracking
@@ -39,16 +41,29 @@ export function useExerciseQueue({
    * Load initial batch of exercises with retry logic
    */
   const loadInitialBatch = useCallback(async (retryCount: number = 0): Promise<boolean> => {
+    // Add a longer delay to allow component to stabilize after mount/unmount cycles
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Check if component is still mounted after stabilization
+    if (!mountedRef.current) {
+      console.log('🚀 [DEBUG] Component unmounted, skipping loadInitialBatch');
+      return false;
+    }
+    
     const maxRetries = 2;
     const startTime = Date.now();
     console.log('🚀 [DEBUG] Loading initial exercise batch at', new Date().toISOString(), 
                 `(attempt ${retryCount + 1}/${maxRetries + 1})`);
-    console.log('🚀 [DEBUG] Configuration:', {
-      levels: configuration.selectedLevels,
-      topicsCount: configuration.selectedTopics?.length,
-      hasApiKey: !!configuration.claudeApiKey,
-      masteredWordsCount: Object.keys(progress.masteredWords).length
-    });
+    
+    // Cancel any existing request only if we have one
+    if (abortControllerRef.current) {
+      console.log('🚀 [DEBUG] Cancelling previous request...');
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    
+    // Check mount status before setting state
+    if (!mountedRef.current) return false;
     
     console.log('🚀 [DEBUG] Setting loading state to true...');
     setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: true }));
@@ -63,24 +78,32 @@ export function useExerciseQueue({
         sessionId: exerciseQueue.sessionId,
         priority: 'immediate'
       };
-      console.log('🚀 [DEBUG] Request payload prepared:', {
-        levels: request.levels,
-        topicsCount: request.topics?.length,
-        hasApiKey: !!request.claudeApiKey,
-        apiKeyLength: request.claudeApiKey?.length || 0,
-        apiKeyPrefix: request.claudeApiKey?.substring(0, 15) + '...' || 'NO_KEY',
-        sessionId: request.sessionId,
-        count: request.count
-      });
 
+      console.log('🚀 [DEBUG] Configuration received:', {
+        hasApiKey: !!configuration.claudeApiKey,
+        apiKeyLength: configuration.claudeApiKey?.length || 0,
+        apiKeyPrefix: configuration.claudeApiKey?.substring(0, 15) || 'none',
+        selectedLevels: configuration.selectedLevels,
+        selectedTopics: configuration.selectedTopics?.length || 0
+      });
       console.log('🚀 [DEBUG] About to fetch /api/generate-exercise-batch...');
+      console.log('🚀 [DEBUG] Request payload:', JSON.stringify(request, null, 2));
       const fetchStartTime = Date.now();
       
-      // Add timeout to prevent infinite loading - increased for Claude AI calls
+      // Create new AbortController for this request only if still mounted
+      if (!mountedRef.current) {
+        console.log('🚀 [DEBUG] Component unmounted before creating request, stopping');
+        return false;
+      }
+      
       const controller = new AbortController();
+      abortControllerRef.current = controller;
+      
       const timeoutId = setTimeout(() => {
-        console.error('🚀 [DEBUG] Request timeout after 45 seconds');
-        controller.abort();
+        if (mountedRef.current && abortControllerRef.current === controller) {
+          console.error('🚀 [DEBUG] Request timeout after 45 seconds');
+          controller.abort();
+        }
       }, 45000); // 45 second timeout for Claude AI generation
       
       const response = await fetch('/api/generate-exercise-batch', {
@@ -90,6 +113,12 @@ export function useExerciseQueue({
         signal: controller.signal
       });
       clearTimeout(timeoutId);
+      
+      // Check if component is still mounted before processing response
+      if (!mountedRef.current) {
+        console.log('🚀 [DEBUG] Component unmounted during request, ignoring response');
+        return false;
+      }
       console.log('🚀 [DEBUG] Fetch completed in', Date.now() - fetchStartTime, 'ms, status:', response.status);
 
       if (!response.ok) {
@@ -114,6 +143,12 @@ export function useExerciseQueue({
       const exercises: EnhancedExercise[] = result.data.exercises;
       console.log('🚀 [DEBUG] Setting exercise queue with', exercises.length, 'exercises...');
       
+      // Check mount status before updating state
+      if (!mountedRef.current) {
+        console.log('🚀 [DEBUG] Component unmounted before state update, skipping');
+        return false;
+      }
+      
       setExerciseQueue(prev => ({
         ...prev,
         exercises,
@@ -125,8 +160,8 @@ export function useExerciseQueue({
 
       console.log(`✅ [DEBUG] Loaded ${exercises.length} exercises (source: ${result.data.source}) in ${Date.now() - startTime}ms total`);
       
-      // Trigger callback with first exercise
-      if (exercises.length > 0 && onExerciseGenerated) {
+      // Trigger callback with first exercise (only if still mounted)
+      if (mountedRef.current && exercises.length > 0 && onExerciseGenerated) {
         console.log('🚀 [DEBUG] Triggering onExerciseGenerated callback...');
         onExerciseGenerated(exercises[0]);
       }
@@ -138,6 +173,12 @@ export function useExerciseQueue({
       // Handle timeout errors and network errors specifically
       const isTimeoutError = error instanceof Error && error.name === 'AbortError';
       const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+      const isComponentUnmounted = !mountedRef.current;
+      
+      if (isComponentUnmounted) {
+        console.log('🚀 [DEBUG] Component unmounted during request, ignoring error');
+        return false;
+      }
       
       if (isTimeoutError) {
         console.error('🚀 [DEBUG] Request was aborted due to timeout');
@@ -145,10 +186,12 @@ export function useExerciseQueue({
         console.error('🚀 [DEBUG] Network error detected');
       }
       
-      // Retry on timeout or network errors (but not on HTTP errors)
-      if ((isTimeoutError || isNetworkError) && retryCount < maxRetries) {
+      // Retry on timeout or network errors (but not on HTTP errors or component unmount)
+      if ((isTimeoutError || isNetworkError) && retryCount < maxRetries && mountedRef.current) {
         console.log(`🔄 [DEBUG] Retrying in 2 seconds... (attempt ${retryCount + 1}/${maxRetries})`);
-        setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+        if (mountedRef.current) {
+          setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+        }
         
         // Wait 2 seconds before retry
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -156,7 +199,9 @@ export function useExerciseQueue({
       }
       
       console.log('🚀 [DEBUG] Setting loading state to false due to error...');
-      setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+      if (mountedRef.current) {
+        setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+      }
       return false;
     }
   }, [configuration, progress.masteredWords, exerciseQueue.sessionId, onExerciseGenerated]);
@@ -165,6 +210,12 @@ export function useExerciseQueue({
    * Load next batch in background (triggered at 8/10 progress)
    */
   const triggerBackgroundGeneration = useCallback(async (): Promise<void> => {
+    // Check if component is still mounted
+    if (!mountedRef.current) {
+      console.log('🚀 [DEBUG] Component unmounted, skipping background generation');
+      return;
+    }
+
     // Prevent multiple simultaneous background loads
     if (backgroundLoadingRef.current || hasTriggeredBackgroundRef.current) {
       console.log('⏳ Background generation already in progress or triggered');
@@ -175,6 +226,8 @@ export function useExerciseQueue({
     backgroundLoadingRef.current = true;
     hasTriggeredBackgroundRef.current = true;
     
+    // Check mount status before setting state
+    if (!mountedRef.current) return;
     setExerciseQueue(prev => ({ ...prev, nextBatchLoading: true }));
 
     try {
@@ -191,8 +244,10 @@ export function useExerciseQueue({
       // Add timeout for background requests too
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
-        console.error('🔄 [DEBUG] Background request timeout after 45 seconds');
-        controller.abort();
+        if (mountedRef.current) {
+          console.error('🔄 [DEBUG] Background request timeout after 45 seconds');
+          controller.abort();
+        }
       }, 45000);
       
       const response = await fetch('/api/generate-exercise-batch', {
@@ -203,11 +258,23 @@ export function useExerciseQueue({
       });
       clearTimeout(timeoutId);
 
+      // Check if component is still mounted before processing response
+      if (!mountedRef.current) {
+        console.log('🚀 [DEBUG] Component unmounted during background request, ignoring response');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
+      
+      // Check mount status before updating state
+      if (!mountedRef.current) {
+        console.log('🚀 [DEBUG] Component unmounted before background state update, skipping');
+        return;
+      }
       
       if (result.success) {
         const newExercises: EnhancedExercise[] = result.data.exercises;
@@ -224,8 +291,17 @@ export function useExerciseQueue({
         throw new Error(result.error || 'Background generation failed');
       }
     } catch (error) {
+      const isComponentUnmounted = !mountedRef.current;
+      
+      if (isComponentUnmounted) {
+        console.log('🚀 [DEBUG] Component unmounted during background request, ignoring error');
+        return;
+      }
+      
       console.error('❌ Background generation failed:', error);
-      setExerciseQueue(prev => ({ ...prev, nextBatchLoading: false }));
+      if (mountedRef.current) {
+        setExerciseQueue(prev => ({ ...prev, nextBatchLoading: false }));
+      }
     } finally {
       backgroundLoadingRef.current = false;
     }
@@ -235,11 +311,17 @@ export function useExerciseQueue({
    * Get the next exercise from the queue
    */
   const getNextExercise = useCallback((): EnhancedExercise | null => {
+    // Check if component is still mounted
+    if (!mountedRef.current) {
+      console.log('🚀 [DEBUG] Component unmounted, skipping getNextExercise');
+      return null;
+    }
+
     const { exercises, currentIndex } = exerciseQueue;
     
     if (currentIndex >= exercises.length) {
       console.warn('⚠️ No more exercises in queue');
-      if (onQueueEmpty) {
+      if (onQueueEmpty && mountedRef.current) {
         onQueueEmpty();
       }
       return null;
@@ -247,17 +329,19 @@ export function useExerciseQueue({
 
     const nextExercise = exercises[currentIndex];
     
-    // Update current index
-    setExerciseQueue(prev => ({
-      ...prev,
-      currentIndex: prev.currentIndex + 1
-    }));
+    // Update current index (only if still mounted)
+    if (mountedRef.current) {
+      setExerciseQueue(prev => ({
+        ...prev,
+        currentIndex: prev.currentIndex + 1
+      }));
+    }
 
     // Trigger background generation at 80% progress (8 out of 10)
     const progress = currentIndex + 1; // +1 because we're about to show this exercise
     const totalInCurrentBatch = Math.min(exercises.length, 10);
     
-    if (progress >= 8 && progress % 10 === 8 && !hasTriggeredBackgroundRef.current) {
+    if (progress >= 8 && progress % 10 === 8 && !hasTriggeredBackgroundRef.current && mountedRef.current) {
       console.log(`📊 Progress: ${progress}/${totalInCurrentBatch} - triggering background generation`);
       triggerBackgroundGeneration();
     }
@@ -267,7 +351,7 @@ export function useExerciseQueue({
       hasTriggeredBackgroundRef.current = false;
     }
 
-    if (onExerciseGenerated) {
+    if (onExerciseGenerated && mountedRef.current) {
       onExerciseGenerated(nextExercise);
     }
 
@@ -324,6 +408,21 @@ export function useExerciseQueue({
   useEffect(() => {
     resetQueue();
   }, [configuration.selectedLevels, configuration.selectedTopics, resetQueue]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      
+      // Add a small delay before aborting to allow any in-flight requests to complete
+      setTimeout(() => {
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+          abortControllerRef.current = null;
+        }
+      }, 50); // Small delay to let current requests finish
+    };
+  }, []);
 
   return {
     exerciseQueue,

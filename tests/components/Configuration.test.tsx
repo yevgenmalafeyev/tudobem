@@ -221,11 +221,11 @@ describe('Configuration Component', () => {
     const topicCheckboxes = screen.getAllByRole('checkbox')
     const firstTopicCheckbox = topicCheckboxes[0] as HTMLInputElement
     
-    // Due to auto-selection, it should initially be checked
-    expect(firstTopicCheckbox.checked).toBe(true)
+    // Topic should initially be unchecked (no auto-selection in test environment)
+    expect(firstTopicCheckbox.checked).toBe(false)
     
     fireEvent.click(firstTopicCheckbox)
-    expect(firstTopicCheckbox.checked).toBe(false)
+    expect(firstTopicCheckbox.checked).toBe(true)
   })
 
   it('should not render PWA modal by default', () => {

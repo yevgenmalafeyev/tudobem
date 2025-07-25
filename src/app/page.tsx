@@ -12,14 +12,24 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<'learning' | 'configuration' | 'flashcards'>('learning');
   
   useEffect(() => {
-    if (!isConfigured) {
-      setCurrentView('configuration');
-    } else {
-      setCurrentView('learning');
+    const targetView = !isConfigured ? 'configuration' : 'learning';
+    
+    console.log('🏠 [DEBUG] Home useEffect triggered:', {
+      isConfigured,
+      currentView,
+      willSetTo: targetView,
+      needsChange: currentView !== targetView
+    });
+    
+    // Only change view if it's actually different to prevent unnecessary unmount/remount cycles
+    if (currentView !== targetView) {
+      console.log('🏠 [DEBUG] Changing view from', currentView, 'to', targetView);
+      setCurrentView(targetView);
     }
-  }, [isConfigured]);
+  }, [isConfigured, currentView]);
 
   const handleConfigurationSave = () => {
+    console.log('🏠 [DEBUG] handleConfigurationSave called, switching to learning view');
     setCurrentView('learning');
   };
 

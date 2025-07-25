@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,13 +16,18 @@ export const metadata: Metadata = {
   title: "Tudobem",
   description: "Aprende português europeu com Tudobem - exercícios interativos",
   manifest: "/manifest.json",
-  themeColor: "#10b981",
-  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Tudobem",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#10b981",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

@@ -15,7 +15,6 @@ import {
 } from '@/lib/api-utils';
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
-  console.log('Exercise generation API called');
   
   const { 
     levels: parsedLevels, 
@@ -33,11 +32,10 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   const selectedTopics = parsedTopics || [];
   const masteredWords = parsedMasteredWords;
   
-  console.log('Parsed data:', { levels, selectedTopics: selectedTopics?.length, hasApiKey: !!claudeApiKey, masteredWordsCount: Object.keys(masteredWords).length });
+  // Data parsed successfully
   
   // If no Claude API key, use enhanced fallback system
   if (!claudeApiKey) {
-    console.log('No API key, using enhanced fallback system');
     try {
       const exercise = await EnhancedFallbackService.getExercise(
         levels || ['A1'], 
@@ -50,7 +48,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
         return createApiError(FALLBACK_MESSAGES.en.noExercises, 400);
       }
       
-      console.log('Returning enhanced fallback exercise:', exercise.level, exercise.correctAnswer, exercise.topic, 'source:', exercise.source);
+      // Using enhanced fallback exercise
       return createApiResponse(exercise);
     } catch (error) {
       console.error('Enhanced fallback failed, using legacy fallback:', error);
@@ -70,17 +68,17 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     .map(topic => topic.name);
 
   const prompt = generateExercisePrompt(levels, selectedTopics, topicNames, masteredWords);
-  console.log('Claude AI prompt:', prompt);
+  // Using Claude AI for generation
   
   try {
     const responseText = await callClaudeApi(claudeApiKey, prompt);
-    console.log('Claude AI response:', responseText);
+    // Claude AI response received
     
     const jsonString = extractJsonFromClaudeResponse(responseText);
-    console.log('Extracted JSON:', jsonString);
+    // JSON extracted from response
     
     const exerciseData = JSON.parse(jsonString);
-    console.log('Parsed exercise data:', exerciseData);
+    // Exercise data parsed successfully
     
     // Validate that the exercise matches the requested constraints
     if (!levels.includes(exerciseData.level)) {
@@ -94,18 +92,18 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     }
     
     const exercise = createExercise(exerciseData);
-    console.log('Final exercise to return:', exercise);
+    // Exercise created successfully
 
     return createApiResponse(exercise);
   } catch (error) {
     console.error('Error generating exercise:', error);
     
     // Try fallback with original request parameters
-    console.log('Attempting fallback with original parameters');
+    // Attempting fallback with original parameters
     const exercise = getFallbackExercise(levels || ['A1'], masteredWords, selectedTopics);
     
     if (exercise) {
-      console.log('Fallback exercise found:', exercise.level, exercise.correctAnswer, exercise.topic);
+      // Fallback exercise found
       return createApiResponse(exercise);
     }
     

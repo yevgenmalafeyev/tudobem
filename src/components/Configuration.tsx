@@ -29,30 +29,55 @@ export default function Configuration({ onSave }: ConfigurationProps) {
   );
 
   useEffect(() => {
+    let isMounted = true;
+    let timeoutId: NodeJS.Timeout;
+    
     // Auto-select topics when levels change
-    setSelectedTopics(prev => {
-      const availableTopicIds = availableTopics.map(topic => topic.id);
-      
-      // If no topics are selected yet (initial state), select all available
-      if (prev.length === 0) {
-        return availableTopicIds;
+    // Debounce to prevent updates during component unmounting
+    timeoutId = setTimeout(() => {
+      if (isMounted) {
+        setSelectedTopics(prev => {
+          const availableTopicIds = availableTopics.map(topic => topic.id);
+          
+          // If no topics are selected yet (initial state), select all available
+          if (prev.length === 0) {
+            return availableTopicIds;
+          }
+          
+          // Get currently valid topics that are already selected
+          const validExistingTopics = prev.filter(id => availableTopicIds.includes(id));
+          
+          // Get new topics that became available but aren't selected yet
+          const newTopics = availableTopicIds.filter(id => !prev.includes(id));
+          
+          // Auto-select all available topics (existing + new)
+          return [...validExistingTopics, ...newTopics];
+        });
       }
-      
-      // Get currently valid topics that are already selected
-      const validExistingTopics = prev.filter(id => availableTopicIds.includes(id));
-      
-      // Get new topics that became available but aren't selected yet
-      const newTopics = availableTopicIds.filter(id => !prev.includes(id));
-      
-      // Auto-select all available topics (existing + new)
-      return [...validExistingTopics, ...newTopics];
-    });
+    }, 50);
+    
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, [selectedLevels, availableTopics]);
 
   useEffect(() => {
+    let isMounted = true;
+    
     // Check if PWA button should be shown
-    const shouldShowPWA = isMobileDevice() && checkPWASupport();
-    setShowPWAButton(shouldShowPWA);
+    // Use setTimeout to avoid blocking and allow cleanup if unmounted
+    const timeoutId = setTimeout(() => {
+      if (isMounted) {
+        const shouldShowPWA = isMobileDevice() && checkPWASupport();
+        setShowPWAButton(shouldShowPWA);
+      }
+    }, 0);
+    
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleLevelToggle = (level: LanguageLevel) => {
@@ -72,12 +97,24 @@ export default function Configuration({ onSave }: ConfigurationProps) {
   };
 
   const handleSave = () => {
-    setConfiguration({
+    const configToSave = {
       selectedLevels,
       selectedTopics,
       claudeApiKey: claudeApiKey.trim() || undefined,
       appLanguage
+    };
+    
+    console.log('⚙️ [DEBUG] Configuration handleSave called:', {
+      hasApiKey: !!configToSave.claudeApiKey,
+      apiKeyLength: configToSave.claudeApiKey?.length || 0,
+      apiKeyPrefix: configToSave.claudeApiKey?.substring(0, 15) || 'none',
+      selectedLevels: configToSave.selectedLevels,
+      selectedTopicsCount: configToSave.selectedTopics.length
     });
+    
+    setConfiguration(configToSave);
+    
+    console.log('⚙️ [DEBUG] Configuration saved, calling onSave...');
     
     // Automatically switch to learning view after saving
     if (onSave) {

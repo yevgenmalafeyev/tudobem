@@ -248,6 +248,16 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           const jsonString = extractJsonFromClaudeResponse(responseText);
           console.log('📝 [DEBUG] Extracted JSON string:', jsonString.substring(0, 500) + '...');
           
+          try {
+            const exerciseData = JSON.parse(jsonString);
+            console.log('📝 [DEBUG] JSON parsing successful');
+          } catch (parseError) {
+            console.error('📝 [DEBUG] JSON parsing failed:', parseError.message);
+            console.log('📝 [DEBUG] Failed JSON string length:', jsonString.length);
+            console.log('📝 [DEBUG] Failed JSON string full content:', jsonString);
+            throw parseError;
+          }
+          
           const exerciseData = JSON.parse(jsonString);
           console.log('📝 [DEBUG] Parsed exercise data type:', typeof exerciseData);
           console.log('📝 [DEBUG] Parsed exercise data is array:', Array.isArray(exerciseData));

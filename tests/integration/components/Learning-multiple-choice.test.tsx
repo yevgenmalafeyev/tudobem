@@ -224,8 +224,8 @@ describe('Learning Component - Multiple Choice Options', () => {
     const correctOption = screen.getByText(/A\.\s*falo/)
     fireEvent.click(correctOption)
 
-    // Should be selectable
-    expect(correctOption.closest('button')).toHaveAttribute('aria-selected', 'true')
+    // Should be selectable and have primary button class when selected
+    expect(correctOption.closest('button')).toHaveClass('neo-button-primary')
   })
 
   it('should handle long words correctly', async () => {
