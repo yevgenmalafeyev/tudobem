@@ -7,9 +7,8 @@
  * to all Playwright E2E test files in the tests/e2e directory.
  */
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+import fs from 'fs';
+import glob from 'glob';
 
 const E2E_DIR = 'tests/e2e';
 const UTILS_IMPORT = `import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';`;
@@ -71,7 +70,7 @@ function addErrorMonitoringToFile(filePath) {
   
   // Add error monitoring setup to test.describe blocks
   const describeRegex = /test\.describe\s*\(\s*['"]([^'"]+)['"],\s*\(\)\s*=>\s*\{/g;
-  content = content.replace(describeRegex, (match, testName) => {
+  content = content.replace(describeRegex, (match) => {
     return `${match}\n${ERROR_MONITORING_SETUP}`;
   });
   

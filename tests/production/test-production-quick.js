@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 // Configuration for testing production
 const PROD_URL = 'https://portuguese-learning-app-theta.vercel.app';
@@ -8,7 +8,7 @@ let ANTHROPIC_API_KEY = null;
 try {
   const localConfig = JSON.parse(fs.readFileSync('./local-config.json', 'utf8'));
   ANTHROPIC_API_KEY = localConfig.anthropicApiKey;
-} catch (error) {
+} catch {
   console.warn('⚠️  No local-config.json found - will test without API key');
 }
 

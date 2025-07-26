@@ -15,9 +15,9 @@
  * - All dependencies installed
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 console.log('🧪 AI Integration Test Runner');
 console.log('=====================================');
@@ -40,7 +40,7 @@ if (!fs.existsSync(configPath)) {
 let config;
 try {
   config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-} catch (error) {
+} catch {
   console.error('❌ Invalid local-config.json format');
   process.exit(1);
 }
@@ -75,7 +75,7 @@ for (const port of portsToCheck) {
       console.log(`✅ Development server is running on port ${port}`);
       break;
     }
-  } catch (error) {
+  } catch {
     // Continue checking next port
   }
 }

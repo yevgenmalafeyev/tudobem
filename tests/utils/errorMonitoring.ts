@@ -5,7 +5,7 @@
  * including React state errors, JavaScript errors, network failures, and more.
  */
 
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 export interface ErrorReport {
   timestamp: Date;
@@ -115,7 +115,6 @@ export class E2EErrorMonitor {
   async checkForReactStateErrors(): Promise<void> {
     const consoleErrors = await this.page.evaluate(() => {
       // Check for React-specific error patterns in console
-      const errors: string[] = [];
       
       // Override console.error to capture React warnings
       const originalError = console.error;

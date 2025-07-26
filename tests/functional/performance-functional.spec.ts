@@ -173,7 +173,7 @@ test.describe('Performance Functional Tests', () => {
       
       // Get initial memory usage
       const initialMemory = await page.evaluate(() => {
-        return (performance as any).memory ? (performance as any).memory.usedJSHeapSize : 0
+        return (performance as { memory?: { usedJSHeapSize: number } }).memory ? (performance as { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize : 0
       })
       
       // Simulate intensive usage
@@ -196,7 +196,7 @@ test.describe('Performance Functional Tests', () => {
       
       // Get final memory usage
       const finalMemory = await page.evaluate(() => {
-        return (performance as any).memory ? (performance as any).memory.usedJSHeapSize : 0
+        return (performance as { memory?: { usedJSHeapSize: number } }).memory ? (performance as { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize : 0
       })
       
       if (initialMemory > 0 && finalMemory > 0) {

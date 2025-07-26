@@ -110,7 +110,7 @@ describe('/api/generate-exercise', () => {
 
   it('should handle API failure with fallback', async () => {
     // Mock Anthropic to throw error
-    const Anthropic = require('@anthropic-ai/sdk')
+    const { default: Anthropic } = await import('@anthropic-ai/sdk')
     Anthropic.mockImplementation(() => ({
       messages: {
         create: jest.fn().mockRejectedValue(new Error('API Error'))

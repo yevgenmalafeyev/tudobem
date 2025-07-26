@@ -1,4 +1,3 @@
-import { FullConfig } from '@playwright/test';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -7,7 +6,7 @@ import path from 'path';
  * 
  * Generates performance reports and cleans up testing environment.
  */
-async function globalTeardown(config: FullConfig) {
+async function globalTeardown() {
   console.log('🧹 Starting performance testing global teardown...');
   
   try {
@@ -39,7 +38,7 @@ async function generatePerformanceSummary() {
       const summary = {
         timestamp: new Date().toISOString(),
         testSuite: 'Performance Tests',
-        totalTests: results.suites?.reduce((acc: number, suite: any) => 
+        totalTests: results.suites?.reduce((acc: number, suite: { specs?: unknown[] }) => 
           acc + (suite.specs?.length || 0), 0) || 0,
         passedTests: 0,
         failedTests: 0,
@@ -54,14 +53,14 @@ async function generatePerformanceSummary() {
         let totalDuration = 0;
         let testCount = 0;
         
-        results.suites.forEach((suite: any) => {
+        results.suites.forEach((suite: { specs?: { tests?: { results?: { status: string; duration: number }[] }[] }[] }) => {
           if (suite.specs) {
-            suite.specs.forEach((spec: any) => {
+            suite.specs.forEach((spec: { tests?: { results?: { status: string; duration: number }[] }[] }) => {
               if (spec.tests) {
-                spec.tests.forEach((test: any) => {
+                spec.tests.forEach((test: { results?: { status: string; duration: number }[] }) => {
                   testCount++;
                   if (test.results) {
-                    test.results.forEach((result: any) => {
+                    test.results.forEach((result: { status: string; duration: number }) => {
                       if (result.status === 'passed') {
                         summary.passedTests++;
                       } else {

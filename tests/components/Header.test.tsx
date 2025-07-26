@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
-  return function MockLink({ children, href, ...props }: any) {
+  return function MockLink({ children, href, ...props }: { children: React.ReactNode; href: string; [key: string]: unknown }) {
     return <a href={href} {...props}>{children}</a>
   }
 })
@@ -50,7 +50,7 @@ jest.mock('@/utils/translations', () => ({
 
 // Mock Logo component
 jest.mock('@/components/Logo', () => {
-  return function MockLogo({ className }: any) {
+  return function MockLogo({ className }: { className?: string }) {
     return <div data-testid="logo" className={className}>Logo</div>
   }
 })

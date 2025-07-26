@@ -1,5 +1,5 @@
-const fs = require('fs');
-const puppeteer = require('puppeteer');
+import fs from 'fs';
+import puppeteer from 'puppeteer';
 
 // Configuration for testing
 const LOCAL_URL = 'http://localhost:3000';
@@ -10,7 +10,7 @@ let ANTHROPIC_API_KEY = null;
 try {
   const localConfig = JSON.parse(fs.readFileSync('./local-config.json', 'utf8'));
   ANTHROPIC_API_KEY = localConfig.anthropicApiKey;
-} catch (error) {
+} catch {
   console.warn('⚠️  No local-config.json found for API key testing');
   console.warn('   Create local-config.json with: {"anthropicApiKey": "your-api-key"}');
 }
@@ -160,7 +160,7 @@ async function testExerciseGeneration(url, browser) {
           if (responseData.id && responseData.id.length > 5) {
             results.apiUsed = true;
           }
-        } catch (e) {
+        } catch {
           console.log('   Could not parse exercise response');
         }
       }
@@ -242,7 +242,7 @@ async function runTests() {
   let browser;
   try {
     browser = await puppeteer.launch({ headless: true });
-  } catch (error) {
+  } catch {
     console.error('❌ Puppeteer not available. Install with: npm install puppeteer');
     process.exit(1);
   }

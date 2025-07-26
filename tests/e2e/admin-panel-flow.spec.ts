@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { validateESLintInTest } from '../utils/test-helpers'
 import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';
 
 // Load configuration for API key testing
@@ -15,7 +16,7 @@ try {
     REAL_API_KEY = localConfig.anthropicApiKey;
     hasRealApiKey = !!REAL_API_KEY && REAL_API_KEY.startsWith('sk-ant-');
   }
-} catch (error) {
+} catch {
   console.warn('⚠️  Could not load local-config.json for admin test');
 }
 
@@ -55,8 +56,20 @@ test.describe('Admin Panel Flow', () => {
   });
 
   test('admin login and authentication flow', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000);
     
+
+
+  // Increased timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('admin login and authentication flow');
+
+
+  
     console.log('🧪 Testing admin login flow');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
@@ -100,8 +113,20 @@ test.describe('Admin Panel Flow', () => {
   });
 
   test('admin API key management', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000);
     
+
+
+  // Increased timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('admin API key management');
+
+
+  
     console.log('🧪 Testing admin API key management');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
@@ -147,6 +172,18 @@ test.describe('Admin Panel Flow', () => {
   test.skip(!hasRealApiKey, 'Real API key required for exercise generation test');
 
   test('admin exercise generation', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('admin exercise generation');
+
+
+  
     test.setTimeout(60000); // AI generation takes time
     
     console.log('🧪 Testing admin exercise generation');
@@ -199,8 +236,20 @@ test.describe('Admin Panel Flow', () => {
   });
 
   test('admin database statistics', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000);
     
+
+
+  // Increased timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('admin database statistics');
+
+
+  
     console.log('🧪 Testing admin database statistics');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
@@ -242,8 +291,20 @@ test.describe('Admin Panel Flow', () => {
   });
 
   test('unauthorized admin access prevention', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000);
     
+
+
+  // Increased timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('unauthorized admin access prevention');
+
+
+  
     console.log('🧪 Testing unauthorized admin access prevention');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';

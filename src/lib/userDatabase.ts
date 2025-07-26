@@ -5,6 +5,14 @@ import { LanguageLevel } from '@/types';
 
 let pool: Pool | null = null;
 
+// For testing: reset the pool to use new environment variables
+export function resetPool(): void {
+  if (pool) {
+    pool.end();
+    pool = null;
+  }
+}
+
 function getPool(): Pool {
   if (!pool) {
     const isLocal = !!(process.env.POSTGRES_URL && 

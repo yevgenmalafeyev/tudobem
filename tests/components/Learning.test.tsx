@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Learning from '@/components/Learning'
 
@@ -110,7 +110,7 @@ jest.mock('@/components/GenerationStatusIndicator', () => {
 })
 
 jest.mock('@/components/learning/ModeToggle', () => {
-  return function MockModeToggle({ mode, onModeChange }: any) {
+  return function MockModeToggle({ mode, onModeChange }: { mode: string; onModeChange?: (mode: string) => void }) {
     return (
       <button 
         data-testid="mode-toggle" 
@@ -123,7 +123,7 @@ jest.mock('@/components/learning/ModeToggle', () => {
 })
 
 jest.mock('@/components/learning/ExerciseDisplay', () => {
-  return function MockExerciseDisplay({ exercise }: any) {
+  return function MockExerciseDisplay({ exercise }: { exercise?: { sentence?: string } }) {
     return <div data-testid="exercise-display">{exercise?.sentence}</div>
   }
 })
@@ -135,7 +135,7 @@ jest.mock('@/components/learning/MultipleChoiceOptions', () => {
 })
 
 jest.mock('@/components/learning/FeedbackDisplay', () => {
-  return function MockFeedbackDisplay({ feedback }: any) {
+  return function MockFeedbackDisplay({ feedback }: { feedback?: { explanation?: string } }) {
     return feedback ? <div data-testid="feedback-display">{feedback.explanation}</div> : null
   }
 })
@@ -243,8 +243,8 @@ describe('Learning Component', () => {
 
     render(<Learning />)
     
-    // Should show error state when no exercise is available
-    expect(screen.getByText('loadingError')).toBeInTheDocument()
+    // Should show loading state when no exercise is available
+    expect(screen.getByText('loadingExercise')).toBeInTheDocument()
   })
 
   it('should show loading state appropriately', () => {

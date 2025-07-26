@@ -316,7 +316,7 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Get current exercise content
-      const exerciseText = await page.locator('text=___').textContent()
+      await page.locator('text=___').textContent()
       
       // Reload the page
       await page.reload()

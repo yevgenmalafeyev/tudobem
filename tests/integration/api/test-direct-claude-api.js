@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Direct test of Claude API without the web app
-const Anthropic = require('@anthropic-ai/sdk');
+import Anthropic from '@anthropic-ai/sdk';
 
 async function testDirectClaudeAPI() {
   const apiKey = process.env.CLAUDE_API_KEY;

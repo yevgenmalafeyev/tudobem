@@ -172,7 +172,7 @@ describe('FeedbackDisplay', () => {
       explanation: 'Correct!',
       additionalInfo: 'This is extra info',
       timestamp: new Date().toISOString()
-    } as any
+    } as { isCorrect: boolean; explanation: string; [key: string]: unknown }
 
     render(<FeedbackDisplay feedback={feedback} appLanguage="en" />)
 
@@ -197,12 +197,12 @@ describe('FeedbackDisplay', () => {
       <FeedbackDisplay feedback={correctFeedback} appLanguage="en" />
     )
 
-    let correctText = screen.getByText('✓ Correct!')
+    const correctText = screen.getByText('✓ Correct!')
     expect(correctText).toHaveStyle('color: var(--neo-success-text)')
 
     rerender(<FeedbackDisplay feedback={incorrectFeedback} appLanguage="en" />)
 
-    let incorrectText = screen.getByText('✗ Incorrect')
+    const incorrectText = screen.getByText('✗ Incorrect')
     expect(incorrectText).toHaveStyle('color: var(--neo-error)')
   })
 

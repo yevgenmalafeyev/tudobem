@@ -91,7 +91,6 @@ test.describe('Admin Export/Import Functionality', () => {
   test('shows error message for invalid file type', async ({ page }) => {
     // Create a fake text file
     const fileContent = 'This is not a zip file';
-    const file = new File([fileContent], 'test.txt', { type: 'text/plain' });
     
     // Try to upload non-zip file
     const fileInput = page.locator('input[type="file"]');
@@ -111,7 +110,6 @@ test.describe('Admin Export/Import Functionality', () => {
   test('shows file information when valid ZIP is selected', async ({ page }) => {
     // Create a fake zip file
     const fileContent = 'PK'; // ZIP file magic bytes
-    const file = new File([fileContent], 'test.zip', { type: 'application/zip' });
     
     // Upload zip file
     const fileInput = page.locator('input[type="file"]');

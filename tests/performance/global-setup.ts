@@ -53,7 +53,7 @@ async function globalSetup(config: FullConfig) {
     // Set up performance monitoring baseline
     await page.evaluate(() => {
       // Store baseline timestamp for relative measurements
-      (window as any).__perfBaseline = performance.now();
+      (window as { __perfBaseline?: number }).__perfBaseline = performance.now();
       
       // Set up custom performance markers
       if ('performance' in window && performance.mark) {

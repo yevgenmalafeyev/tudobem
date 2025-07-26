@@ -182,7 +182,7 @@ describe('useExerciseGeneration hook', () => {
   })
 
   it('should use correct API parameters', async () => {
-    let requestBody: any
+    let requestBody: unknown
     
     server.use(
       http.post('/api/generate-exercise', async ({ request }) => {
@@ -219,7 +219,7 @@ describe('useExerciseGeneration hook', () => {
   })
 
   it('should handle multiple choice API parameters correctly', async () => {
-    let requestBody: any
+    let requestBody: unknown
     
     server.use(
       http.post('/api/generate-multiple-choice', async ({ request }) => {

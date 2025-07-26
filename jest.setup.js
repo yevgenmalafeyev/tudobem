@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom'
 
-// Load test environment variables
-require('dotenv').config({ path: '.env.test' })
+// Load test environment variables with override
+require('dotenv').config({ path: '.env.test', override: true })
+
+// Reset database pool to use test environment variables
+// Note: This will be handled in individual test files to avoid TS compilation issues in setup
 
 // Polyfill for Response/Request (needed for MSW in Node.js)
 import 'whatwg-fetch'

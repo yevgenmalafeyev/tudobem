@@ -1,11 +1,11 @@
-const fs = require('fs');
+import fs from 'fs';
 
 // Load local config
 let ANTHROPIC_API_KEY = null;
 try {
   const localConfig = JSON.parse(fs.readFileSync('./local-config.json', 'utf8'));
   ANTHROPIC_API_KEY = localConfig.anthropicApiKey;
-} catch (error) {
+} catch {
   console.warn('⚠️  No local-config.json found');
   console.warn('   Create local-config.json with: {"anthropicApiKey": "your-api-key"}');
 }

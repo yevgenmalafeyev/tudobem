@@ -1,12 +1,12 @@
-const fs = require('fs');
-const { Anthropic } = require('@anthropic-ai/sdk');
+import fs from 'fs';
+import { Anthropic } from '@anthropic-ai/sdk';
 
 // Load local config
 let ANTHROPIC_API_KEY = null;
 try {
   const localConfig = JSON.parse(fs.readFileSync('./local-config.json', 'utf8'));
   ANTHROPIC_API_KEY = localConfig.anthropicApiKey;
-} catch (error) {
+} catch {
   console.error('❌ No local-config.json found');
   process.exit(1);
 }

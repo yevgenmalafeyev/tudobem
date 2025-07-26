@@ -2,8 +2,8 @@ import { renderHook, act } from '@testing-library/react'
 import { useLearning } from '@/hooks/useLearning'
 
 // Create mutable state for the store mock
-let mockCurrentExercise: any = null;
-const mockSetCurrentExercise = jest.fn((exercise: any) => {
+let mockCurrentExercise: unknown = null;
+const mockSetCurrentExercise = jest.fn((exercise: unknown) => {
   mockCurrentExercise = exercise;
 });
 
@@ -249,7 +249,7 @@ describe('useLearning hook', () => {
     const { result } = renderHook(() => useLearning())
 
     // Mock the input ref
-    const mockInputRef = {
+    {
       current: {
         focus: jest.fn()
       }

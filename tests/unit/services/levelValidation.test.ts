@@ -278,12 +278,12 @@ describe('Level Validation Service', () => {
     })
 
     it('should handle undefined level parameter', () => {
-      const exercise = getFallbackExercise(undefined as any)
+      const exercise = getFallbackExercise(undefined as unknown)
       expect(exercise).toBeNull()
     })
 
     it('should handle null level parameter', () => {
-      const exercise = getFallbackExercise(null as any)
+      const exercise = getFallbackExercise(null as unknown)
       expect(exercise).toBeNull()
     })
 

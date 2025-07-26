@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { ExerciseDatabase } from '@/lib/database';
+import { SmartDatabase } from '@/lib/smartDatabase';
 
 export async function GET() {
   try {
-    await ExerciseDatabase.initializeTables();
-    const stats = await ExerciseDatabase.getStats();
+    await SmartDatabase.initializeTables();
+    const stats = await SmartDatabase.getUsageStats();
     
     return NextResponse.json({
       success: true,

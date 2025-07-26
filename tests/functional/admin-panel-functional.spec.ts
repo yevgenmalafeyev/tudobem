@@ -110,21 +110,19 @@ test.describe('Admin Panel - Functional Tests', () => {
       await page.waitForSelector('text=Import Questions', { timeout: 10000 })
       
       // Create a test JSON file for import
-      const testData = {
-        questions: [
-          {
-            sentence: 'Eu ___ português.',
-            correctAnswer: 'falo',
-            topic: 'present-indicative',
-            level: 'A1',
-            explanations: {
-              pt: 'Primeira pessoa do singular do presente do indicativo',
-              en: 'First person singular present indicative',
-              uk: 'Перша особа однини теперішнього часу'
-            }
-          }
-        ]
-      }
+      // const questions = [
+      //     {
+      //       sentence: 'Eu ___ português.',
+      //       correctAnswer: 'falo',
+      //       topic: 'present-indicative',
+      //       level: 'A1',
+      //       explanations: {
+      //         pt: 'Primeira pessoa do singular do presente do indicativo',
+      //         en: 'First person singular present indicative',
+      //         uk: 'Перша особа однини теперішнього часу'
+      //       }
+      //     }
+      //   ];
       
       // Would need to create and upload a test file
       // This is a placeholder for file upload testing
@@ -170,7 +168,7 @@ test.describe('Admin Panel - Functional Tests', () => {
       await page.waitForSelector('text=Total Questions', { timeout: 10000 })
       
       // Get initial count
-      const initialCount = await page.locator('text=Total Questions').textContent()
+      await page.locator('text=Total Questions').textContent()
       
       // Refresh the page
       await page.reload()
@@ -243,7 +241,7 @@ test.describe('Admin Panel - Functional Tests', () => {
       await page.waitForSelector('text=Total Users', { timeout: 10000 })
       
       // Get initial data
-      const initialUsers = await page.locator('text=Total Users').textContent()
+      await page.locator('text=Total Users').textContent()
       
       // Refresh the analytics (if refresh button exists)
       const refreshButton = page.locator('button:has-text("Refresh")')

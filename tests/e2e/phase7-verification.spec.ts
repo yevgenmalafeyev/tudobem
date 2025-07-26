@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { validateESLintInTest } from '../utils/test-helpers';
 
 test.describe('Phase 7 Verification', () => {
   test('Phase 7: App loads directly in learning mode (no configuration required)', async ({ page }) => {
-    test.setTimeout(15000);
+    test.setTimeout(20000); // Increased timeout to account for ESLint validation
+    
+    // Run ESLint validation first
+    await validateESLintInTest('Phase 7 Verification - Direct learning mode');
     
     console.log('🧪 Testing Phase 7: Direct learning mode loading');
 

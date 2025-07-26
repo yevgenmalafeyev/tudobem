@@ -1,7 +1,7 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { useAnswerChecking } from '@/hooks/useAnswerChecking'
 import { server } from '@/__mocks__/server'
-import { http, HttpResponse } from 'msw'
+import { http } from 'msw'
 
 // Mock functions
 const mockSetFeedback = jest.fn()
@@ -181,7 +181,7 @@ describe('useAnswerChecking hook', () => {
   it('should handle network errors gracefully', async () => {
     // Mock network error
     server.use(
-      http.post('/api/check-answer', (req, res, ctx) => {
+      http.post('/api/check-answer', (req, res) => {
         return res.networkError('Network error')
       })
     )

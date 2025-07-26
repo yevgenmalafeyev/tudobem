@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import ModeToggle from '@/components/learning/ModeToggle'
-import { LearningMode } from '@/hooks/useLearning'
 
 describe('ModeToggle', () => {
   const mockSetLearningMode = jest.fn()

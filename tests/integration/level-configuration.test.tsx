@@ -41,7 +41,7 @@ afterAll(() => server.close())
 describe('Level Configuration Integration', () => {
   describe('API request level filtering', () => {
     it('should send only selected levels in API requests', async () => {
-      let capturedRequestBody: any = null
+      let capturedRequestBody: unknown = null
 
       // Intercept API calls to capture request data
       server.use(
@@ -75,7 +75,7 @@ describe('Level Configuration Integration', () => {
     })
 
     it('should send B1-B2 levels correctly', async () => {
-      let capturedRequestBody: any = null
+      let capturedRequestBody: unknown = null
 
       server.use(
         http.post('/api/generate-exercise', async ({ request }) => {
@@ -107,7 +107,7 @@ describe('Level Configuration Integration', () => {
     })
 
     it('should handle single level selection', async () => {
-      let capturedRequestBody: any = null
+      let capturedRequestBody: unknown = null
 
       server.use(
         http.post('/api/generate-exercise', async ({ request }) => {
@@ -139,7 +139,7 @@ describe('Level Configuration Integration', () => {
     })
 
     it('should not send excluded levels in requests', async () => {
-      let capturedRequestBody: any = null
+      let capturedRequestBody: unknown = null
 
       server.use(
         http.post('/api/generate-exercise', async ({ request }) => {
@@ -270,7 +270,7 @@ describe('Level Configuration Integration', () => {
 
   describe('configuration changes', () => {
     it('should generate different exercises when levels change', async () => {
-      const callHistory: any[] = []
+      const callHistory: unknown[] = []
 
       server.use(
         http.post('/api/generate-exercise', async ({ request }) => {
@@ -440,7 +440,7 @@ describe('Level Configuration Integration', () => {
 
   describe('performance with different level configurations', () => {
     it('should handle large level arrays efficiently', async () => {
-      let capturedRequestBody: any = null
+      let capturedRequestBody: unknown = null
 
       server.use(
         http.post('/api/generate-exercise', async ({ request }) => {

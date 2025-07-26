@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { setupTestPage } from '../utils/test-helpers'
+import { setupTestPage , validateESLintInTest } from '../utils/test-helpers'
 
 /**
  * Production tests for level filtering against the deployed Vercel app
@@ -12,6 +12,18 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should display consistent levels in production environment', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should display consistent levels in production environment');
+
+
+  
     const observedLevels: string[] = []
     
     // Generate multiple exercises and track levels
@@ -46,8 +58,20 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should maintain level consistency across API calls', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain level consistency across API calls');
+
+
+  
     let apiCallCount = 0
-    const apiResponses: any[] = []
+    const apiResponses: unknown[] = []
     
     // Monitor API calls to verify level consistency
     page.on('response', async response => {
@@ -56,7 +80,7 @@ test.describe('Production Level Filtering', () => {
         try {
           const responseData = await response.json()
           apiResponses.push(responseData)
-        } catch (e) {
+        } catch {
           // Handle cases where response isn't JSON
           console.log('Non-JSON response from API')
         }
@@ -86,6 +110,18 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should handle level filtering with real network conditions', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle level filtering with real network conditions');
+
+
+  
     // Test with actual network delays and potential failures
     const exerciseData: Array<{level: string, contentComplexity: number}> = []
     
@@ -151,6 +187,18 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should handle production API errors gracefully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle production API errors gracefully');
+
+
+  
     const levelsBefore: string[] = []
     const levelsAfter: string[] = []
     
@@ -204,6 +252,18 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should maintain level filtering across browser refreshes', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain level filtering across browser refreshes');
+
+
+  
     const levelsBeforeRefresh: string[] = []
     const levelsAfterRefresh: string[] = []
     
@@ -311,6 +371,18 @@ test.describe('Production Level Filtering', () => {
   })
 
   test('should validate level filtering performance in production', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should validate level filtering performance in production');
+
+
+  
     const performanceData: Array<{
       exerciseNumber: number
       levelDisplayTime: number

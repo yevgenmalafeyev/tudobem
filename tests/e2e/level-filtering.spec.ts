@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { setupTestPage } from '../utils/test-helpers'
+import { setupTestPage , validateESLintInTest } from '../utils/test-helpers'
 
 test.describe('Level Filtering', () => {
   test.beforeEach(async ({ page }) => {
@@ -7,6 +7,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should display only A1 exercises when A1 is selected', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should display only A1 exercises when A1 is selected');
+
+
+  
     // TODO: This test assumes there's a level selector UI
     // For now, we'll test the default behavior and exercise level display
     
@@ -38,6 +50,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should not display exercises from excluded levels', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should not display exercises from excluded levels');
+
+
+  
     // Test with fallback exercises to ensure level consistency
     
     // Mock API to return specific level exercises
@@ -75,6 +99,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should handle mixed level selection correctly', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle mixed level selection correctly');
+
+
+  
     const observedLevels: string[] = []
     
     // Intercept API calls to track requested levels
@@ -169,6 +205,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should maintain level consistency in fallback exercises', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain level consistency in fallback exercises');
+
+
+  
     // Force API errors to test fallback exercises
     await page.route('**/api/generate-exercise', route => {
       route.fulfill({ status: 500, body: JSON.stringify({ error: 'Server error' }) })
@@ -204,7 +252,19 @@ test.describe('Level Filtering', () => {
   })
 
   test('should handle level validation in API requests', async ({ page }) => {
-    let capturedRequest: any = null
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle level validation in API requests');
+
+
+  
+    let capturedRequest: unknown = null
     
     // Capture the API request to verify level parameters
     await page.route('**/api/generate-exercise', async route => {
@@ -239,6 +299,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should display appropriate content complexity for selected levels', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should display appropriate content complexity for selected levels');
+
+
+  
     // Mock API to return exercises with different complexity levels
     let exerciseCount = 0
     
@@ -300,6 +372,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should prevent level mixing in single exercise', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should prevent level mixing in single exercise');
+
+
+  
     // Each individual exercise should have only one level
     
     const exerciseLevels: string[] = []
@@ -339,6 +423,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should handle invalid level requests gracefully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle invalid level requests gracefully');
+
+
+  
     // Test with malformed level data
     await page.route('**/api/generate-exercise', route => {
       route.fulfill({
@@ -370,6 +466,18 @@ test.describe('Level Filtering', () => {
   })
 
   test('should maintain level filtering across mode switches', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain level filtering across mode switches');
+
+
+  
     // Test that level filtering works in both input and multiple choice modes
     
     const levelsInInputMode: string[] = []

@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test'
+import { validateCodeQuality } from './eslint-validator'
 
 /**
  * Helper function to complete configuration if needed before running tests
@@ -10,13 +11,13 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
     await page.waitForTimeout(1000)
     
     // Check if we're on the configuration page by looking for the main heading
-    const configHeading = page.locator('h1:has-text("Configure a Sua Aprendizagem de Português")')
+    const configHeading = page.locator('h1:has-text("Configure a Sua Aprendizagem de Portugu�s")')
     const isConfigPage = await configHeading.isVisible({ timeout: 10000 })
     
     if (isConfigPage) {
       // Click the save button to complete configuration and navigate to learning page
       // Use more robust clicking approach for Safari compatibility
-      const saveButton = page.locator('button:has-text("Guardar Configuração e Começar a Aprender")')
+      const saveButton = page.locator('button:has-text("Guardar Configura��o e Come�ar a Aprender")')
       await saveButton.waitFor({ state: 'visible', timeout: 10000 })
       
       // Scroll to button and click with multiple fallback methods
@@ -29,20 +30,20 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
       try {
         await saveButton.click({ timeout: 5000 })
         clickSuccessful = true
-        console.log('✅ Configuration button clicked successfully')
+        console.log(' Configuration button clicked successfully')
       } catch (clickError) {
         console.warn('First click failed, trying force click:', clickError)
         try {
           await saveButton.click({ force: true, timeout: 5000 })
           clickSuccessful = true
-          console.log('✅ Configuration button force-clicked successfully')
+          console.log(' Configuration button force-clicked successfully')
         } catch (forceClickError) {
           console.warn('Force click failed, trying JavaScript click:', forceClickError)
           // Last resort: JavaScript click
           await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll('button'))
             const targetButton = buttons.find(btn => 
-              btn.textContent?.includes('Guardar Configuração e Começar a Aprender'))
+              btn.textContent?.includes('Guardar Configura��o e Come�ar a Aprender'))
             if (targetButton) {
               targetButton.click()
               return true
@@ -50,7 +51,7 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
             return false
           })
           clickSuccessful = true
-          console.log('✅ Configuration button JavaScript-clicked successfully')
+          console.log(' Configuration button JavaScript-clicked successfully')
         }
       }
       
@@ -61,11 +62,11 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
       // Give extra time for navigation to start
       await page.waitForTimeout(2000)
       
-      // Wait for transition to learning page with exercise card or error message
-      await page.waitForSelector('.neo-card-lg, .neo-card:has-text("Erro ao carregar exercício"), input[type="text"], .loading, text=A carregar exercício', { timeout: 45000 })
+      // Wait for transition to learning page with exercise card or error message  
+      await page.waitForSelector('.neo-card-lg, input[type="text"], .loading', { timeout: 45000 })
       
       // Check if we got an error loading exercises
-      const errorCard = page.locator('.neo-card:has-text("Erro ao carregar exercício")')
+      const errorCard = page.locator('.neo-card').filter({ hasText: 'Erro ao carregar' })
       const hasError = await errorCard.isVisible({ timeout: 2000 })
       
       if (hasError) {
@@ -74,7 +75,7 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
       }
     } else {
       // We might already be on the learning page, check for either success or error state
-      const learningElements = page.locator('.neo-card-lg, .neo-card:has-text("Erro ao carregar exercício"), input[type="text"], text=A carregar exercício')
+      const learningElements = page.locator('.neo-card-lg, .neo-card, input[type="text"]')
       await learningElements.first().waitFor({ timeout: 15000 })
     }
   } catch (error) {
@@ -96,4 +97,41 @@ export async function completeConfigurationIfNeeded(page: Page): Promise<void> {
 export async function setupTestPage(page: Page): Promise<void> {
   await page.goto('/')
   await completeConfigurationIfNeeded(page)
+}
+
+/**
+ * ESLint validation hook for E2E tests
+ * Call this at the beginning of each test to ensure code quality
+ */
+export async function validateESLintInTest(testName: string, options: {
+  failOnWarnings?: boolean;
+  failOnErrors?: boolean;
+} = {}): Promise<void> {
+  const { failOnWarnings = true, failOnErrors = true } = options;
+  
+  try {
+    await validateCodeQuality({
+      testName,
+      failOnWarnings,
+      failOnErrors
+    });
+  } catch (error) {
+    console.error(`=� ESLint validation failed for test: ${testName}`);
+    throw error;
+  }
+}
+
+/**
+ * Setup function that includes ESLint validation
+ * Use this instead of setupTestPage when you want ESLint validation
+ */
+export async function setupTestPageWithESLint(page: Page, testName: string, options: {
+  failOnWarnings?: boolean;
+  failOnErrors?: boolean;
+} = {}): Promise<void> {
+  // Run ESLint validation first
+  await validateESLintInTest(testName, options);
+  
+  // Then setup the page
+  await setupTestPage(page);
 }

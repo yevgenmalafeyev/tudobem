@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { setupTestPage } from '../utils/test-helpers'
+import { setupTestPage , validateESLintInTest } from '../utils/test-helpers'
 
 test.describe('Performance', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,6 +8,18 @@ test.describe('Performance', () => {
   })
 
   test('should load initial page quickly', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should load initial page quickly');
+
+
+  
     const startTime = Date.now()
     
     // Wait for the exercise to load
@@ -20,6 +32,18 @@ test.describe('Performance', () => {
   })
 
   test('should respond to user input quickly', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should respond to user input quickly');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -35,6 +59,18 @@ test.describe('Performance', () => {
   })
 
   test('should generate feedback quickly', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should generate feedback quickly');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -56,6 +92,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle rapid interactions', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle rapid interactions');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -70,6 +118,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle multiple exercise generations', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle multiple exercise generations');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -98,6 +158,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle mode switching efficiently', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle mode switching efficiently');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -117,6 +189,18 @@ test.describe('Performance', () => {
   })
 
   test('should not cause memory leaks', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should not cause memory leaks');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -135,6 +219,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle network delays gracefully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle network delays gracefully');
+
+
+  
     // Simulate slow network
     await page.route('**/api/**', route => {
       setTimeout(() => {
@@ -162,6 +258,18 @@ test.describe('Performance', () => {
   })
 
   test('should optimize for mobile performance', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should optimize for mobile performance');
+
+
+  
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
     
@@ -186,6 +294,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle concurrent operations', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle concurrent operations');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -204,6 +324,18 @@ test.describe('Performance', () => {
   })
 
   test('should maintain performance with large datasets', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain performance with large datasets');
+
+
+  
     // This test would be more relevant if the app handled large datasets
     // For now, we'll test with multiple rapid operations
     
@@ -227,6 +359,18 @@ test.describe('Performance', () => {
   })
 
   test('should optimize resource usage', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should optimize resource usage');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -244,6 +388,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle error scenarios efficiently', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle error scenarios efficiently');
+
+
+  
     // Simulate network errors
     await page.route('**/api/**', route => {
       route.fulfill({ status: 500, body: JSON.stringify({ error: 'Server error' }) })
@@ -264,6 +420,18 @@ test.describe('Performance', () => {
   })
 
   test('should optimize for repeated usage', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should optimize for repeated usage');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     
@@ -295,6 +463,18 @@ test.describe('Performance', () => {
   })
 
   test('should handle animation and transitions smoothly', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle animation and transitions smoothly');
+
+
+  
     // Wait for the exercise to load
     await page.waitForSelector('.neo-card-lg')
     

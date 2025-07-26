@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test'
-import { setupTestPage } from '../utils/test-helpers'
+import { test, expect, Page } from '@playwright/test'
+import { setupTestPage , validateESLintInTest } from '../utils/test-helpers'
 
 /**
  * Helper function to wait for exercise loading and check state
  */
-async function waitForExerciseOrError(page: any, maxWaitMs: number = 45000) {
+async function waitForExerciseOrError(page: Page, maxWaitMs: number = 45000) {
   // Wait for loading to complete or error state to appear with extended timeout
   let attempts = 0;
   const maxAttempts = 3;
@@ -29,7 +29,7 @@ async function waitForExerciseOrError(page: any, maxWaitMs: number = 45000) {
       
       // If we get here, function completed successfully
       break;
-    } catch (error) {
+    } catch {
       console.warn(`Loading timeout on attempt ${attempts} - checking current state`)
       
       // If this is the last attempt, we'll proceed with state check
@@ -49,19 +49,19 @@ async function waitForExerciseOrError(page: any, maxWaitMs: number = 45000) {
   
   try {
     hasExercise = await page.locator('input[type="text"]').isVisible({ timeout: 3000 })
-  } catch (e) {
+  } catch {
     // Continue to error check
   }
   
   try {
     hasError = await page.locator('.neo-card:has-text("Erro ao carregar exercício")').isVisible({ timeout: 2000 })
-  } catch (e) {
+  } catch {
     // Continue to loading check
   }
   
   try {
     isLoading = await page.locator('text=A carregar exercício').isVisible({ timeout: 1000 })
-  } catch (e) {
+  } catch {
     // All checks done
   }
   
@@ -82,6 +82,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should load the application successfully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should load the application successfully');
+
+
+  
     // Check that the app loads - either with exercise or error state
     const mainContent = page.locator('.neo-card-lg, .neo-card:has-text("Erro ao carregar exercício")')
     await expect(mainContent.first()).toBeVisible()
@@ -122,6 +134,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should complete basic exercise flow', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should complete basic exercise flow');
+
+
+  
     // Wait for exercise to load or error to appear (longer timeout for production)
     const { hasExercise, hasError, isLoading } = await waitForExerciseOrError(page)
     
@@ -172,6 +196,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should handle mode switching', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle mode switching');
+
+
+  
     // Wait for exercise to load or error to appear (longer timeout for production)
     const { hasExercise, hasError, isLoading } = await waitForExerciseOrError(page)
     
@@ -209,6 +245,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should be responsive on mobile', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should be responsive on mobile');
+
+
+  
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
     
@@ -244,6 +292,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should handle network conditions gracefully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle network conditions gracefully');
+
+
+  
     // Wait for exercise to load or determine current state
     const { hasExercise, hasError, isLoading } = await waitForExerciseOrError(page)
     
@@ -284,6 +344,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should maintain functionality across page reloads', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should maintain functionality across page reloads');
+
+
+  
     // Wait for exercise to load or error to appear (longer timeout for production)
     const { hasExercise, hasError, isLoading } = await waitForExerciseOrError(page)
     
@@ -326,6 +398,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should handle API errors gracefully', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should handle API errors gracefully');
+
+
+  
     // Intercept API calls and return errors occasionally
     let callCount = 0
     await page.route('**/api/check-answer', route => {
@@ -358,6 +442,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should load within acceptable time limits', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should load within acceptable time limits');
+
+
+  
     const startTime = Date.now()
     
     // Navigate and wait for content
@@ -376,6 +472,18 @@ test.describe('Production Smoke Tests', () => {
   })
 
   test('should work without JavaScript (basic SSR check)', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('should work without JavaScript (basic SSR check)');
+
+
+  
     // Disable JavaScript
     await page.context().addInitScript(() => {
       // This would require SSR to be implemented

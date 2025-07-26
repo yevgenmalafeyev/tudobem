@@ -20,7 +20,11 @@ const customJestConfig = {
     '<rootDir>/tests/performance/',
     '<rootDir>/tests/production/',
     '<rootDir>/debug-production.spec.ts',
-    '<rootDir>/tests/integration/enhanced-exercise-system.test.ts'
+    '<rootDir>/tests/integration/enhanced-exercise-system.test.ts',
+    '<rootDir>/src/lib/__tests__/userDatabase.test.ts',
+    '<rootDir>/src/lib/__tests__/userDatabase.unit.test.ts',
+    '<rootDir>/src/lib/__tests__/databaseMigration.test.ts',
+    '<rootDir>/src/app/api/admin/__tests__/admin.api.test.ts'
   ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

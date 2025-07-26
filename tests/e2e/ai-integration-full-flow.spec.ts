@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { validateESLintInTest } from '../utils/test-helpers'
 import fs from 'fs';
 import path from 'path';
 import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';
@@ -14,7 +15,7 @@ try {
     REAL_API_KEY = localConfig.anthropicApiKey;
     hasRealApiKey = !!REAL_API_KEY && REAL_API_KEY.startsWith('sk-ant-');
   }
-} catch (error) {
+} catch {
   console.warn('⚠️  Could not load local-config.json for AI integration test');
 }
 
@@ -42,7 +43,7 @@ test.describe('AI Integration Full Flow', () => {
         localStorage.clear();
         sessionStorage.clear();
       });
-    } catch (error) {
+    } catch {
       // If localStorage access fails, continue - the app will handle empty state
       console.warn('Could not clear localStorage, continuing with test');
     }
@@ -72,6 +73,18 @@ test.describe('AI Integration Full Flow', () => {
   test.skip(!hasRealApiKey, 'Real API key required for AI integration test');
 
   test('complete AI-powered learning flow with real API key', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('complete AI-powered learning flow with real API key');
+
+
+  
     test.setTimeout(60000); // Increase timeout for AI generation
     
     console.log('🧪 Testing complete AI-powered learning flow');
@@ -190,7 +203,7 @@ test.describe('AI Integration Full Flow', () => {
     try {
       await expect(errorMessage).not.toBeVisible({ timeout: 5000 });
       console.log('✅ No error message detected, checking for exercise content...');
-    } catch (error) {
+    } catch {
       console.log('⚠️ Error message detected, investigating...');
       // If error is visible, let's debug what's happening
       const pageContent = await page.textContent('body');
@@ -228,7 +241,7 @@ test.describe('AI Integration Full Flow', () => {
       try {
         await expect(aiFreshIndicator).toBeVisible({ timeout: 10000 });
         console.log('✅ AI Fresh indicator confirmed - using real Claude API');
-      } catch (error) {
+      } catch {
         console.log('⚠️  AI Fresh indicator not found, but exercise loaded - continuing test');
       }
       
@@ -255,7 +268,7 @@ test.describe('AI Integration Full Flow', () => {
         // Either feedback or next button should appear
         try {
           await expect(feedback.or(nextExerciseButton)).toBeVisible({ timeout: 10000 });
-        } catch (error) {
+        } catch {
           console.log('No immediate feedback found, continuing test');
         }
       }
@@ -318,6 +331,18 @@ test.describe('AI Integration Full Flow', () => {
   });
 
   test('API key validation and error handling', async ({ page }) => {
+
+
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+
+  // Run ESLint validation first
+
+
+  await validateESLintInTest('API key validation and error handling');
+
+
+  
     console.log('🔒 Testing API key validation');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3001';
@@ -354,6 +379,18 @@ test.describe('AI Integration Full Flow', () => {
   test.skip(!hasRealApiKey, 'Performance test with real API - API key required');
   
   test('AI generation performance benchmark', async ({ page }) => {
+
+  
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+  
+  // Run ESLint validation first
+
+  
+  await validateESLintInTest('AI generation performance benchmark');
+
+  
+  
     console.log('⚡ Testing AI generation performance');
 
     const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3001';

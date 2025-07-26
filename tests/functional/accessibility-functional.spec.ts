@@ -52,7 +52,6 @@ test.describe('Accessibility Functional Tests', () => {
       await page.keyboard.press('Tab')
       
       // Find and activate mode toggle with Enter
-      const focused = await page.locator(':focus').first()
       await page.keyboard.press('Enter')
       
       // Should change mode or trigger action

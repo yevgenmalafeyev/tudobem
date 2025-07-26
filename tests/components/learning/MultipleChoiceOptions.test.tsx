@@ -250,7 +250,7 @@ describe('MultipleChoiceOptions', () => {
       />
     )
 
-    let selectedButton = screen.getByRole('button', { name: 'A. falo' })
+    const selectedButton = screen.getByRole('button', { name: 'A. falo' })
     expect(selectedButton).toHaveClass('neo-button-primary')
 
     rerender(

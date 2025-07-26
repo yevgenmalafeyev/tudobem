@@ -76,7 +76,7 @@ jest.mock('@/utils/pwaInstructions', () => ({
 
 // Mock PWA component
 jest.mock('@/components/PWAInstallModal', () => {
-  return function MockPWAInstallModal({ isOpen, onClose }: any) {
+  return function MockPWAInstallModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     return isOpen ? (
       <div data-testid="pwa-modal">
         <button onClick={onClose}>Close PWA Modal</button>

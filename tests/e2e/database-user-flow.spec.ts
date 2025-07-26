@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';
+import { validateESLintInTest } from '../utils/test-helpers';
 
 test.describe('Database-Driven User Flow', () => {
   let errorMonitor: E2EErrorMonitor;
@@ -24,7 +25,7 @@ test.describe('Database-Driven User Flow', () => {
         localStorage.clear();
         sessionStorage.clear();
       });
-    } catch (error) {
+    } catch {
       console.warn('Could not clear localStorage, continuing with test');
     }
   });
@@ -52,7 +53,10 @@ test.describe('Database-Driven User Flow', () => {
   });
 
   test('anonymous user can access database exercises', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000); // Increased timeout for ESLint validation
+    
+    // Run ESLint validation first
+    await validateESLintInTest('Database User Flow - Anonymous user access');
     
     console.log('🧪 Testing anonymous user database exercise access');
 
@@ -124,7 +128,7 @@ test.describe('Database-Driven User Flow', () => {
         
         try {
           await expect(feedback.or(nextExerciseButton)).toBeVisible({ timeout: 5000 });
-        } catch (error) {
+        } catch {
           console.log('No immediate feedback found, continuing test');
         }
       }
@@ -153,7 +157,10 @@ test.describe('Database-Driven User Flow', () => {
   });
 
   test('user registration and login flow', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000); // Increased timeout for ESLint validation
+    
+    // Run ESLint validation first
+    await validateESLintInTest('Database User Flow - User registration and login');
     
     console.log('🧪 Testing user registration and login flow');
 
@@ -205,7 +212,10 @@ test.describe('Database-Driven User Flow', () => {
   });
 
   test('user progress tracking', async ({ page }) => {
-    test.setTimeout(30000);
+    test.setTimeout(35000); // Increased timeout for ESLint validation
+    
+    // Run ESLint validation first
+    await validateESLintInTest('Database User Flow - User progress tracking');
     
     console.log('🧪 Testing user progress tracking');
 

@@ -278,14 +278,15 @@ describe('AdminDashboard Component', () => {
       // Since we can't directly set an invalid state through the UI,
       // we can create a modified component for testing
       const TestComponentWithInvalidState = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const views = [
-          { id: 'data' as any, name: 'Data Management', icon: '📁' },
-          { id: 'stats' as any, name: 'Question Stats', icon: '📊' },
-          { id: 'analytics' as any, name: 'Usage Analytics', icon: '📈' }
+          { id: 'data' as const, name: 'Data Management', icon: '📁' },
+          { id: 'stats' as const, name: 'Question Stats', icon: '📊' },
+          { id: 'analytics' as const, name: 'Usage Analytics', icon: '📈' }
         ];
         
         // Force an invalid view to test the default case
-        const currentView = 'invalid' as any;
+        const currentView = 'invalid' as string;
         
         const renderCurrentView = () => {
           switch (currentView) {

@@ -45,6 +45,27 @@ export default function Learning() {
     focusInput
   } = useLearning();
 
+  // Detailed explanation hook
+  const { 
+    detailedExplanation, 
+    generateExplanation, 
+    clearExplanation 
+  } = useDetailedExplanation({
+    claudeApiKey: configuration.claudeApiKey,
+    explanationLanguage: configuration.appLanguage
+  });
+
+  // Memoize callbacks to prevent useExerciseQueue dependency changes
+  const onExerciseGenerated = useCallback((exercise: EnhancedExercise) => {
+    setCurrentExercise(exercise);
+    generateExplanation(exercise);
+  }, [setCurrentExercise, generateExplanation]);
+
+  const onQueueEmpty = useCallback(() => {
+    console.warn('Exercise queue is empty');
+    // Could trigger a new batch load here
+  }, []);
+
   // Exercise queue management
   const {
     exerciseQueue,
@@ -56,24 +77,8 @@ export default function Learning() {
     queueStats
   } = useExerciseQueue({
     configuration,
-    onExerciseGenerated: (exercise) => {
-      setCurrentExercise(exercise);
-      generateExplanation(exercise);
-    },
-    onQueueEmpty: () => {
-      console.warn('Exercise queue is empty');
-      // Could trigger a new batch load here
-    }
-  });
-
-  // Detailed explanation hook
-  const { 
-    detailedExplanation, 
-    generateExplanation, 
-    clearExplanation 
-  } = useDetailedExplanation({
-    claudeApiKey: configuration.claudeApiKey,
-    explanationLanguage: configuration.appLanguage
+    onExerciseGenerated,
+    onQueueEmpty
   });
 
   // Generate multiple choice options for current exercise
@@ -118,7 +123,7 @@ export default function Learning() {
       console.log('🚀 [DEBUG] Calling loadInitialBatch immediately on mount...');
       loadInitialBatch();
     }
-  }, [loadInitialBatch, currentExercise, exerciseQueue.exercises.length, configuration.claudeApiKey]); // Include all dependencies
+  }, [loadInitialBatch, currentExercise, exerciseQueue.exercises.length]); // eslint-disable-line react-hooks/exhaustive-deps
   
   // Handle queue exercises when available
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { validateESLintInTest } from '../utils/test-helpers'
 import { setupErrorMonitoring, validateNoErrors, E2EErrorMonitor } from '../utils/errorMonitoring';
 
 test.describe('Fallback Exercise System', () => {
@@ -31,6 +32,18 @@ test.describe('Fallback Exercise System', () => {
   });
   
   test('learning mode loads and shows exercise or loading state', async ({ page }) => {
+
+  
+  test.setTimeout(25000); // Timeout for ESLint validation
+
+  
+  // Run ESLint validation first
+
+  
+  await validateESLintInTest('learning mode loads and shows exercise or loading state');
+
+  
+  
     // Navigate to the learning page
     await page.goto('/');
     

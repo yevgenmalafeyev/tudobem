@@ -1,5 +1,15 @@
 import { Page } from '@playwright/test';
 
+// Additional type definitions for performance measurements
+interface PerformanceEventTiming extends PerformanceEntry {
+  processingStart: number;
+}
+
+interface LayoutShift extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
 /**
  * Performance Testing Utilities
  * 
@@ -82,12 +92,12 @@ export class PerformanceMeasurer {
           lcpObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
             if (entries.length > 0) {
-              const lastEntry = entries[entries.length - 1] as any;
+              const lastEntry = entries[entries.length - 1] as PerformanceEntry;
               vitals.LCP = lastEntry.startTime;
             }
           });
           lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-        } catch (e) {
+        } catch {
           console.warn('LCP measurement not supported');
         }
 
@@ -95,12 +105,12 @@ export class PerformanceMeasurer {
         try {
           fidObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
-            entries.forEach((entry: any) => {
+            entries.forEach((entry: PerformanceEventTiming) => {
               vitals.FID = entry.processingStart - entry.startTime;
             });
           });
           fidObserver.observe({ entryTypes: ['first-input'] });
-        } catch (e) {
+        } catch {
           console.warn('FID measurement not supported');
         }
 
@@ -108,14 +118,14 @@ export class PerformanceMeasurer {
         try {
           clsObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
-            entries.forEach((entry: any) => {
+            entries.forEach((entry: LayoutShift) => {
               if (!entry.hadRecentInput) {
                 vitals.CLS += entry.value;
               }
             });
           });
           clsObserver.observe({ entryTypes: ['layout-shift'] });
-        } catch (e) {
+        } catch {
           console.warn('CLS measurement not supported');
         }
 
@@ -126,7 +136,7 @@ export class PerformanceMeasurer {
             lcpObserver?.disconnect();
             fidObserver?.disconnect();
             clsObserver?.disconnect();
-          } catch (e) {
+          } catch {
             // Ignore cleanup errors
           }
           resolve(vitals);
@@ -175,7 +185,7 @@ export class PerformanceMeasurer {
    */
   async getMemoryUsage(): Promise<MemoryUsage | undefined> {
     return await this.page.evaluate(() => {
-      const memory = (performance as any).memory;
+      const memory = (performance as { memory?: MemoryUsage }).memory;
       if (memory) {
         return {
           usedJSHeapSize: memory.usedJSHeapSize,
@@ -197,7 +207,7 @@ export class PerformanceMeasurer {
         performance.measure(`${data.start}-to-${data.end}`, data.start, data.end);
         const measure = performance.getEntriesByName(`${data.start}-to-${data.end}`)[0];
         return measure.duration;
-      } catch (e) {
+      } catch {
         return 0;
       }
     }, {start: startMark, end: endMark});
@@ -348,13 +358,13 @@ export const performanceHelpers = {
     await page.waitForFunction(() => {
       return new Promise(resolve => {
         let lastLayoutShift = 0;
-        const observer = new PerformanceObserver((list) => {
+        const observer = new PerformanceObserver(() => {
           lastLayoutShift = Date.now();
         });
         
         try {
           observer.observe({ entryTypes: ['layout-shift'] });
-        } catch (e) {
+        } catch {
           // Layout shift not supported, assume stable
           resolve(true);
           return;

@@ -1,31 +1,41 @@
+// Mock the pg module FIRST before any imports
+const mockQuery = jest.fn();
+const mockConnect = jest.fn();
+const mockEnd = jest.fn();
+
+jest.mock('pg', () => ({
+  Pool: jest.fn().mockImplementation(() => ({
+    query: mockQuery,
+    end: mockEnd,
+  })),
+  Client: jest.fn().mockImplementation(() => ({
+    connect: mockConnect,
+    query: mockQuery,
+    end: mockEnd,
+  })),
+}));
+
+// Mock bcryptjs
+jest.mock('bcryptjs', () => ({
+  hash: jest.fn().mockResolvedValue('$2a$12$hashedpassword'),
+  compare: jest.fn().mockResolvedValue(true),
+}));
+
+// Mock jsonwebtoken
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn().mockReturnValue('mock-jwt-token'),
+  verify: jest.fn().mockReturnValue({ userId: 'test-user-id', username: 'testuser' }),
+}));
+
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Mock environment variables for testing
 process.env.JWT_SECRET = 'test-jwt-secret-key';
-process.env.POSTGRES_URL = 'postgresql://test:test@localhost:5432/test';
+process.env.POSTGRES_URL = 'postgresql://yevgenmalafeyev@localhost:5432/tudobem_test';
 
-// Mock the query function that will be used by the Pool instances
-const mockQuery = jest.fn();
-const mockConnect = jest.fn();
-const mockEnd = jest.fn();
-
-// Mock the pg module at the module level
-jest.mock('pg', () => {
-  return {
-    Pool: jest.fn().mockImplementation(() => ({
-      query: mockQuery,
-    })),
-    Client: jest.fn().mockImplementation(() => ({
-      connect: mockConnect,
-      query: mockQuery,
-      end: mockEnd,
-    })),
-  };
-});
-
-// Import UserDatabase after mocking pg
+// Import UserDatabase after mocking
 import { UserDatabase } from '../userDatabase';
 
 describe('UserDatabase Unit Tests', () => {

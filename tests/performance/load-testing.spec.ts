@@ -335,7 +335,6 @@ test.describe('Load and Stress Testing', () => {
     });
 
     test('should recover from network stress', async ({ page }) => {
-      const measurer = new PerformanceMeasurer(page);
       const networkSim = new NetworkSimulator(page);
       
       await page.waitForSelector('.neo-card-lg', { timeout: 15000 });
