@@ -50,7 +50,7 @@ async function fixEslintIssues(): Promise<void> {
   }
 }
 
-async function fixFileIssues(fileResult: { filePath: string; messages: Array<{ line: number; ruleId: string; message: string }> }): Promise<FixResult> {
+async function fixFileIssues(fileResult: { filePath: string; messages: Array<{ line: number; ruleId: string | null; message: string }> }): Promise<FixResult> {
   const filePath = fileResult.filePath;
   const relativePath = path.relative(process.cwd(), filePath);
   
@@ -65,7 +65,7 @@ async function fixFileIssues(fileResult: { filePath: string; messages: Array<{ l
         content = fixed.content;
         fixCount++;
       } else {
-        errors.push(`${message.ruleId}: ${message.message} (line ${message.line})`);
+        errors.push(`${message.ruleId || 'unknown'}: ${message.message} (line ${message.line})`);
       }
     }
     
@@ -83,7 +83,7 @@ async function fixFileIssues(fileResult: { filePath: string; messages: Array<{ l
   };
 }
 
-async function fixMessage(content: string, message: { line: number; ruleId: string; message: string }, filePath: string): Promise<{ success: boolean; content: string }> {
+async function fixMessage(content: string, message: { line: number; ruleId: string | null; message: string }, filePath: string): Promise<{ success: boolean; content: string }> {
   const lines = content.split('\\n');
   const lineIndex = message.line - 1;
   const line = lines[lineIndex];
@@ -100,7 +100,7 @@ async function fixMessage(content: string, message: { line: number; ruleId: stri
       return fixPreferConst(content, message, lines, lineIndex);
     
     case '@typescript-eslint/no-explicit-any':
-      return fixExplicitAny(content, message, lines, lineIndex, filePath);
+      return fixExplicitAny(content, message, lines, lineIndex);
     
     default:
       return { success: false, content };

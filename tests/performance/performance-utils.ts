@@ -105,8 +105,11 @@ export class PerformanceMeasurer {
         try {
           fidObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
-            entries.forEach((entry: PerformanceEventTiming) => {
-              vitals.FID = entry.processingStart - entry.startTime;
+            entries.forEach((entry) => {
+              const eventEntry = entry as PerformanceEventTiming;
+              if (eventEntry.processingStart) {
+                vitals.FID = eventEntry.processingStart - eventEntry.startTime;
+              }
             });
           });
           fidObserver.observe({ entryTypes: ['first-input'] });
@@ -118,9 +121,10 @@ export class PerformanceMeasurer {
         try {
           clsObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
-            entries.forEach((entry: LayoutShift) => {
-              if (!entry.hadRecentInput) {
-                vitals.CLS += entry.value;
+            entries.forEach((entry) => {
+              const layoutEntry = entry as LayoutShift;
+              if (layoutEntry.value !== undefined && !layoutEntry.hadRecentInput) {
+                vitals.CLS += layoutEntry.value;
               }
             });
           });

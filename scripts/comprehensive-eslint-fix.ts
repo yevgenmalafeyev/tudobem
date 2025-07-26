@@ -67,7 +67,7 @@ async function comprehensiveEslintFix(): Promise<void> {
   }
 }
 
-async function comprehensiveFixFile(fileResult: { filePath: string; errorCount: number; warningCount: number; messages: Array<{ line: number; ruleId: string; message: string }> }): Promise<FileFixResult> {
+async function comprehensiveFixFile(fileResult: { filePath: string; errorCount: number; warningCount: number; messages: Array<{ line: number; ruleId: string | null; message: string }> }): Promise<FileFixResult> {
   const filePath = fileResult.filePath;
   const relativePath = path.relative(process.cwd(), filePath);
   
@@ -112,7 +112,7 @@ async function comprehensiveFixFile(fileResult: { filePath: string; errorCount: 
   };
 }
 
-function fixUnusedImports(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixUnusedImports(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   const lines = content.split('\\n');
   let changed = false;
   const fixedRules: string[] = [];
@@ -146,7 +146,7 @@ function fixUnusedImports(content: string, fileResult: { messages: Array<{ line:
   return { content: lines.join('\\n'), changed, fixedRules };
 }
 
-function fixUnusedVariables(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixUnusedVariables(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   const lines = content.split('\\n');
   let changed = false;
   const fixedRules: string[] = [];
@@ -168,7 +168,7 @@ function fixUnusedVariables(content: string, fileResult: { messages: Array<{ lin
   return { content: lines.join('\\n'), changed, fixedRules };
 }
 
-function fixPreferConstIssues(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixPreferConstIssues(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   let newContent = content;
   let changed = false;
   const fixedRules: string[] = [];
@@ -184,7 +184,7 @@ function fixPreferConstIssues(content: string, fileResult: { messages: Array<{ l
   return { content: newContent, changed, fixedRules };
 }
 
-function fixExplicitAnyTypes(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixExplicitAnyTypes(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   let newContent = content;
   let changed = false;
   const fixedRules: string[] = [];
@@ -215,7 +215,7 @@ function fixExplicitAnyTypes(content: string, fileResult: { messages: Array<{ li
   return { content: newContent, changed, fixedRules };
 }
 
-function fixRequireImports(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixRequireImports(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   let newContent = content;
   let changed = false;
   const fixedRules: string[] = [];
@@ -240,7 +240,7 @@ function fixRequireImports(content: string, fileResult: { messages: Array<{ line
   return { content: newContent, changed, fixedRules };
 }
 
-function fixUnusedCatchBindings(content: string, fileResult: { messages: Array<{ line: number; ruleId: string; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
+function fixUnusedCatchBindings(content: string, fileResult: { messages: Array<{ line: number; ruleId: string | null; message: string }> }): { content: string; changed: boolean; fixedRules: string[] } {
   let newContent = content;
   let changed = false;
   const fixedRules: string[] = [];
