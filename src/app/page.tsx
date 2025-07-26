@@ -12,19 +12,11 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<'learning' | 'configuration' | 'flashcards'>('learning');
   
   useEffect(() => {
-    const targetView = !isConfigured ? 'configuration' : 'learning';
-    
-    console.log('🏠 [DEBUG] Home useEffect triggered:', {
-      isConfigured,
-      currentView,
-      willSetTo: targetView,
-      needsChange: currentView !== targetView
-    });
-    
-    // Only change view if it's actually different to prevent unnecessary unmount/remount cycles
-    if (currentView !== targetView) {
-      console.log('🏠 [DEBUG] Changing view from', currentView, 'to', targetView);
-      setCurrentView(targetView);
+    // Only auto-redirect to configuration if not configured
+    // Don't auto-redirect from configuration back to learning
+    if (!isConfigured && currentView !== 'configuration') {
+      console.log('🏠 [DEBUG] Redirecting to configuration - not configured');
+      setCurrentView('configuration');
     }
   }, [isConfigured, currentView]);
 

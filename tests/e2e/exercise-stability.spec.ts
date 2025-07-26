@@ -178,8 +178,9 @@ test.describe('Exercise Stability', () => {
     // Wait for initial exercise to load
     await page.waitForSelector('[data-testid="exercise-input"]', { timeout: 15000 })
     
-    // Get the initial exercise  
+    // Get the initial exercise text and verify it exists
     const exerciseText = await page.locator('.neo-card-lg').textContent()
+    expect(exerciseText).toBeTruthy()
     
     // Navigate to configuration page (this might trigger configuration changes)
     await page.click('nav button:has-text("Configuração"), nav button:has-text("Configuration")')
