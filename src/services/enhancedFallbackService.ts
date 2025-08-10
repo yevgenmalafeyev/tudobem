@@ -109,7 +109,6 @@ export class EnhancedFallbackService {
       for (const [, exercises] of Object.entries(fallbackExercises)) {
         for (const exercise of exercises) {
           const enhanced = this.convertToEnhancedExercise(exercise);
-          enhanced.source = 'static';
           allStaticExercises.push(enhanced);
         }
       }
@@ -256,7 +255,6 @@ export class EnhancedFallbackService {
       ...exercise,
       multipleChoiceOptions: options,
       explanations,
-      source: 'static',
       difficultyScore: 0.5,
       usageCount: 0
     };

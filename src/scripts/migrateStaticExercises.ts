@@ -18,8 +18,7 @@ export async function migrateStaticExercises(): Promise<void> {
     const currentStats = await SmartDatabase.getUsageStats();
     console.log('Current database stats:', {
       total: currentStats.totalExercises,
-      byLevel: currentStats.exercisesByLevel,
-      bySource: currentStats.exercisesBySource
+      byLevel: currentStats.exercisesByLevel
     });
     
     // Migrate static exercises
@@ -31,8 +30,7 @@ export async function migrateStaticExercises(): Promise<void> {
     const finalStats = await SmartDatabase.getUsageStats();
     console.log('Final database stats:', {
       total: finalStats.totalExercises,
-      byLevel: finalStats.exercisesByLevel,
-      bySource: finalStats.exercisesBySource
+      byLevel: finalStats.exercisesByLevel
     });
     
     console.log(`✅ Migration completed successfully!`);
@@ -85,16 +83,15 @@ export async function validateMigration(): Promise<boolean> {
       return false;
     }
     
-    // Check that we have static exercises
-    const staticCount = stats.exercisesBySource.static || 0;
-    if (staticCount === 0) {
-      console.error('❌ No static exercises found in database');
+    // Check that we have exercises
+    if (stats.totalExercises === 0) {
+      console.error('❌ No exercises found in database');
       return false;
     }
     
     console.log('✅ Migration validation passed');
     console.log(`📊 Found exercises for all required levels`);
-    console.log(`📚 ${staticCount} static exercises in database`);
+    console.log(`📚 ${stats.totalExercises} exercises in database`);
     
     return true;
     

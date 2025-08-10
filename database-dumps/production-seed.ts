@@ -4312,7 +4312,6 @@ export async function seedProductionDatabase(): Promise<void> {
       try {
         await LocalDatabase.addExercise({
           ...exercise,
-          source: exercise.source as "ai" | "database" | "static" | "fallback" | undefined,
           level: exercise.level as LanguageLevel,
           createdAt: new Date(exercise.createdAt),
           updatedAt: new Date(exercise.updatedAt)

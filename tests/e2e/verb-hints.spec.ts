@@ -30,11 +30,9 @@ test.describe('Verb Hints and Grammar Explanations', () => {
                   en: 'We use "fui" (simple past of "ir") for specific completed actions in the past.',
                   uk: 'Ми використовуємо "fui" (минулий час дієслова "ir") для конкретних завершених дій у минулому.'
                 },
-                source: 'ai'
               }
             ],
             generatedCount: 1,
-            source: 'ai',
             sessionId: 'test-session'
           }
         })
@@ -178,11 +176,9 @@ test.describe('Verb Hints and Grammar Explanations', () => {
                   en: 'Adjective agrees in gender and number.',
                   uk: 'Прикметник узгоджується за родом і числом.'
                 },
-                source: 'ai'
               }
             ],
             generatedCount: 1,
-            source: 'ai',
             sessionId: 'test-session'
           }
         })

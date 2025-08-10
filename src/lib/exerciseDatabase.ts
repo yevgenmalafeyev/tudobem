@@ -45,7 +45,6 @@ export class ExerciseDatabase {
           
           -- Additional Metadata
           hint JSONB DEFAULT '{}'::jsonb,
-          source VARCHAR(20) DEFAULT 'ai' CHECK (source IN ('ai', 'static', 'admin')),
           difficulty_score FLOAT DEFAULT 0.5,
           usage_count INTEGER DEFAULT 0,
           
@@ -60,7 +59,6 @@ export class ExerciseDatabase {
 
       // Create indexes for performance
       await sql`CREATE INDEX IF NOT EXISTS idx_exercises_level_topic ON exercises(level, topic)`;
-      await sql`CREATE INDEX IF NOT EXISTS idx_exercises_source ON exercises(source)`;
       await sql`CREATE INDEX IF NOT EXISTS idx_exercises_usage_count ON exercises(usage_count)`;
       await sql`CREATE INDEX IF NOT EXISTS idx_exercises_created_at ON exercises(created_at DESC)`;
 
@@ -115,7 +113,7 @@ export class ExerciseDatabase {
             INSERT INTO exercises (
               sentence, gap_index, correct_answer, topic, level,
               multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-              hint, source, difficulty_score, usage_count
+              hint, difficulty_score, usage_count
             ) VALUES (
               ${exercise.sentence},
               ${exercise.gapIndex},
@@ -127,7 +125,6 @@ export class ExerciseDatabase {
               ${exercise.explanations.en},
               ${exercise.explanations.uk},
               ${JSON.stringify(exercise.hint || {})},
-              ${exercise.source || 'ai'},
               ${exercise.difficultyScore || 0.5},
               ${exercise.usageCount || 0}
             )
@@ -172,7 +169,7 @@ export class ExerciseDatabase {
         SELECT 
           id, sentence, gap_index, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-          hint, source, difficulty_score, usage_count,
+          hint, difficulty_score, usage_count,
           created_at, updated_at
         FROM exercises
         WHERE 1=1
@@ -195,12 +192,6 @@ export class ExerciseDatabase {
         paramIndex++;
       }
 
-      // Add source filter
-      if (filter.source) {
-        query += ` AND source = $${paramIndex}`;
-        params.push(filter.source);
-        paramIndex++;
-      }
 
       // Exclude specific exercise IDs (for user-specific filtering)
       if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
@@ -245,7 +236,6 @@ export class ExerciseDatabase {
           uk: row.explanation_uk
         },
         hint: row.hint,
-        source: row.source,
         difficultyScore: row.difficulty_score,
         usageCount: row.usage_count,
         createdAt: row.created_at,
@@ -304,11 +294,6 @@ export class ExerciseDatabase {
         FROM exercises 
         GROUP BY topic
       `;
-      const sourceResult = await sql`
-        SELECT source, COUNT(*) as count 
-        FROM exercises 
-        GROUP BY source
-      `;
       const avgUsageResult = await sql`
         SELECT AVG(usage_count) as avg_usage 
         FROM exercises
@@ -326,16 +311,10 @@ export class ExerciseDatabase {
         exercisesByTopic[row.topic] = parseInt(row.count);
       });
 
-      const exercisesBySource: Record<string, number> = {};
-      sourceResult.rows.forEach(row => {
-        exercisesBySource[row.source] = parseInt(row.count);
-      });
-
       return {
         totalExercises: parseInt(totalResult.rows[0].total),
         exercisesByLevel,
         exercisesByTopic,
-        exercisesBySource,
         averageUsageCount: parseFloat(avgUsageResult.rows[0].avg_usage || '0')
       };
     } catch (error) {

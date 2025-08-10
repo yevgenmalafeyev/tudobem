@@ -85,7 +85,6 @@ async function generateFallbackExercises(
       uk: "Ми використовуємо 'falo' для першої особи однини в теперішньому часі."
     },
     hint: { infinitive: "falar", form: "1st person singular present" },
-    source: 'static',
     difficultyScore: 0.3,
     usageCount: 0
   }];
@@ -218,7 +217,6 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     
     // Step 4: CONTROL GENERATION STRATEGY BASED ON SOURCE
     let exercisesToReturn: EnhancedExercise[] = [];
-    let generationSource: 'ai' | 'database' | 'mixed' | 'fallback' = 'database';
     
     // Learning mode: ALWAYS use database, never generate fresh AI exercises
     if (source === 'learning') {
@@ -228,13 +226,11 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
       exercisesToReturn = databaseExercises.slice(0, count);
       
-      generationSource = 'database';
       console.log(`📚 LEARNING MODE: Using ${exercisesToReturn.length} database exercises (no AI generation)`);
       
     } else {
       // Admin/External mode: Can use AI generation
       console.log('📦 [DEBUG] Step 4: ADMIN/EXTERNAL MODE - AI generation allowed');
-      generationSource = 'ai';
       
       if (!claudeApiKey) {
       console.log('📦 [DEBUG] Step 4a: No API key provided - using database fallback');
@@ -249,7 +245,6 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
       exercisesToReturn = databaseExercises.slice(0, count);
       
-      generationSource = 'database';
       console.log(`⚠️ Using ${exercisesToReturn.length} exercises from database (no API key)`);
       
     } else {
@@ -350,7 +345,6 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
             
             validExercises.push({
               ...exercise,
-              source: 'ai',
               difficultyScore: 0.5,
               usageCount: 0
             });
@@ -377,7 +371,6 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           
           // Return ONLY fresh AI-generated exercises
           exercisesToReturn = validExercises.slice(0, count);
-          generationSource = 'ai';
           console.log(`🤖 SUCCESS: Returning ${exercisesToReturn.length} FRESH AI exercises`);
           
         } catch (aiError) {
@@ -388,7 +381,6 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
           exercisesToReturn = databaseExercises.slice(0, count);
           
-          generationSource = 'database';
           console.log(`🔄 FALLBACK: Using ${exercisesToReturn.length} database exercises (AI failed)`);
           
           if (exercisesToReturn.length === 0) {
@@ -425,7 +417,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     
     // Step 4: Track usage for database exercises (mark them as used with timeout)
     for (const exercise of shuffledExercises) {
-      if (exercise.id && exercise.source !== 'ai') {
+      if (exercise.id) {
         try {
           await withTimeout(
             SmartDatabase.markExerciseUsed(exercise.id, sessionId, false), // We don't know if it's correct yet
@@ -444,12 +436,11 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       data: {
         exercises: shuffledExercises,
         generatedCount: shuffledExercises.length,
-        source: generationSource,
         sessionId
       }
     };
     
-    console.log(`🎉 Successfully returning ${shuffledExercises.length} exercises (source: ${generationSource})`);
+    console.log(`🎉 Successfully returning ${shuffledExercises.length} exercises`);
     return createApiResponse(response.data);
     
   } catch (error) {

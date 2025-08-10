@@ -63,7 +63,6 @@ export class LocalDatabase {
           
           -- Additional Metadata
           hint JSONB DEFAULT '{}'::jsonb,
-          source VARCHAR(20) DEFAULT 'ai' CHECK (source IN ('ai', 'static', 'admin')),
           difficulty_score FLOAT DEFAULT 0.5,
           usage_count INTEGER DEFAULT 0,
           
@@ -78,7 +77,6 @@ export class LocalDatabase {
 
       // Create indexes for performance
       await client.query(`CREATE INDEX IF NOT EXISTS idx_exercises_level_topic ON exercises(level, topic)`);
-      await client.query(`CREATE INDEX IF NOT EXISTS idx_exercises_source ON exercises(source)`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_exercises_usage_count ON exercises(usage_count)`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_exercises_created_at ON exercises(created_at DESC)`);
 
@@ -136,8 +134,8 @@ export class LocalDatabase {
             INSERT INTO exercises (
               sentence, gap_index, correct_answer, topic, level,
               multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-              hint, source, difficulty_score, usage_count
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+              hint, difficulty_score, usage_count
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
             ON CONFLICT (sentence, correct_answer, topic, level) 
             DO UPDATE SET 
               multiple_choice_options = EXCLUDED.multiple_choice_options,
@@ -157,7 +155,6 @@ export class LocalDatabase {
             exercise.explanations.en,
             exercise.explanations.uk,
             JSON.stringify(exercise.hint || {}),
-            exercise.source || 'ai',
             exercise.difficultyScore || 0.5,
             exercise.usageCount || 0
           ]);
@@ -195,7 +192,7 @@ export class LocalDatabase {
         SELECT 
           id, sentence, gap_index, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-          hint, source, difficulty_score, usage_count,
+          hint, difficulty_score, usage_count,
           created_at, updated_at
         FROM exercises
         WHERE 1=1
@@ -218,12 +215,6 @@ export class LocalDatabase {
         paramIndex++;
       }
 
-      // Add source filter
-      if (filter.source) {
-        query += ` AND source = $${paramIndex}`;
-        params.push(filter.source);
-        paramIndex++;
-      }
 
       // Exclude specific exercise IDs (for user-specific filtering)
       if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
@@ -268,7 +259,6 @@ export class LocalDatabase {
           uk: row.explanation_uk
         },
         hint: row.hint,
-        source: row.source,
         difficultyScore: row.difficulty_score,
         usageCount: row.usage_count,
         createdAt: row.created_at,
@@ -337,11 +327,6 @@ export class LocalDatabase {
         FROM exercises 
         GROUP BY topic
       `);
-      const sourceResult = await pool.query(`
-        SELECT source, COUNT(*) as count 
-        FROM exercises 
-        GROUP BY source
-      `);
       const avgUsageResult = await pool.query(`
         SELECT AVG(usage_count) as avg_usage 
         FROM exercises
@@ -359,16 +344,10 @@ export class LocalDatabase {
         exercisesByTopic[row.topic] = parseInt(row.count);
       });
 
-      const exercisesBySource: Record<string, number> = {};
-      sourceResult.rows.forEach(row => {
-        exercisesBySource[row.source] = parseInt(row.count);
-      });
-
       return {
         totalExercises: parseInt(totalResult.rows[0].total),
         exercisesByLevel,
         exercisesByTopic,
-        exercisesBySource,
         averageUsageCount: parseFloat(avgUsageResult.rows[0].avg_usage || '0')
       };
     } catch (error) {
@@ -417,8 +396,8 @@ export class LocalDatabase {
         `INSERT INTO exercises (
           id, sentence, gap_index, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-          hint, source, difficulty_score, usage_count, created_at, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+          hint, difficulty_score, usage_count, created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
         [
           exercise.id,
           exercise.sentence,
@@ -431,7 +410,6 @@ export class LocalDatabase {
           exercise.explanations?.en || null,
           exercise.explanations?.uk || null,
           JSON.stringify(exercise.hint || {}),
-          exercise.source || 'ai',
           exercise.difficultyScore || 0.5,
           exercise.usageCount || 0,
           exercise.createdAt || new Date().toISOString(),

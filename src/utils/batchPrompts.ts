@@ -181,7 +181,6 @@ export const processGeneratedExercises = (exercises: unknown[]): EnhancedExercis
       multipleChoiceOptions: shuffledOptions,
       explanations: cleanExplanations,
       id: `generated-${Date.now()}-${index}`, // Temporary ID for client-side use
-      source: 'ai',
       difficultyScore: 0.5,
       usageCount: 0
     } as EnhancedExercise;

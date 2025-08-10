@@ -8,7 +8,6 @@ export interface EnhancedExercise extends Exercise {
     en: string;
     uk: string;
   };
-  source?: 'ai' | 'database' | 'static' | 'fallback';
   difficultyScore?: number;
   usageCount?: number;
   createdAt?: Date;
@@ -32,7 +31,6 @@ export interface BatchGenerationResponse {
   data: {
     exercises: EnhancedExercise[];
     generatedCount: number;
-    source: 'ai' | 'database' | 'mixed' | 'fallback';
     sessionId: string;
   };
   error?: string;
@@ -44,7 +42,6 @@ export interface ExerciseQueue {
   currentIndex: number;
   isBackgroundLoading: boolean;
   nextBatchLoading: boolean;
-  generationSource: 'ai' | 'database' | 'fallback';
   sessionId: string;
   totalGenerated: number;
 }
@@ -64,7 +61,6 @@ export interface QueueItem {
 export interface ExerciseFilter {
   levels?: LanguageLevel[];
   topics?: string[];
-  source?: 'ai' | 'database' | 'static';
   excludeUsed?: boolean;
   sessionId?: string;
   limit?: number;
@@ -76,7 +72,6 @@ export interface UsageStats {
   totalExercises: number;
   exercisesByLevel: Record<LanguageLevel, number>;
   exercisesByTopic: Record<string, number>;
-  exercisesBySource: Record<string, number>;
   averageUsageCount: number;
 }
 

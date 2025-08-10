@@ -20,7 +20,6 @@ export function useExerciseQueue({
     currentIndex: 0,
     isBackgroundLoading: false,
     nextBatchLoading: false,
-    generationSource: 'ai',
     sessionId: generateSessionId(),
     totalGenerated: 0
   });
@@ -155,7 +154,6 @@ export function useExerciseQueue({
         exercises,
         currentIndex: 1, // Set to 1 since exercises[0] is already being displayed
         isBackgroundLoading: false,
-        generationSource: result.data.source,
         totalGenerated: result.data.generatedCount
       }));
       
@@ -403,7 +401,6 @@ export function useExerciseQueue({
       currentIndex: 0,
       isBackgroundLoading: false,
       nextBatchLoading: false,
-      generationSource: 'ai',
       sessionId: generateSessionId(),
       totalGenerated: 0
     });
@@ -475,7 +472,6 @@ export function useExerciseQueue({
     // Convenience properties
     isLoading: exerciseQueue.isBackgroundLoading,
     isBackgroundLoading: exerciseQueue.nextBatchLoading,
-    generationSource: exerciseQueue.generationSource,
     hasExercises: exerciseQueue.exercises.length > 0,
     queueStats: getQueueStats(),
     loadingError

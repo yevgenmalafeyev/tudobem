@@ -25,7 +25,7 @@ export async function POST() {
     console.log('🔄 [DEBUG] Current database stats:', {
       total: currentStats.totalExercises,
       byLevel: currentStats.exercisesByLevel,
-      bySource: currentStats.exercisesBySource
+      byTopic: currentStats.exercisesByTopic
     });
     
     // Migrate static exercises
@@ -39,7 +39,7 @@ export async function POST() {
     console.log('🔄 [DEBUG] Final database stats:', {
       total: finalStats.totalExercises,
       byLevel: finalStats.exercisesByLevel,
-      bySource: finalStats.exercisesBySource
+      byTopic: finalStats.exercisesByTopic
     });
     
     const totalTime = Date.now() - startTime;
