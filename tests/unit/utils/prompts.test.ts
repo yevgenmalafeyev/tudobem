@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import { generateExercisePrompt, generateMultipleChoicePrompt } from '@/utils/prompts'
 import { ExplanationLanguage } from '@/types'
 

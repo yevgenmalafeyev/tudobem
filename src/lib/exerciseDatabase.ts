@@ -202,6 +202,24 @@ export class ExerciseDatabase {
         paramIndex++;
       }
 
+      // Exclude specific exercise IDs (for user-specific filtering)
+      if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
+        query += ` AND id != ALL($${paramIndex})`;
+        params.push(filter.excludeExerciseIds);
+        paramIndex++;
+      }
+
+      // User-specific filtering: exclude exercises the user has answered correctly
+      if (filter.userId) {
+        query += ` AND id NOT IN (
+          SELECT DISTINCT exercise_id 
+          FROM user_exercise_attempts 
+          WHERE user_id = $${paramIndex} AND is_correct = true
+        )`;
+        params.push(filter.userId);
+        paramIndex++;
+      }
+
       // Order by usage count (least used first) and creation date
       query += ` ORDER BY usage_count ASC, created_at DESC`;
 

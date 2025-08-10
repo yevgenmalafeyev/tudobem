@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserConfiguration, UserProgress, Exercise, FlashcardCollection, Flashcard } from '@/types';
+import { EnhancedExercise } from '@/types/enhanced';
 
 interface AppState {
   configuration: UserConfiguration;
   progress: UserProgress;
-  currentExercise: Exercise | null;
+  currentExercise: EnhancedExercise | null;
   isConfigured: boolean;
   collections: FlashcardCollection[];
   
   setConfiguration: (config: UserConfiguration) => void;
-  setCurrentExercise: (exercise: Exercise | null) => void;
+  setCurrentExercise: (exercise: EnhancedExercise | null) => void;
   addIncorrectAnswer: (word: string) => void;
   removeFromReviewQueue: (word: string) => void;
   addMasteredWord: (exercise: Exercise) => void;
@@ -33,15 +34,17 @@ interface AppState {
 }
 
 const defaultConfiguration: UserConfiguration = {
-  selectedLevels: ['A1'],
+  selectedLevels: ['B1', 'B2'],
   selectedTopics: [
-    'verbo-estar',
-    'presente-indicativo-regulares', 
-    'verbo-ter',
-    'artigos-definidos-indefinidos',
-    'pronomes-pessoais'
-  ], // Default A1 topics so users can start immediately
-  claudeApiKey: undefined, // Optional in database-driven mode
+    'poder-conseguir',
+    'saber-conhecer', 
+    'dever-ter-de',
+    'voz-passiva',
+    'presente-conjuntivo-regulares',
+    'presente-conjuntivo-irregulares',
+    'se-preterito-imperfeito-conjuntivo',
+    'futuro-conjuntivo-conjuncoes'
+  ], // Default B1/B2 topics for intermediate learners
   appLanguage: 'pt',
 };
 

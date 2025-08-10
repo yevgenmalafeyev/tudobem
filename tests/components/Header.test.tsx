@@ -101,14 +101,15 @@ describe('Header Component', () => {
     expect(screen.getByRole('button', { name: 'Configuration' })).toBeInTheDocument()
   })
 
-  it('should not render navigation when not configured', () => {
+  it('should only show login button when not configured', () => {
     mockStore.isConfigured = false
     
     render(<Header {...defaultProps} />)
     
-    expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+    expect(screen.getByRole('navigation')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Learning' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Configuration' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'login' })).toBeInTheDocument()
   })
 
   it('should highlight the current view button', () => {

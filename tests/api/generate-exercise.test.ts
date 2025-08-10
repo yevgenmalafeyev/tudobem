@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, afterEach, afterAll, jest } from '@jest/globals';
 import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/generate-exercise/route'
 import { server } from '../../src/__mocks__/server'
@@ -16,7 +17,7 @@ jest.mock('@/services/exerciseService', () => ({
       form: 'present indicative'
     }
   })),
-  createExercise: jest.fn((data) => ({
+  createExercise: jest.fn((data: any) => ({
     id: 'generated-1',
     sentence: data.sentence,
     gapIndex: 1,
@@ -111,9 +112,9 @@ describe('/api/generate-exercise', () => {
   it('should handle API failure with fallback', async () => {
     // Mock Anthropic to throw error
     const { default: Anthropic } = await import('@anthropic-ai/sdk')
-    Anthropic.mockImplementation(() => ({
+    ;(Anthropic as any).mockImplementation(() => ({
       messages: {
-        create: jest.fn().mockRejectedValue(new Error('API Error'))
+        create: jest.fn<() => Promise<any>>().mockRejectedValue(new Error('API Error'))
       }
     }))
 

@@ -26,14 +26,26 @@ For each exercise, provide:
 
 1. **Sentence**: European Portuguese with one gap marked as "___"
 2. **Correct Answer**: The word/phrase that fills the gap
-3. **Multiple Choice Options**: 2-4 total options (including correct answer)
+3. **Verb Hint**: When the gap requires a verb form, provide helpful hints:
+   - **infinitive**: The base form of the verb (e.g., "ser", "estar", "ir")
+   - **person**: Add person indicator ONLY when context is ambiguous (e.g., "(1ª pessoa)", "(3ª pessoa)")
+   - **form**: Grammar form being tested (e.g., "presente", "pretérito perfeito", "conjuntivo")
+   - **grammarRule**: Brief rule explanation for incorrect answers (e.g., "Presente do indicativo: eu sou, tu és, ele é")
+4. **Multiple Choice Options**: 2-4 total options (including correct answer)
    - Options should be plausible distractors for the grammar point
    - Focus on common mistakes learners make
    - Randomize the position of the correct answer
-4. **Explanations** in 3 languages explaining WHY the answer is correct:
+5. **Explanations** in 3 languages explaining WHY the answer is correct:
    - Portuguese: Natural, concise explanation for Portuguese speakers
    - English: Clear grammar explanation for English speakers  
    - Ukrainian: Clear explanation in Ukrainian
+
+**VERB HINT GUIDELINES**:
+- Always include "infinitive" for verb exercises
+- Add "person" indicator only when sentence context doesn't clearly indicate the subject (e.g., when "eu/tu/ele" is not explicit)
+- Use "form" to specify the exact grammar structure being tested
+- Include "grammarRule" with conjugation pattern or key rule for the specific form
+- For non-verb exercises, omit the hint field or provide contextual clues
 
 **QUALITY REQUIREMENTS**:
 - Vary sentence length and complexity within the level
@@ -59,7 +71,9 @@ For each exercise, provide:
     "level": "A2",
     "hint": {
       "infinitive": "ir",
-      "form": "pretérito perfeito"
+      "person": "(1ª pessoa)",
+      "form": "pretérito perfeito",
+      "grammarRule": "Pretérito perfeito: exprime ações completas no passado. Ir: eu fui, tu foste, ele foi..."
     },
     "multipleChoiceOptions": ["fui", "ia", "vou", "fosse"],
     "explanations": {

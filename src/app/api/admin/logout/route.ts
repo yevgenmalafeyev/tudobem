@@ -1,7 +1,8 @@
+// import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { createApiResponse, withErrorHandling } from '@/lib/api-utils';
 
-async function adminLogoutHandler() {
+async function adminLogoutHandler(/* _request: NextRequest */) {
   try {
     const cookieStore = await cookies();
     

@@ -13,6 +13,12 @@ test.describe('Navigation', () => {
     // Run ESLint validation first
     await validateESLintInTest('should navigate to configuration page when clicking Configurar button');
 
+    // Capture console messages for debugging
+    const consoleMessages: string[] = [];
+    page.on('console', msg => {
+      consoleMessages.push(`${msg.type()}: ${msg.text()}`);
+    });
+
     // Ensure user is configured so navigation buttons are visible
     await page.evaluate(() => {
       localStorage.setItem('store', JSON.stringify({
@@ -36,12 +42,19 @@ test.describe('Navigation', () => {
     // Find and click the configuration button (using both Portuguese and English text)
     const configButton = page.locator('button:has-text("Configurar"), button:has-text("Configure")').first()
     await expect(configButton).toBeVisible({ timeout: 10000 })
+    
+    console.log('About to click configuration button...');
     await configButton.click()
+    
+    // Give some time for state changes and log messages
+    await page.waitForTimeout(2000)
+    
+    console.log('Console messages:', consoleMessages.filter(msg => msg.includes('DEBUG')));
     
     // Verify we're on the configuration page
     // Look for configuration-specific elements
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
-    await expect(page.locator('text=Tópicos, text=Topics')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Tópicos').or(page.locator('text=Topics'))).toBeVisible({ timeout: 5000 })
     
     // Verify the configuration button is now active/highlighted
     await expect(configButton).toHaveClass(/neo-button-primary/)
@@ -67,7 +80,7 @@ test.describe('Navigation', () => {
     await page.waitForTimeout(500) // Give time for navigation
     
     // Verify we're on configuration page
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
     await expect(configButton).toHaveClass(/neo-button-primary/)
     await expect(learningButton).not.toHaveClass(/neo-button-primary/)
     
@@ -92,7 +105,7 @@ test.describe('Navigation', () => {
     await configButton.click()
     
     // Wait for configuration page to load
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
     
     // Make a change in configuration (select a different level)
     const levelCheckbox = page.locator('input[type="checkbox"]').first()
@@ -117,7 +130,7 @@ test.describe('Navigation', () => {
     await page.waitForTimeout(500)
     
     // Verify the configuration state is maintained
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
     const finalState = await levelCheckbox.isChecked()
     expect(finalState).toBe(changedState)
   })
@@ -134,7 +147,7 @@ test.describe('Navigation', () => {
     await page.waitForLoadState('networkidle')
     
     // Should automatically redirect to configuration
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
     
     // Configuration button should be active
     const configButton = page.locator('button:has-text("Configurar"), button:has-text("Configure")').first()
@@ -152,7 +165,7 @@ test.describe('Navigation', () => {
     await configButton.click()
     
     // Wait for configuration page
-    await expect(page.locator('text=Níveis, text=Levels')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('text=Níveis').or(page.locator('text=Levels'))).toBeVisible({ timeout: 10000 })
     
     // Make sure at least one level and topic are selected
     const levelCheckboxes = page.locator('input[type="checkbox"][value*="A1"], input[type="checkbox"][value*="A2"]')

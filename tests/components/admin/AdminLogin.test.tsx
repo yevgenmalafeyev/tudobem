@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -291,6 +292,9 @@ describe('AdminLogin Component', () => {
         fireEvent.change(usernameInput, { target: { value: 'admin' } })
         fireEvent.change(passwordInput, { target: { value: 'password123' } })
         fireEvent.click(submitButton)
+        
+        // Wait for async operation to complete
+        await new Promise(resolve => setTimeout(resolve, 100));
       })
       
       // Should handle the rejection and show error message

@@ -6,7 +6,7 @@ interface UpdateApiKeyRequest {
   apiKey: string;
 }
 
-async function getApiKeyHandler() {
+async function getApiKeyHandler(/* _request: NextRequest */) {
   // Check admin authentication
   const authError = await requireAdminAuth();
   if (authError) return authError;

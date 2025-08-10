@@ -47,6 +47,7 @@ local-config.json
 test-results*.json
 test-config-generation-results.json
 server.log
+server.pid
 dev.log
 dev.pid
 *.log

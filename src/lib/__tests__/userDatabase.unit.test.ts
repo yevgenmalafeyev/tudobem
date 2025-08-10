@@ -1,7 +1,7 @@
 // Mock the pg module FIRST before any imports
-const mockQuery = jest.fn();
-const mockConnect = jest.fn();
-const mockEnd = jest.fn();
+const mockQuery = jest.fn<(...args: unknown[]) => Promise<{ rows: unknown[]; command: string; rowCount: number; fields: unknown[] }>>();
+const mockConnect = jest.fn<() => Promise<void>>();
+const mockEnd = jest.fn<() => Promise<void>>();
 
 jest.mock('pg', () => ({
   Pool: jest.fn().mockImplementation(() => ({
@@ -16,15 +16,23 @@ jest.mock('pg', () => ({
 }));
 
 // Mock bcryptjs
+const mockHashFn = jest.fn<(password: string, rounds: number) => Promise<string>>();
+const mockCompareFn = jest.fn<(password: string, hash: string) => Promise<boolean>>();
+mockHashFn.mockResolvedValue('$2a$12$hashedpassword');
+mockCompareFn.mockResolvedValue(true);
 jest.mock('bcryptjs', () => ({
-  hash: jest.fn().mockResolvedValue('$2a$12$hashedpassword'),
-  compare: jest.fn().mockResolvedValue(true),
+  hash: mockHashFn,
+  compare: mockCompareFn,
 }));
 
 // Mock jsonwebtoken
+const mockSignFn = jest.fn<(payload: unknown, secret: string, options?: unknown) => string>();
+const mockVerifyFn = jest.fn<(token: string, secret: string) => unknown>();
+mockSignFn.mockReturnValue('mock-jwt-token');
+mockVerifyFn.mockReturnValue({ userId: 'test-user-id', username: 'testuser' });
 jest.mock('jsonwebtoken', () => ({
-  sign: jest.fn().mockReturnValue('mock-jwt-token'),
-  verify: jest.fn().mockReturnValue({ userId: 'test-user-id', username: 'testuser' }),
+  sign: mockSignFn,
+  verify: mockVerifyFn,
 }));
 
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
@@ -32,8 +40,12 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 // Mock environment variables for testing
-process.env.JWT_SECRET = 'test-jwt-secret-key';
-process.env.POSTGRES_URL = 'postgresql://yevgenmalafeyev@localhost:5432/tudobem_test';
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'test-jwt-secret-key';
+}
+if (!process.env.POSTGRES_URL) {
+  process.env.POSTGRES_URL = 'postgresql://yevgenmalafeyev@localhost:5432/tudobem_test';
+}
 
 // Import UserDatabase after mocking
 import { UserDatabase } from '../userDatabase';
@@ -68,7 +80,7 @@ describe('UserDatabase Unit Tests', () => {
       // Check that index creation SQL was called
       const sqlCalls = mockQuery.mock.calls;
       const indexCalls = sqlCalls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('CREATE INDEX')
+        call[0] && typeof call[0] === 'string' && call[0].includes('CREATE INDEX')
       );
       expect(indexCalls.length).toBeGreaterThan(0);
     });
@@ -85,7 +97,7 @@ describe('UserDatabase Unit Tests', () => {
       // Verify admin config initialization was attempted
       const sqlCalls = mockQuery.mock.calls;
       const configInsert = sqlCalls.find(call => 
-        call[0] && call[0].includes && call[0].includes('INSERT INTO admin_config')
+        call[0] && typeof call[0] === 'string' && call[0].includes('INSERT INTO admin_config')
       );
       expect(configInsert).toBeDefined();
     });
@@ -300,7 +312,7 @@ describe('UserDatabase Unit Tests', () => {
       await UserDatabase.logoutUser(token);
 
       const deleteCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions')
+        call[0] && typeof call[0] === 'string' && call[0].includes('DELETE FROM user_sessions')
       );
       expect(deleteCalls.length).toBeGreaterThan(0);
     });
@@ -444,7 +456,7 @@ describe('UserDatabase Unit Tests', () => {
       await UserDatabase.cleanupExpiredSessions();
 
       const deleteCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
+        call[0] && typeof call[0] === 'string' && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
       );
       expect(deleteCalls.length).toBeGreaterThan(0);
     });

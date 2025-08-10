@@ -297,7 +297,9 @@ describe('UsageAnalytics Component', () => {
         expect(sevenDaysButton).not.toHaveClass('neo-button-primary')
       })
 
-      expect(fetch).toHaveBeenCalledWith('/api/admin/analytics?range=30d')
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith('/api/admin/analytics?range=30d')
+      })
     })
 
     it('should fetch data with correct range parameter', async () => {

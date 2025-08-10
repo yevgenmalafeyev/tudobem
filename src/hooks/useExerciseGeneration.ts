@@ -39,7 +39,6 @@ export function useExerciseGeneration({
         },
         body: JSON.stringify({
           exercise,
-          claudeApiKey: configuration.claudeApiKey,
           explanationLanguage: configuration.appLanguage
         }),
       });
@@ -59,7 +58,7 @@ export function useExerciseGeneration({
       const options = processMultipleChoiceOptions(exercise.correctAnswer, distractors);
       setMultipleChoiceOptions(options);
     }
-  }, [learningMode, configuration.claudeApiKey, configuration.appLanguage, setMultipleChoiceOptions]);
+  }, [learningMode, configuration.appLanguage, setMultipleChoiceOptions]);
 
   const generateNewExercise = useCallback(async () => {
     setIsLoading(true);
@@ -69,10 +68,8 @@ export function useExerciseGeneration({
       // Use pre-generated exercise if available
       if (preGeneratedExercise) {
         exercise = preGeneratedExercise;
-        console.log('Using pre-generated exercise');
       } else {
         // Generate fresh exercise
-        console.log('Generating fresh exercise');
         const response = await fetch('/api/generate-exercise', {
           method: 'POST',
           headers: {

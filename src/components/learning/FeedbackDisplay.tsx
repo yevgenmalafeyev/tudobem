@@ -1,6 +1,7 @@
 import { t } from '@/utils/translations';
 import type { AppLanguage } from '@/types';
 import type { EnhancedExercise } from '@/types/enhanced';
+import GrammarExplanation from './GrammarExplanation';
 
 interface FeedbackDisplayProps {
   feedback: { isCorrect: boolean; explanation: string } | null;
@@ -65,6 +66,15 @@ export default function FeedbackDisplay({
               {detailedExplanation}
             </div>
           </div>
+        )}
+        
+        {/* Grammar explanation for incorrect answers */}
+        {currentExercise && (
+          <GrammarExplanation 
+            exercise={currentExercise}
+            appLanguage={appLanguage}
+            isVisible={!feedback.isCorrect}
+          />
         )}
       </div>
     </div>

@@ -7,9 +7,9 @@ process.env.JWT_SECRET = 'test-jwt-secret-key';
 process.env.POSTGRES_URL = 'postgresql://test:test@localhost:5432/test';
 
 // Mock pg Pool
-const mockQuery = jest.fn();
-const mockConnect = jest.fn();
-const mockEnd = jest.fn();
+const mockQuery = jest.fn<(...args: unknown[]) => Promise<unknown>>();
+const mockConnect = jest.fn<() => Promise<void>>();
+const mockEnd = jest.fn<() => Promise<void>>();
 const mockPool = {
   query: mockQuery,
   connect: mockConnect,
@@ -73,7 +73,7 @@ describe('UserDatabase', () => {
 
       // Verify that index creation SQL was executed
       const createIndexCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('CREATE INDEX')
+        call[0] && typeof call[0] === 'string' && call[0].includes('CREATE INDEX')
       );
       expect(createIndexCalls.length).toBeGreaterThan(0);
     });
@@ -89,7 +89,7 @@ describe('UserDatabase', () => {
 
       // Verify admin config initialization was attempted
       const insertCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('INSERT INTO admin_config')
+        call[0] && typeof call[0] === 'string' && call[0].includes('INSERT INTO admin_config')
       );
       expect(insertCalls.length).toBeGreaterThan(0);
     });
@@ -288,7 +288,7 @@ describe('UserDatabase', () => {
 
       // Verify that last_login update was called
       const updateCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('UPDATE users SET last_login')
+        call[0] && typeof call[0] === 'string' && call[0].includes('UPDATE users SET last_login')
       );
       expect(updateCalls.length).toBeGreaterThan(0);
     });
@@ -304,7 +304,7 @@ describe('UserDatabase', () => {
 
       // Verify that session creation was called
       const insertCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('INSERT INTO user_sessions')
+        call[0] && typeof call[0] === 'string' && call[0].includes('INSERT INTO user_sessions')
       );
       expect(insertCalls.length).toBeGreaterThan(0);
       expect(result.token).toBeDefined();
@@ -379,7 +379,7 @@ describe('UserDatabase', () => {
 
       // Verify that session deletion was called
       const deleteCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions')
+        call[0] && typeof call[0] === 'string' && call[0].includes('DELETE FROM user_sessions')
       );
       expect(deleteCalls.length).toBeGreaterThan(0);
     });
@@ -534,7 +534,7 @@ describe('UserDatabase', () => {
 
       // Verify that expired session cleanup was called
       const deleteCalls = mockQuery.mock.calls.filter(call => 
-        call[0] && call[0].includes && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
+        call[0] && typeof call[0] === 'string' && call[0].includes('DELETE FROM user_sessions WHERE expires_at')
       );
       expect(deleteCalls.length).toBeGreaterThan(0);
     });

@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import { levenshteinDistance, filterValidDistractors, isValidAnswer, normalizeAnswer } from '@/utils/validation'
 
 describe('validation utils', () => {

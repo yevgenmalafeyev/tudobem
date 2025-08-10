@@ -1,9 +1,11 @@
 import { describe, it, expect } from '@jest/globals';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 
 // Mock environment variables for testing
-process.env.JWT_SECRET = 'test-jwt-secret-key';
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'test-jwt-secret-key';
+}
 
 describe('UserDatabase TDD Implementation Tests', () => {
   describe('Password Hashing', () => {

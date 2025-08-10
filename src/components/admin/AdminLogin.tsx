@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Logo from '@/components/Logo';
 
 interface AdminLoginProps {
@@ -12,23 +12,38 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isMountedRef.current) return;
+    
     setIsLoading(true);
     setError('');
 
     try {
       const success = await onLogin(username, password);
       
+      if (!isMountedRef.current) return;
+      
       if (!success) {
         setError('Invalid username or password');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('An error occurred during login');
+      if (isMountedRef.current) {
+        setError('An error occurred during login');
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
   };
 

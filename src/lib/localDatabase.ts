@@ -225,6 +225,24 @@ export class LocalDatabase {
         paramIndex++;
       }
 
+      // Exclude specific exercise IDs (for user-specific filtering)
+      if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
+        query += ` AND id != ALL($${paramIndex})`;
+        params.push(filter.excludeExerciseIds);
+        paramIndex++;
+      }
+
+      // User-specific filtering: exclude exercises the user has answered correctly
+      if (filter.userId) {
+        query += ` AND id NOT IN (
+          SELECT DISTINCT exercise_id 
+          FROM user_exercise_attempts 
+          WHERE user_id = $${paramIndex} AND is_correct = true
+        )`;
+        params.push(filter.userId);
+        paramIndex++;
+      }
+
       // Order by usage count (least used first) and creation date
       query += ` ORDER BY usage_count ASC, created_at DESC`;
 
@@ -355,6 +373,97 @@ export class LocalDatabase {
       };
     } catch (error) {
       console.error('❌ Error getting usage stats from local database:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update exercise hint data
+   */
+  static async updateExerciseHint(exerciseId: string, hintData: any): Promise<void> {
+    if (!this.isDatabaseAvailable()) {
+      console.log('⚠️ Database not available - cannot update hint');
+      return;
+    }
+
+    const pool = getPool();
+
+    try {
+      await pool.query(
+        `UPDATE exercises 
+         SET hint = $1, updated_at = NOW() 
+         WHERE id = $2`,
+        [JSON.stringify(hintData), exerciseId]
+      );
+    } catch (error) {
+      console.error('❌ Error updating exercise hint:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Add a single exercise to the database
+   */
+  static async addExercise(exercise: EnhancedExercise): Promise<void> {
+    if (!this.isDatabaseAvailable()) {
+      console.log('⚠️ Database not available - cannot add exercise');
+      return;
+    }
+
+    const pool = getPool();
+
+    try {
+      await pool.query(
+        `INSERT INTO exercises (
+          id, sentence, gap_index, correct_answer, topic, level,
+          multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+          hint, source, difficulty_score, usage_count, created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+        [
+          exercise.id,
+          exercise.sentence,
+          exercise.gapIndex,
+          exercise.correctAnswer,
+          exercise.topic,
+          exercise.level,
+          JSON.stringify(exercise.multipleChoiceOptions || []),
+          exercise.explanations?.pt || null,
+          exercise.explanations?.en || null,
+          exercise.explanations?.uk || null,
+          JSON.stringify(exercise.hint || {}),
+          exercise.source || 'ai',
+          exercise.difficultyScore || 0.5,
+          exercise.usageCount || 0,
+          exercise.createdAt || new Date().toISOString(),
+          exercise.updatedAt || new Date().toISOString()
+        ]
+      );
+    } catch (error) {
+      console.error('❌ Error adding exercise:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Clear all exercises from database (for production reset)
+   */
+  static async clearAllExercises(): Promise<void> {
+    if (!this.isDatabaseAvailable()) {
+      console.log('⚠️ Database not available - cannot clear exercises');
+      return;
+    }
+
+    const pool = getPool();
+
+    try {
+      // Delete in order to respect foreign key constraints
+      await pool.query('DELETE FROM exercise_sessions');
+      await pool.query('DELETE FROM generation_queue');
+      await pool.query('DELETE FROM exercises');
+      
+      console.log('🧹 All exercises cleared from database');
+    } catch (error) {
+      console.error('❌ Error clearing exercises:', error);
       throw error;
     }
   }

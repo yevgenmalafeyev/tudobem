@@ -1,9 +1,5 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
-
-// Mock Request interface for testing
-interface MockRequest {
-  json(): Promise<Record<string, unknown>>;
-}
+import { NextRequest } from 'next/server';
 
 // Type for test results that contain level property
 interface LevelResult {
@@ -11,9 +7,6 @@ interface LevelResult {
   status?: string;
   neededCount?: number;
 }
-
-// Mock environment variables for testing
-process.env.NODE_ENV = 'test';
 
 const mockGeneratedExercise = {
   sentence: "Eu _____ português.",
@@ -45,24 +38,37 @@ const mockDbExercise = {
   explanation_uk: "Перша особа однини дієслова 'вивчати'."
 };
 
+// Create properly typed mock functions
+const mockInitializeTables = jest.fn<() => Promise<void>>();
+const mockGetClaudeApiKey = jest.fn<() => Promise<string | null>>();
+const mockExerciseExists = jest.fn<(sentence: string, correctAnswer: string) => Promise<boolean>>();
+const mockSaveBatchExercises = jest.fn<(exercises: unknown[]) => Promise<unknown[]>>();
+const mockGetStats = jest.fn<() => Promise<{ total: number; byLevel: Array<{ level: string; count: number }> }>>();
+
+mockInitializeTables.mockResolvedValue(undefined);
+mockGetClaudeApiKey.mockResolvedValue('sk-ant-api03-test-key');
+mockExerciseExists.mockResolvedValue(false);
+mockSaveBatchExercises.mockResolvedValue([mockDbExercise]);
+mockGetStats.mockResolvedValue({
+  total: 50,
+  byLevel: [
+    { level: 'A1', count: 20 },
+    { level: 'A2', count: 15 },
+    { level: 'B1', count: 10 },
+    { level: 'B2', count: 5 }
+  ]
+});
+
 const mockUserDatabase = {
-  initializeTables: jest.fn().mockResolvedValue(undefined),
-  getClaudeApiKey: jest.fn().mockResolvedValue('sk-ant-api03-test-key')
+  initializeTables: mockInitializeTables,
+  getClaudeApiKey: mockGetClaudeApiKey
 };
 
 const mockExerciseDatabase = {
-  initializeTables: jest.fn().mockResolvedValue(undefined),
-  exerciseExists: jest.fn().mockResolvedValue(false),
-  saveBatchExercises: jest.fn().mockResolvedValue([mockDbExercise]),
-  getStats: jest.fn().mockResolvedValue({
-    total: 50,
-    byLevel: [
-      { level: 'A1', count: 20 },
-      { level: 'A2', count: 15 },
-      { level: 'B1', count: 10 },
-      { level: 'B2', count: 5 }
-    ]
-  })
+  initializeTables: mockInitializeTables,
+  exerciseExists: mockExerciseExists,
+  saveBatchExercises: mockSaveBatchExercises,
+  getStats: mockGetStats
 };
 
 jest.mock('@/lib/userDatabase', () => ({
@@ -73,50 +79,80 @@ jest.mock('@/lib/database', () => ({
   ExerciseDatabase: mockExerciseDatabase
 }));
 
+const mockSet = jest.fn<(name: string, value: string, options?: unknown) => void>();
+const mockGet = jest.fn<(name: string) => { value?: string } | undefined>();
+const mockDelete = jest.fn<(name: string) => void>();
+
+mockGet.mockReturnValue({ value: 'authenticated' });
+
 const mockCookies = {
-  set: jest.fn(),
-  get: jest.fn().mockReturnValue({ value: 'authenticated' }),
-  delete: jest.fn()
+  set: mockSet,
+  get: mockGet,
+  delete: mockDelete
 };
 
 jest.mock('next/headers', () => ({
-  cookies: jest.fn().mockResolvedValue(mockCookies)
+  cookies: jest.fn(() => mockCookies)
 }));
 
-const mockCallClaudeApi = jest.fn().mockResolvedValue(
+const mockCallClaudeApi = jest.fn<(apiKey: string, prompt: string) => Promise<string>>();
+const mockExtractJsonFromClaudeResponse = jest.fn<(response: string) => string>();
+const mockRequireAdminAuth = jest.fn<() => Promise<unknown>>();
+
+mockCallClaudeApi.mockResolvedValue(
   `Here are the exercises:\n${JSON.stringify([mockGeneratedExercise])}\n\nThese exercises are suitable for learning.`
 );
-
-const mockExtractJsonFromClaudeResponse = jest.fn().mockReturnValue(
+mockExtractJsonFromClaudeResponse.mockReturnValue(
   JSON.stringify([mockGeneratedExercise])
 );
+mockRequireAdminAuth.mockResolvedValue(null);
 
 jest.mock('@/lib/api-utils', () => ({
-  ...jest.requireActual('@/lib/api-utils'),
+  createApiError: jest.fn((message, status) => ({ 
+    json: () => Promise.resolve({ success: false, error: message }), 
+    status 
+  })),
+  createApiSuccess: jest.fn(),
+  createApiResponse: jest.fn((data) => ({
+    json: () => Promise.resolve({ success: true, data }),
+    status: 200
+  })),
+  parseRequestBody: jest.fn(async (request: { json: () => Promise<unknown> }) => await request.json()),
+  requireAdminAuth: mockRequireAdminAuth,
+  withErrorHandling: jest.fn((handler) => handler),
   callClaudeApi: mockCallClaudeApi,
   extractJsonFromClaudeResponse: mockExtractJsonFromClaudeResponse
 }));
+
+// Helper function to create NextRequest mock
+function createMockRequest(body: unknown): NextRequest {
+  return {
+    json: () => Promise.resolve(body),
+    headers: new Headers(),
+    method: 'POST',
+    url: 'http://localhost:3000/api/test',
+  } as unknown as NextRequest;
+}
 
 describe('Exercise Generation API Routes', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Reset to authenticated by default
-    mockCookies.get.mockReturnValue({ value: 'authenticated' });
-    mockUserDatabase.getClaudeApiKey.mockResolvedValue('sk-ant-api03-test-key');
-    mockExerciseDatabase.exerciseExists.mockResolvedValue(false);
+    mockGet.mockReturnValue({ value: 'authenticated' });
+    mockGetClaudeApiKey.mockResolvedValue('sk-ant-api03-test-key');
+    mockExerciseExists.mockResolvedValue(false);
+    mockRequireAdminAuth.mockResolvedValue(null); // null means authorized
   });
 
   describe('POST /api/admin/generate', () => {
     it('should generate exercises successfully', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos', 'substantivos'],
           levels: ['A1', 'A2'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -127,23 +163,27 @@ describe('Exercise Generation API Routes', () => {
       expect(responseData.data.generated.saved).toBe(1);
       expect(responseData.data.generated.duplicates).toBe(0);
       expect(responseData.data.exercises).toHaveLength(1);
-      expect(mockUserDatabase.getClaudeApiKey).toHaveBeenCalled();
+      expect(mockGetClaudeApiKey).toHaveBeenCalled();
       expect(mockCallClaudeApi).toHaveBeenCalled();
-      expect(mockExerciseDatabase.saveBatchExercises).toHaveBeenCalledWith([mockGeneratedExercise]);
+      expect(mockSaveBatchExercises).toHaveBeenCalledWith([mockGeneratedExercise]);
     });
 
     it('should require admin authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
+      
+      // Make requireAdminAuth return an error response
+      mockRequireAdminAuth.mockResolvedValueOnce({
+        json: () => Promise.resolve({ success: false, error: 'Unauthorized' }),
+        status: 401
+      });
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -156,13 +196,11 @@ describe('Exercise Generation API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           // missing topics
           levels: ['A1'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -175,13 +213,11 @@ describe('Exercise Generation API Routes', () => {
     it('should validate count range', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1'],
           count: 25 // too high
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -194,13 +230,11 @@ describe('Exercise Generation API Routes', () => {
     it('should validate language levels', async () => {
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1', 'INVALID'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -211,17 +245,15 @@ describe('Exercise Generation API Routes', () => {
     });
 
     it('should handle missing API key', async () => {
-      mockUserDatabase.getClaudeApiKey.mockResolvedValueOnce(null);
+      mockGetClaudeApiKey.mockResolvedValueOnce(null);
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -236,13 +268,11 @@ describe('Exercise Generation API Routes', () => {
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -253,17 +283,15 @@ describe('Exercise Generation API Routes', () => {
     });
 
     it('should handle duplicate exercises', async () => {
-      mockExerciseDatabase.exerciseExists.mockResolvedValueOnce(true);
+      mockExerciseExists.mockResolvedValueOnce(true);
       
       const { POST } = await import('../generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           topics: ['verbos'],
           levels: ['A1'],
           count: 5
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -279,15 +307,13 @@ describe('Exercise Generation API Routes', () => {
     it('should auto-generate exercises successfully', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           targetCounts: {
             'A1': 50,
             'A2': 40
           },
           topics: ['verbos', 'substantivos']
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -297,19 +323,23 @@ describe('Exercise Generation API Routes', () => {
       expect(responseData.data.summary.levelsProcessed).toBe(2);
       expect(responseData.data.summary.successful).toBeGreaterThan(0);
       expect(responseData.data.results).toHaveLength(2);
-      expect(mockExerciseDatabase.getStats).toHaveBeenCalled();
+      expect(mockGetStats).toHaveBeenCalled();
     });
 
     it('should require admin authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
+      
+      // Make requireAdminAuth return an error response
+      mockRequireAdminAuth.mockResolvedValueOnce({
+        json: () => Promise.resolve({ success: false, error: 'Unauthorized' }),
+        status: 401
+      });
       
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           targetCounts: { 'A1': 50 }
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -322,11 +352,9 @@ describe('Exercise Generation API Routes', () => {
     it('should validate target counts', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           // missing targetCounts
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -339,13 +367,11 @@ describe('Exercise Generation API Routes', () => {
     it('should validate target count values', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           targetCounts: {
             'A1': 1500 // too high
           }
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -358,13 +384,11 @@ describe('Exercise Generation API Routes', () => {
     it('should skip levels that already meet targets', async () => {
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           targetCounts: {
             'A1': 15 // current is 20, so target already met
           }
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -377,15 +401,13 @@ describe('Exercise Generation API Routes', () => {
     });
 
     it('should handle missing API key', async () => {
-      mockUserDatabase.getClaudeApiKey.mockResolvedValueOnce(null);
+      mockGetClaudeApiKey.mockResolvedValueOnce(null);
       
       const { POST } = await import('../auto-generate/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           targetCounts: { 'A1': 50 }
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();

@@ -1,8 +1,9 @@
+// import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { UserDatabase } from '@/lib/userDatabase';
 import { createApiResponse, withErrorHandling } from '@/lib/api-utils';
 
-async function logoutHandler() {
+async function logoutHandler(/* _request: NextRequest */) {
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('session-token')?.value;

@@ -25,10 +25,17 @@ export function useExerciseQueue({
     totalGenerated: 0
   });
 
+  const [loadingError, setLoadingError] = useState<{
+    message: string;
+    details: string;
+    timestamp: Date;
+  } | null>(null);
+
   const backgroundLoadingRef = useRef(false);
   const hasTriggeredBackgroundRef = useRef(false);
   const mountedRef = useRef(true);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const loadingPromiseRef = useRef<Promise<boolean> | null>(null);
 
   /**
    * Generate unique session ID for tracking
@@ -41,8 +48,14 @@ export function useExerciseQueue({
    * Load initial batch of exercises with retry logic
    */
   const loadInitialBatch = useCallback(async (retryCount: number = 0): Promise<boolean> => {
-    // Add a longer delay to allow component to stabilize after mount/unmount cycles
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Prevent multiple simultaneous loading attempts
+    if (loadingPromiseRef.current) {
+      console.log('🔄 [DEBUG] Loading already in progress, returning existing promise');
+      return await loadingPromiseRef.current;
+    }
+    
+    // Add a shorter delay to allow component to stabilize after mount/unmount cycles
+    await new Promise(resolve => setTimeout(resolve, 100));
     
     // Check if component is still mounted after stabilization
     if (!mountedRef.current) {
@@ -50,6 +63,9 @@ export function useExerciseQueue({
     }
     
     const maxRetries = 2;
+    
+    // Clear any previous error
+    setLoadingError(null);
     
     // Cancel any existing request only if we have one
     if (abortControllerRef.current) {
@@ -60,17 +76,20 @@ export function useExerciseQueue({
     // Check mount status before setting state
     if (!mountedRef.current) return false;
     
-    setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: true }));
-    
-    try {
+    // Create and store the loading promise
+    const loadingPromise = (async (): Promise<boolean> => {
+      try {
+        setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: true }));
+      
+        console.log('🚀 [DEBUG] Starting initial batch load for levels:', configuration.selectedLevels);
       const request: BatchGenerationRequest = {
         levels: configuration.selectedLevels,
         topics: configuration.selectedTopics,
-        claudeApiKey: configuration.claudeApiKey,
         masteredWords: progress.masteredWords,
         count: 10,
         sessionId: exerciseQueue.sessionId,
-        priority: 'immediate'
+        priority: 'immediate',
+        source: 'learning' // Mark as learning mode request - NO AI generation
       };
 
       // Create new AbortController for this request only if still mounted
@@ -83,10 +102,10 @@ export function useExerciseQueue({
       
       const timeoutId = setTimeout(() => {
         if (mountedRef.current && abortControllerRef.current === controller) {
-          console.error('Request timeout after 45 seconds');
+          console.error('Request timeout after 15 seconds');
           controller.abort();
         }
-      }, 45000); // 45 second timeout for Claude AI generation
+      }, 15000); // 15 second timeout for database operations
       
       const response = await fetch('/api/generate-exercise-batch', {
         method: 'POST',
@@ -102,15 +121,26 @@ export function useExerciseQueue({
       }
 
       if (!response.ok) {
-        console.error('HTTP error response:', response.status, response.statusText);
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorText = response.statusText || 'Unknown error';
+        console.error('HTTP error response:', response.status, errorText);
+        const httpError = new Error(`Server returned ${response.status}: ${errorText}`) as Error & {
+          type: string;
+          status: number;
+        };
+        httpError.type = 'http';
+        httpError.status = response.status;
+        throw httpError;
       }
 
       const result = await response.json();
       
       if (!result.success) {
         console.error('API returned failure:', result.error);
-        throw new Error(result.error || 'Failed to generate exercises');
+        const apiError = new Error(result.error || 'Failed to generate exercises from database') as Error & {
+          type: string;
+        };
+        apiError.type = 'api';
+        throw apiError;
       }
 
       const exercises: EnhancedExercise[] = result.data.exercises;
@@ -141,19 +171,38 @@ export function useExerciseQueue({
       // Handle timeout errors and network errors specifically
       const isTimeoutError = error instanceof Error && error.name === 'AbortError';
       const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+      const isHttpError = (error as Error & { type?: string }).type === 'http';
+      const isApiError = (error as Error & { type?: string }).type === 'api';
       const isComponentUnmounted = !mountedRef.current;
       
       if (isComponentUnmounted) {
         return false;
       }
       
+      // Create detailed error information
+      let errorMessage = 'Unknown error occurred';
+      let errorDetails = '';
+      
       if (isTimeoutError) {
+        errorMessage = 'Request timeout';
+        errorDetails = 'The server took too long to respond. This might be due to high server load or network issues.';
         console.error('Request was aborted due to timeout');
       } else if (isNetworkError) {
+        errorMessage = 'Network connection error';
+        errorDetails = 'Unable to connect to the server. Please check your internet connection and try again.';
         console.error('Network error detected');
+      } else if (isHttpError) {
+        errorMessage = `Server error (${(error as Error & { status?: number }).status})`;
+        errorDetails = error instanceof Error ? error.message : 'The server encountered an error processing your request.';
+      } else if (isApiError) {
+        errorMessage = 'Database loading failed';
+        errorDetails = error instanceof Error ? error.message : 'Failed to load exercises from the database.';
+      } else if (error instanceof Error) {
+        errorMessage = 'Exercise loading failed';
+        errorDetails = error.message;
       }
       
-      // Retry on timeout or network errors (but not on HTTP errors or component unmount)
+      // Retry on timeout or network errors (but not on HTTP/API errors or component unmount)
       if ((isTimeoutError || isNetworkError) && retryCount < maxRetries && mountedRef.current) {
         if (mountedRef.current) {
           setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
@@ -164,12 +213,28 @@ export function useExerciseQueue({
         return loadInitialBatch(retryCount + 1);
       }
       
+      // Set detailed error for non-retryable errors or after max retries
       if (mountedRef.current) {
+        setLoadingError({
+          message: errorMessage,
+          details: errorDetails,
+          timestamp: new Date()
+        });
         setExerciseQueue(prev => ({ ...prev, isBackgroundLoading: false }));
+        }
+        return false;
+      } finally {
+        // Clear the promise reference when done (success or error)
+        loadingPromiseRef.current = null;
       }
-      return false;
-    }
-  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords, onExerciseGenerated]); // eslint-disable-line react-hooks/exhaustive-deps
+    })();
+      
+      // Store the promise to prevent concurrent requests
+      loadingPromiseRef.current = loadingPromise;
+      
+      // Return the promise result
+      return await loadingPromise;
+  }, [configuration.selectedLevels, configuration.selectedTopics, progress.masteredWords, onExerciseGenerated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Load next batch in background (triggered at 8/10 progress)
@@ -196,21 +261,21 @@ export function useExerciseQueue({
       const request: BatchGenerationRequest = {
         levels: configuration.selectedLevels,
         topics: configuration.selectedTopics,
-        claudeApiKey: configuration.claudeApiKey,
         masteredWords: progress.masteredWords,
         count: 10,
         sessionId: exerciseQueue.sessionId,
-        priority: 'background'
+        priority: 'background',
+        source: 'learning' // Mark as learning mode request - NO AI generation
       };
 
       // Add timeout for background requests too
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
         if (mountedRef.current) {
-          console.error('Background request timeout after 45 seconds');
+          console.error('Background request timeout after 15 seconds');
           controller.abort();
         }
-      }, 45000);
+      }, 15000);
       
       const response = await fetch('/api/generate-exercise-batch', {
         method: 'POST',
@@ -262,7 +327,7 @@ export function useExerciseQueue({
     } finally {
       backgroundLoadingRef.current = false;
     }
-  }, [configuration.selectedLevels, configuration.selectedTopics, configuration.claudeApiKey, progress.masteredWords]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [configuration.selectedLevels, configuration.selectedTopics, progress.masteredWords]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Get the next exercise from the queue
@@ -323,6 +388,16 @@ export function useExerciseQueue({
    * Reset the queue (useful for configuration changes)
    */
   const resetQueue = useCallback(() => {
+    // Cancel any ongoing requests first
+    if (abortControllerRef.current) {
+      console.log('🛑 [DEBUG] Aborting ongoing request due to queue reset');
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    
+    // Clear the loading promise to allow fresh requests
+    loadingPromiseRef.current = null;
+    
     setExerciseQueue({
       exercises: [],
       currentIndex: 0,
@@ -332,6 +407,7 @@ export function useExerciseQueue({
       sessionId: generateSessionId(),
       totalGenerated: 0
     });
+    setLoadingError(null); // Clear errors when resetting
     backgroundLoadingRef.current = false;
     hasTriggeredBackgroundRef.current = false;
   }, []);
@@ -356,9 +432,20 @@ export function useExerciseQueue({
     };
   }, [exerciseQueue]);
 
-  // Auto-reset queue when configuration changes
+  // Auto-reset queue when configuration changes (only if configuration actually changed)
+  const configRef = useRef({ levels: configuration.selectedLevels, topics: configuration.selectedTopics });
+  
   useEffect(() => {
-    resetQueue();
+    const currentConfig = { levels: configuration.selectedLevels, topics: configuration.selectedTopics };
+    const prevConfig = configRef.current;
+    
+    // Only reset if configuration actually changed
+    if (JSON.stringify(currentConfig.levels) !== JSON.stringify(prevConfig.levels) ||
+        JSON.stringify(currentConfig.topics) !== JSON.stringify(prevConfig.topics)) {
+      console.log('🔄 [DEBUG] Configuration changed, resetting queue');
+      resetQueue();
+      configRef.current = currentConfig;
+    }
   }, [configuration.selectedLevels, configuration.selectedTopics, resetQueue]);
 
   // Cleanup on unmount
@@ -390,6 +477,7 @@ export function useExerciseQueue({
     isBackgroundLoading: exerciseQueue.nextBatchLoading,
     generationSource: exerciseQueue.generationSource,
     hasExercises: exerciseQueue.exercises.length > 0,
-    queueStats: getQueueStats()
+    queueStats: getQueueStats(),
+    loadingError
   };
 }

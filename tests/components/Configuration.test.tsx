@@ -10,7 +10,6 @@ jest.mock('@/store/useStore', () => ({
     configuration: {
       selectedLevels: ['A1'],
       selectedTopics: ['verbo-estar'],
-      claudeApiKey: 'test-key',
       appLanguage: 'en'
     },
     setConfiguration: mockSetConfiguration
@@ -48,11 +47,6 @@ jest.mock('@/utils/translations', () => ({
       'configTitle': 'Configuration',
       'selectLevels': 'Levels',
       'selectTopics': 'Topics',
-      'claudeApiKey': 'Claude API Key',
-      'apiKeyPlaceholder': 'Enter your Claude API key',
-      'apiKeyHelp': 'Get your API key from',
-      'anthropicConsole': 'Anthropic Console',
-      'apiKeyLocalHint': 'Your API key is stored locally and never sent to our servers',
       'appLanguageTitle': 'App Language',
       'portuguese': 'Português',
       'english': 'English',
@@ -147,14 +141,6 @@ describe('Configuration Component', () => {
     })
   })
 
-  it('should render Claude API key input', () => {
-    render(<Configuration onSave={mockOnSave} />)
-    
-    // API key input is a password input type, use placeholder text
-    const apiKeyInput = screen.getByPlaceholderText(/Enter your Claude API key/i)
-    expect(apiKeyInput).toBeInTheDocument()
-    expect(apiKeyInput).toHaveValue('test-key')
-  })
 
   it('should render app language selector', () => {
     render(<Configuration onSave={mockOnSave} />)
@@ -185,14 +171,6 @@ describe('Configuration Component', () => {
     })
   })
 
-  it('should update API key when input changes', () => {
-    render(<Configuration onSave={mockOnSave} />)
-    
-    const apiKeyInput = screen.getByPlaceholderText(/Enter your Claude API key/i)
-    fireEvent.change(apiKeyInput, { target: { value: 'new-api-key' } })
-    
-    expect(apiKeyInput).toHaveValue('new-api-key')
-  })
 
   it('should update app language when selector changes', () => {
     render(<Configuration onSave={mockOnSave} />)

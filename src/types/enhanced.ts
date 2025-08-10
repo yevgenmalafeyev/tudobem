@@ -19,11 +19,11 @@ export interface EnhancedExercise extends Exercise {
 export interface BatchGenerationRequest {
   levels: LanguageLevel[];
   topics: string[];
-  claudeApiKey?: string;
   masteredWords?: Record<string, unknown>;
   count?: number; // Default: 10
   sessionId: string;
   priority?: 'immediate' | 'background';
+  source?: 'learning' | 'admin' | 'external'; // New: Request source to control AI generation
 }
 
 // Batch generation response
@@ -68,6 +68,8 @@ export interface ExerciseFilter {
   excludeUsed?: boolean;
   sessionId?: string;
   limit?: number;
+  excludeExerciseIds?: string[]; // Exclude specific exercise IDs (e.g., user's correctly answered exercises)
+  userId?: string; // User ID for user-specific filtering
 }
 
 export interface UsageStats {

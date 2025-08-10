@@ -18,13 +18,14 @@ export class EnhancedFallbackService {
   static async getExercise(
     levels: LanguageLevel[], 
     topics: string[] = [],
-    masteredWords: Record<string, unknown> = {}
+    masteredWords: Record<string, unknown> = {}, // Kept for API compatibility but not used
+    userId?: string
   ): Promise<EnhancedExercise | null> {
-    console.log('🔄 Enhanced fallback: Getting exercise', { levels, topics: topics.length });
+    console.log('🔄 Enhanced fallback: Getting exercise', { levels, topics: topics.length, userId: !!userId });
     
     try {
       // Step 1: Try database first
-      const databaseExercise = await this.getDatabaseExercise(levels, topics, masteredWords);
+      const databaseExercise = await this.getDatabaseExercise(levels, topics, masteredWords, userId);
       if (databaseExercise) {
         console.log('✅ Enhanced fallback: Using database exercise');
         return databaseExercise;
@@ -57,37 +58,34 @@ export class EnhancedFallbackService {
     levels: LanguageLevel[],
     topics: string[] = [],
     count: number = 10,
-    masteredWords: Record<string, unknown> = {}
+    masteredWords: Record<string, unknown> = {}, // Kept for API compatibility but not used
+    userId?: string
   ): Promise<EnhancedExercise[]> {
-    console.log('📦 Enhanced fallback: Getting exercise batch', { levels, topics: topics.length, count });
+    console.log('📦 Enhanced fallback: Getting exercise batch', { levels, topics: topics.length, count, userId: !!userId });
     
     try {
       // Try to get from database first
       const databaseExercises = await SmartDatabase.getExercises({
         levels,
         topics,
-        limit: count * 2 // Get more for variety
+        limit: count * 2, // Get more for variety
+        userId // Include user filtering
       });
 
-      // Filter out mastered words
-      const filteredExercises = databaseExercises.filter(exercise => {
-        const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
-        return !masteredWords[wordKey];
-      });
-
-      if (filteredExercises.length >= count) {
+      // NO CLIENT-SIDE FILTERING - Server handles all filtering
+      if (databaseExercises.length >= count) {
         console.log(`✅ Enhanced fallback: Using ${count} database exercises`);
-        return filteredExercises.slice(0, count);
+        return databaseExercises.slice(0, count);
       }
 
       // Not enough database exercises, supplement with static
-      console.log(`⚠️ Enhanced fallback: Only ${filteredExercises.length} database exercises, supplementing with static`);
+      console.log(`⚠️ Enhanced fallback: Only ${databaseExercises.length} database exercises, supplementing with static`);
       
-      const needed = count - filteredExercises.length;
+      const needed = count - databaseExercises.length;
       const staticExercises = await this.getStaticExerciseBatch(levels, topics, needed, masteredWords);
       const enhancedStaticExercises = staticExercises.map(ex => this.convertToEnhancedExercise(ex));
 
-      return [...filteredExercises, ...enhancedStaticExercises];
+      return [...databaseExercises, ...enhancedStaticExercises];
       
     } catch (error) {
       console.error('❌ Enhanced fallback batch error:', error);
@@ -134,32 +132,24 @@ export class EnhancedFallbackService {
   private static async getDatabaseExercise(
     levels: LanguageLevel[],
     topics: string[],
-    masteredWords: Record<string, unknown>
+    masteredWords: Record<string, unknown>, // Kept for API compatibility but not used
+    userId?: string
   ): Promise<EnhancedExercise | null> {
     try {
       const exercises = await SmartDatabase.getExercises({
         levels,
         topics,
-        limit: 10 // Get a few options
+        limit: 10, // Get a few options
+        userId // Include user filtering
       });
 
+      // NO CLIENT-SIDE FILTERING - Server handles all filtering
       if (exercises.length === 0) {
         return null;
       }
 
-      // Filter out mastered words
-      const availableExercises = exercises.filter(exercise => {
-        const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
-        return !masteredWords[wordKey];
-      });
-
-      if (availableExercises.length === 0) {
-        // All are mastered, return a random one for review
-        return exercises[Math.floor(Math.random() * exercises.length)];
-      }
-
       // Return the least used exercise
-      const selectedExercise = availableExercises[0]; // Already sorted by usage count
+      const selectedExercise = exercises[0]; // Already sorted by usage count
 
       return selectedExercise;
       
@@ -175,7 +165,7 @@ export class EnhancedFallbackService {
   private static async getStaticExercise(
     levels: LanguageLevel[],
     topics: string[],
-    masteredWords: Record<string, unknown>
+    masteredWords: Record<string, unknown> // Kept for API compatibility but not used
   ): Promise<Exercise | null> {
     console.log('📚 Enhanced fallback: Getting static exercise from database');
     
@@ -188,19 +178,7 @@ export class EnhancedFallbackService {
       });
       
       if (databaseExercises.length > 0) {
-        // Filter out mastered words
-        const filteredExercises = databaseExercises.filter(exercise => {
-          const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
-          return !masteredWords[wordKey];
-        });
-        
-        if (filteredExercises.length > 0) {
-          // Return a random exercise from the filtered set
-          const randomIndex = Math.floor(Math.random() * filteredExercises.length);
-          return this.convertToLegacyExercise(filteredExercises[randomIndex]);
-        }
-        
-        // If all are mastered, return a random one anyway
+        // NO CLIENT-SIDE FILTERING - Server handles all filtering
         const randomIndex = Math.floor(Math.random() * databaseExercises.length);
         return this.convertToLegacyExercise(databaseExercises[randomIndex]);
       }
@@ -223,7 +201,7 @@ export class EnhancedFallbackService {
     levels: LanguageLevel[],
     topics: string[],
     count: number,
-    masteredWords: Record<string, unknown>
+    masteredWords: Record<string, unknown> // Kept for API compatibility but not used
   ): Promise<Exercise[]> {
     const exercises: Exercise[] = [];
     const usedIds = new Set<string>();

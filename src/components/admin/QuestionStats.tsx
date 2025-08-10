@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface QuestionStats {
   total: number;
@@ -12,28 +12,44 @@ export default function QuestionStats() {
   const [stats, setStats] = useState<QuestionStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
     fetchStats();
+    return () => {
+      isMountedRef.current = false;
+    };
   }, []);
 
   const fetchStats = async () => {
+    if (!isMountedRef.current) return;
+    
     setIsLoading(true);
     setError('');
 
     try {
       const response = await fetch('/api/admin/stats');
+      if (!isMountedRef.current) return;
+      
       if (response.ok) {
         const data = await response.json();
-        setStats(data);
+        if (isMountedRef.current) {
+          setStats(data);
+        }
       } else {
-        setError('Failed to fetch statistics');
+        if (isMountedRef.current) {
+          setError('Failed to fetch statistics');
+        }
       }
     } catch (error) {
       console.error('Stats fetch error:', error);
-      setError('Network error while fetching statistics');
+      if (isMountedRef.current) {
+        setError('Network error while fetching statistics');
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
   };
 

@@ -252,27 +252,21 @@ export const fallbackExercises: Record<string, Exercise[]> = {
   ]
 };
 
-export function getFallbackExercise(levels: LanguageLevel[], masteredWords: Record<string, unknown> = {}, selectedTopics: string[] = []): Exercise | null {
-  console.log('getFallbackExercise called with levels:', levels, 'topics:', selectedTopics);
+export function getFallbackExercise(levels: LanguageLevel[], _masteredWords?: Record<string, unknown>, selectedTopics: string[] = []): Exercise | null {
   
   // Handle null/undefined/empty levels
   if (!levels || !Array.isArray(levels) || levels.length === 0) {
-    console.warn('Invalid levels parameter:', levels);
     return null;
   }
   
   // Get exercises for the requested levels only - no fallback to A1
   const availableExercises = levels.flatMap(level => {
     const exercisesForLevel = fallbackExercises[level] || [];
-    console.log(`Exercises for level ${level}:`, exercisesForLevel.length);
     return exercisesForLevel;
   });
   
-  console.log('Total available exercises for selected levels:', availableExercises.length);
-  
   // If no exercises for selected levels, return null - don't fallback to A1
   if (availableExercises.length === 0) {
-    console.warn('No exercises available for selected levels:', levels);
     return null;
   }
   
@@ -282,34 +276,15 @@ export function getFallbackExercise(levels: LanguageLevel[], masteredWords: Reco
     topicFilteredExercises = availableExercises.filter(exercise => 
       selectedTopics.includes(exercise.topic)
     );
-    console.log('Topic filtered exercises:', topicFilteredExercises.length);
   }
   
-  // Filter out mastered words
-  const filteredExercises = topicFilteredExercises.filter(exercise => {
-    const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
-    const isMastered = !!masteredWords[wordKey];
-    return !isMastered;
-  });
-  
-  console.log('Final filtered exercises (after removing mastered):', filteredExercises.length);
-  
-  // Return an exercise
-  if (filteredExercises.length > 0) {
-    const selected = getRandomElement(filteredExercises) || null;
-    console.log('Selected exercise:', selected?.level, selected?.correctAnswer, selected?.topic);
-    return selected;
-  }
-  
-  // If all are mastered, return a random one anyway from the topic/level filtered set
+  // NO CLIENT-SIDE FILTERING - Return any available exercise
+  // Server-side filtering handles mastered words
   if (topicFilteredExercises.length > 0) {
-    console.log('All exercises mastered, returning random one for review');
     const selected = getRandomElement(topicFilteredExercises) || null;
-    console.log('Selected mastered exercise for review:', selected?.level, selected?.correctAnswer, selected?.topic);
     return selected;
   }
   
-  console.error('No exercises available for levels:', levels, 'and topics:', selectedTopics);
   return null;
 }
 

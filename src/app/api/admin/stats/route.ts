@@ -1,8 +1,9 @@
+// import { NextRequest } from 'next/server';
 import { UserDatabase } from '@/lib/userDatabase';
 import { ExerciseDatabase } from '@/lib/database';
 import { createApiResponse, withErrorHandling, requireAdminAuth } from '@/lib/api-utils';
 
-async function getAdminStatsHandler() {
+async function getAdminStatsHandler(/* _request: NextRequest */) {
   // Check admin authentication
   const authError = await requireAdminAuth();
   if (authError) return authError;

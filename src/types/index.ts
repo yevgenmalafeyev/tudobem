@@ -13,8 +13,8 @@ export type AppLanguage = 'pt' | 'en' | 'uk';
 export interface UserConfiguration {
   selectedLevels: LanguageLevel[];
   selectedTopics: string[];
-  claudeApiKey?: string;
   appLanguage: AppLanguage;
+  claudeApiKey?: string;
 }
 
 export interface Exercise {
@@ -28,6 +28,7 @@ export interface Exercise {
     infinitive?: string;
     person?: string;
     form?: string;
+    grammarRule?: string;
   };
   multipleChoiceOptions?: string[];
   detailedExplanation?: string;

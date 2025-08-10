@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Logo from './Logo';
 
 interface HeaderProps {
-  currentView: 'learning' | 'configuration' | 'flashcards';
-  onViewChange: (view: 'learning' | 'configuration' | 'flashcards') => void;
+  currentView: 'learning' | 'configuration' | 'flashcards' | 'login';
+  onViewChange: (view: 'learning' | 'configuration' | 'flashcards' | 'login') => void;
 }
 
 export default function Header({ currentView, onViewChange }: HeaderProps) {
@@ -27,43 +27,56 @@ export default function Header({ currentView, onViewChange }: HeaderProps) {
             </h1>
           </Link>
           
-          {isConfigured && (
-            <nav className="flex flex-wrap gap-2 sm:gap-4">
-              <button
-                onClick={() => onViewChange('learning')}
-                className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
-                  currentView === 'learning'
-                    ? 'neo-button-primary'
-                    : ''
-                }`}
-              >
-                {t('learning', configuration.appLanguage)}
-              </button>
-              {/* Cards button temporarily hidden */}
-              {false && (
+          <nav className="flex flex-wrap gap-2 sm:gap-4">
+            {isConfigured && (
+              <>
                 <button
-                  onClick={() => onViewChange('flashcards')}
+                  onClick={() => onViewChange('learning')}
                   className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
-                    currentView === 'flashcards'
+                    currentView === 'learning'
                       ? 'neo-button-primary'
                       : ''
                   }`}
                 >
-                  {t('flashcards', configuration.appLanguage)}
+                  {t('learning', configuration.appLanguage)}
                 </button>
-              )}
-              <button
-                onClick={() => onViewChange('configuration')}
-                className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
-                  currentView === 'configuration'
-                    ? 'neo-button-primary'
-                    : ''
-                }`}
-              >
-                {t('configuration', configuration.appLanguage)}
-              </button>
-            </nav>
-          )}
+                {/* Cards button temporarily hidden */}
+                {false && (
+                  <button
+                    onClick={() => onViewChange('flashcards')}
+                    className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                      currentView === 'flashcards'
+                        ? 'neo-button-primary'
+                        : ''
+                    }`}
+                  >
+                    {t('flashcards', configuration.appLanguage)}
+                  </button>
+                )}
+                <button
+                  onClick={() => onViewChange('configuration')}
+                  className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                    currentView === 'configuration'
+                      ? 'neo-button-primary'
+                      : ''
+                  }`}
+                >
+                  {t('configuration', configuration.appLanguage)}
+                </button>
+              </>
+            )}
+            
+            <button
+              onClick={() => onViewChange('login')}
+              className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                currentView === 'login'
+                  ? 'neo-button-primary'
+                  : ''
+              }`}
+            >
+              {t('login', configuration.appLanguage)}
+            </button>
+          </nav>
         </div>
       </div>
     </header>

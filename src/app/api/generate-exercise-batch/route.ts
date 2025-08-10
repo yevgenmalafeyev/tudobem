@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
 import { SmartDatabase } from '@/lib/smartDatabase';
+import { UserDatabase } from '@/lib/userDatabase';
 import { 
   generateBatchExercisePrompt, 
   validateBatchExerciseResponse,
@@ -26,39 +28,67 @@ import { EnhancedFallbackService } from '@/services/enhancedFallbackService';
 /**
  * Generate fallback exercises when database and AI both fail
  */
-async function generateFallbackExercises(levels: LanguageLevel[], count: number): Promise<EnhancedExercise[]> {
+async function generateFallbackExercises(
+  levels: LanguageLevel[], 
+  count: number, 
+  authenticatedUserId?: string,
+  isLearningMode: boolean = false
+): Promise<EnhancedExercise[]> {
   try {
-    console.log('🆘 [DEBUG] Generating fallback exercises for levels:', levels, 'count:', count);
-    const fallbackExercises = await EnhancedFallbackService.getExerciseBatch(
-      levels, 
-      [], // No specific topics filter for ultimate fallback
-      count,
-      {} // No mastered words filter for ultimate fallback
-    );
-    console.log('🆘 [DEBUG] Generated', fallbackExercises.length, 'fallback exercises');
-    return fallbackExercises;
+    console.log('🆘 [DEBUG] Generating fallback exercises for levels:', levels, 'count:', count, 'userId:', authenticatedUserId, 'learningMode:', isLearningMode);
+    
+    if (isLearningMode) {
+      // For learning mode: Use database-only fallback service (no AI calls)
+      console.log('🆘 [DEBUG] Learning mode fallback: Database-only, no AI calls');
+      const databaseOnlyExercises = await SmartDatabase.getExercises({
+        levels,
+        limit: count,
+        userId: authenticatedUserId
+      });
+      
+      if (databaseOnlyExercises.length > 0) {
+        console.log('🆘 [DEBUG] Learning mode fallback: Using', databaseOnlyExercises.length, 'database exercises');
+        return databaseOnlyExercises.slice(0, count);
+      }
+      
+      // If no database exercises, return hard-coded static exercise
+      console.log('🆘 [DEBUG] Learning mode fallback: No database exercises, using static');
+    } else {
+      // For admin/external mode: Allow full fallback including AI
+      const fallbackExercises = await EnhancedFallbackService.getExerciseBatch(
+        levels, 
+        [], // No specific topics filter for ultimate fallback
+        count,
+        {}, // No mastered words filter for ultimate fallback
+        authenticatedUserId // Pass user ID for filtering
+      );
+      console.log('🆘 [DEBUG] Admin/External fallback: Generated', fallbackExercises.length, 'fallback exercises');
+      return fallbackExercises;
+    }
   } catch (error) {
-    console.error('🆘 [DEBUG] Even fallback exercises failed:', error);
-    // Return minimal hard-coded exercise as last resort
-    return [{
-      id: `fallback-${Date.now()}`,
-      sentence: "Eu ___ português.",
-      gapIndex: 1,
-      correctAnswer: "falo",
-      topic: "present-indicative",
-      level: levels[0] || 'A1',
-      multipleChoiceOptions: ["falo", "falas", "fala", "falamos"],
-      explanations: {
-        pt: "Usamos 'falo' para a primeira pessoa do singular no presente.",
-        en: "We use 'falo' for the first person singular in the present tense.",
-        uk: "Ми використовуємо 'falo' для першої особи однини в теперішньому часі."
-      },
-      hint: { infinitive: "falar", form: "1st person singular present" },
-      source: 'static',
-      difficultyScore: 0.3,
-      usageCount: 0
-    }];
+    console.error('🆘 [DEBUG] Fallback exercises failed:', error);
   }
+  
+  // Return minimal hard-coded exercise as last resort
+  console.log('🆘 [DEBUG] Using hard-coded static exercise as last resort');
+  return [{
+    id: `fallback-${Date.now()}`,
+    sentence: "Eu ___ português.",
+    gapIndex: 1,
+    correctAnswer: "falo",
+    topic: "present-indicative",
+    level: levels[0] || 'A1',
+    multipleChoiceOptions: ["falo", "falas", "fala", "falamos"],
+    explanations: {
+      pt: "Usamos 'falo' para a primeira pessoa do singular no presente.",
+      en: "We use 'falo' for the first person singular in the present tense.",
+      uk: "Ми використовуємо 'falo' для першої особи однини в теперішньому часі."
+    },
+    hint: { infinitive: "falar", form: "1st person singular present" },
+    source: 'static',
+    difficultyScore: 0.3,
+    usageCount: 0
+  }];
 }
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
@@ -88,16 +118,40 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     const {
       levels: parsedLevels,
       topics: parsedTopics,
-      claudeApiKey,
       masteredWords: parsedMasteredWords = {},
       count = 10,
       sessionId,
-      priority = 'immediate'
+      priority = 'immediate',
+      source = 'external' // Default to external if not specified (for backward compatibility)
     } = body;
   
     const levels = parsedLevels || ['A1'];
     const selectedTopics = parsedTopics || [];
     const masteredWords = parsedMasteredWords;
+    
+    // Get Claude API key from database
+    const claudeApiKey = await UserDatabase.getClaudeApiKey();
+    
+    // Check for authenticated user and get their correctly answered exercises
+    let authenticatedUser = null;
+    let userCorrectlyAnswered: string[] = [];
+    
+    try {
+      const cookieStore = await cookies();
+      const sessionToken = cookieStore.get('session-token')?.value;
+      
+      if (sessionToken) {
+        authenticatedUser = await UserDatabase.verifyToken(sessionToken);
+        if (authenticatedUser) {
+          console.log('🔐 [DEBUG] Authenticated user found:', authenticatedUser.id);
+          userCorrectlyAnswered = await UserDatabase.getCorrectlyAnsweredExercises(authenticatedUser.id);
+          console.log('🔐 [DEBUG] User has correctly answered', userCorrectlyAnswered.length, 'exercises');
+        }
+      }
+    } catch (authError) {
+      console.log('🔐 [DEBUG] No authenticated user or auth error:', authError);
+      // Continue as anonymous user
+    }
     
     console.log('📦 [DEBUG] Step 2: Data processing completed');
     console.log('📊 [DEBUG] Parsed data:', { 
@@ -108,6 +162,9 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       requestedCount: count,
       sessionId,
       priority,
+      source,
+      authenticatedUser: !!authenticatedUser,
+      userCorrectlyAnsweredCount: userCorrectlyAnswered.length,
       elapsedMs: Date.now() - startTime
     });
 
@@ -136,7 +193,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       const filter: ExerciseFilter = {
         levels,
         topics: selectedTopics,
-        limit: count * 2 // Get more than needed to have variety
+        limit: count * 2, // Get more than needed to have variety
+        userId: authenticatedUser?.id // Exclude user's correctly answered exercises
       };
       console.log('📦 [DEBUG] Database filter created:', filter);
       
@@ -158,13 +216,27 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     
     console.log('📦 [DEBUG] Step 4: Starting exercise processing...');
     
-    // Step 4: PRIORITIZE AI GENERATION - Try AI first if API key is available
+    // Step 4: CONTROL GENERATION STRATEGY BASED ON SOURCE
     let exercisesToReturn: EnhancedExercise[] = [];
-    let generationSource: 'ai' | 'database' | 'mixed' | 'fallback' = 'ai';
+    let generationSource: 'ai' | 'database' | 'mixed' | 'fallback' = 'database';
     
-    console.log('📦 [DEBUG] Step 4: PRIORITIZING AI GENERATION...');
-    
-    if (!claudeApiKey) {
+    // Learning mode: ALWAYS use database, never generate fresh AI exercises
+    if (source === 'learning') {
+      console.log('📦 [DEBUG] Step 4: LEARNING MODE - Using database only (no AI generation)');
+      
+      // Use database exercises (server-side filtering only)
+      // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
+      exercisesToReturn = databaseExercises.slice(0, count);
+      
+      generationSource = 'database';
+      console.log(`📚 LEARNING MODE: Using ${exercisesToReturn.length} database exercises (no AI generation)`);
+      
+    } else {
+      // Admin/External mode: Can use AI generation
+      console.log('📦 [DEBUG] Step 4: ADMIN/EXTERNAL MODE - AI generation allowed');
+      generationSource = 'ai';
+      
+      if (!claudeApiKey) {
       console.log('📦 [DEBUG] Step 4a: No API key provided - using database fallback');
       console.log('⚠️ [DEBUG] API key check details:', {
         claudeApiKey: claudeApiKey,
@@ -173,19 +245,9 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
         truthy: !!claudeApiKey
       });
       
-      // Fallback to database exercises
-      exercisesToReturn = databaseExercises
-        .filter(ex => !masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
-        .slice(0, count);
-      
-      if (exercisesToReturn.length < count) {
-        // Not enough non-mastered exercises, include some mastered ones
-        const remainingNeeded = count - exercisesToReturn.length;
-        const masteredExercises = databaseExercises
-          .filter(ex => masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
-          .slice(0, remainingNeeded);
-        exercisesToReturn.push(...masteredExercises);
-      }
+      // Fallback to database exercises (server-side filtering only)
+      // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
+      exercisesToReturn = databaseExercises.slice(0, count);
       
       generationSource = 'database';
       console.log(`⚠️ Using ${exercisesToReturn.length} exercises from database (no API key)`);
@@ -322,27 +384,18 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           console.error('❌ AI generation failed:', aiError);
           console.log('🔄 [DEBUG] Falling back to database exercises due to AI failure');
           
-          // Fallback to database exercises when AI fails
-          exercisesToReturn = databaseExercises
-            .filter(ex => !masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
-            .slice(0, count);
-          
-          if (exercisesToReturn.length < count) {
-            // Not enough non-mastered exercises, include some mastered ones
-            const remainingNeeded = count - exercisesToReturn.length;
-            const masteredExercises = databaseExercises
-              .filter(ex => masteredWords[`${ex.correctAnswer}:${ex.hint?.infinitive || ''}:${ex.hint?.form || ''}`])
-              .slice(0, remainingNeeded);
-            exercisesToReturn.push(...masteredExercises);
-          }
+          // Fallback to database exercises when AI fails (server-side filtering only)
+          // NO CLIENT-SIDE FILTERING - all filtering happens in the database query
+          exercisesToReturn = databaseExercises.slice(0, count);
           
           generationSource = 'database';
           console.log(`🔄 FALLBACK: Using ${exercisesToReturn.length} database exercises (AI failed)`);
           
           if (exercisesToReturn.length === 0) {
             console.log('🆘 [DEBUG] No database exercises available, using static fallback...');
-            // Ultimate fallback - return static fallback exercises
-            const fallbackExercises = await generateFallbackExercises(levels, count);
+            // Ultimate fallback - return static fallback exercises (pass source info)
+            const isLearningMode = source !== 'admin';
+            const fallbackExercises = await generateFallbackExercises(levels, count, authenticatedUser?.id, isLearningMode);
             return createApiResponse({
               exercises: fallbackExercises,
               generatedCount: fallbackExercises.length,
@@ -352,6 +405,20 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
           }
         }
       }
+    } // End of admin/external mode block
+    
+    // Handle insufficient exercises for learning mode
+    if (source === 'learning' && exercisesToReturn.length === 0) {
+      console.log('🆘 [DEBUG] Learning mode: No database exercises available, using static fallback...');
+      // For learning mode, if no database exercises, use fallback but NO AI generation
+      const fallbackExercises = await generateFallbackExercises(levels, count, authenticatedUser?.id, true);
+      return createApiResponse({
+        exercises: fallbackExercises,
+        generatedCount: fallbackExercises.length,
+        source: 'fallback' as const,
+        sessionId
+      });
+    }
     
     // Step 3: Shuffle the final exercise list for variety
     const shuffledExercises = exercisesToReturn.sort(() => Math.random() - 0.5);
@@ -415,7 +482,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     // Final fallback using enhanced fallback service
     try {
       console.log('🆘 [DEBUG] All database options failed, using enhanced fallback service...');
-      const fallbackExercises = await generateFallbackExercises(fallbackLevels, fallbackCount);
+      // In error handler, we don't have access to the original source, so default to safe learning mode
+      const fallbackExercises = await generateFallbackExercises(fallbackLevels, fallbackCount, undefined, true); // Always safe mode in error handler
       
       if (fallbackExercises.length > 0) {
         console.log(`🆘 Using ${fallbackExercises.length} enhanced fallback exercises`);

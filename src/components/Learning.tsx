@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { t } from '@/utils/translations';
 import { useLearning } from '@/hooks/useLearning';
 import { useExerciseQueue } from '@/hooks/useExerciseQueue';
@@ -8,7 +8,7 @@ import { useAnswerChecking } from '@/hooks/useAnswerChecking';
 import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
 import { EnhancedExercise } from '@/types/enhanced';
 import { Exercise } from '@/types';
-import GenerationStatusIndicator from './GenerationStatusIndicator';
+// import GenerationStatusIndicator from './GenerationStatusIndicator'; // Hidden per user request
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
 import MultipleChoiceOptions from './learning/MultipleChoiceOptions';
@@ -45,21 +45,20 @@ export default function Learning() {
     focusInput
   } = useLearning();
 
-  // Detailed explanation hook
+  // Detailed explanation hook  
   const { 
     detailedExplanation, 
     generateExplanation, 
     clearExplanation 
   } = useDetailedExplanation({
-    claudeApiKey: configuration.claudeApiKey,
     explanationLanguage: configuration.appLanguage
   });
 
   // Memoize callbacks to prevent useExerciseQueue dependency changes
   const onExerciseGenerated = useCallback((exercise: EnhancedExercise) => {
     setCurrentExercise(exercise);
-    generateExplanation(exercise);
-  }, [setCurrentExercise, generateExplanation]);
+    // Don't generate explanation immediately - only when answer is wrong
+  }, [setCurrentExercise]);
 
   const onQueueEmpty = useCallback(() => {
     console.warn('Exercise queue is empty');
@@ -72,9 +71,10 @@ export default function Learning() {
     loadInitialBatch,
     getNextExercise,
     isLoading: queueLoading,
-    isBackgroundLoading,
-    generationSource,
-    queueStats
+    // isBackgroundLoading,
+    // generationSource,
+    // queueStats,
+    loadingError
   } = useExerciseQueue({
     configuration,
     onExerciseGenerated,
@@ -109,33 +109,42 @@ export default function Learning() {
     addIncorrectAnswer
   });
 
-  // Load initial batch and exercise - separate effects to avoid dependency issues
-  useEffect(() => {
-    console.log('🚀 [DEBUG] Learning mount effect triggered:', {
-      hasCurrentExercise: !!currentExercise,
-      exerciseQueueLength: exerciseQueue.exercises.length,
-      hasApiKey: !!configuration.claudeApiKey,
-      apiKeyLength: configuration.claudeApiKey?.length || 0
-    });
-    
-    // Only trigger initial load if we have no exercise and no queue
-    if (!currentExercise && exerciseQueue.exercises.length === 0) {
-      console.log('🚀 [DEBUG] Calling loadInitialBatch immediately on mount...');
-      loadInitialBatch();
-    }
-  }, [loadInitialBatch, currentExercise, exerciseQueue.exercises.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Global loading lock to prevent multiple simultaneous requests
+  const globalLoadingRef = useRef(false);
   
-  // Handle queue exercises when available
+  // Load initial batch and exercise - with global locking to prevent race conditions
   useEffect(() => {
-    if (!currentExercise && exerciseQueue.exercises.length > 0) {
-      console.log('🚀 [DEBUG] Getting next exercise from queue...');
+    // Only trigger initial load if we have no exercise, no queue, and not already loading
+    if (!currentExercise && exerciseQueue.exercises.length === 0 && !queueLoading && !globalLoadingRef.current) {
+      console.log('🎯 [DEBUG] Triggering initial batch load from Learning component (with global lock)');
+      globalLoadingRef.current = true;
+      
+      loadInitialBatch().finally(() => {
+        // Always release the lock after loading completes (success or failure)
+        setTimeout(() => {
+          globalLoadingRef.current = false;
+        }, 1000); // 1 second delay to prevent rapid re-triggers
+      });
+    }
+  }, [loadInitialBatch, currentExercise, exerciseQueue.exercises.length, queueLoading]);
+  
+  // Handle queue exercises when available - use ref to prevent cascading updates
+  const hasProcessedQueueRef = useRef(false);
+  
+  useEffect(() => {
+    if (!currentExercise && exerciseQueue.exercises.length > 0 && !hasProcessedQueueRef.current) {
+      hasProcessedQueueRef.current = true;
       const nextExercise = getNextExercise();
       if (nextExercise) {
         setCurrentExercise(nextExercise);
-        generateExplanation(nextExercise);
+        // Don't generate explanation immediately - only when answer is wrong
       }
+      // Reset flag after a brief delay to allow for new batches
+      setTimeout(() => {
+        hasProcessedQueueRef.current = false;
+      }, 1000);
     }
-  }, [exerciseQueue.exercises.length, currentExercise, getNextExercise, setCurrentExercise, generateExplanation]); // Include all dependencies
+  }, [exerciseQueue.exercises.length, currentExercise, getNextExercise, setCurrentExercise]); // Removed generateExplanation dependency
 
   // Focus input when component mounts and when new exercise is generated
   useEffect(() => {
@@ -144,16 +153,24 @@ export default function Learning() {
     }
   }, [currentExercise, showAnswer, focusInput]);
 
-  const handleCheckAnswer = useCallback(() => {
+  const handleCheckAnswer = useCallback(async () => {
     if (!currentExercise) return;
     
-    checkAnswer({
+    // Check the answer first
+    await checkAnswer({
       exercise: currentExercise,
       userAnswer: getCurrentAnswer(),
-      claudeApiKey: configuration.claudeApiKey,
       explanationLanguage: configuration.appLanguage
     });
-  }, [currentExercise, getCurrentAnswer, configuration, checkAnswer]);
+    
+    // Generate detailed explanation only if answer is wrong
+    const isCorrect = getCurrentAnswer().toLowerCase().trim() === 
+      currentExercise.correctAnswer.toLowerCase().trim();
+    
+    if (!isCorrect) {
+      generateExplanation(currentExercise);
+    }
+  }, [currentExercise, getCurrentAnswer, configuration, checkAnswer, generateExplanation]);
 
   const handleNextExercise = useCallback(() => {
     // Clear current detailed explanation
@@ -165,14 +182,14 @@ export default function Learning() {
     if (nextExercise) {
       setCurrentExercise(nextExercise);
       resetState();
-      generateExplanation(nextExercise);
+      // Don't generate explanation immediately - only when answer is wrong
       focusInput();
     } else {
       // No more exercises - could trigger a new batch load
       console.warn('No more exercises available');
       loadInitialBatch();
     }
-  }, [getNextExercise, setCurrentExercise, resetState, generateExplanation, focusInput, clearExplanation, loadInitialBatch]);
+  }, [getNextExercise, setCurrentExercise, resetState, focusInput, clearExplanation, loadInitialBatch]);
 
   // Regenerate multiple choice options when mode changes
   useEffect(() => {
@@ -206,30 +223,40 @@ export default function Learning() {
         <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
           {t('loadingExercise', configuration.appLanguage)}
         </div>
-        <GenerationStatusIndicator
+{/* <GenerationStatusIndicator
           source={generationSource}
           isBackgroundLoading={true}
-        />
+        /> */}
       </div>
     );
   }
 
-  // Error state - only show if loading is not in progress and there's no exercise
-  const hasLoadingFailed = !currentExercise && !isLoading && !queueLoading && exerciseQueue.exercises.length === 0;
+  // Error state - show detailed error if available
+  const hasLoadingFailed = loadingError && !isLoading && !queueLoading && exerciseQueue.exercises.length === 0;
   
   if (hasLoadingFailed) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="neo-card text-xl" style={{ color: 'var(--neo-error)' }}>
-          {t('loadingError', configuration.appLanguage)}
-        </div>
-        <div className="mt-4">
-          <button 
-            onClick={() => loadInitialBatch()} 
-            className="neo-button neo-button-primary"
-          >
-            {t('tryAgain', configuration.appLanguage)}
-          </button>
+        <div className="max-w-2xl p-6">
+          <div className="neo-card-lg text-center">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--neo-error)' }}>
+                {loadingError.message}
+              </h2>
+              <p className="text-lg mb-4" style={{ color: 'var(--neo-text-secondary)' }}>
+                {loadingError.details}
+              </p>
+              <p className="text-sm mb-6" style={{ color: 'var(--neo-text-muted)' }}>
+                Error occurred at: {loadingError.timestamp.toLocaleString()}
+              </p>
+            </div>
+            <button 
+              onClick={() => loadInitialBatch()} 
+              className="neo-button neo-button-primary"
+            >
+              {t('tryAgain', configuration.appLanguage)}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -248,8 +275,8 @@ export default function Learning() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 relative">
-      {/* Generation Status Indicator */}
-      <GenerationStatusIndicator
+{/* Generation Status Indicator - Hidden per user request */}
+      {/* <GenerationStatusIndicator
         source={generationSource}
         isBackgroundLoading={isBackgroundLoading}
         exerciseCount={queueStats.remaining}
@@ -259,7 +286,7 @@ export default function Learning() {
           total: queueStats.total,
           progressPercentage: queueStats.progressPercentage
         }}
-      />
+      /> */}
       
       <div className="neo-card-lg">
         {/* Header with level and mode toggle */}
@@ -304,6 +331,7 @@ export default function Learning() {
           feedback={feedback}
           appLanguage={configuration.appLanguage}
           detailedExplanation={detailedExplanation}
+          currentExercise={currentExercise}
         />
 
         {/* Action buttons */}

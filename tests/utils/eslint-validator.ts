@@ -133,45 +133,104 @@ export async function runESLintValidation(options: {
 }
 
 /**
- * Validate code quality and fail the test if ESLint issues are found
+ * Run TypeScript type checking and return results
+ */
+export async function runTypeScriptValidation(): Promise<{
+  hasErrors: boolean;
+  errorCount: number;
+  summary: string;
+}> {
+  try {
+    console.log('🔍 Running TypeScript validation...');
+    
+    await execAsync('npx tsc --noEmit --skipLibCheck', { 
+      cwd: process.cwd(),
+      timeout: 60000 // 60 second timeout for TypeScript
+    });
+    
+    return {
+      hasErrors: false,
+      errorCount: 0,
+      summary: 'No TypeScript errors found'
+    };
+  } catch (error: unknown) {
+    const execError = error as { stdout?: string; stderr?: string };
+    const errorOutput = execError.stderr || execError.stdout || '';
+    
+    // Count TypeScript errors
+    const errorLines = errorOutput.split('\n').filter(line => 
+      line.includes(': error TS') || line.includes('error TS')
+    );
+    
+    return {
+      hasErrors: true,
+      errorCount: errorLines.length,
+      summary: errorOutput.length > 1000 ? 
+        `${errorLines.length} TypeScript errors found (output truncated)\n${errorOutput.slice(0, 1000)}...` :
+        errorOutput
+    };
+  }
+}
+
+/**
+ * Validate code quality and fail the test if ESLint or TypeScript issues are found
  */
 export async function validateCodeQuality(options: {
   testName: string;
   failOnWarnings?: boolean;
   failOnErrors?: boolean;
+  checkTypeScript?: boolean;
 } = { testName: 'Unknown Test' }): Promise<void> {
-  const { testName, failOnWarnings = true, failOnErrors = true } = options;
+  const { testName, failOnWarnings = true, failOnErrors = true, checkTypeScript = true } = options;
   
-  console.log(`🧹 ESLint validation for: ${testName}`);
+  console.log(`🧹 Code quality validation for: ${testName}`);
   
-  const result = await runESLintValidation({
+  // Run ESLint validation
+  const eslintResult = await runESLintValidation({
     failOnWarnings,
     failOnErrors,
     includeWarnings: true
   });
 
-  console.log(`📊 ESLint Results: ${result.errorCount} errors, ${result.warningCount} warnings`);
+  console.log(`📊 ESLint Results: ${eslintResult.errorCount} errors, ${eslintResult.warningCount} warnings`);
+
+  // Run TypeScript validation if enabled
+  let tsResult = null;
+  if (checkTypeScript) {
+    tsResult = await runTypeScriptValidation();
+    console.log(`📊 TypeScript Results: ${tsResult.errorCount} errors`);
+  }
 
   // Check if we should fail the test
-  const shouldFailOnErrors = failOnErrors && result.hasErrors;
-  const shouldFailOnWarnings = failOnWarnings && result.hasWarnings;
+  const shouldFailOnESLintErrors = failOnErrors && eslintResult.hasErrors;
+  const shouldFailOnESLintWarnings = failOnWarnings && eslintResult.hasWarnings;
+  const shouldFailOnTSErrors = checkTypeScript && tsResult?.hasErrors;
 
-  if (shouldFailOnErrors || shouldFailOnWarnings) {
+  if (shouldFailOnESLintErrors || shouldFailOnESLintWarnings || shouldFailOnTSErrors) {
     console.error(`❌ Code quality check failed for ${testName}`);
-    console.error(result.summary);
     
     // Create detailed error message
     let errorMessage = `Code quality validation failed for ${testName}:\n`;
-    errorMessage += `${result.errorCount} ESLint errors, ${result.warningCount} warnings found\n\n`;
+    errorMessage += `${eslintResult.errorCount} ESLint errors, ${eslintResult.warningCount} ESLint warnings`;
+    if (tsResult) {
+      errorMessage += `, ${tsResult.errorCount} TypeScript errors`;
+    }
+    errorMessage += ' found\n\n';
     
-    if (result.hasErrors && failOnErrors) {
+    if (eslintResult.hasErrors && failOnErrors) {
       errorMessage += '🚨 ESLint ERRORS must be fixed before tests can pass\n';
     }
-    if (result.hasWarnings && failOnWarnings) {
+    if (eslintResult.hasWarnings && failOnWarnings) {
       errorMessage += '⚠️ ESLint WARNINGS must be resolved before tests can pass\n';
     }
+    if (tsResult?.hasErrors && checkTypeScript) {
+      errorMessage += '🚨 TypeScript ERRORS must be fixed before tests can pass\n';
+    }
     
-    errorMessage += '\nDetailed issues:\n' + result.summary;
+    errorMessage += '\nESLint issues:\n' + eslintResult.summary;
+    if (tsResult?.hasErrors) {
+      errorMessage += '\n\nTypeScript issues:\n' + tsResult.summary;
+    }
     
     throw new Error(errorMessage);
   }

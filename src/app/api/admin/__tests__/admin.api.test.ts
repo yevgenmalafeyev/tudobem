@@ -1,47 +1,61 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+import { NextRequest } from 'next/server';
 
-// Mock Request interface for testing
-interface MockRequest {
-  json(): Promise<Record<string, unknown>>;
-}
+// Create proper mock functions with correct types
+const mockInitializeTables = jest.fn<() => Promise<void>>();
+const mockGetClaudeApiKey = jest.fn<() => Promise<string>>();
+const mockUpdateClaudeApiKey = jest.fn<(key: string) => Promise<void>>();
+const mockGetDatabaseStats = jest.fn<() => Promise<{ total?: number; byLevel?: Array<{ level: string; count: number }>; totalUsers: number; activeUsers: number; totalExercises: number; totalAttempts: number; correctAttempts: number; averageAccuracy: string; userStats: { totalUsers: number; activeUsers: number; totalAttempts: number; correctAttempts: number } }>>();
+const mockGetStats = jest.fn<() => Promise<{ total: number; totalExercises: number; byLevel: Array<{ level: string; count: number }>; byTopic: Array<{ topic: string; count: number }> }>>();
 
-
-// Mock environment variables for testing
-process.env.NODE_ENV = 'test';
+mockInitializeTables.mockResolvedValue(undefined);
+mockGetClaudeApiKey.mockResolvedValue('sk-ant-api03-test-key');
+mockUpdateClaudeApiKey.mockResolvedValue(undefined);
+mockGetDatabaseStats.mockResolvedValue({
+  total: 100,
+  byLevel: [
+    { level: 'A1', count: 60 },
+    { level: 'A2', count: 40 }
+  ],
+  // Stats route expects these directly on the main object
+  totalUsers: 50,
+  activeUsers: 25,
+  totalExercises: 100,
+  totalAttempts: 500,
+  correctAttempts: 350,
+  averageAccuracy: '70.00',
+  userStats: {
+    totalUsers: 50,
+    activeUsers: 25,
+    totalAttempts: 500,
+    correctAttempts: 350
+  }
+});
+mockGetStats.mockResolvedValue({
+  total: 100,
+  totalExercises: 100, // Add this for compatibility 
+  byLevel: [
+    { level: 'A1', count: 60 },
+    { level: 'A2', count: 40 }
+  ],
+  byTopic: [
+    { topic: 'verbos', count: 50 },
+    { topic: 'substantivos', count: 30 },
+    { topic: 'adjetivos', count: 20 }
+  ]
+});
 
 const mockUserDatabase = {
-  initializeTables: jest.fn().mockResolvedValue(undefined),
-  getClaudeApiKey: jest.fn().mockResolvedValue('sk-ant-api03-test-key'),
-  updateClaudeApiKey: jest.fn().mockResolvedValue(undefined),
-  getDatabaseStats: jest.fn().mockResolvedValue({
-    total: 100,
-    byLevel: [
-      { level: 'A1', count: 60 },
-      { level: 'A2', count: 40 }
-    ],
-    userStats: {
-      totalUsers: 50,
-      activeUsers: 25,
-      totalAttempts: 500,
-      correctAttempts: 350
-    }
-  })
+  initializeTables: mockInitializeTables,
+  getClaudeApiKey: mockGetClaudeApiKey,
+  updateClaudeApiKey: mockUpdateClaudeApiKey,
+  setClaudeApiKey: mockUpdateClaudeApiKey, // alias for the same function
+  getDatabaseStats: mockGetDatabaseStats
 };
 
 const mockExerciseDatabase = {
-  initializeTables: jest.fn().mockResolvedValue(undefined),
-  getStats: jest.fn().mockResolvedValue({
-    total: 100,
-    byLevel: [
-      { level: 'A1', count: 60 },
-      { level: 'A2', count: 40 }
-    ],
-    byTopic: [
-      { topic: 'verbos', count: 50 },
-      { topic: 'substantivos', count: 30 },
-      { topic: 'adjetivos', count: 20 }
-    ]
-  })
+  initializeTables: mockInitializeTables,
+  getStats: mockGetStats
 };
 
 jest.mock('@/lib/userDatabase', () => ({
@@ -52,33 +66,47 @@ jest.mock('@/lib/database', () => ({
   ExerciseDatabase: mockExerciseDatabase
 }));
 
+const mockSet = jest.fn<(name: string, value: string, options?: unknown) => void>();
+const mockGet = jest.fn<(name: string) => { value?: string } | undefined>();
+const mockDelete = jest.fn<(name: string) => void>();
+
+mockGet.mockReturnValue({ value: 'authenticated' });
+
 const mockCookies = {
-  set: jest.fn(),
-  get: jest.fn().mockReturnValue({ value: 'authenticated' }),
-  delete: jest.fn()
+  set: mockSet,
+  get: mockGet,
+  delete: mockDelete
 };
 
 jest.mock('next/headers', () => ({
-  cookies: jest.fn().mockResolvedValue(mockCookies)
+  cookies: jest.fn(() => mockCookies)
 }));
+
+// Helper function to create NextRequest mock
+function createMockRequest(body: unknown): NextRequest {
+  return {
+    json: () => Promise.resolve(body),
+    headers: new Headers(),
+    method: 'POST',
+    url: 'http://localhost:3000/api/test',
+  } as unknown as NextRequest;
+}
 
 describe('Admin API Routes', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Reset to authenticated by default
-    mockCookies.get.mockReturnValue({ value: 'authenticated' });
+    mockGet.mockReturnValue({ value: 'authenticated' });
   });
 
   describe('POST /api/admin/login', () => {
     it('should login admin with correct credentials', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          username: 'admin',
-          password: '321admin123'
-        })
-      };
+      const mockRequest = createMockRequest({
+        username: 'admin',
+        password: '321admin123'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -87,7 +115,7 @@ describe('Admin API Routes', () => {
       expect(responseData.success).toBe(true);
       expect(responseData.data.admin.username).toBe('admin');
       expect(responseData.data.admin.role).toBe('admin');
-      expect(mockCookies.set).toHaveBeenCalledWith('admin-session', 'authenticated', expect.objectContaining({
+      expect(mockSet).toHaveBeenCalledWith('admin-session', 'authenticated', expect.objectContaining({
         httpOnly: true,
         secure: false, // test environment
         sameSite: 'strict'
@@ -97,12 +125,10 @@ describe('Admin API Routes', () => {
     it('should reject invalid credentials', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          username: 'admin',
-          password: 'wrongpassword'
-        })
-      };
+      const mockRequest = createMockRequest({
+        username: 'admin',
+        password: 'wrongpassword'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -115,12 +141,10 @@ describe('Admin API Routes', () => {
     it('should validate required fields', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          username: 'admin'
-          // missing password
-        })
-      };
+      const mockRequest = createMockRequest({
+        username: 'admin'
+        // missing password
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -133,12 +157,10 @@ describe('Admin API Routes', () => {
     it('should reject wrong username', async () => {
       const { POST } = await import('../login/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          username: 'wrongadmin',
-          password: '321admin123'
-        })
-      };
+      const mockRequest = createMockRequest({
+        username: 'wrongadmin',
+        password: '321admin123'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -153,9 +175,7 @@ describe('Admin API Routes', () => {
     it('should logout admin successfully', async () => {
       const { POST } = await import('../logout/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -163,19 +183,17 @@ describe('Admin API Routes', () => {
       expect(response.status).toBe(200);
       expect(responseData.success).toBe(true);
       expect(responseData.data.message).toBe('Admin logout successful');
-      expect(mockCookies.delete).toHaveBeenCalledWith('admin-session');
+      expect(mockDelete).toHaveBeenCalledWith('admin-session');
     });
 
     it('should handle logout errors gracefully', async () => {
-      mockCookies.delete.mockImplementationOnce(() => {
+      mockDelete.mockImplementationOnce(() => {
         throw new Error('Cookie error');
       });
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -190,9 +208,7 @@ describe('Admin API Routes', () => {
     it('should get API key when authenticated', async () => {
       const { GET } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -206,13 +222,11 @@ describe('Admin API Routes', () => {
     });
 
     it('should require admin authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
       
       const { GET } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -227,11 +241,9 @@ describe('Admin API Routes', () => {
     it('should update API key when authenticated', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          apiKey: 'sk-ant-api03-new-test-key'
-        })
-      };
+      const mockRequest = createMockRequest({
+        apiKey: 'sk-ant-api03-new-test-key'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -246,11 +258,9 @@ describe('Admin API Routes', () => {
     it('should validate API key format', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          apiKey: 'invalid-api-key'
-        })
-      };
+      const mockRequest = createMockRequest({
+        apiKey: 'invalid-api-key'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -263,11 +273,9 @@ describe('Admin API Routes', () => {
     it('should require API key', async () => {
       const { POST } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          // missing apiKey
-        })
-      };
+      const mockRequest = createMockRequest({
+        // missing apiKey
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -278,15 +286,13 @@ describe('Admin API Routes', () => {
     });
 
     it('should require admin authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
       
       const { POST } = await import('../api-key/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
-          apiKey: 'sk-ant-api03-test-key'
-        })
-      };
+      const mockRequest = createMockRequest({
+        apiKey: 'sk-ant-api03-test-key'
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -301,9 +307,7 @@ describe('Admin API Routes', () => {
     it('should get admin statistics when authenticated', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -324,13 +328,11 @@ describe('Admin API Routes', () => {
     });
 
     it('should require admin authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -341,13 +343,11 @@ describe('Admin API Routes', () => {
     });
 
     it('should handle database errors', async () => {
-      mockUserDatabase.getDatabaseStats.mockRejectedValueOnce(new Error('Database error'));
+      mockGetDatabaseStats.mockRejectedValueOnce(new Error('Database error'));
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();

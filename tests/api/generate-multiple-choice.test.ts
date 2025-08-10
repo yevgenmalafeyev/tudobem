@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, afterEach, afterAll, jest } from '@jest/globals';
 import { NextRequest } from 'next/server'
 import { POST } from '@/app/api/generate-multiple-choice/route'
 import { server } from '../../src/__mocks__/server'
@@ -5,7 +6,7 @@ import { server } from '../../src/__mocks__/server'
 // Mock the services
 jest.mock('@/services/multipleChoiceService', () => ({
   generateBasicDistractors: jest.fn(() => ['fala', 'falamos', 'falam']),
-  processMultipleChoiceOptions: jest.fn((correctAnswer, distractors) => {
+  processMultipleChoiceOptions: jest.fn((correctAnswer: string, distractors: string[]) => {
     // Always include the correct answer plus the distractors
     return [correctAnswer, ...distractors].slice(0, 4)
   })

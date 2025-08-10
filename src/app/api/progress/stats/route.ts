@@ -1,8 +1,9 @@
+// import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 import { UserDatabase } from '@/lib/userDatabase';
 import { createApiResponse, createApiError, withErrorHandling } from '@/lib/api-utils';
 
-async function getUserProgressHandler() {
+async function getUserProgressHandler(/* _request: NextRequest */) {
   // Verify user session
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get('session-token')?.value;

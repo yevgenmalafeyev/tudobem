@@ -49,13 +49,13 @@ export const GenerationStatusIndicator: React.FC<GenerationStatusProps> = ({
         };
       case 'database':
         return {
-          icon: '⚠️',
-          text: 'Fallback',
-          color: 'text-yellow-600', 
-          bgColor: 'bg-yellow-50',
-          borderColor: 'border-yellow-200',
-          description: 'Using database questions (AI key missing or API unreachable)',
-          status: 'Fallback: Database questions'
+          icon: '📚',
+          text: 'Library',
+          color: 'text-blue-600', 
+          bgColor: 'bg-blue-50',
+          borderColor: 'border-blue-200',
+          description: 'Using curated database questions',
+          status: 'Database questions'
         };
       case 'mixed':
         return {
@@ -200,7 +200,7 @@ export const GenerationStatusIndicator: React.FC<GenerationStatusProps> = ({
           {/* Help Text */}
           <div className="mt-2 pt-2 border-t border-gray-200 text-gray-500 text-xs">
             {source === 'ai' && 'Fresh questions generated specifically for you'}
-            {source === 'database' && 'Please add your Claude API key for fresh questions'}
+            {source === 'database' && 'Using curated exercise library'}
             {source === 'mixed' && 'Combination of fresh AI and database questions'}
             {source === 'fallback' && 'Basic questions - please check your connection'}
           </div>

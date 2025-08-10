@@ -156,6 +156,16 @@ export const translations = {
     en: 'Next Exercise',
     uk: 'Наступна Вправа'
   },
+  grammarRule: {
+    pt: 'Regra Gramatical',
+    en: 'Grammar Rule',
+    uk: 'Граматичне Правило'
+  },
+  grammarForm: {
+    pt: 'Forma Gramatical',
+    en: 'Grammar Form',
+    uk: 'Граматична Форма'
+  },
   enterForNext: {
     pt: 'Prima Enter para a próxima pergunta',
     en: 'Press Enter for next question',
@@ -261,6 +271,133 @@ export const translations = {
     pt: 'Ucraniano',
     en: 'Ukrainian',
     uk: 'Українська'
+  },
+
+  // Authentication
+  login: {
+    pt: 'Entrar',
+    en: 'Login',
+    uk: 'Вхід'
+  },
+  logout: {
+    pt: 'Sair',
+    en: 'Logout',
+    uk: 'Вихід'
+  },
+  createAccount: {
+    pt: 'Criar Conta',
+    en: 'Create Account',
+    uk: 'Створити Обліковий Запис'
+  },
+  resetPassword: {
+    pt: 'Redefinir Senha',
+    en: 'Reset Password',
+    uk: 'Скинути Пароль'
+  },
+  name: {
+    pt: 'Nome',
+    en: 'Name',
+    uk: 'Ім\'я'
+  },
+  email: {
+    pt: 'Email',
+    en: 'Email',
+    uk: 'Електронна пошта'
+  },
+  password: {
+    pt: 'Senha',
+    en: 'Password',
+    uk: 'Пароль'
+  },
+  enterName: {
+    pt: 'Digite o seu nome',
+    en: 'Enter your name',
+    uk: 'Введіть ваше ім\'я'
+  },
+  enterEmail: {
+    pt: 'Digite o seu email',
+    en: 'Enter your email',
+    uk: 'Введіть вашу електронну пошту'
+  },
+  enterPassword: {
+    pt: 'Digite a sua senha',
+    en: 'Enter your password',
+    uk: 'Введіть ваш пароль'
+  },
+  passwordRequirement: {
+    pt: 'A senha deve ter pelo menos 8 caracteres',
+    en: 'Password must be at least 8 characters',
+    uk: 'Пароль повинен містити щонайменше 8 символів'
+  },
+  loginButton: {
+    pt: 'Entrar',
+    en: 'Login',
+    uk: 'Увійти'
+  },
+  signupButton: {
+    pt: 'Criar Conta',
+    en: 'Create Account',
+    uk: 'Створити Обліковий Запис'
+  },
+  sendResetLink: {
+    pt: 'Enviar Link de Redefinição',
+    en: 'Send Reset Link',
+    uk: 'Надіслати Посилання для Скидання'
+  },
+  forgotPassword: {
+    pt: 'Esqueceu a senha?',
+    en: 'Forgot password?',
+    uk: 'Забули пароль?'
+  },
+  noAccount: {
+    pt: 'Não tem conta?',
+    en: 'Don\'t have an account?',
+    uk: 'Немає облікового запису?'
+  },
+  haveAccount: {
+    pt: 'Já tem conta?',
+    en: 'Already have an account?',
+    uk: 'Уже маєте обліковий запис?'
+  },
+  signupLink: {
+    pt: 'Criar conta',
+    en: 'Sign up',
+    uk: 'Зареєструватися'
+  },
+  loginLink: {
+    pt: 'Entrar',
+    en: 'Log in',
+    uk: 'Увійти'
+  },
+  backToLogin: {
+    pt: 'Voltar ao login',
+    en: 'Back to login',
+    uk: 'Назад до входу'
+  },
+  loginFailed: {
+    pt: 'Falha no login. Verifique as suas credenciais.',
+    en: 'Login failed. Please check your credentials.',
+    uk: 'Помилка входу. Перевірте ваші облікові дані.'
+  },
+  signupFailed: {
+    pt: 'Falha ao criar conta. Tente novamente.',
+    en: 'Failed to create account. Please try again.',
+    uk: 'Не вдалося створити обліковий запис. Спробуйте ще раз.'
+  },
+  unexpectedError: {
+    pt: 'Erro inesperado. Tente novamente.',
+    en: 'Unexpected error. Please try again.',
+    uk: 'Неочікувана помилка. Спробуйте ще раз.'
+  },
+  accountCreated: {
+    pt: 'Conta criada com sucesso! Agora pode fazer login.',
+    en: 'Account created successfully! You can now log in.',
+    uk: 'Обліковий запис успішно створено! Тепер ви можете увійти.'
+  },
+  passwordResetSent: {
+    pt: 'Link de redefinição enviado para o seu email.',
+    en: 'Reset link sent to your email.',
+    uk: 'Посилання для скидання надіслано на вашу електронну пошту.'
   },
 
   // Common

@@ -1,13 +1,5 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
-
-// Mock Request interface for testing
-interface MockRequest {
-  json(): Promise<Record<string, unknown>>;
-}
-
-// Mock environment variables for testing
-process.env.JWT_SECRET = 'test-jwt-secret-key';
-process.env.NODE_ENV = 'test';
+import { NextRequest } from 'next/server';
 
 const mockUser = {
   id: 'test-user-id',
@@ -42,26 +34,53 @@ const mockProgress = {
   ]
 };
 
+// Create properly typed mock functions
+const mockVerifyToken = jest.fn<(token: string) => Promise<unknown>>();
+const mockRecordAttempt = jest.fn<(userId: string, exerciseId: string, isCorrect: boolean, userAnswer: string) => Promise<unknown>>();
+const mockGetUserProgress = jest.fn<(userId: string) => Promise<unknown>>();
+const mockGetCorrectlyAnsweredExercises = jest.fn<(userId: string) => Promise<string[]>>();
+
+mockVerifyToken.mockResolvedValue(mockUser);
+mockRecordAttempt.mockResolvedValue(mockAttempt);
+mockGetUserProgress.mockResolvedValue(mockProgress);
+mockGetCorrectlyAnsweredExercises.mockResolvedValue(['exercise-1', 'exercise-2']);
+
 const mockUserDatabase = {
-  verifyToken: jest.fn().mockResolvedValue(mockUser),
-  recordAttempt: jest.fn().mockResolvedValue(mockAttempt),
-  getUserProgress: jest.fn().mockResolvedValue(mockProgress),
-  getCorrectlyAnsweredExercises: jest.fn().mockResolvedValue(['exercise-1', 'exercise-2'])
+  verifyToken: mockVerifyToken,
+  recordAttempt: mockRecordAttempt,
+  getUserProgress: mockGetUserProgress,
+  getCorrectlyAnsweredExercises: mockGetCorrectlyAnsweredExercises
 };
 
 jest.mock('@/lib/userDatabase', () => ({
   UserDatabase: mockUserDatabase
 }));
 
+const mockSet = jest.fn<(name: string, value: string, options?: unknown) => void>();
+const mockGet = jest.fn<(name: string) => { value?: string } | undefined>();
+const mockDelete = jest.fn<(name: string) => void>();
+
+mockGet.mockReturnValue({ value: 'mock-session-token' });
+
 const mockCookies = {
-  set: jest.fn(),
-  get: jest.fn().mockReturnValue({ value: 'mock-session-token' }),
-  delete: jest.fn()
+  set: mockSet,
+  get: mockGet,
+  delete: mockDelete
 };
 
 jest.mock('next/headers', () => ({
-  cookies: jest.fn().mockResolvedValue(mockCookies)
+  cookies: jest.fn(() => mockCookies)
 }));
+
+// Helper function to create NextRequest mock
+function createMockRequest(body: unknown): NextRequest {
+  return {
+    json: () => Promise.resolve(body),
+    headers: new Headers(),
+    method: 'POST',
+    url: 'http://localhost:3000/api/test',
+  } as unknown as NextRequest;
+}
 
 describe('Progress API Routes', () => {
   beforeEach(() => {
@@ -72,13 +91,11 @@ describe('Progress API Routes', () => {
     it('should record attempt successfully', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -88,8 +105,8 @@ describe('Progress API Routes', () => {
       expect(responseData.data.attempt.exerciseId).toBe('exercise-id');
       expect(responseData.data.attempt.isCorrect).toBe(true);
       expect(responseData.data.progress).toEqual(mockProgress);
-      expect(mockUserDatabase.verifyToken).toHaveBeenCalledWith('mock-session-token');
-      expect(mockUserDatabase.recordAttempt).toHaveBeenCalledWith(
+      expect(mockVerifyToken).toHaveBeenCalledWith('mock-session-token');
+      expect(mockRecordAttempt).toHaveBeenCalledWith(
         'test-user-id',
         'exercise-id',
         true,
@@ -98,17 +115,15 @@ describe('Progress API Routes', () => {
     });
 
     it('should require authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -119,17 +134,15 @@ describe('Progress API Routes', () => {
     });
 
     it('should handle invalid session', async () => {
-      mockUserDatabase.verifyToken.mockResolvedValueOnce(null);
+      mockVerifyToken.mockResolvedValueOnce(null);
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'correct answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -137,19 +150,17 @@ describe('Progress API Routes', () => {
       expect(response.status).toBe(401);
       expect(responseData.success).toBe(false);
       expect(responseData.error).toBe('Invalid or expired session');
-      expect(mockCookies.delete).toHaveBeenCalledWith('session-token');
+      expect(mockDelete).toHaveBeenCalledWith('session-token');
     });
 
     it('should validate required fields', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           // missing isCorrect
           userAnswer: 'answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -162,13 +173,11 @@ describe('Progress API Routes', () => {
     it('should validate isCorrect is boolean', async () => {
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           isCorrect: 'true', // string instead of boolean
           userAnswer: 'answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -179,17 +188,15 @@ describe('Progress API Routes', () => {
     });
 
     it('should handle database errors', async () => {
-      mockUserDatabase.recordAttempt.mockRejectedValueOnce(new Error('Database error'));
+      mockRecordAttempt.mockRejectedValueOnce(new Error('Database error'));
       
       const { POST } = await import('../attempt/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({
+      const mockRequest = createMockRequest({
           exerciseId: 'exercise-id',
           isCorrect: true,
           userAnswer: 'answer'
-        })
-      };
+      });
 
       const response = await POST(mockRequest);
       const responseData = await response.json();
@@ -204,9 +211,7 @@ describe('Progress API Routes', () => {
     it('should return user progress successfully', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -218,19 +223,17 @@ describe('Progress API Routes', () => {
       expect(responseData.data.user.id).toBe('test-user-id');
       expect(responseData.data.user.username).toBe('testuser');
       expect(responseData.data.user.password_hash).toBeUndefined(); // Should not return password
-      expect(mockUserDatabase.verifyToken).toHaveBeenCalledWith('mock-session-token');
-      expect(mockUserDatabase.getUserProgress).toHaveBeenCalledWith('test-user-id');
-      expect(mockUserDatabase.getCorrectlyAnsweredExercises).toHaveBeenCalledWith('test-user-id');
+      expect(mockVerifyToken).toHaveBeenCalledWith('mock-session-token');
+      expect(mockGetUserProgress).toHaveBeenCalledWith('test-user-id');
+      expect(mockGetCorrectlyAnsweredExercises).toHaveBeenCalledWith('test-user-id');
     });
 
     it('should require authentication', async () => {
-      mockCookies.get.mockReturnValueOnce(undefined);
+      mockGet.mockReturnValueOnce(undefined);
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -241,13 +244,11 @@ describe('Progress API Routes', () => {
     });
 
     it('should handle invalid session', async () => {
-      mockUserDatabase.verifyToken.mockResolvedValueOnce(null);
+      mockVerifyToken.mockResolvedValueOnce(null);
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();
@@ -255,17 +256,15 @@ describe('Progress API Routes', () => {
       expect(response.status).toBe(401);
       expect(responseData.success).toBe(false);
       expect(responseData.error).toBe('Invalid or expired session');
-      expect(mockCookies.delete).toHaveBeenCalledWith('session-token');
+      expect(mockDelete).toHaveBeenCalledWith('session-token');
     });
 
     it('should handle database errors', async () => {
-      mockUserDatabase.getUserProgress.mockRejectedValueOnce(new Error('Database error'));
+      mockGetUserProgress.mockRejectedValueOnce(new Error('Database error'));
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest: MockRequest = {
-        json: () => Promise.resolve({})
-      };
+      const mockRequest = createMockRequest({});
 
       const response = await GET(mockRequest);
       const responseData = await response.json();

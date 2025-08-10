@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface UsageStats {
   totalUsers: number;
@@ -19,30 +19,60 @@ export default function UsageAnalytics() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [timeRange, setTimeRange] = useState('7d');
+  const isMountedRef = useRef(true);
+  const timeRangeRef = useRef(timeRange);
 
-  const fetchAnalytics = useCallback(async () => {
+  // Update ref when state changes
+  timeRangeRef.current = timeRange;
+
+  const fetchAnalytics = useCallback(async (range?: string) => {
+    if (!isMountedRef.current) return;
+    
+    const rangeToUse = range || timeRangeRef.current;
     setIsLoading(true);
     setError('');
 
     try {
-      const response = await fetch(`/api/admin/analytics?range=${timeRange}`);
+      const response = await fetch(`/api/admin/analytics?range=${rangeToUse}`);
+      if (!isMountedRef.current) return;
+      
       if (response.ok) {
         const data = await response.json();
-        setStats(data);
+        if (isMountedRef.current) {
+          setStats(data);
+        }
       } else {
-        setError('Failed to fetch analytics');
+        if (isMountedRef.current) {
+          setError('Failed to fetch analytics');
+        }
       }
     } catch (error) {
       console.error('Analytics fetch error:', error);
-      setError('Network error while fetching analytics');
+      if (isMountedRef.current) {
+        setError('Network error while fetching analytics');
+      }
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
-  }, [timeRange]);
+  }, []);
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange, fetchAnalytics]);
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, [fetchAnalytics]);
+
+  // Separate effect to handle time range changes - don't include stats as dependency to avoid infinite loop
+  useEffect(() => {
+    // Only fetch if this is not the initial render (stats is already loaded)
+    if (stats !== null) {
+      fetchAnalytics();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRange]);
 
   const formatNumber = (num: number) => {
     return num.toLocaleString();
@@ -71,7 +101,7 @@ export default function UsageAnalytics() {
           ❌ {error}
         </div>
         <button
-          onClick={fetchAnalytics}
+          onClick={() => fetchAnalytics()}
           className="neo-button neo-button-primary"
         >
           Try Again
@@ -254,7 +284,7 @@ export default function UsageAnalytics() {
       {/* Refresh Button */}
       <div className="text-center">
         <button
-          onClick={fetchAnalytics}
+          onClick={() => fetchAnalytics()}
           className="neo-button neo-button-primary"
         >
           🔄 Refresh Analytics
