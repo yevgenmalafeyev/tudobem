@@ -6,248 +6,168 @@ export const fallbackExercises: Record<string, Exercise[]> = {
     {
       id: '1',
       sentence: 'Eu ___ português.',
-      gapIndex: 3,
       correctAnswer: 'falo',
       topic: 'present-indicative',
       level: 'A1',
-      hint: {
-        infinitive: 'falar',
-        form: 'present indicative'
-      }
+      hint: 'falar'
     },
     {
       id: '2',
       sentence: 'Ela ___ professora.',
-      gapIndex: 4,
       correctAnswer: 'é',
       topic: 'ser-estar',
       level: 'A1',
-      hint: {
-        infinitive: 'ser',
-        form: 'present indicative'
-      }
+      hint: 'ser'
     },
     {
       id: '3',
       sentence: 'Nós ___ uma casa grande.',
-      gapIndex: 4,
       correctAnswer: 'temos',
       topic: 'present-indicative',
       level: 'A1',
-      hint: {
-        infinitive: 'ter',
-        form: 'present indicative'
-      }
+      hint: 'ter'
     },
     {
       id: '4',
       sentence: '___ casa é muito bonita.',
-      gapIndex: 0,
       correctAnswer: 'A',
       topic: 'articles',
       level: 'A1',
-      hint: {
-        form: 'definite article (feminine singular)'
-      }
+      hint: 'artigo definido'
     },
     {
       id: '5',
       sentence: 'O menino ___ alto.',
-      gapIndex: 9,
       correctAnswer: 'está',
       topic: 'ser-estar',
       level: 'A1',
-      hint: {
-        infinitive: 'estar',
-        form: 'present indicative (temporary state)'
-      }
+      hint: 'estar'
     }
   ],
   'A2': [
     {
       id: '6',
       sentence: 'Ontem eu ___ ao cinema.',
-      gapIndex: 9,
       correctAnswer: 'fui',
       topic: 'preterite-perfect',
       level: 'A2',
-      hint: {
-        infinitive: 'ir',
-        form: 'pretérito perfeito (simple past)'
-      }
+      hint: 'ir'
     },
     {
       id: '7',
       sentence: 'Quando era criança, ___ muito feliz.',
-      gapIndex: 20,
       correctAnswer: 'era',
       topic: 'imperfect',
       level: 'A2',
-      hint: {
-        infinitive: 'ser',
-        person: '1ª pessoa',
-        form: 'pretérito imperfeito (imperfect)'
-      }
+      hint: 'ser'
     },
     {
       id: '8',
       sentence: 'Amanhã nós ___ viajar.',
-      gapIndex: 11,
       correctAnswer: 'vamos',
       topic: 'future-simple',
       level: 'A2',
-      hint: {
-        infinitive: 'ir',
-        form: 'future with ir + infinitive'
-      }
+      hint: 'ir'
     },
     {
       id: '9',
       sentence: 'Eu ___ vi ontem.',
-      gapIndex: 3,
       correctAnswer: 'te',
       topic: 'direct-object-pronouns',
       level: 'A2',
-      hint: {
-        form: 'direct object pronoun (you - informal)'
-      }
+      hint: 'pronome'
     }
   ],
   'B1': [
     {
       id: '10',
       sentence: 'É importante que tu ___ cedo.',
-      gapIndex: 20,
       correctAnswer: 'chegues',
       topic: 'present-subjunctive',
       level: 'B1',
-      hint: {
-        infinitive: 'chegar',
-        form: 'present subjunctive'
-      }
+      hint: 'chegar'
     },
     {
       id: '11',
       sentence: 'Se eu tivesse tempo, ___ contigo.',
-      gapIndex: 21,
       correctAnswer: 'iria',
       topic: 'conditional-simple',
       level: 'B1',
-      hint: {
-        infinitive: 'ir',
-        form: 'conditional simple'
-      }
+      hint: 'ir'
     },
     {
       id: '12',
       sentence: '___ aqui!',
-      gapIndex: 0,
       correctAnswer: 'Vem',
       topic: 'imperative-mood',
       level: 'B1',
-      hint: {
-        infinitive: 'vir',
-        person: '2ª pessoa singular',
-        form: 'imperative (informal command)'
-      }
+      hint: 'vir'
     }
   ],
   'B2': [
     {
       id: '13',
       sentence: 'Se eu ___ rico, compraria uma casa.',
-      gapIndex: 6,
       correctAnswer: 'fosse',
       topic: 'imperfect-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'ser',
-        form: 'imperfect subjunctive'
-      }
+      hint: 'ser'
     },
     {
       id: '14',
       sentence: 'Quando ___ tempo, falaremos.',
-      gapIndex: 7,
       correctAnswer: 'houver',
       topic: 'future-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'haver',
-        form: 'future subjunctive (impersonal)'
-      }
+      hint: 'haver'
     },
     {
       id: '15',
       sentence: 'A casa ___ construída pelos operários.',
-      gapIndex: 7,
       correctAnswer: 'foi',
       topic: 'passive-voice',
       level: 'B2',
-      hint: {
-        infinitive: 'ser',
-        form: 'passive voice (simple past)'
-      }
+      hint: 'ser'
     },
     {
       id: '16',
       sentence: 'É importante que ele ___ a verdade.',
-      gapIndex: 21,
       correctAnswer: 'diga',
       topic: 'present-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'dizer',
-        form: 'present subjunctive'
-      }
+      hint: 'dizer'
     },
     {
       id: '17',
       sentence: 'Embora ___ difícil, conseguiu acabar o trabalho.',
-      gapIndex: 7,
       correctAnswer: 'fosse',
       topic: 'imperfect-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'ser',
-        form: 'imperfect subjunctive'
-      }
+      hint: 'ser'
     },
     {
       id: '18',
       sentence: 'Se ele ___ estudado, teria passado no exame.',
-      gapIndex: 7,
       correctAnswer: 'tivesse',
       topic: 'pluperfect-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'ter',
-        form: 'pluperfect subjunctive'
-      }
+      hint: 'ter'
     },
     {
       id: '19',
       sentence: 'Espero que ___ tempo para nos encontrarmos.',
-      gapIndex: 11,
       correctAnswer: 'haja',
       topic: 'present-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'haver',
-        form: 'present subjunctive'
-      }
+      hint: 'haver'
     },
     {
       id: '20',
       sentence: 'Caso você ___ interessado, contacte-nos.',
-      gapIndex: 10,
       correctAnswer: 'esteja',
       topic: 'present-subjunctive',
       level: 'B2',
-      hint: {
-        infinitive: 'estar',
-        form: 'present subjunctive'
-      }
+      hint: 'estar'
     }
   ]
 };
@@ -295,16 +215,11 @@ export function createExercise(exerciseData: {
   correctAnswer: string;
   topic: string;
   level: string;
-  hint?: {
-    infinitive?: string;
-    person?: string;
-    form?: string;
-  };
+  hint?: string;
 }): Exercise {
   return {
     id: `${Date.now()}-${++idCounter}`,
     sentence: exerciseData.sentence,
-    gapIndex: exerciseData.sentence.indexOf('___'),
     correctAnswer: exerciseData.correctAnswer,
     topic: exerciseData.topic,
     level: exerciseData.level as LanguageLevel,

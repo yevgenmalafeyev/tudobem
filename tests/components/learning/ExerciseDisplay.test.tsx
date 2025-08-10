@@ -6,7 +6,6 @@ describe('ExerciseDisplay', () => {
   const mockExercise = {
     id: '1',
     sentence: 'Eu ___ português.',
-    gapIndex: 1,
     correctAnswer: 'falo',
     topic: 'present-indicative',
     level: 'A1' as const,

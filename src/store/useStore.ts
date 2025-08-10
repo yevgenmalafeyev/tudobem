@@ -93,7 +93,7 @@ export const useStore = create<AppState>()(
       })),
       
       addMasteredWord: (exercise) => set((state) => {
-        const wordKey = `${exercise.correctAnswer}:${exercise.hint?.infinitive || ''}:${exercise.hint?.form || ''}`;
+        const wordKey = `${exercise.correctAnswer}:${exercise.hint || ''}`;
         return {
           progress: {
             ...state.progress,
@@ -101,8 +101,8 @@ export const useStore = create<AppState>()(
               ...state.progress.masteredWords,
               [wordKey]: {
                 word: exercise.correctAnswer,
-                infinitive: exercise.hint?.infinitive,
-                form: exercise.hint?.form,
+                infinitive: exercise.hint,
+                form: exercise.hint,
                 masteredAt: new Date(),
                 topic: exercise.topic,
                 level: exercise.level

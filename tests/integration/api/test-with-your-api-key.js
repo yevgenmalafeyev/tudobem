@@ -36,7 +36,7 @@ async function testWithRealApiKey() {
     console.log('🚀 Making request with real API key...');
     const startTime = Date.now();
     
-    const response = await fetch('http://localhost:3000/api/generate-exercise-batch', {
+    const response = await fetch('http://localhost:3000/api/generate-batch-exercises-batch', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

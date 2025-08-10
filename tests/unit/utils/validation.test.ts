@@ -44,7 +44,7 @@ describe('validation utils', () => {
     })
 
     it('should filter out non-string values', () => {
-      const result = filterValidDistractors('falo', [null, undefined, 123, 'falou'] as unknown)
+      const result = filterValidDistractors('falo', [null, undefined, 123, 'falou'] as unknown as string[])
       expect(result).toEqual(['falou'])
     })
 
@@ -77,8 +77,8 @@ describe('validation utils', () => {
     it('should return false for invalid answers', () => {
       expect(isValidAnswer('')).toBe(false)
       expect(isValidAnswer('   ')).toBe(false)
-      expect(isValidAnswer(null as unknown)).toBe(false)
-      expect(isValidAnswer(undefined as unknown)).toBe(false)
+      expect(isValidAnswer(null as unknown as string)).toBe(false)
+      expect(isValidAnswer(undefined as unknown as string)).toBe(false)
     })
 
     it('should handle Portuguese characters', () => {

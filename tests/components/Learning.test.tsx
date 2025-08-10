@@ -25,7 +25,6 @@ const defaultUseLearningMock = {
   currentExercise: {
     id: '1',
     sentence: 'Eu ___ português.',
-    gapIndex: 1,
     correctAnswer: 'falo',
     topic: 'present-indicative',
     level: 'A1' as const,
@@ -94,13 +93,6 @@ jest.mock('@/hooks/useAnswerChecking', () => ({
   })
 }))
 
-jest.mock('@/hooks/useDetailedExplanation', () => ({
-  useDetailedExplanation: () => ({
-    explanation: null,
-    isLoadingExplanation: false,
-    getDetailedExplanation: jest.fn()
-  })
-}))
 
 // Mock child components
 jest.mock('@/components/GenerationStatusIndicator', () => {

@@ -146,7 +146,7 @@ async function testExerciseGeneration(url, browser) {
     
     // Listen for API calls
     page.on('response', async (response) => {
-      if (response.url().includes('/api/generate-exercise')) {
+      if (response.url().includes('/api/generate-batch-exercises')) {
         try {
           const responseData = await response.json();
           results.exercises.push({

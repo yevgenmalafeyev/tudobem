@@ -43,7 +43,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'Eu ___ ao cinema.',
           correctAnswer: 'fui',
-          gapIndex: 3,
           topic: 'preterito-perfeito',
           level: 'A2',
           hint: {
@@ -70,7 +69,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'A casa é ___.',
           correctAnswer: 'bonita',
-          gapIndex: 10,
           topic: 'adjetivos',
           level: 'A1',
           multipleChoiceOptions: ['bonita', 'bonito', 'bonitas', 'bonitos'],
@@ -91,7 +89,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'Ele ___ muito cansado.',
           correctAnswer: 'está',
-          gapIndex: 3,
           topic: 'verbo-estar',
           level: 'A1',
           hint: {
@@ -116,7 +113,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'Eu ___ ao cinema.',
           // Missing correctAnswer
-          gapIndex: 3,
           topic: 'preterito-perfeito',
           level: 'A2',
           multipleChoiceOptions: ['fui', 'ia', 'vou', 'fosse'],
@@ -139,7 +135,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'Eu ___ ao cinema.',
           correctAnswer: 'fui',
-          gapIndex: 3,
           topic: 'preterito-perfeito',
           level: 'A2',
           hint: {
@@ -172,7 +167,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'A casa é ___.',
           correctAnswer: 'bonita',
-          gapIndex: 10,
           topic: 'adjetivos',
           level: 'A1',
           multipleChoiceOptions: ['bonita', 'bonito', 'bonitas', 'bonitos'],
@@ -195,7 +189,6 @@ describe('Enhanced Batch Prompts', () => {
         {
           sentence: 'Eu ___ ao cinema.',
           correctAnswer: 'fui',
-          gapIndex: 3,
           topic: 'preterito-perfeito',
           level: 'A2',
           hint: {

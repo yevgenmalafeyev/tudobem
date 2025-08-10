@@ -50,7 +50,7 @@ async function testAPIDirectly() {
     }
     
     try {
-      const response = await fetch('http://localhost:3000/api/generate-exercise', {
+      const response = await fetch('http://localhost:3000/api/generate-batch-exercises', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

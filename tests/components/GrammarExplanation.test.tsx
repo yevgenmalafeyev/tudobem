@@ -19,7 +19,6 @@ describe('GrammarExplanation', () => {
   const baseExercise: Exercise = {
     id: '1',
     sentence: 'Eu ___ ao cinema.',
-    gapIndex: 3,
     correctAnswer: 'fui',
     topic: 'preterito-perfeito',
     level: 'A2'

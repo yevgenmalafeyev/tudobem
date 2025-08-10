@@ -62,14 +62,13 @@ for (const browserName of browsers) {
 
         test('should handle Portuguese characters correctly', async ({ page }) => {
           // Mock exercise with Portuguese characters
-          await page.route('**/api/generate-exercise', route => {
+          await page.route('**/api/generate-batch-exercises', route => {
             route.fulfill({
               status: 200,
               contentType: 'application/json',
               body: JSON.stringify({
                 id: 'portuguese-chars',
                 sentence: 'Ele _____ português.',
-                gapIndex: 1,
                 correctAnswer: 'não',
                 topic: 'negation',
                 level: 'A1'
@@ -77,7 +76,7 @@ for (const browserName of browsers) {
             })
           })
           
-          await page.route('**/api/generate-multiple-choice', route => {
+          await page.route('**/api/generate-batch-exercises', route => {
             route.fulfill({
               status: 200,
               contentType: 'application/json',

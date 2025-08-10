@@ -1,0 +1,2942 @@
+[
+  {
+    "id": null,
+    "sentence": "É importante que todos _____ a ata antes da reunião.",
+    "correctAnswer": "leiam",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "ler (conj., 3ª pl)",
+    "multipleChoiceOptions": [
+      "leem",
+      "leiam",
+      "leram",
+      "ler"
+    ],
+    "explanations": {
+      "pt": "Usa-se o conjuntivo presente depois de expressões de necessidade/valoração como 'é importante que'. O verbo 'ler' no conjuntivo presente, 3.ª pessoa plural, é 'leiam'.",
+      "en": "Use the present subjunctive after expressions of necessity like 'é importante que'. The verb 'ler' in present subjunctive, 3rd person plural, is 'leiam'.",
+      "uk": "Після виразів потреби на кшталт 'é importante que' вживається презент конжунктива. Дієслово 'ler' у цій формі множини — 'leiam'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Duvido que ele _____ tempo para terminar hoje.",
+    "correctAnswer": "tenha",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "ter (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "terá",
+      "tenha",
+      "teve",
+      "tem"
+    ],
+    "explanations": {
+      "pt": "Após verbos de dúvida como 'duvidar', usa-se o conjuntivo. A forma correta do verbo 'ter' no conjuntivo presente, 3.ª singular, é 'tenha'.",
+      "en": "After verbs of doubt like 'duvidar', Portuguese takes the subjunctive. The correct present subjunctive of 'ter' (3rd sg) is 'tenha'.",
+      "uk": "Після дієслів сумніву, як-от 'duvidar', вживають кон'юнктива. Правильна форма 'ter' — 'tenha'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Embora _____ tarde, continuámos a conversar.",
+    "correctAnswer": "fosse",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "ir (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "seria",
+      "fosse",
+      "era",
+      "é"
+    ],
+    "explanations": {
+      "pt": "Com 'embora' usa-se o conjuntivo, exprimindo concessão. No passado/descritivo, usa-se o imperfeito do conjuntivo: 'fosse'.",
+      "en": "With 'embora' the subjunctive is required to express concession. In past narrative, the imperfect subjunctive 'fosse' fits.",
+      "uk": "Після 'embora' потрібен кон'юнктив для поступки. У минулому вживається імперфект кон'юнктива: 'fosse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Procuro alguém que _____ experiência em auditoria.",
+    "correctAnswer": "tenha",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "ter (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "tenha",
+      "tinha",
+      "ter",
+      "tem"
+    ],
+    "explanations": {
+      "pt": "Em orações relativas com valor indefinido/necessidade, usa-se o conjuntivo. 'Alguém que tenha' indica requisito não garantido.",
+      "en": "In relative clauses expressing requirement/uncertainty, use the subjunctive. 'Alguém que tenha' signals a non-guaranteed trait.",
+      "uk": "У відносних реченнях з невизначеністю вживається кон'юнктив. 'Alguém que tenha' — ознака, якої може й не бути."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tomara que tudo _____ como planeámos.",
+    "correctAnswer": "corra",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "correr (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "corra",
+      "correrá",
+      "correu",
+      "corre"
+    ],
+    "explanations": {
+      "pt": "Com 'tomara que' exprimimos desejo e pedimos o conjuntivo presente: 'corra'.",
+      "en": "With 'tomara que' (may/hopefully), we use the present subjunctive: 'corra'.",
+      "uk": "З 'tomara que' виражаємо побажання, тому потрібен презент кон'юнктива: 'corra'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Não acredito que eles nos _____ sem avisar.",
+    "correctAnswer": "deixem",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "deixarão",
+      "deixaram",
+      "deixam",
+      "deixem"
+    ],
+    "explanations": {
+      "pt": "Após negação de crença/opinião ('não acredito que'), usa-se conjuntivo. 3.ª plural do presente do conjuntivo de 'deixar' é 'deixem'.",
+      "en": "After negative belief ('não acredito que'), Portuguese uses the subjunctive. Present subjunctive 3rd pl of 'deixar' is 'deixem'.",
+      "uk": "Після заперечення віри/думки вживається кон'юнктив. Форма 3-ї множини — 'deixem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É possível que a entrega não _____ amanhã.",
+    "correctAnswer": "chegue",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "chegar (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "chega",
+      "chegou",
+      "chegará",
+      "chegue"
+    ],
+    "explanations": {
+      "pt": "Expressões de possibilidade ('é possível que') pedem o conjuntivo. 'Chegar' no presente do conjuntivo, 3.ª singular: 'chegue'.",
+      "en": "Expressions of possibility ('é possível que') require the subjunctive. 'Chegar' in present subjunctive 3rd sg is 'chegue'.",
+      "uk": "Вирази можливості потребують кон'юнктива. 'Chegar' у презенті кон'юнктива — 'chegue'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Esperamos que o projeto _____ até ao verão.",
+    "correctAnswer": "avance",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "avançará",
+      "avança",
+      "avance",
+      "avançou"
+    ],
+    "explanations": {
+      "pt": "Com verbos de esperança no plural com 'que', o uso do conjuntivo é frequente em português europeu: 'que avance'.",
+      "en": "With verbs of hope plus 'que', European Portuguese often uses the subjunctive: 'que avance'.",
+      "uk": "З дієсловами надії та 'que' у європейській португальській часто вживають кон'юнктив: 'avance'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Antes que _____, precisamos de alinhar expectativas.",
+    "correctAnswer": "surjam",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "(conj., 3ª pl)",
+    "multipleChoiceOptions": [
+      "surjam",
+      "surgirão",
+      "surgiram",
+      "surgem"
+    ],
+    "explanations": {
+      "pt": "Locuções temporais como 'antes que' exigem conjuntivo. 'Surgir' no presente do conjuntivo plural é 'surjam'.",
+      "en": "Temporal phrase 'antes que' takes the subjunctive. Present subjunctive plural of 'surgir' is 'surjam'.",
+      "uk": "Зі зворотом 'antes que' потрібен кон'юнктив. Форма множини — 'surjam'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Que ele _____ a verdade, custe o que custar!",
+    "correctAnswer": "diga",
+    "topic": "conjuntivo-geral",
+    "level": "B2",
+    "hint": "dizer (conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "dizia",
+      "diga",
+      "diz",
+      "dirá"
+    ],
+    "explanations": {
+      "pt": "Exortações com 'que' usam conjuntivo presente: 'que diga a verdade'.",
+      "en": "Exhortations with 'que' take the present subjunctive: 'que diga a verdade'.",
+      "uk": "Спонукання з 'que' вимагають презенту кон'юнктива: 'diga'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Acho que ele _____ amanhã, mas é provável que não _____.",
+    "correctAnswer": "vem",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "venha",
+      "viesse",
+      "vem",
+      "virá"
+    ],
+    "explanations": {
+      "pt": "Após 'achar que' usa-se o indicativo por exprimir opinião provável: 'ele vem'. Já 'é provável que' pede conjuntivo, mas essa parte não tem lacuna aqui.",
+      "en": "After 'achar que', Portuguese uses the indicative for likely opinions: 'ele vem'. 'É provável que' would require subjunctive, but that part isn't gapped here.",
+      "uk": "Після 'achar que' вживається індикатив: 'ele vem'. 'É provável que' потребує кон'юнктива, але тут пропуск не там."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É provável que eles _____ mais cedo do que pensas.",
+    "correctAnswer": "cheguem",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegar",
+      "chegam",
+      "cheguem",
+      "chegarão"
+    ],
+    "explanations": {
+      "pt": "Com 'é provável que', exige-se conjuntivo. A forma correta é 'cheguem'.",
+      "en": "With 'é provável que', the subjunctive is required. The correct form is 'cheguem'.",
+      "uk": "Зі зворотом 'é provável que' слід уживати кон'юнктив: 'cheguem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Antes de _____, confirma se tens o passaporte.",
+    "correctAnswer": "viajares",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "viajar",
+      "viajarias",
+      "viajares",
+      "viajaste"
+    ],
+    "explanations": {
+      "pt": "Depois de 'antes de', quando o sujeito é 'tu', usa-se o infinitivo pessoal: 'viajares'.",
+      "en": "After 'antes de', when the subject is 'tu', use the personal infinitive: 'viajares'.",
+      "uk": "Після 'antes de' із підметом 'ти' вживають особовий інфінітив: 'viajares'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Apesar de ele não _____, decidimos avançar.",
+    "correctAnswer": "concordar",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "(conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "concorda",
+      "concordar",
+      "concorde",
+      "concordasse"
+    ],
+    "explanations": {
+      "pt": "Com 'apesar de' + infinitivo, o sujeito explícito 'ele' permite o infinitivo simples: 'ele não concordar'.",
+      "en": "With 'apesar de' + infinitive, an explicit subject allows the bare infinitive: 'ele não concordar'.",
+      "uk": "Зі зворотом 'apesar de' можна вживати інфінітив із явним підметом: 'ele não concordar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Duvido que tu _____ a tempo, mas talvez sim.",
+    "correctAnswer": "chegues",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegarás",
+      "chegas",
+      "chegues",
+      "chegasses"
+    ],
+    "explanations": {
+      "pt": "Após 'duvido que', requer-se conjuntivo presente: 'chegues'.",
+      "en": "After 'duvido que', the present subjunctive is required: 'chegues'.",
+      "uk": "Після 'duvido que' потрібен презент кон'юнктива: 'chegues'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Para _____ melhor, precisamos de mais dados.",
+    "correctAnswer": "decidir",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "decidíamos",
+      "decidirmos",
+      "decidamos",
+      "decidir"
+    ],
+    "explanations": {
+      "pt": "Depois de 'para' indicando finalidade sem sujeito explícito, usa-se o infinitivo impessoal: 'decidir'.",
+      "en": "After 'para' indicating purpose with no explicit subject, use the impersonal infinitive: 'decidir'.",
+      "uk": "Після 'para' мети без явного підмета вживають неособовий інфінітив: 'decidir'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É bom _____ feedback claro aos estagiários.",
+    "correctAnswer": "dar",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "dávamos",
+      "darmos",
+      "dar",
+      "dê"
+    ],
+    "explanations": {
+      "pt": "Com expressões impessoais de apreciação, é comum o infinitivo impessoal: 'é bom dar'.",
+      "en": "With impersonal evaluative expressions, the impersonal infinitive is common: 'é bom dar'.",
+      "uk": "З безособовими оцінними виразами часто вживають неособовий інфінітив: 'dar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Convém que vocês _____ as instruções até ao fim.",
+    "correctAnswer": "leiam",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "ler (conj., 3ª pl)",
+    "multipleChoiceOptions": [
+      "leiam",
+      "leem",
+      "lerão",
+      "ler"
+    ],
+    "explanations": {
+      "pt": "Com 'convém que', pede-se conjuntivo. A forma correta é 'leiam'.",
+      "en": "With 'convém que', the subjunctive is required. The correct form is 'leiam'.",
+      "uk": "Зі зворотом 'convém que' використовується кон'юнктив: 'leiam'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Sei que ela _____ bem francês desde criança.",
+    "correctAnswer": "fala",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "falasse",
+      "fale",
+      "falaria",
+      "fala"
+    ],
+    "explanations": {
+      "pt": "Com 'sei que', usa-se indicativo para factos: 'ela fala'.",
+      "en": "With 'sei que', use the indicative to state facts: 'ela fala'.",
+      "uk": "Після 'sei que' індикатив для фактів: 'ela fala'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Depois de _____ o relatório, envia-mo, por favor.",
+    "correctAnswer": "terminares",
+    "topic": "indicativo-conjuntivo-infinitivo-avancado",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "terminar",
+      "terminaste",
+      "terminares",
+      "terminarias"
+    ],
+    "explanations": {
+      "pt": "Após 'depois de', com sujeito 'tu', usa-se o infinitivo pessoal: 'terminares'.",
+      "en": "After 'depois de', with subject 'tu', use the personal infinitive: 'terminares'.",
+      "uk": "Після 'depois de' із підметом 'ти' вживається особовий інфінітив: 'terminares'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem me dera que ela _____ comigo nesta viagem!",
+    "correctAnswer": "fosse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "ir (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "iria",
+      "fosse",
+      "é",
+      "será"
+    ],
+    "explanations": {
+      "pt": "Expressões exclamativas de desejo como 'quem me dera que' exigem o imperfeito do conjuntivo: 'fosse'.",
+      "en": "Exclamations of wish like 'quem me dera que' require the imperfect subjunctive: 'fosse'.",
+      "uk": "У вигуках бажання на кшталт 'quem me dera que' вживається імперфект кон'юнктива: 'fosse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Oxalá _____ mais tempo para a família!",
+    "correctAnswer": "tivéssemos",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "teremos",
+      "tivéssemos",
+      "temos",
+      "tínhamos"
+    ],
+    "explanations": {
+      "pt": "Com 'oxalá' que exprime desejo irreal no presente, usa-se imperfeito do conjuntivo: 'tivéssemos'.",
+      "en": "With 'oxalá' expressing an unreal present wish, use the imperfect subjunctive: 'tivéssemos'.",
+      "uk": "З 'oxalá' та нереальним бажанням теперішнього часу вживають імперфект кон'юнктива: 'tivéssemos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem dera que os prazos _____ mais folgados!",
+    "correctAnswer": "fossem",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "seriam",
+      "são",
+      "fossem",
+      "serão"
+    ],
+    "explanations": {
+      "pt": "A construção exclamativa 'quem dera que' pede imperfeito do conjuntivo: 'fossem'.",
+      "en": "The exclamative 'quem dera que' takes the imperfect subjunctive: 'fossem'.",
+      "uk": "У конструкції 'quem dera que' потрібен імперфект кон'юнктива: 'fossem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Antes _____ ouvido o teu conselho!",
+    "correctAnswer": "tivesse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "ter (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "teve",
+      "tivesse",
+      "teria",
+      "tinha"
+    ],
+    "explanations": {
+      "pt": "Exclamação hipotética de arrependimento costuma usar imperfeito do conjuntivo composto implícito; aqui reduzido a 'tivesse' é aceitável no idioma falado.",
+      "en": "An exclamation of regret often uses an implied compound imperfect subjunctive; the reduced 'tivesse' is acceptable in speech.",
+      "uk": "У вигуках жалю часто вживають складені форми імперфекта кон'юнктива; скорочене 'tivesse' прийнятне в розмові."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem me dera que tudo _____ mais simples!",
+    "correctAnswer": "fosse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "ir (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "seria",
+      "é",
+      "fosse",
+      "será"
+    ],
+    "explanations": {
+      "pt": "Desejo exclamativo irreal pede imperfeito do conjuntivo: 'fosse'.",
+      "en": "Unreal wish in exclamation uses the imperfect subjunctive: 'fosse'.",
+      "uk": "Нереальне побажання вимагає імперфекта кон'юнктива: 'fosse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ah, se eu _____ coragem para mudar agora!",
+    "correctAnswer": "tivesse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "ter (imp. conj., 1ª sg)",
+    "multipleChoiceOptions": [
+      "tenho",
+      "tive",
+      "tivesse",
+      "teria"
+    ],
+    "explanations": {
+      "pt": "A exclamação condicional irreal usa o imperfeito do conjuntivo: 'se eu tivesse'.",
+      "en": "The unreal conditional exclamation uses the imperfect subjunctive: 'se eu tivesse'.",
+      "uk": "У нереальній умовній вигук-формі вживається імперфект кон'юнктива: 'tivesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem dera que eles _____ a nossa proposta!",
+    "correctAnswer": "aceitassem",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "aceitam",
+      "aceitariam",
+      "aceitassem",
+      "aceitaram"
+    ],
+    "explanations": {
+      "pt": "'Desejo' em exclamativa requer imperfeito do conjuntivo: 'aceitassem'.",
+      "en": "Wish in exclamation requires the imperfect subjunctive: 'aceitassem'.",
+      "uk": "Побажання у вигуковій формі вимагає імперфекта кон'юнктива: 'aceitassem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ao menos _____ uma solução rápida!",
+    "correctAnswer": "houvesse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "haver (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "houve",
+      "houvesse",
+      "há",
+      "haveria"
+    ],
+    "explanations": {
+      "pt": "A construção exclamativa hipotética pede imperfeito do conjuntivo: 'houvesse'.",
+      "en": "Hypothetical exclamative construction takes the imperfect subjunctive: 'houvesse'.",
+      "uk": "Гіпотетична вигукова конструкція вимагає імперфекта кон'юнктива: 'houvesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem me dera que o trânsito _____ leve hoje!",
+    "correctAnswer": "estivesse",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "estar (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "estaria",
+      "esteve",
+      "está",
+      "estivesse"
+    ],
+    "explanations": {
+      "pt": "Desejo presente irreal usa imperfeito do conjuntivo: 'estivesse'.",
+      "en": "Unreal present wish uses the imperfect subjunctive: 'estivesse'.",
+      "uk": "Нереальне теперішнє бажання вживає імперфект кон'юнктива: 'estivesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ah, se tu _____ mais paciente comigo!",
+    "correctAnswer": "fosses",
+    "topic": "preterito-imperfeito-conjuntivo-exclamativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "és",
+      "serias",
+      "fosses",
+      "foste"
+    ],
+    "explanations": {
+      "pt": "Exclamação irreal dirigida a 'tu' pede imperfeito do conjuntivo: 'fosses'.",
+      "en": "Unreal exclamation addressed to 'tu' uses the imperfect subjunctive: 'fosses'.",
+      "uk": "Нереальний вигук до 'ти' вимагає імперфекта кон'юнктива: 'fosses'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu _____ mais tempo, viajaria pelo interior.",
+    "correctAnswer": "tivesse",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "(imp. conj., 1ª sg)",
+    "multipleChoiceOptions": [
+      "tive",
+      "tivesse",
+      "terei",
+      "tenho"
+    ],
+    "explanations": {
+      "pt": "Em períodos condicionais irreais, usa-se 'se' + imperfeito do conjuntivo ('tivesse') e a principal no condicional.",
+      "en": "In unreal conditionals, use 'se' + imperfect subjunctive ('tivesse') and the main clause in the conditional.",
+      "uk": "В ірреальних умовних періодах: 'se' + імперфект кон'юнктива ('tivesse') й головна в умовному способі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se vocês _____ o aviso, não teria havido confusão.",
+    "correctAnswer": "tivessem lido",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivessem lido",
+      "tinham lido",
+      "leriam",
+      "leram"
+    ],
+    "explanations": {
+      "pt": "Para condição contrafactual no passado: 'se' + mais-que-perfeito composto do conjuntivo ('tivessem lido').",
+      "en": "For counterfactual past condition: 'se' + pluperfect subjunctive compound ('tivessem lido').",
+      "uk": "Для контрфактичного минулого: 'se' + складений плюсквамперфект кон'юнктива ('tivessem lido')."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ele _____ a verdade, tudo seria diferente.",
+    "correctAnswer": "soubesse",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "saber (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "soube",
+      "saberá",
+      "soubesse",
+      "sabe"
+    ],
+    "explanations": {
+      "pt": "Irrealidade presente: 'se' + imperfeito do conjuntivo ('soubesse') com condicional na principal.",
+      "en": "Unreal present: 'se' + imperfect subjunctive ('soubesse') with conditional in the main clause.",
+      "uk": "Нереальність теперішнього: 'se' + імперфект кон'юнктива ('soubesse') та умовний у головній."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se nós _____ mais cedo, evitávamos o trânsito.",
+    "correctAnswer": "saíssemos",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "sairíamos",
+      "sairemos",
+      "saíssemos",
+      "saímos"
+    ],
+    "explanations": {
+      "pt": "Condição hipotética não realizada: imperfeito do conjuntivo 'saíssemos'.",
+      "en": "Unreal hypothetical condition: imperfect subjunctive 'saíssemos'.",
+      "uk": "Нереальна гіпотетична умова: імперфект кон'юнктива 'saíssemos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se tu _____ menos, descansarias melhor.",
+    "correctAnswer": "trabalhasses",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "trabalharás",
+      "trabalhasses",
+      "trabalhaste",
+      "trabalhas"
+    ],
+    "explanations": {
+      "pt": "Com 'tu', o imperfeito do conjuntivo de 'trabalhar' é 'trabalhasses' para condições irreais.",
+      "en": "With 'tu', the imperfect subjunctive of 'trabalhar' is 'trabalhasses' for unreal conditions.",
+      "uk": "Для 'ти' імперфект кон'юнктива дієслова 'trabalhar' — 'trabalhasses'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eles _____ ajuda, chamavam-nos imediatamente.",
+    "correctAnswer": "precisassem de",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "precisassem de",
+      "precisaram de",
+      "precisam de",
+      "precisariam de"
+    ],
+    "explanations": {
+      "pt": "Em condição hipotética presente, usa-se imperfeito do conjuntivo: 'se eles precisassem de'.",
+      "en": "In a present hypothetical condition, use imperfect subjunctive: 'se eles precisassem de'.",
+      "uk": "В умовній гіпотетичній конструкції теперішнього вживається імперфект кон'юнктива."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ela _____ mais cedo, teria visto o diretor.",
+    "correctAnswer": "tivesse chegado",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivesse chegado",
+      "chegasse",
+      "chegou",
+      "chegara"
+    ],
+    "explanations": {
+      "pt": "Para passado contrafactual, o composto do conjuntivo ('tivesse chegado') é o mais natural.",
+      "en": "For counterfactual past, the compound subjunctive ('tivesse chegado') is most natural.",
+      "uk": "Для контрфактичного минулого природною є складена форма кон'юнктива ('tivesse chegado')."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu _____ melhor o orçamento, não aceitava o risco.",
+    "correctAnswer": "conhecesse",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "conheci",
+      "conheceria",
+      "conheço",
+      "conhecesse"
+    ],
+    "explanations": {
+      "pt": "A condição irreal requer o imperfeito do conjuntivo: 'conhecesse'.",
+      "en": "The unreal condition requires the imperfect subjunctive: 'conhecesse'.",
+      "uk": "Ірреальна умова потребує імперфекта кон'юнктива: 'conhecesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se a equipa _____ unida, venceríamos mais jogos.",
+    "correctAnswer": "estivesse",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "estar (imp. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "estaria",
+      "esteve",
+      "estivesse",
+      "está"
+    ],
+    "explanations": {
+      "pt": "Condição presente irreal com 'estar' pede 'estivesse'.",
+      "en": "Unreal present condition with 'estar' takes 'estivesse'.",
+      "uk": "Ірреальна теперішня умова з 'estar' — 'estivesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu te _____ antes, explicava tudo com calma.",
+    "correctAnswer": "visse",
+    "topic": "se-preterito-imperfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "veria",
+      "vi",
+      "vejo",
+      "visse"
+    ],
+    "explanations": {
+      "pt": "O imperfeito do conjuntivo de 'ver' é 'visse' para condições irreais.",
+      "en": "The imperfect subjunctive of 'ver' is 'visse' for unreal conditions.",
+      "uk": "Імперфект кон'юнктива 'ver' — 'visse' у нереальних умовах."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Queria que tu _____ comigo hoje à tarde.",
+    "correctAnswer": "viesses",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "venhas",
+      "vens",
+      "viesses",
+      "virás"
+    ],
+    "explanations": {
+      "pt": "Pedido atenuado no passado (queria) costuma pedir imperfeito do conjuntivo: 'viesses'.",
+      "en": "A softened request in the past (queria) typically takes the imperfect subjunctive: 'viesses'.",
+      "uk": "Пом'якшене прохання в минулому ('queria') зазвичай вимагає імперфекта кон'юнктива: 'viesses'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quero que tu _____ comigo amanhã.",
+    "correctAnswer": "venhas",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "viesses",
+      "virás",
+      "venhas",
+      "vens"
+    ],
+    "explanations": {
+      "pt": "Com 'quero que' no presente, usa-se presente do conjuntivo: 'venhas'.",
+      "en": "With 'quero que' in the present, use the present subjunctive: 'venhas'.",
+      "uk": "З 'quero que' в теперішньому потрібен презент кон'юнктива: 'venhas'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Preferia que vocês não _____ tão tarde.",
+    "correctAnswer": "chegassem",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegarão",
+      "chegam",
+      "chegassem",
+      "cheguem"
+    ],
+    "explanations": {
+      "pt": "Com 'preferia que', o pedido hipotético usa imperfeito do conjuntivo: 'chegassem'.",
+      "en": "With 'preferia que', the hypothetical request uses the imperfect subjunctive: 'chegassem'.",
+      "uk": "З 'preferia que' вживається імперфект кон'юнктива: 'chegassem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É bom que ele _____ os prazos combinados.",
+    "correctAnswer": "cumpra",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "cumpra",
+      "cumprisse",
+      "cumpre",
+      "cumprirá"
+    ],
+    "explanations": {
+      "pt": "Expressão avaliativa presente pede presente do conjuntivo: 'cumpra'.",
+      "en": "Present evaluative expression requires the present subjunctive: 'cumpra'.",
+      "uk": "Оціночний вираз у теперішньому вимагає презент кон'юнктива: 'cumpra'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Seria melhor que ela _____ com antecedência.",
+    "correctAnswer": "avisasse",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "avisasse",
+      "avisará",
+      "avise",
+      "avisa"
+    ],
+    "explanations": {
+      "pt": "Condição hipotética/aconselhamento no condicional pede imperfeito do conjuntivo: 'avisasse'.",
+      "en": "Hypothetical advice with the conditional calls for the imperfect subjunctive: 'avisasse'.",
+      "uk": "Гіпотетична порада з умовним потребує імперфекта кон'юнктива: 'avisasse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É necessário que nós _____ o relatório hoje.",
+    "correctAnswer": "entreguemos",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "entregássemos",
+      "entregaremos",
+      "entregamos",
+      "entreguemos"
+    ],
+    "explanations": {
+      "pt": "Com 'é necessário que', usa-se presente do conjuntivo: 'entreguemos'.",
+      "en": "With 'é necessário que', use the present subjunctive: 'entreguemos'.",
+      "uk": "З 'é necessário que' потрібен презент кон'юнктива: 'entreguemos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Gostava que vocês _____ mais o vosso tempo.",
+    "correctAnswer": "organizassem",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "organizassem",
+      "organizariam",
+      "organizam",
+      "organizem"
+    ],
+    "explanations": {
+      "pt": "Desejo no passado/condicional usa imperfeito do conjuntivo: 'organizassem'.",
+      "en": "A wish in past/conditional uses the imperfect subjunctive: 'organizassem'.",
+      "uk": "Бажання в минулому/умовному використовує імперфект кон'юнктива: 'organizassem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É provável que a reunião _____ adiada.",
+    "correctAnswer": "seja",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "ser (pres. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "seja",
+      "é",
+      "será",
+      "fosse"
+    ],
+    "explanations": {
+      "pt": "Com 'é provável que' no presente, pede-se presente do conjuntivo: 'seja'.",
+      "en": "With 'é provável que' in the present, use the present subjunctive: 'seja'.",
+      "uk": "Зі зворотом 'é provável que' у теперішньому потрібен презент кон'юнктива: 'seja'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Era importante que ele nos _____ a verdade.",
+    "correctAnswer": "dissesse",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "dizer",
+    "multipleChoiceOptions": [
+      "dirá",
+      "diga",
+      "dissesse",
+      "disse"
+    ],
+    "explanations": {
+      "pt": "No passado ('era importante que'), pede-se imperfeito do conjuntivo: 'dissesse'.",
+      "en": "In the past ('era importante que'), use the imperfect subjunctive: 'dissesse'.",
+      "uk": "У минулому ('era importante que') потрібен імперфект кон'юнктива: 'dissesse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É bom que tu _____ os dados antes de decidir.",
+    "correctAnswer": "verifiques",
+    "topic": "imperfeito-vs-presente-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "verificasses",
+      "verificarás",
+      "verificas",
+      "verifiques"
+    ],
+    "explanations": {
+      "pt": "Avaliação no presente pede presente do conjuntivo: 'verifiques'.",
+      "en": "Present evaluation requires the present subjunctive: 'verifiques'.",
+      "uk": "Оцінка в теперішньому потребує презенту кон'юнктива: 'verifiques'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando eu _____ ao aeroporto, mando-te mensagem.",
+    "correctAnswer": "chegar",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegar",
+      "chegar",
+      "chegar",
+      "chegar"
+    ],
+    "explanations": {
+      "pt": "Com 'quando' referindo-se ao futuro, usa-se o futuro do conjuntivo: 'quando eu chegar'.",
+      "en": "With 'quando' referring to the future, use the future subjunctive: 'quando eu chegar'.",
+      "uk": "Зі сполучником 'quando' про майбутнє вживається майбутній кон'юнктив: 'quando eu chegar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Assim que _____ os resultados, marcamos a apresentação.",
+    "correctAnswer": "tiverem",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiverão",
+      "tenham",
+      "tiverem",
+      "têm"
+    ],
+    "explanations": {
+      "pt": "Com 'assim que' no valor futuro, usa-se o futuro do conjuntivo: 'tiverem'.",
+      "en": "With 'assim que' in a future sense, use the future subjunctive: 'tiverem'.",
+      "uk": "Зі сполучником 'assim que' щодо майбутнього потрібен майбутній кон'юнктив: 'tiverem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Logo que _____ o pagamento, enviamos a fatura final.",
+    "correctAnswer": "recebermos",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "receberemos",
+      "recebemos",
+      "recebamos",
+      "recebermos"
+    ],
+    "explanations": {
+      "pt": "Com 'logo que' projetado no futuro, usa-se futuro do conjuntivo: 'recebermos'.",
+      "en": "With 'logo que' projected to the future, use the future subjunctive: 'recebermos'.",
+      "uk": "Із 'logo que' щодо майбутнього вживається майбутній кон'юнктив: 'recebermos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Sempre que _____ dúvidas, fala comigo.",
+    "correctAnswer": "tiveres",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tens",
+      "tenhas",
+      "tiveres",
+      "terás"
+    ],
+    "explanations": {
+      "pt": "Rotina futura/condição com 'sempre que' pede futuro do conjuntivo: 'tiveres'.",
+      "en": "Future-leaning routine with 'sempre que' takes the future subjunctive: 'tiveres'.",
+      "uk": "У значенні майбутньої умови з 'sempre que' — майбутній кон'юнктив: 'tiveres'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Enquanto _____ luz natural, aproveitem para fotografar.",
+    "correctAnswer": "houver",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "haver (fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "há",
+      "houver",
+      "houve",
+      "houverá"
+    ],
+    "explanations": {
+      "pt": "Com 'enquanto' futuro, usa-se 'houver' no futuro do conjuntivo.",
+      "en": "With 'enquanto' about the future, use 'houver' in the future subjunctive.",
+      "uk": "Зі 'enquanto' про майбутнє вживають 'houver' у майбутньому кон'юнктиві."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Depois que _____ as autorizações, iniciamos as obras.",
+    "correctAnswer": "chegarem",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegarão",
+      "cheguem",
+      "chegarem",
+      "chegam"
+    ],
+    "explanations": {
+      "pt": "Em português europeu também ocorre 'depois que' com valor futuro, pedindo futuro do conjuntivo: 'chegarem'.",
+      "en": "European Portuguese also uses 'depois que' with future value, requiring the future subjunctive: 'chegarem'.",
+      "uk": "У європейській португальській 'depois que' з майбутнім значенням уживає майбутній кон'юнктив: 'chegarem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Mal _____ a luz, vamos sair com cuidado.",
+    "correctAnswer": "apagar",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "(fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "apagar",
+      "apagar",
+      "apagar",
+      "apagar"
+    ],
+    "explanations": {
+      "pt": "Estrutura fixa: 'mal' + futuro do conjuntivo. 1.ª pessoa plural tem forma idêntica ao infinitivo: 'mal apagar'.",
+      "en": "Fixed structure: 'mal' + future subjunctive. Some forms equal the infinitive: 'mal apagar'.",
+      "uk": "Фіксована конструкція: 'mal' + майбутній кон'юнктив. Форма може збігатися з інфінітивом: 'apagar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Sempre que _____ oportunidade, vamos visitar os avós.",
+    "correctAnswer": "houver",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "haver (fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "haverá",
+      "há",
+      "houver",
+      "haja"
+    ],
+    "explanations": {
+      "pt": "Com 'sempre que' e sentido de futuro, usa-se futuro do conjuntivo 'houver'.",
+      "en": "With 'sempre que' and future meaning, use future subjunctive 'houver'.",
+      "uk": "Зі 'sempre que' у значенні майбутнього — майбутній кон'юнктив 'houver'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando _____ a confirmação, avisem a equipa.",
+    "correctAnswer": "receberem",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "receberem",
+      "receberão",
+      "recebam",
+      "recebem"
+    ],
+    "explanations": {
+      "pt": "Futuro temporal com 'quando' pede futuro do conjuntivo: 'receberem'.",
+      "en": "Future time with 'quando' takes the future subjunctive: 'receberem'.",
+      "uk": "Майбутній час із 'quando' — майбутній кон'юнктив: 'receberem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Assim que tu _____ disponível, marcamos a reunião.",
+    "correctAnswer": "estiveres",
+    "topic": "futuro-conjuntivo-conjuncoes",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "estiveres",
+      "estarás",
+      "estejas",
+      "estás"
+    ],
+    "explanations": {
+      "pt": "Com 'assim que' futuro e sujeito 'tu', usa-se futuro do conjuntivo: 'estiveres'.",
+      "en": "With 'assim que' future and subject 'tu', use the future subjunctive: 'estiveres'.",
+      "uk": "Зі 'assim que' і підметом 'ти' — майбутній кон'юнктив: 'estiveres'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem _____ primeiro ao local deve esperar pelos outros.",
+    "correctAnswer": "chegar",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "(fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "chegar",
+      "chegar",
+      "chegar",
+      "chegar"
+    ],
+    "explanations": {
+      "pt": "Em relativas condicionais de futuro com 'quem', usa-se futuro do conjuntivo. Aqui coincide com o infinitivo: 'chegar'.",
+      "en": "In conditional relative clauses with 'quem' referring to the future, use the future subjunctive. Here it matches the infinitive: 'chegar'.",
+      "uk": "У відносних умовних реченнях із 'quem' про майбутнє — майбутній кон'юнктив, тут збігається з інфінітивом: 'chegar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os candidatos que _____ a prova prática serão chamados.",
+    "correctAnswer": "passarem",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "passarem",
+      "passem",
+      "passarão",
+      "passam"
+    ],
+    "explanations": {
+      "pt": "Relativa com valor futuro/condicional pede futuro do conjuntivo: 'que passarem'.",
+      "en": "A future-like relative requires the future subjunctive: 'que passarem'.",
+      "uk": "Відносне речення з майбутнім значенням потребує майбутнього кон'юнктива: 'passarem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A primeira equipa que _____ cem pontos vence o jogo.",
+    "correctAnswer": "atingir",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "atingir",
+      "atingir",
+      "atingirá",
+      "atinge"
+    ],
+    "explanations": {
+      "pt": "Com valor de regra futura, usa-se futuro do conjuntivo; em algumas pessoas coincide com o infinitivo: 'atingir'.",
+      "en": "For future-rule meaning, use the future subjunctive; some forms equal the infinitive: 'atingir'.",
+      "uk": "Для майбутнього правила вживають майбутній кон'юнктив; інколи збігається з інфінітивом: 'atingir'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem _____ dúvidas poderá enviá-las por email.",
+    "correctAnswer": "tiver",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "ter (fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "tiver",
+      "terá",
+      "tem",
+      "tenha"
+    ],
+    "explanations": {
+      "pt": "Com 'quem' e condição futura, usa-se 'tiver' (futuro do conjuntivo de 'ter').",
+      "en": "With 'quem' and a future condition, use 'tiver' (future subjunctive of 'ter').",
+      "uk": "З 'quem' і майбутньою умовою вживається 'tiver' — майбутній кон'юнктив 'ter'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os alunos que _____ atraso deverão esperar fora.",
+    "correctAnswer": "chegarem com",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "(fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "chegam com",
+      "cheguem com",
+      "chegarem com",
+      "chegarão com"
+    ],
+    "explanations": {
+      "pt": "Relativa condicional futura pede futuro do conjuntivo: 'que chegarem com atraso'.",
+      "en": "A future conditional relative needs the future subjunctive: 'que chegarem com atraso'.",
+      "uk": "Відносне умовне майбутнє вимагає майбутній кон'юнктив: 'que chegarem com atraso'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem _____ melhor proposta ficará com o contrato.",
+    "correctAnswer": "apresentar",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "apresentar",
+      "apresentar",
+      "apresentar",
+      "apresentar"
+    ],
+    "explanations": {
+      "pt": "Com 'quem' e futuro, o verbo vai ao futuro do conjuntivo; aqui coincide com o infinitivo: 'apresentar'.",
+      "en": "With 'quem' and future meaning, use the future subjunctive; here it equals the infinitive: 'apresentar'.",
+      "uk": "З 'quem' у майбутньому вживається майбутній кон'юнктив; тут збігається з інфінітивом: 'apresentar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O colaborador que _____ esta meta receberá um bónus.",
+    "correctAnswer": "alcançar",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "alcança",
+      "alcançar",
+      "alcance",
+      "alcançará"
+    ],
+    "explanations": {
+      "pt": "Regra para o futuro: relativa com futuro do conjuntivo; neste caso coincide com o infinitivo: 'alcançar'.",
+      "en": "Rule about the future: relative clause with future subjunctive; here it matches the infinitive: 'alcançar'.",
+      "uk": "Правило на майбутнє: відносне речення з майбутнім кон'юнктивом; тут збігається з інфінітивом: 'alcançar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "As pessoas que _____ a inscrição receberão confirmação.",
+    "correctAnswer": "submeterem",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "submeterem",
+      "submeterão",
+      "submetem",
+      "submetam"
+    ],
+    "explanations": {
+      "pt": "Relativa projetada no futuro usa futuro do conjuntivo: 'submeterem'.",
+      "en": "A relative projected into the future uses the future subjunctive: 'submeterem'.",
+      "uk": "Відносне речення з проєкцією в майбутнє вимагає майбутнього кон'юнктива: 'submeterem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem _____ problemas técnicos deve contactar o suporte.",
+    "correctAnswer": "tiver",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "ter (fut. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "tem",
+      "tenha",
+      "terá",
+      "tiver"
+    ],
+    "explanations": {
+      "pt": "Estrutura de regra condicional: 'quem tiver' no futuro do conjuntivo.",
+      "en": "Conditional rule structure: 'quem tiver' in the future subjunctive.",
+      "uk": "Структура умовного правила: 'quem tiver' у майбутньому кон'юнктиві."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os clientes que _____ o formulário serão atendidos primeiro.",
+    "correctAnswer": "preencherem",
+    "topic": "futuro-conjuntivo-relativas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "preencherão",
+      "preenchem",
+      "preencham",
+      "preencherem"
+    ],
+    "explanations": {
+      "pt": "Relativa com condição futura pede 'preencherem' (futuro do conjuntivo).",
+      "en": "A relative with a future condition takes 'preencherem' (future subjunctive).",
+      "uk": "Відносне речення з майбутньою умовою вимагає 'preencherem' (майбутній кон'юнктив)."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Embora _____ caro, o concerto vale a pena.",
+    "correctAnswer": "seja",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "ser (pres. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "será",
+      "seja",
+      "fosse",
+      "é"
+    ],
+    "explanations": {
+      "pt": "Conjunção concessiva 'embora' pede conjuntivo presente: 'seja'.",
+      "en": "Concessive conjunction 'embora' requires the present subjunctive: 'seja'.",
+      "uk": "Сполучник поступки 'embora' вимагає презент кон'юнктива: 'seja'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Mesmo que _____ chuva, vamos continuar o evento.",
+    "correctAnswer": "haja",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "haver (pres. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "há",
+      "houverá",
+      "haja",
+      "houve"
+    ],
+    "explanations": {
+      "pt": "Com 'mesmo que', usa-se conjuntivo para concessão: 'haja'.",
+      "en": "With 'mesmo que', use the subjunctive for concession: 'haja'.",
+      "uk": "Зі 'mesmo que' вживають кон'юнктив для поступки: 'haja'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ainda que _____ pouco, ajudaremos como pudermos.",
+    "correctAnswer": "ganhemos",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "ganhemos",
+      "ganharemos",
+      "ganhássemos",
+      "ganhamos"
+    ],
+    "explanations": {
+      "pt": "Concessiva 'ainda que' exige presente do conjuntivo: 'ganhemos'.",
+      "en": "Concessive 'ainda que' requires the present subjunctive: 'ganhemos'.",
+      "uk": "Поступкова 'ainda que' вимагає презент кон'юнктива: 'ganhemos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Por mais que tu _____, não mudará a decisão.",
+    "correctAnswer": "insistas",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "insistisses",
+      "insistes",
+      "insistirás",
+      "insistas"
+    ],
+    "explanations": {
+      "pt": "Estrutura 'por mais que' requer conjuntivo: 'insistas'.",
+      "en": "The structure 'por mais que' requires the subjunctive: 'insistas'.",
+      "uk": "Конструкція 'por mais que' вимагає кон'юнктива: 'insistas'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ainda que nos _____, manteremos a proposta.",
+    "correctAnswer": "critiquem",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "critiquem",
+      "criticassem",
+      "criticarão",
+      "criticam"
+    ],
+    "explanations": {
+      "pt": "Concessiva pede conjuntivo: 'ainda que nos critiquem'.",
+      "en": "A concessive clause takes the subjunctive: 'ainda que nos critiquem'.",
+      "uk": "Поступкове речення вимагає кон'юнктива: 'critiquem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Mesmo que _____ tarde, envia o relatório hoje.",
+    "correctAnswer": "seja",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "ser (pres. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "é",
+      "será",
+      "seja",
+      "fosse"
+    ],
+    "explanations": {
+      "pt": "Concessiva com 'mesmo que' pede presente do conjuntivo: 'seja'.",
+      "en": "Concessive with 'mesmo que' takes the present subjunctive: 'seja'.",
+      "uk": "Поступкова з 'mesmo que' вимагає презент кон'юнктива: 'seja'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Embora tu não me _____, tentarei explicar outra vez.",
+    "correctAnswer": "entendas",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "(pres. conj., 2ª sg)",
+    "multipleChoiceOptions": [
+      "entendas",
+      "entendes",
+      "entendesses",
+      "entenderás"
+    ],
+    "explanations": {
+      "pt": "Com 'embora' e sujeito 'tu', usa-se presente do conjuntivo: 'entendas'.",
+      "en": "With 'embora' and subject 'tu', use the present subjunctive: 'entendas'.",
+      "uk": "З 'embora' та підметом 'ти' потрібен презент кон'юнктива: 'entendas'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Por muito que _____, não conseguirás agradar a todos.",
+    "correctAnswer": "faças",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "(pres. conj., 2ª sg)",
+    "multipleChoiceOptions": [
+      "farás",
+      "fizesses",
+      "faças",
+      "fazes"
+    ],
+    "explanations": {
+      "pt": "Com 'por muito que', exige-se conjuntivo: 'faças'.",
+      "en": "With 'por muito que', the subjunctive is required: 'faças'.",
+      "uk": "Зі зворотом 'por muito que' потрібен кон'юнктив: 'faças'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ainda que _____ ajuda, prefere trabalhar sozinho.",
+    "correctAnswer": "lhe ofereçam",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "(pres. conj., 3ª pl)",
+    "multipleChoiceOptions": [
+      "lhe oferecem",
+      "lhe ofereçam",
+      "lhe oferecerão",
+      "lhe oferecessem"
+    ],
+    "explanations": {
+      "pt": "Concessiva 'ainda que' pede conjuntivo: 'lhe ofereçam'.",
+      "en": "Concessive 'ainda que' takes the subjunctive: 'lhe ofereçam'.",
+      "uk": "Поступкова 'ainda que' потребує кон'юнктива: 'lhe ofereçam'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Mesmo que _____ tempo, não vou ao cinema hoje.",
+    "correctAnswer": "tenha",
+    "topic": "presente-futuro-conjuntivo-concessivas",
+    "level": "B2",
+    "hint": "ter (pres. conj., 3ª sg)",
+    "multipleChoiceOptions": [
+      "tivesse",
+      "tem",
+      "tenha",
+      "terá"
+    ],
+    "explanations": {
+      "pt": "Concessão com 'mesmo que' no presente pede presente do conjuntivo: 'tenha'.",
+      "en": "Concession with 'mesmo que' in the present requires the present subjunctive: 'tenha'.",
+      "uk": "Поступка з 'mesmo que' в теперішньому — презент кон'юнктива: 'tenha'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu _____ cedo, passo pelo teu escritório.",
+    "correctAnswer": "chegar",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegar",
+      "chegar",
+      "chegar",
+      "chegar"
+    ],
+    "explanations": {
+      "pt": "Com 'se' referindo-se ao futuro real, usa-se futuro do conjuntivo: 'se eu chegar'.",
+      "en": "With 'se' for a real future condition, use the future subjunctive: 'se eu chegar'.",
+      "uk": "Зі 'se' про реальну майбутню умову — майбутній кон'юнктив: 'se eu chegar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se vocês _____ disponibilidade, agendamos para sexta.",
+    "correctAnswer": "tiverem",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiverem",
+      "tenham",
+      "têm",
+      "terão"
+    ],
+    "explanations": {
+      "pt": "Condição futura real pede futuro do conjuntivo: 'tiverem'.",
+      "en": "A real future condition requires the future subjunctive: 'tiverem'.",
+      "uk": "Реальна майбутня умова вимагає майбутнього кон'юнктива: 'tiverem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ele _____ a tempo, abrimos a loja mais cedo.",
+    "correctAnswer": "chegar",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegar",
+      "chega",
+      "chegue",
+      "chegará"
+    ],
+    "explanations": {
+      "pt": "Com 'se' futuro, muitas formas coincidem com o infinitivo: 'se ele chegar'.",
+      "en": "With future 'se', many forms coincide with the infinitive: 'se ele chegar'.",
+      "uk": "Зі 'se' у майбутньому багато форм збігаються з інфінітивом: 'chegar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se tu _____ dúvidas, liga-me sem hesitar.",
+    "correctAnswer": "tiveres",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiveres",
+      "tens",
+      "terás",
+      "tenhas"
+    ],
+    "explanations": {
+      "pt": "Para 'tu', usa-se 'tiveres' no futuro do conjuntivo.",
+      "en": "For 'tu', use 'tiveres' in the future subjunctive.",
+      "uk": "Для 'ти' потрібне 'tiveres' у майбутньому кон'юнктиві."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se a encomenda _____ amanhã, montamos tudo à tarde.",
+    "correctAnswer": "chegar",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "chegará",
+      "chega",
+      "chegar",
+      "chegue"
+    ],
+    "explanations": {
+      "pt": "Condição real futura: 'se a encomenda chegar'.",
+      "en": "Real future condition: 'se a encomenda chegar'.",
+      "uk": "Реальна майбутня умова: 'se a encomenda chegar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se nós _____ tempo, passamos pelo museu.",
+    "correctAnswer": "tivermos",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenhamos",
+      "temos",
+      "tivermos",
+      "teremos"
+    ],
+    "explanations": {
+      "pt": "Com 'nós', no futuro do conjuntivo: 'tivermos'.",
+      "en": "With 'nós', in the future subjunctive: 'tivermos'.",
+      "uk": "З 'ми' у майбутньому кон'юнктиві: 'tivermos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se a diretora _____, anuncio as mudanças.",
+    "correctAnswer": "aprovar",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "aprova",
+      "aprovará",
+      "aprove",
+      "aprovar"
+    ],
+    "explanations": {
+      "pt": "Muitos verbos regulares têm forma igual ao infinitivo: 'se a diretora aprovar'.",
+      "en": "Many regular verbs match the infinitive: 'se a diretora aprovar'.",
+      "uk": "У багатьох правильних дієслів форма збігається з інфінітивом: 'aprovar'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eles _____ a proposta, iniciamos o projeto.",
+    "correctAnswer": "aceitarem",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "aceitam",
+      "aceitarão",
+      "aceitem",
+      "aceitarem"
+    ],
+    "explanations": {
+      "pt": "Para 'eles', futuro do conjuntivo termina em '-em': 'aceitarem'.",
+      "en": "For 'eles', the future subjunctive ends in '-em': 'aceitarem'.",
+      "uk": "Для 'вони' майбутній кон'юнктив має закінчення '-em': 'aceitarem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se houver atrasos, _____ o plano.",
+    "correctAnswer": "revemos",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "(fut. conj., 2ª sg)",
+    "multipleChoiceOptions": [
+      "revemos",
+      "reveremos",
+      "reveemos",
+      "revíssemos"
+    ],
+    "explanations": {
+      "pt": "Ordem natural: principal no presente indicativo após condição futura é aceitável em PT europeu: 'revemos o plano'.",
+      "en": "In EP, main clause in the present indicative is acceptable after a future condition: 'revemos o plano'.",
+      "uk": "У європейській португальській допустима головна в індикативі після майбутньої умови: 'revemos'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se tu me _____ amanhã, levo-te os documentos.",
+    "correctAnswer": "telefonares",
+    "topic": "se-futuro-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "telefonaras",
+      "telefonarás",
+      "telefonaste",
+      "telefonares"
+    ],
+    "explanations": {
+      "pt": "Com 'se' de valor futuro, usa-se o futuro do conjuntivo: 'telefonares'. Evita-se o indicativo futuro 'telefonarás' e o pretérito 'telefonaste'.",
+      "en": "With future 'if', use the future subjunctive: 'telefonares'. Avoid the future indicative 'telefonarás' and the preterite 'telefonaste'.",
+      "uk": "Зі значенням майбутньої умови вживається майбутній кон'юнктив: 'telefonares'. Уникаємо майбутнього індикатива 'telefonarás' і минулого 'telefonaste'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É possível que eles _____ prazos muito apertados ultimamente.",
+    "correctAnswer": "tenham cumprido",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenham cumprido",
+      "têm cumprido",
+      "tenham cumprir",
+      "tiveram cumprido"
+    ],
+    "explanations": {
+      "pt": "O pretérito perfeito composto do conjuntivo forma-se com 'ter' no conjuntivo + particípio: 'tenham cumprido'. Indica repetição recente.",
+      "en": "The compound perfect subjunctive is 'ter' in subjunctive + past participle: 'tenham cumprido', often for recent repeated actions.",
+      "uk": "Складений перфект кон'юнктива утворюється з 'ter' у кон'юнктиві + дієприкметник: 'tenham cumprido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Duvido que a equipa _____ bem nos últimos jogos.",
+    "correctAnswer": "tenha jogado",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenha jogar",
+      "tenha jogado",
+      "teve jogado",
+      "tem jogado"
+    ],
+    "explanations": {
+      "pt": "Após 'duvido que', usa-se o PPC do conjuntivo para ações recentes: 'tenha jogado'.",
+      "en": "After 'duvido que', use the compound perfect subjunctive for recent actions: 'tenha jogado'.",
+      "uk": "Після 'duvido que' вживають складений перфект кон'юнктива: 'tenha jogado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Embora _____ muito, não chegaram ao objetivo.",
+    "correctAnswer": "tenham trabalhado",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenham trabalhado",
+      "tenham trabalho",
+      "tiveram trabalhado",
+      "trabalham"
+    ],
+    "explanations": {
+      "pt": "Concessiva com ação repetida recente usa PPC do conjuntivo: 'tenham trabalhado'.",
+      "en": "A concessive with recent repeated action takes the compound perfect subjunctive: 'tenham trabalhado'.",
+      "uk": "У поступковому реченні для нещодавніх повторюваних дій — складений перфект кон'юнктива."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É provável que tu _____ melhor ultimamente.",
+    "correctAnswer": "tenhas dormido",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tens dormido",
+      "tenhas dormido",
+      "tiveste dormido",
+      "tenhas dormir"
+    ],
+    "explanations": {
+      "pt": "Com 'é provável que', usa-se 'tenhas dormido' para hábitos recentes.",
+      "en": "With 'é provável que', use 'tenhas dormido' for recent habits.",
+      "uk": "З 'é provável que' вживається 'tenhas dormido' для нещодавніх звичок."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Pode ser que nós _____ erros nos últimos relatórios.",
+    "correctAnswer": "tenhamos cometido",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "(perf. comp. conj., 1ª pl)",
+    "multipleChoiceOptions": [
+      "tenhamos cometido",
+      "tivemos cometido",
+      "temos cometido",
+      "tenhamos cometer"
+    ],
+    "explanations": {
+      "pt": "O PPC do conjuntivo expressa possibilidade de ações recentes repetidas: 'tenhamos cometido'.",
+      "en": "The compound perfect subjunctive expresses possible recent repeated actions: 'tenhamos cometido'.",
+      "uk": "Складений перфект кон'юнктива виражає можливість нещодавніх повторюваних дій: 'tenhamos cometido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Não creio que eles _____ muito tempo para praticar.",
+    "correctAnswer": "tenham tido",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiveram tido",
+      "tenham ter",
+      "tenham tido",
+      "têm tido"
+    ],
+    "explanations": {
+      "pt": "Negação de crença + PPC do conjuntivo: 'tenham tido'.",
+      "en": "Negative belief + compound perfect subjunctive: 'tenham tido'.",
+      "uk": "Заперечення віри + складений перфект кон'юнктива: 'tenham tido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É bom que os alunos _____ as leituras semanais.",
+    "correctAnswer": "tenham feito",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenham fazer",
+      "tenham feito",
+      "tiveram feito",
+      "têm feito"
+    ],
+    "explanations": {
+      "pt": "Avaliação presente de hábito recente: PPC do conjuntivo 'tenham feito'.",
+      "en": "Present evaluation of recent habit: compound perfect subjunctive 'tenham feito'.",
+      "uk": "Оцінка теперішнього щодо нещодавньої звички: 'tenham feito'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Embora eu não _____ muito, avancei no projeto.",
+    "correctAnswer": "tenha dormido",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenha dormido",
+      "tenha dormir",
+      "tive dormido",
+      "tenho dormido"
+    ],
+    "explanations": {
+      "pt": "Concessiva + PPC do conjuntivo: 'tenha dormido'.",
+      "en": "Concessive + compound perfect subjunctive: 'tenha dormido'.",
+      "uk": "Поступкове + складений перфект кон'юнктива: 'tenha dormido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "É improvável que a empresa _____ lucros altos estes meses.",
+    "correctAnswer": "tenha registado",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenha registar",
+      "tem registado",
+      "teve registado",
+      "tenha registado"
+    ],
+    "explanations": {
+      "pt": "Com 'é improvável que', PPC do conjuntivo exprime repetição recente: 'tenha registado'.",
+      "en": "With 'é improvável que', the compound perfect subjunctive expresses recent repetition: 'tenha registado'.",
+      "uk": "Зі зворотом 'é improvável que' складений перфект кон'юнктива виражає нещодавні повторення: 'tenha registado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Duvido que vocês _____ as metas todas este trimestre.",
+    "correctAnswer": "tenham alcançado",
+    "topic": "preterito-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenham alcançar",
+      "tenham alcançado",
+      "têm alcançado",
+      "tiveram alcançado"
+    ],
+    "explanations": {
+      "pt": "Após 'duvido que', PPC do conjuntivo: 'tenham alcançado'.",
+      "en": "After 'duvido que', use the compound perfect subjunctive: 'tenham alcançado'.",
+      "uk": "Після 'duvido que' — складений перфект кон'юнктива: 'tenham alcançado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando tu _____ o curso, candidata-te à vaga.",
+    "correctAnswer": "tiveres terminado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiveres terminado",
+      "tenhas terminado",
+      "tiveste terminado",
+      "teres terminado"
+    ],
+    "explanations": {
+      "pt": "O futuro perfeito do conjuntivo é 'tiver + particípio' com concordância de pessoa: 'tiveres terminado'.",
+      "en": "The future perfect subjunctive is 'tiver + past participle' with person agreement: 'tiveres terminado'.",
+      "uk": "Майбутній перфект кон'юнктива: 'tiver' + дієприкметник із узгодженням особи: 'tiveres terminado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Assim que _____ a auditoria, enviem o relatório.",
+    "correctAnswer": "tiverem concluído",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "têm concluído",
+      "tiverem concluído",
+      "tenham concluído",
+      "tiveram concluído"
+    ],
+    "explanations": {
+      "pt": "Com valor de 'depois de', usa-se futuro perfeito do conjuntivo: 'tiverem concluído'.",
+      "en": "With a 'after' meaning, use the future perfect subjunctive: 'tiverem concluído'.",
+      "uk": "У значенні 'після того як' — майбутній перфект кон'юнктива: 'tiverem concluído'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Logo que eu _____ tudo, descanso.",
+    "correctAnswer": "tiver acabado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tenha acabado",
+      "terei acabado",
+      "tive acabado",
+      "tiver acabado"
+    ],
+    "explanations": {
+      "pt": "Projeção futura concluída: futuro perfeito do conjuntivo 'tiver acabado'.",
+      "en": "Completed future projection: future perfect subjunctive 'tiver acabado'.",
+      "uk": "Завершена майбутня подія: майбутній перфект кон'юнктива 'tiver acabado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Depois que _____ o pagamento, liberamos o acesso.",
+    "correctAnswer": "tiverem processado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "têm processado",
+      "tenham processado",
+      "tiverem processado",
+      "tiveram processado"
+    ],
+    "explanations": {
+      "pt": "Sequência futura concluída pede o futuro perfeito do conjuntivo: 'tiverem processado'.",
+      "en": "A completed future sequence needs the future perfect subjunctive: 'tiverem processado'.",
+      "uk": "Завершена майбутня послідовність вимагає майбутнього перфекта кон'юнктива: 'tiverem processado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando _____ o relatório, falamos com a direção.",
+    "correctAnswer": "tivermos enviado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivermos enviado",
+      "tivemos enviado",
+      "tenhamos enviado",
+      "temos enviado"
+    ],
+    "explanations": {
+      "pt": "Marco temporal futuro concluído: 'tivermos enviado' (futuro perfeito do conjuntivo).",
+      "en": "Completed future time marker: 'tivermos enviado' (future perfect subjunctive).",
+      "uk": "Позначення завершеної майбутньої дії: 'tivermos enviado' — майбутній перфект кон'юнктива."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Assim que ela _____ as revisões, seguimos para produção.",
+    "correctAnswer": "tiver feito",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "terá feito",
+      "teve feito",
+      "tenha feito",
+      "tiver feito"
+    ],
+    "explanations": {
+      "pt": "Após 'assim que' com valor futuro concluído, usa-se futuro perfeito do conjuntivo: 'tiver feito'.",
+      "en": "After 'assim que' with completed-future value, use the future perfect subjunctive: 'tiver feito'.",
+      "uk": "Після 'assim que' у значенні завершеного майбутнього — 'tiver feito'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Logo que _____ a inspeção, abrimos ao público.",
+    "correctAnswer": "tivermos passado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "teremos passado",
+      "tivemos passado",
+      "tenhamos passado",
+      "tivermos passado"
+    ],
+    "explanations": {
+      "pt": "Completude futura exige futuro perfeito do conjuntivo: 'tivermos passado'.",
+      "en": "Future completeness requires the future perfect subjunctive: 'tivermos passado'.",
+      "uk": "Завершеність у майбутньому — майбутній перфект кон'юнктива: 'tivermos passado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Depois que tu _____ as tarefas, podes sair.",
+    "correctAnswer": "tiveres concluído",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "teres concluído",
+      "tiveres concluído",
+      "tiveste concluído",
+      "tenhas concluído"
+    ],
+    "explanations": {
+      "pt": "Para 'tu', a forma é 'tiveres' + particípio: 'tiveres concluído'.",
+      "en": "For 'tu', use 'tiveres' + participle: 'tiveres concluído'.",
+      "uk": "Для 'ти' форма 'tiveres' + дієприкметник: 'tiveres concluído'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando eles _____ as correções, seguimos com o teste.",
+    "correctAnswer": "tiverem aplicado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tiverem aplicado",
+      "têm aplicado",
+      "tenham aplicado",
+      "tiveram aplicado"
+    ],
+    "explanations": {
+      "pt": "Marco futuro concluído: 'tiverem aplicado' (futuro perfeito do conjuntivo).",
+      "en": "Completed future marker: 'tiverem aplicado' (future perfect subjunctive).",
+      "uk": "Позначення завершеності в майбутньому: 'tiverem aplicado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Assim que _____ as contas, fechamos o mês.",
+    "correctAnswer": "tivermos fechado",
+    "topic": "futuro-perfeito-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "fecharemos",
+      "tivemos fechado",
+      "tenhamos fechado",
+      "tivermos fechado"
+    ],
+    "explanations": {
+      "pt": "Completude futura antes da principal pede 'tivermos fechado'.",
+      "en": "Future completion before the main clause requires 'tivermos fechado'.",
+      "uk": "Завершеність у майбутньому перед головною частиною — 'tivermos fechado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu _____ a verdade, teria decidido diferente.",
+    "correctAnswer": "tivesse sabido",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivesse sabido",
+      "soube",
+      "soubesse",
+      "soubera"
+    ],
+    "explanations": {
+      "pt": "O mais-que-perfeito composto do conjuntivo é 'tivesse + particípio': 'tivesse sabido', para condição contrafactual passada.",
+      "en": "The compound pluperfect subjunctive is 'tivesse + past participle': 'tivesse sabido', for counterfactual past conditions.",
+      "uk": "Складений плюсквамперфект кон'юнктива: 'tivesse + дієприкметник' — 'tivesse sabido' для контрфактичних умов у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eles _____ o prazo, o cliente não teria reclamado.",
+    "correctAnswer": "tivessem cumprido",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "cumpririam",
+      "tivessem cumprido",
+      "tenham cumprido",
+      "cumpriram"
+    ],
+    "explanations": {
+      "pt": "Condição contrafactual passada usa 'tivessem + particípio': 'tivessem cumprido'.",
+      "en": "Counterfactual past uses 'tivessem + participle': 'tivessem cumprido'.",
+      "uk": "Контрфактичний минулий: 'tivessem + дієприкметник'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se nós _____ o contrato, evitaríamos problemas legais.",
+    "correctAnswer": "tivéssemos assinado",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "assinámos",
+      "tivéssemos assinado",
+      "tínhamos assinado",
+      "teremos assinado"
+    ],
+    "explanations": {
+      "pt": "Estrutura contrafactual passada: 'tivéssemos assinado'.",
+      "en": "Past counterfactual structure: 'tivéssemos assinado'.",
+      "uk": "Контрфактична минула структура: 'tivéssemos assinado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se tu _____ mais cedo, apanhavas o comboio.",
+    "correctAnswer": "tivesses chegado",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivesses chegado",
+      "chegaste",
+      "chegavas",
+      "chegarias"
+    ],
+    "explanations": {
+      "pt": "Para 'tu', usa-se 'tivesses + particípio' na condição contrafactual.",
+      "en": "For 'tu', use 'tivesses + participle' in counterfactual condition.",
+      "uk": "Для 'ти' — 'tivesses + дієприкметник' у контрфактичній умові."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ela _____ a tempo, não perderia a entrevista.",
+    "correctAnswer": "tivesse saído",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "saiu",
+      "saía",
+      "sairia",
+      "tivesse saído"
+    ],
+    "explanations": {
+      "pt": "Mais-que-perfeito composto do conjuntivo marca a condição passada não realizada.",
+      "en": "The compound pluperfect subjunctive marks a past unreal condition.",
+      "uk": "Складений плюсквамперфект кон'юнктива позначає нереальну минулу умову."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se vocês _____ o backup, nada se teria perdido.",
+    "correctAnswer": "tivessem feito",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "faziam",
+      "fizeram",
+      "tivessem feito",
+      "fariam"
+    ],
+    "explanations": {
+      "pt": "Condição contrafactual: 'tivessem feito' (tivessem + particípio).",
+      "en": "Counterfactual condition: 'tivessem feito' (tivessem + participle).",
+      "uk": "Контрфактична умова: 'tivessem feito' (tivessem + дієприкметник)."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se eu te _____ ontem, combinávamos logo.",
+    "correctAnswer": "tivesse encontrado",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "encontrava",
+      "encontraria",
+      "encontrei",
+      "tivesse encontrado"
+    ],
+    "explanations": {
+      "pt": "Para passado não realizado, usa-se 'tivesse + particípio'.",
+      "en": "For unreal past, use 'tivesse + participle'.",
+      "uk": "Для нереального минулого — 'tivesse + дієприкметник'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se a equipa _____ o plano, evitaria erros.",
+    "correctAnswer": "tivesse seguido",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "tivesse seguido",
+      "seguiria",
+      "seguiu",
+      "seguia"
+    ],
+    "explanations": {
+      "pt": "Estrutura típica: 'se' + MqP composto do conjuntivo ('tivesse seguido').",
+      "en": "Typical structure: 'se' + compound pluperfect subjunctive ('tivesse seguido').",
+      "uk": "Типова структура: 'se' + складений плюсквамперфект кон'юнктива ('tivesse seguido')."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se os prazos _____ claros, não haveria dúvidas.",
+    "correctAnswer": "tivessem sido",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "seriam",
+      "tivessem sido",
+      "eram",
+      "foram"
+    ],
+    "explanations": {
+      "pt": "Passiva com MqP composto do conjuntivo: 'tivessem sido' + particípio.",
+      "en": "Passive with compound pluperfect subjunctive: 'tivessem sido' + participle.",
+      "uk": "Пасив із складеним плюсквамперфектом кон'юнктива: 'tivessem sido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se tu _____ a proposta, ganharíamos o cliente.",
+    "correctAnswer": "tivesses enviado",
+    "topic": "mais-que-perfeito-composto-conjuntivo",
+    "level": "B2",
+    "hint": "conj.",
+    "multipleChoiceOptions": [
+      "enviavas",
+      "tivesses enviado",
+      "enviarás",
+      "enviaste"
+    ],
+    "explanations": {
+      "pt": "Condição passada contrafactual: 'tivesses enviado'.",
+      "en": "Past counterfactual condition: 'tivesses enviado'.",
+      "uk": "Контрфактична минула умова: 'tivesses enviado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Oxalá _____ boas notícias em breve!",
+    "correctAnswer": "cheguem",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "chegarão",
+      "cheguem",
+      "chegassem",
+      "chegam"
+    ],
+    "explanations": {
+      "pt": "Com 'oxalá', desejo provável pede presente do conjuntivo: 'cheguem'.",
+      "en": "With 'oxalá', a hopeful wish takes the present subjunctive: 'cheguem'.",
+      "uk": "З 'oxalá' для побажання вживається презент кон'юнктива: 'cheguem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tomara que tu me _____ hoje mesmo!",
+    "correctAnswer": "ligues",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "ligas",
+      "ligasses",
+      "ligues",
+      "ligarás"
+    ],
+    "explanations": {
+      "pt": "Com 'tomara que', usa-se presente do conjuntivo: 'ligues'.",
+      "en": "With 'tomara que', use the present subjunctive: 'ligues'.",
+      "uk": "З 'tomara que' потрібен презент кон'юнктива: 'ligues'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem me dera que este ano _____ diferente!",
+    "correctAnswer": "fosse",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "ir (3ª sg)",
+    "multipleChoiceOptions": [
+      "fosse",
+      "é",
+      "será",
+      "seria"
+    ],
+    "explanations": {
+      "pt": "Desejo irreal usa imperfeito do conjuntivo: 'fosse'.",
+      "en": "An unreal wish uses the imperfect subjunctive: 'fosse'.",
+      "uk": "Нереальне бажання — імперфект кон'юнктива: 'fosse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Oxalá a equipa _____ o campeonato!",
+    "correctAnswer": "vença",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "vença",
+      "vence",
+      "vencesse",
+      "vencerá"
+    ],
+    "explanations": {
+      "pt": "Desejo provável no presente: presente do conjuntivo 'vença'.",
+      "en": "Likely wish in the present: present subjunctive 'vença'.",
+      "uk": "Ймовірне побажання теперішнього: презент кон'юнктива 'vença'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem dera que tudo _____ certo no final!",
+    "correctAnswer": "corresse",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "correrá",
+      "corre",
+      "correria",
+      "corresse"
+    ],
+    "explanations": {
+      "pt": "Desejo sobre processo futuro irreal: imperfeito do conjuntivo 'corresse'.",
+      "en": "Wish about an unreal future scenario: imperfect subjunctive 'corresse'.",
+      "uk": "Побажання щодо нереального майбутнього: імперфект кон'юнктива 'corresse'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Oxalá não _____ mais cancelamentos este mês!",
+    "correctAnswer": "haja",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "haver (3ª sg)",
+    "multipleChoiceOptions": [
+      "haverá",
+      "houve",
+      "há",
+      "haja"
+    ],
+    "explanations": {
+      "pt": "Com 'oxalá' e existência, usa-se conjuntivo presente: 'haja'.",
+      "en": "With 'oxalá' and existence, use the present subjunctive: 'haja'.",
+      "uk": "З 'oxalá' для існування — презент кон'юнктива: 'haja'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tomara que eu _____ forças para continuar!",
+    "correctAnswer": "tenha",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "ter (1ª sg)",
+    "multipleChoiceOptions": [
+      "tenho",
+      "terei",
+      "tenha",
+      "tivesse"
+    ],
+    "explanations": {
+      "pt": "Com 'tomara que', 1.ª singular no conjuntivo presente: 'tenha'.",
+      "en": "With 'tomara que', 1st sg in present subjunctive: 'tenha'.",
+      "uk": "З 'tomara que' — 1-ша однини презент кон'юнктива: 'tenha'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem me dera que eles _____ a minha ideia!",
+    "correctAnswer": "aceitassem",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "aceitassem",
+      "aceitarão",
+      "aceitaram",
+      "aceitam"
+    ],
+    "explanations": {
+      "pt": "Desejo irreal passado/presente: imperfeito do conjuntivo 'aceitassem'.",
+      "en": "Unreal wish about past/present: imperfect subjunctive 'aceitassem'.",
+      "uk": "Нереальне побажання щодо минулого/теперішнього: імперфект кон'юнктива 'aceitassem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Oxalá tu _____ um ótimo dia hoje!",
+    "correctAnswer": "tenhas",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "terás",
+      "tenhas",
+      "tivesses",
+      "tens"
+    ],
+    "explanations": {
+      "pt": "Desejo positivo atual: presente do conjuntivo 'tenhas'.",
+      "en": "Positive present wish: present subjunctive 'tenhas'.",
+      "uk": "Позитивне побажання теперішнього: презент кон'юнктива 'tenhas'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tomara que as coisas _____ depressa!",
+    "correctAnswer": "andem",
+    "topic": "frases-exclamativas-desejo",
+    "level": "B2",
+    "hint": "exclam.",
+    "multipleChoiceOptions": [
+      "andassem",
+      "andam",
+      "andem",
+      "andarão"
+    ],
+    "explanations": {
+      "pt": "Com 'tomara', usa-se presente do conjuntivo: 'andem'.",
+      "en": "With 'tomara', use the present subjunctive: 'andem'.",
+      "uk": "З 'tomara' вживається презент кон'юнктива: 'andem'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Amanhã a esta hora já _____ a documentação.",
+    "correctAnswer": "terei enviado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "terei enviado",
+      "teria enviado",
+      "enviarei",
+      "tenho enviado"
+    ],
+    "explanations": {
+      "pt": "O futuro perfeito do indicativo forma-se com 'ter' no futuro + particípio: 'terei enviado'. Marca ação concluída no futuro.",
+      "en": "The future perfect indicative is 'ter' in the future + past participle: 'terei enviado', marking a completed future action.",
+      "uk": "Майбутній перфект індикатива: 'ter' у майбутньому + дієприкметник — 'terei enviado', дія завершена в майбутньому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Dentro de uma hora, eles já _____ o relatório final.",
+    "correctAnswer": "terão concluído",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "teriam concluído",
+      "concluirão",
+      "terão concluído",
+      "têm concluído"
+    ],
+    "explanations": {
+      "pt": "Para ação futura anterior a outra, usa-se futuro perfeito: 'terão concluído'.",
+      "en": "For an action completed before another future point, use the future perfect: 'terão concluído'.",
+      "uk": "Для дії, завершеної до іншого майбутнього моменту, вживається майбутній перфект: 'terão concluído'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando voltares, eu já _____ de casa.",
+    "correctAnswer": "terei saído",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "sair-ei",
+      "teria saído",
+      "terei saído",
+      "sairei"
+    ],
+    "explanations": {
+      "pt": "Anterioridade no futuro pede futuro perfeito: 'terei saído'.",
+      "en": "Anteriority in the future requires the future perfect: 'terei saído'.",
+      "uk": "Попередність у майбутньому позначається майбутнім перфектом: 'terei saído'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Até amanhã, a equipa _____ todos os testes.",
+    "correctAnswer": "terá terminado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "terminará",
+      "teria terminado",
+      "terá terminado",
+      "tem terminado"
+    ],
+    "explanations": {
+      "pt": "Com 'até', indicando prazo futuro concluído, usa-se futuro perfeito: 'terá terminado'.",
+      "en": "With 'até' indicating a completed future deadline, use the future perfect: 'terá terminado'.",
+      "uk": "З 'até' та завершеним майбутнім терміном — майбутній перфект: 'terá terminado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando eles chegarem, nós já _____ tudo pronto.",
+    "correctAnswer": "teremos deixado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "teríamos deixado",
+      "deixaremos",
+      "teremos deixado",
+      "temos deixado"
+    ],
+    "explanations": {
+      "pt": "Anterioridade relativamente a 'chegarem' pede futuro perfeito: 'teremos deixado'.",
+      "en": "Being prior to 'chegarem' requires the future perfect: 'teremos deixado'.",
+      "uk": "Попередність щодо 'chegarem' вимагає майбутнього перфекта: 'teremos deixado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ao meio-dia, eu já _____ as compras todas.",
+    "correctAnswer": "terei feito",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "farei",
+      "teria feito",
+      "terei feito",
+      "tenho feito"
+    ],
+    "explanations": {
+      "pt": "Ponto de referência futuro com ação concluída: futuro perfeito 'terei feito'.",
+      "en": "Future reference point with completed action: future perfect 'terei feito'.",
+      "uk": "Майбутня точка відліку з завершеною дією: майбутній перфект 'terei feito'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Na próxima semana à esta hora, tu já _____ o exame.",
+    "correctAnswer": "terás terminado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "terias terminado",
+      "tens terminado",
+      "terminarás",
+      "terás terminado"
+    ],
+    "explanations": {
+      "pt": "Com marcador temporal futuro e conclusão, usa-se 'terás terminado'.",
+      "en": "With a future time marker and completion, use 'terás terminado'.",
+      "uk": "З майбутнім часовим маркером і завершенням — 'terás terminado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando o cliente ligar, eu já _____ o orçamento.",
+    "correctAnswer": "terei enviado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "enviarei",
+      "tenho enviado",
+      "terei enviado",
+      "teria enviado"
+    ],
+    "explanations": {
+      "pt": "Anterioridade em relação a um ponto futuro ('ligar') pede futuro perfeito: 'terei enviado'.",
+      "en": "Anteriority to a future point ('ligar') requires the future perfect: 'terei enviado'.",
+      "uk": "Попередність щодо майбутнього моменту ('ligar') — майбутній перфект: 'terei enviado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Daqui a pouco, vocês já _____ tudo o que precisavam.",
+    "correctAnswer": "terão resolvido",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "terão resolvido",
+      "têm resolvido",
+      "resolverão",
+      "teriam resolvido"
+    ],
+    "explanations": {
+      "pt": "Para ação concluída num momento futuro próximo, usa-se futuro perfeito: 'terão resolvido'.",
+      "en": "For an action completed at a near-future point, use the future perfect: 'terão resolvido'.",
+      "uk": "Для дії, завершеної в недалекому майбутньому, вживають майбутній перфект: 'terão resolvido'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando sairmos, já _____ todas as luzes.",
+    "correctAnswer": "teremos apagado",
+    "topic": "futuro-perfeito-indicativo",
+    "level": "B2",
+    "hint": "ind.",
+    "multipleChoiceOptions": [
+      "temos apagado",
+      "teremos apagado",
+      "apagaremos",
+      "teríamos apagado"
+    ],
+    "explanations": {
+      "pt": "Sequência futura com anterioridade pede futuro perfeito: 'teremos apagado'.",
+      "en": "A future sequence with anteriority requires the future perfect: 'teremos apagado'.",
+      "uk": "Майбутня послідовність із попередністю — майбутній перфект: 'teremos apagado'."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  }
+]

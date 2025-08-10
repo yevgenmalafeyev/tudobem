@@ -26,11 +26,10 @@ For each exercise, provide:
 
 1. **Sentence**: European Portuguese with one gap marked as "___"
 2. **Correct Answer**: The word/phrase that fills the gap
-3. **Verb Hint**: When the gap requires a verb form, provide helpful hints:
-   - **infinitive**: The base form of the verb (e.g., "ser", "estar", "ir")
-   - **person**: Add person indicator ONLY when context is ambiguous (e.g., "(1ª pessoa)", "(3ª pessoa)")
-   - **form**: Grammar form being tested (e.g., "presente", "pretérito perfeito", "conjuntivo")
-   - **grammarRule**: Brief rule explanation for incorrect answers (e.g., "Presente do indicativo: eu sou, tu és, ele é")
+3. **Hint**: Simple string hint based on the topic:
+   - **Comparison topics** (poder/conseguir, saber/conhecer, dever/ter): Use format "poder / conseguir", "saber / conhecer", or "dever / ter de"
+   - **Verb topics**: Use format "infinitive (person)" like "fazer (1ª pessoa)" or just "fazer" if clear from context
+   - **Other topics**: Brief contextual hint as needed
 4. **Multiple Choice Options**: 2-4 total options (including correct answer)
    - Options should be plausible distractors for the grammar point
    - Focus on common mistakes learners make
@@ -66,15 +65,9 @@ For each exercise, provide:
   {
     "sentence": "Eu ___ ao cinema ontem à noite.",
     "correctAnswer": "fui", 
-    "gapIndex": 1,
     "topic": "preterito-perfeito-simples",
     "level": "A2",
-    "hint": {
-      "infinitive": "ir",
-      "person": "(1ª pessoa)",
-      "form": "pretérito perfeito",
-      "grammarRule": "Pretérito perfeito: exprime ações completas no passado. Ir: eu fui, tu foste, ele foi..."
-    },
+    "hint": "ir (1ª pessoa)",
     "multipleChoiceOptions": ["fui", "ia", "vou", "fosse"],
     "explanations": {
       "pt": "Usamos 'fui' (pretérito perfeito do verbo 'ir') para ações específicas e completas no passado.",
@@ -100,7 +93,7 @@ export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => 
     const exercise = exercises[i] as Record<string, unknown>;
     
     // Check required fields
-    const requiredFields = ['sentence', 'correctAnswer', 'gapIndex', 'topic', 'level', 'multipleChoiceOptions', 'explanations'];
+    const requiredFields = ['sentence', 'correctAnswer', 'topic', 'level', 'multipleChoiceOptions', 'explanations'];
     for (const field of requiredFields) {
       if (!(field in exercise)) {
         console.error(`Exercise ${i}: Missing required field '${field}'`);
@@ -154,10 +147,9 @@ export const validateBatchExerciseResponse = (exercises: unknown[]): boolean => 
 export const processGeneratedExercises = (exercises: unknown[]): EnhancedExercise[] => {
   return exercises.map((exercise, index) => {
     const ex = exercise as Record<string, unknown>;
-    // Ensure gapIndex is calculated correctly
-    const gapIndex = (ex.sentence as string).indexOf('___');
-    if (gapIndex === -1) {
-      console.warn(`Exercise ${index}: No gap found, using provided gapIndex`);
+    // Ensure sentence contains gap
+    if (!(ex.sentence as string).includes('___')) {
+      console.warn(`Exercise ${index}: No gap found in sentence`);
     }
 
     // Clean up sentence (remove extra spaces, normalize)
@@ -177,7 +169,6 @@ export const processGeneratedExercises = (exercises: unknown[]): EnhancedExercis
     return {
       ...ex,
       sentence: cleanSentence,
-      gapIndex: gapIndex !== -1 ? gapIndex : (ex.gapIndex as number),
       multipleChoiceOptions: shuffledOptions,
       explanations: cleanExplanations,
       id: `generated-${Date.now()}-${index}`, // Temporary ID for client-side use

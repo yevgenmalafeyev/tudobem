@@ -6,7 +6,8 @@
  * This ensures production always has the latest local database state
  */
 
-import { promises as fs } from 'fs';
+import { syncToVercel } from './sync-to-vercel';
+import * as fs from 'fs';
 import path from 'path';
 
 /**
@@ -18,35 +19,25 @@ function isProductionDeployment(): boolean {
 }
 
 /**
- * Load and execute the production seed script
+ * Sync production database using the latest local dump
  */
 async function syncProductionDatabase(): Promise<void> {
   console.log('🔄 Starting production database sync...\n');
   
   try {
-    // Check if production seed file exists
-    const seedFile = path.join(process.cwd(), 'database-dumps', 'production-seed.ts');
+    // Check if database dump exists
+    const dumpFile = path.join(process.cwd(), 'database-dumps', 'database-dump.json');
     
-    try {
-      await fs.access(seedFile);
-    } catch {
-      console.log('⚠️ No production seed file found. Creating empty database...');
-      
-      // Import and run basic database initialization
-      const { LocalDatabase } = await import('../lib/localDatabase');
-      await LocalDatabase.initializeTables();
-      
-      console.log('✅ Empty production database initialized');
+    if (!fs.existsSync(dumpFile)) {
+      console.log('⚠️ No database dump found. Skipping sync...');
+      console.log('💡 Run "npm run db:dump-fresh" locally to generate a fresh dump before deployment.');
       return;
     }
     
-    // Dynamic import of the seed script
-    console.log('📄 Loading production seed script...');
-    const { seedProductionDatabase } = await import(seedFile);
+    console.log('📦 Database dump found. Starting sync to Vercel database...');
     
-    // Run the seeding process
-    console.log('🌱 Executing database sync...');
-    await seedProductionDatabase();
+    // Use our new sync function
+    await syncToVercel();
     
     console.log('✅ Production database sync completed successfully!');
     
@@ -55,6 +46,7 @@ async function syncProductionDatabase(): Promise<void> {
     
     // Don't fail the entire build - just log and continue
     console.warn('⚠️ Continuing with existing production database state');
+    console.warn('💡 To fix: ensure POSTGRES_URL is set and database-dump.json exists');
   }
 }
 

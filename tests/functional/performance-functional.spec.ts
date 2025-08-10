@@ -231,11 +231,11 @@ test.describe('Performance Functional Tests', () => {
 
     test('should efficiently handle API failures', async ({ page }) => {
       // Mock API failures
-      await page.route('**/api/generate-exercise', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.abort('failed')
       })
       
-      await page.route('**/api/generate-multiple-choice', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.abort('failed')
       })
       

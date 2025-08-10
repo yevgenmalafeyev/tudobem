@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import { t } from '@/utils/translations';
 import { useLearning } from '@/hooks/useLearning';
 import { useExerciseQueue } from '@/hooks/useExerciseQueue';
 import { useAnswerChecking } from '@/hooks/useAnswerChecking';
-import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
 import { EnhancedExercise } from '@/types/enhanced';
 import { Exercise } from '@/types';
 import { topics } from '@/data/topics';
@@ -24,6 +23,9 @@ export default function Learning() {
     
     return language === 'pt' ? topic.namePt : topic.name;
   }, []);
+
+  // State for topic visibility (hidden by default)
+  const [isTopicVisible, setIsTopicVisible] = useState(false);
 
   const {
     // State
@@ -54,14 +56,6 @@ export default function Learning() {
     focusInput
   } = useLearning();
 
-  // Detailed explanation hook  
-  const { 
-    detailedExplanation, 
-    generateExplanation, 
-    clearExplanation 
-  } = useDetailedExplanation({
-    explanationLanguage: configuration.appLanguage
-  });
 
   // Memoize callbacks to prevent useExerciseQueue dependency changes
   const onExerciseGenerated = useCallback((exercise: EnhancedExercise) => {
@@ -70,7 +64,7 @@ export default function Learning() {
   }, [setCurrentExercise]);
 
   const onQueueEmpty = useCallback(() => {
-    console.warn('Exercise queue is empty');
+    console.log('Exercise queue is empty - loading new batch');
     // Could trigger a new batch load here
   }, []);
 
@@ -162,6 +156,11 @@ export default function Learning() {
     }
   }, [currentExercise, showAnswer, focusInput]);
 
+  // Reset topic visibility when exercise changes
+  useEffect(() => {
+    setIsTopicVisible(false);
+  }, [currentExercise]);
+
   const handleCheckAnswer = useCallback(async () => {
     if (!currentExercise) return;
     
@@ -172,18 +171,25 @@ export default function Learning() {
       explanationLanguage: configuration.appLanguage
     });
     
-    // Generate detailed explanation only if answer is wrong
-    const isCorrect = getCurrentAnswer().toLowerCase().trim() === 
-      currentExercise.correctAnswer.toLowerCase().trim();
+  }, [currentExercise, getCurrentAnswer, configuration, checkAnswer]);
+
+  // Handler for multiple choice option selection with immediate answer checking
+  const handleOptionSelect = useCallback(async (selectedOption: string) => {
+    if (!currentExercise) return;
     
-    if (!isCorrect) {
-      generateExplanation(currentExercise);
-    }
-  }, [currentExercise, getCurrentAnswer, configuration, checkAnswer, generateExplanation]);
+    // Set the selected option in state
+    setSelectedOption(selectedOption);
+    
+    // Check the answer immediately with the selected option
+    await checkAnswer({
+      exercise: currentExercise,
+      userAnswer: selectedOption,
+      explanationLanguage: configuration.appLanguage
+    });
+    
+  }, [currentExercise, setSelectedOption, configuration, checkAnswer]);
 
   const handleNextExercise = useCallback(() => {
-    // Clear current detailed explanation
-    clearExplanation();
     
     // Get next exercise from queue
     const nextExercise = getNextExercise();
@@ -194,11 +200,11 @@ export default function Learning() {
       // Don't generate explanation immediately - only when answer is wrong
       focusInput();
     } else {
-      // No more exercises - could trigger a new batch load
-      console.warn('No more exercises available');
+      // No more exercises - trigger a new batch load
+      console.log('No more exercises available - loading initial batch');
       loadInitialBatch();
     }
-  }, [getNextExercise, setCurrentExercise, resetState, focusInput, clearExplanation, loadInitialBatch]);
+  }, [getNextExercise, setCurrentExercise, resetState, focusInput, loadInitialBatch]);
 
   // Regenerate multiple choice options when mode changes
   useEffect(() => {
@@ -306,9 +312,18 @@ export default function Learning() {
                 {currentExercise?.level || 'A1'}
               </span>
               {currentExercise?.topic && (
-                <span className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1" style={{ color: 'var(--neo-text-secondary)' }}>
-                  {getTopicDisplayName(currentExercise.topic, configuration.appLanguage)}
-                </span>
+                <button 
+                  onClick={() => setIsTopicVisible(!isTopicVisible)}
+                  className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1 cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{ color: 'var(--neo-text-secondary)' }}
+                  data-testid="topic-toggle"
+                  title={isTopicVisible ? getTopicDisplayName(currentExercise.topic, configuration.appLanguage) : t('clickToShowTopic', configuration.appLanguage)}
+                >
+                  {isTopicVisible 
+                    ? getTopicDisplayName(currentExercise.topic, configuration.appLanguage)
+                    : t('clickToShowTopic', configuration.appLanguage)
+                  }
+                </button>
               )}
             </div>
             
@@ -339,6 +354,7 @@ export default function Learning() {
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
             showAnswer={showAnswer}
+            onOptionSelect={handleOptionSelect}
           />
         )}
 
@@ -346,7 +362,6 @@ export default function Learning() {
         <FeedbackDisplay 
           feedback={feedback}
           appLanguage={configuration.appLanguage}
-          detailedExplanation={detailedExplanation}
           currentExercise={currentExercise}
         />
 
@@ -356,6 +371,7 @@ export default function Learning() {
           hasValidAnswer={hasValidAnswer()}
           isLoading={isLoading}
           appLanguage={configuration.appLanguage}
+          learningMode={learningMode}
           onCheckAnswer={handleCheckAnswer}
           onNextExercise={handleNextExercise}
         />

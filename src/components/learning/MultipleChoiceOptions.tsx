@@ -3,13 +3,17 @@ interface MultipleChoiceOptionsProps {
   selectedOption: string;
   setSelectedOption: (option: string) => void;
   showAnswer: boolean;
+  onCheckAnswer?: () => void;
+  onOptionSelect?: (option: string) => void;
 }
 
 export default function MultipleChoiceOptions({
   options,
   selectedOption,
   setSelectedOption,
-  showAnswer
+  showAnswer,
+  onCheckAnswer,
+  onOptionSelect
 }: MultipleChoiceOptionsProps) {
   if (showAnswer || options.length === 0) return null;
 
@@ -19,7 +23,17 @@ export default function MultipleChoiceOptions({
         {options.map((option, index) => (
           <button
             key={index}
-            onClick={() => setSelectedOption(option)}
+            onClick={() => {
+              setSelectedOption(option);
+              // Use onOptionSelect if available (with immediate option value)
+              // Otherwise fallback to onCheckAnswer with timeout
+              if (onOptionSelect) {
+                onOptionSelect(option);
+              } else if (onCheckAnswer) {
+                // Fallback: Use timeout to ensure state update completes
+                setTimeout(() => onCheckAnswer(), 100);
+              }
+            }}
             className={`neo-button text-sm sm:text-base p-3 sm:p-4 text-left ${
               selectedOption === option ? 'neo-button-primary' : ''
             }`}

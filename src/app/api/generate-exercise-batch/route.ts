@@ -74,7 +74,6 @@ async function generateFallbackExercises(
   return [{
     id: `fallback-${Date.now()}`,
     sentence: "Eu ___ português.",
-    gapIndex: 1,
     correctAnswer: "falo",
     topic: "present-indicative",
     level: levels[0] || 'A1',
@@ -84,7 +83,7 @@ async function generateFallbackExercises(
       en: "We use 'falo' for the first person singular in the present tense.",
       uk: "Ми використовуємо 'falo' для першої особи однини в теперішньому часі."
     },
-    hint: { infinitive: "falar", form: "1st person singular present" },
+    hint: "falar (1ª pessoa)",
     difficultyScore: 0.3,
     usageCount: 0
   }];

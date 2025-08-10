@@ -175,9 +175,7 @@ describe('Admin API Routes', () => {
     it('should logout admin successfully', async () => {
       const { POST } = await import('../logout/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await POST(mockRequest);
+      const response = await POST();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -193,9 +191,7 @@ describe('Admin API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await POST(mockRequest);
+      const response = await POST();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -208,9 +204,7 @@ describe('Admin API Routes', () => {
     it('should get API key when authenticated', async () => {
       const { GET } = await import('../api-key/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -226,9 +220,7 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../api-key/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -307,9 +299,7 @@ describe('Admin API Routes', () => {
     it('should get admin statistics when authenticated', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -332,9 +322,7 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -347,9 +335,7 @@ describe('Admin API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(500);

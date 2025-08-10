@@ -25,7 +25,7 @@ async function testProductionQuick() {
   // Test 1: API without key (should use fallback)
   console.log('\n📋 Test 1: API without key (should use fallback)');
   try {
-    const response = await fetch(`${PROD_URL}/api/generate-exercise`, {
+    const response = await fetch(`${PROD_URL}/api/generate-batch-exercises`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ async function testProductionQuick() {
   if (ANTHROPIC_API_KEY) {
     console.log('\n📋 Test 2: API with key (should use Claude AI)');
     try {
-      const response = await fetch(`${PROD_URL}/api/generate-exercise`, {
+      const response = await fetch(`${PROD_URL}/api/generate-batch-exercises`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ async function testProductionQuick() {
   // Test 3: Invalid parameters (should fail gracefully)
   console.log('\n📋 Test 3: Invalid parameters (should fail gracefully)');
   try {
-    const response = await fetch(`${PROD_URL}/api/generate-exercise`, {
+    const response = await fetch(`${PROD_URL}/api/generate-batch-exercises`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

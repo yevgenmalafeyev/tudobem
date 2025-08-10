@@ -225,7 +225,6 @@ export class EnhancedFallbackService {
     return {
       id: exercise.id,
       sentence: exercise.sentence,
-      gapIndex: exercise.gapIndex,
       correctAnswer: exercise.correctAnswer,
       topic: exercise.topic,
       level: exercise.level,
@@ -294,17 +293,17 @@ export class EnhancedFallbackService {
     const templates = {
       pt: {
         default: `A resposta correta é "${exercise.correctAnswer}".`,
-        verb: `Usamos "${exercise.correctAnswer}" (${exercise.hint?.form || 'forma verbal'}).`,
+        verb: `Usamos "${exercise.correctAnswer}" (${exercise.hint || 'forma verbal'}).`,
         article: `"${exercise.correctAnswer}" é o artigo correto neste contexto.`
       },
       en: {
         default: `The correct answer is "${exercise.correctAnswer}".`,
-        verb: `We use "${exercise.correctAnswer}" (${exercise.hint?.form || 'verb form'}).`,
+        verb: `We use "${exercise.correctAnswer}" (${exercise.hint || 'verb form'}).`,
         article: `"${exercise.correctAnswer}" is the correct article in this context.`
       },
       uk: {
         default: `Правильна відповідь: "${exercise.correctAnswer}".`,
-        verb: `Ми використовуємо "${exercise.correctAnswer}" (${exercise.hint?.form || 'форма дієслова'}).`,
+        verb: `Ми використовуємо "${exercise.correctAnswer}" (${exercise.hint || 'форма дієслова'}).`,
         article: `"${exercise.correctAnswer}" - правильний артикль у цьому контексті.`
       }
     };
@@ -312,7 +311,7 @@ export class EnhancedFallbackService {
     const template = templates[_lang];
     
     // Choose template based on topic
-    if (exercise.topic.includes('verb') || exercise.hint?.infinitive) {
+    if (exercise.topic.includes('verb') || (exercise.hint && (exercise.hint.includes('ar') || exercise.hint.includes('er') || exercise.hint.includes('ir')))) {
       return template.verb;
     } else if (exercise.topic.includes('article')) {
       return template.article;

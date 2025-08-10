@@ -25,32 +25,8 @@ export default function ExerciseDisplay({
 }: ExerciseDisplayProps) {
   const sentenceParts = exercise.sentence.split('___');
   
-  // Create hint text for placeholder with better formatting
-  const createHintText = () => {
-    if (!exercise.hint) return '?';
-    
-    const { infinitive, person, form } = exercise.hint;
-    
-    if (infinitive && person) {
-      return `${infinitive} (${person})`;
-    }
-    if (infinitive && form) {
-      return `${infinitive} (${form})`;
-    }
-    if (infinitive) {
-      return infinitive;
-    }
-    if (person) {
-      return `(${person})`;
-    }
-    if (form) {
-      return `(${form})`;
-    }
-    
-    return '?';
-  };
-  
-  const hintText = createHintText();
+  // Hint is now just a string, use it directly
+  const hintText = exercise.hint || '?';
 
   return (
     <div className="exercise-container neo-card-sm text-base sm:text-lg lg:text-xl xl:text-2xl mb-3 sm:mb-4 lg:mb-6 leading-relaxed" style={{ color: 'var(--neo-text)' }}>

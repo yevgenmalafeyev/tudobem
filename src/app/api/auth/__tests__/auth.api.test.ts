@@ -236,9 +236,7 @@ describe('Authentication API Routes', () => {
     it('should logout user successfully', async () => {
       const { POST } = await import('../logout/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await POST(mockRequest);
+      const response = await POST();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -253,9 +251,7 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await POST(mockRequest);
+      const response = await POST();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -268,9 +264,7 @@ describe('Authentication API Routes', () => {
       
       const { POST } = await import('../logout/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await POST(mockRequest);
+      const response = await POST();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -284,9 +278,7 @@ describe('Authentication API Routes', () => {
     it('should verify valid session', async () => {
       const { GET } = await import('../verify/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -302,9 +294,7 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -317,9 +307,7 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -333,9 +321,7 @@ describe('Authentication API Routes', () => {
       
       const { GET } = await import('../verify/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);

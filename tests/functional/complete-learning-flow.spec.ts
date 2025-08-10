@@ -200,11 +200,7 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
     test('should handle API failures gracefully', async () => {
       // Mock API failures
-      await page.route('**/api/generate-exercise', route => {
-        route.abort('failed')
-      })
-      
-      await page.route('**/api/generate-multiple-choice', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.abort('failed')
       })
       
@@ -332,14 +328,13 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
   test.describe('Edge Cases', () => {
     test('should handle very long Portuguese words', async () => {
       // Mock an exercise with a very long word
-      await page.route('**/api/generate-exercise', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.fulfill({
           status: 200,
           contentType: 'application/json',
           body: JSON.stringify({
             id: 'long-word-test',
             sentence: 'Esta é uma palavra muito _____.',
-            gapIndex: 1,
             correctAnswer: 'responsabilidade',
             topic: 'vocabulary',
             level: 'B2'
@@ -360,14 +355,13 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
     test('should handle special Portuguese characters', async () => {
       // Mock an exercise with special characters
-      await page.route('**/api/generate-exercise', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.fulfill({
           status: 200,
           contentType: 'application/json',
           body: JSON.stringify({
             id: 'special-chars-test',
             sentence: 'Ele _____ muito bem.',
-            gapIndex: 1,
             correctAnswer: 'não',
             topic: 'negation',
             level: 'A1'
@@ -388,7 +382,7 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
     test('should handle empty or malformed responses', async () => {
       // Mock empty response
-      await page.route('**/api/generate-multiple-choice', route => {
+      await page.route('**/api/generate-batch-exercises', route => {
         route.fulfill({
           status: 200,
           contentType: 'application/json',

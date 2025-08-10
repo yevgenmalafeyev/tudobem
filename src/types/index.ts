@@ -20,16 +20,10 @@ export interface UserConfiguration {
 export interface Exercise {
   id: string;
   sentence: string;
-  gapIndex: number;
   correctAnswer: string;
   topic: string;
   level: LanguageLevel;
-  hint?: {
-    infinitive?: string;
-    person?: string;
-    form?: string;
-    grammarRule?: string;
-  };
+  hint?: string;  // Changed to simple string for flexibility
   multipleChoiceOptions?: string[];
   detailedExplanation?: string;
 }

@@ -21,7 +21,7 @@ For each exercise, create a fill-in-the-blank sentence with the following struct
 - correctAnswer: The correct word/phrase to fill the blank
 - topic: One of the specified topics
 - level: One of the specified levels (A1, A2, B1, B2, C1, C2)
-- hint: Object with infinitive, person, and form if applicable
+- hint: Simple string hint based on topic (e.g., "estudar (1ª pessoa)" or "poder / conseguir")
 - multipleChoiceOptions: Array of 4 options including the correct answer
 - explanations: Object with Portuguese (pt), English (en), and Ukrainian (uk) explanations
 
@@ -32,11 +32,7 @@ Return ONLY a JSON array of exercises in this exact format:
     "correctAnswer": "estudo",
     "topic": "verbos",
     "level": "A1",
-    "hint": {
-      "infinitive": "estudar",
-      "person": "primeira pessoa singular",
-      "form": "presente do indicativo"
-    },
+    "hint": "estudar (1ª pessoa)",
     "multipleChoiceOptions": ["estudo", "estudas", "estuda", "estudamos"],
     "explanations": {
       "pt": "Primeira pessoa do singular do verbo 'estudar' no presente do indicativo.",

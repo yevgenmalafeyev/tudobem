@@ -29,7 +29,6 @@ describe('Learning Component - Multiple Choice Options', () => {
   const mockExercise = {
     id: 'test-1',
     sentence: 'Eu ___ português.',
-    gapIndex: 1,
     correctAnswer: 'falo',
     topic: 'present-indicative',
     level: 'A1',

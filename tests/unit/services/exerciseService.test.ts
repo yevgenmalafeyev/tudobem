@@ -17,7 +17,6 @@ describe('exerciseService', () => {
         exercises.forEach(exercise => {
           expect(exercise).toHaveProperty('id')
           expect(exercise).toHaveProperty('sentence')
-          expect(exercise).toHaveProperty('gapIndex')
           expect(exercise).toHaveProperty('correctAnswer')
           expect(exercise).toHaveProperty('topic')
           expect(exercise).toHaveProperty('level')
@@ -25,7 +24,6 @@ describe('exerciseService', () => {
           
           expect(typeof exercise.id).toBe('string')
           expect(typeof exercise.sentence).toBe('string')
-          expect(typeof exercise.gapIndex).toBe('number')
           expect(typeof exercise.correctAnswer).toBe('string')
           expect(typeof exercise.topic).toBe('string')
           expect(typeof exercise.level).toBe('string')
@@ -38,7 +36,6 @@ describe('exerciseService', () => {
       Object.values(fallbackExercises).forEach(exercises => {
         exercises.forEach(exercise => {
           expect(exercise.sentence).toContain('___')
-          expect(exercise.gapIndex).toBe(exercise.sentence.indexOf('___'))
         })
       })
     })
@@ -127,7 +124,6 @@ describe('exerciseService', () => {
       
       expect(exercise).toHaveProperty('id')
       expect(exercise).toHaveProperty('sentence', exerciseData.sentence)
-      expect(exercise).toHaveProperty('gapIndex', 3)
       expect(exercise).toHaveProperty('correctAnswer', exerciseData.correctAnswer)
       expect(exercise).toHaveProperty('topic', exerciseData.topic)
       expect(exercise).toHaveProperty('level', exerciseData.level)
@@ -144,7 +140,6 @@ describe('exerciseService', () => {
       
       const exercise = createExercise(exerciseData)
       
-      expect(exercise.gapIndex).toBe(7) // Position of '___' in sentence
     })
 
     it('should handle sentence without gap', () => {
@@ -157,7 +152,6 @@ describe('exerciseService', () => {
       
       const exercise = createExercise(exerciseData)
       
-      expect(exercise.gapIndex).toBe(-1) // indexOf returns -1 when not found
     })
 
     it('should generate unique IDs', () => {

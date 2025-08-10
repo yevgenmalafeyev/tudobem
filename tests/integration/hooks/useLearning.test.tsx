@@ -126,7 +126,6 @@ describe('useLearning hook', () => {
     const exercise = {
       id: '1',
       sentence: 'Eu ___ português.',
-      gapIndex: 1,
       correctAnswer: 'falo',
       topic: 'present-indicative',
       level: 'A1' as const,
@@ -150,7 +149,6 @@ describe('useLearning hook', () => {
     const exercise = {
       id: '1',
       sentence: 'Eu ___ português.',
-      gapIndex: 1,
       correctAnswer: 'falo',
       topic: 'present-indicative',
       level: 'A1' as const,

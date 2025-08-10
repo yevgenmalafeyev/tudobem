@@ -26,6 +26,7 @@ export class LocalDatabase {
     return !!process.env.POSTGRES_URL && process.env.DISABLE_DATABASE !== 'true';
   }
 
+
   /**
    * Initialize database tables if they don't exist
    */
@@ -48,7 +49,6 @@ export class LocalDatabase {
         CREATE TABLE IF NOT EXISTS exercises (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
           sentence TEXT NOT NULL,
-          gap_index INTEGER NOT NULL,
           correct_answer TEXT NOT NULL,
           topic VARCHAR(50) NOT NULL,
           level VARCHAR(5) NOT NULL CHECK (level IN ('A1','A2','B1','B2','C1','C2')),
@@ -62,7 +62,7 @@ export class LocalDatabase {
           explanation_uk TEXT,
           
           -- Additional Metadata
-          hint JSONB DEFAULT '{}'::jsonb,
+          hint TEXT,
           difficulty_score FLOAT DEFAULT 0.5,
           usage_count INTEGER DEFAULT 0,
           
@@ -132,10 +132,10 @@ export class LocalDatabase {
         try {
           const result = await pool.query(`
             INSERT INTO exercises (
-              sentence, gap_index, correct_answer, topic, level,
+              sentence, correct_answer, topic, level,
               multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
               hint, difficulty_score, usage_count
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             ON CONFLICT (sentence, correct_answer, topic, level) 
             DO UPDATE SET 
               multiple_choice_options = EXCLUDED.multiple_choice_options,
@@ -146,7 +146,6 @@ export class LocalDatabase {
             RETURNING id
           `, [
             exercise.sentence,
-            exercise.gapIndex,
             exercise.correctAnswer,
             exercise.topic,
             exercise.level,
@@ -154,7 +153,7 @@ export class LocalDatabase {
             exercise.explanations.pt,
             exercise.explanations.en,
             exercise.explanations.uk,
-            JSON.stringify(exercise.hint || {}),
+            exercise.hint || null,
             exercise.difficultyScore || 0.5,
             exercise.usageCount || 0
           ]);
@@ -190,7 +189,7 @@ export class LocalDatabase {
     try {
       let query = `
         SELECT 
-          id, sentence, gap_index, correct_answer, topic, level,
+          id, sentence, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
           hint, difficulty_score, usage_count,
           created_at, updated_at
@@ -248,7 +247,6 @@ export class LocalDatabase {
       return result.rows.map(row => ({
         id: row.id,
         sentence: row.sentence,
-        gapIndex: row.gap_index,
         correctAnswer: row.correct_answer,
         topic: row.topic,
         level: row.level as LanguageLevel,
@@ -359,7 +357,7 @@ export class LocalDatabase {
   /**
    * Update exercise hint data
    */
-  static async updateExerciseHint(exerciseId: string, hintData: any): Promise<void> { // eslint-disable-line @typescript-eslint/no-explicit-any
+  static async updateExerciseHint(exerciseId: string, hintText: string): Promise<void> {
     if (!this.isDatabaseAvailable()) {
       console.log('⚠️ Database not available - cannot update hint');
       return;
@@ -372,7 +370,7 @@ export class LocalDatabase {
         `UPDATE exercises 
          SET hint = $1, updated_at = NOW() 
          WHERE id = $2`,
-        [JSON.stringify(hintData), exerciseId]
+        [hintText, exerciseId]
       );
     } catch (error) {
       console.error('❌ Error updating exercise hint:', error);
@@ -394,14 +392,13 @@ export class LocalDatabase {
     try {
       await pool.query(
         `INSERT INTO exercises (
-          id, sentence, gap_index, correct_answer, topic, level,
+          id, sentence, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
           hint, difficulty_score, usage_count, created_at, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
         [
           exercise.id,
           exercise.sentence,
-          exercise.gapIndex,
           exercise.correctAnswer,
           exercise.topic,
           exercise.level,
@@ -409,7 +406,7 @@ export class LocalDatabase {
           exercise.explanations?.pt || null,
           exercise.explanations?.en || null,
           exercise.explanations?.uk || null,
-          JSON.stringify(exercise.hint || {}),
+          exercise.hint || null,
           exercise.difficultyScore || 0.5,
           exercise.usageCount || 0,
           exercise.createdAt || new Date().toISOString(),

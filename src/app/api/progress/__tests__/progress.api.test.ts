@@ -211,9 +211,7 @@ describe('Progress API Routes', () => {
     it('should return user progress successfully', async () => {
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
@@ -233,9 +231,7 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -248,9 +244,7 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(401);
@@ -264,9 +258,7 @@ describe('Progress API Routes', () => {
       
       const { GET } = await import('../stats/route');
       
-      const mockRequest = createMockRequest({});
-
-      const response = await GET(mockRequest);
+      const response = await GET();
       const responseData = await response.json();
 
       expect(response.status).toBe(500);

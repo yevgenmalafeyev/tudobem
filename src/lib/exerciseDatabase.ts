@@ -30,7 +30,6 @@ export class ExerciseDatabase {
         CREATE TABLE IF NOT EXISTS exercises (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
           sentence TEXT NOT NULL,
-          gap_index INTEGER NOT NULL,
           correct_answer TEXT NOT NULL,
           topic VARCHAR(50) NOT NULL,
           level VARCHAR(5) NOT NULL CHECK (level IN ('A1','A2','B1','B2','C1','C2')),
@@ -111,12 +110,11 @@ export class ExerciseDatabase {
         try {
           const result = await sql`
             INSERT INTO exercises (
-              sentence, gap_index, correct_answer, topic, level,
+              sentence, correct_answer, topic, level,
               multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
               hint, difficulty_score, usage_count
             ) VALUES (
               ${exercise.sentence},
-              ${exercise.gapIndex},
               ${exercise.correctAnswer},
               ${exercise.topic},
               ${exercise.level},
@@ -167,7 +165,7 @@ export class ExerciseDatabase {
     try {
       let query = `
         SELECT 
-          id, sentence, gap_index, correct_answer, topic, level,
+          id, sentence, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
           hint, difficulty_score, usage_count,
           created_at, updated_at
@@ -225,7 +223,6 @@ export class ExerciseDatabase {
       return result.rows.map(row => ({
         id: row.id,
         sentence: row.sentence,
-        gapIndex: row.gap_index,
         correctAnswer: row.correct_answer,
         topic: row.topic,
         level: row.level as LanguageLevel,

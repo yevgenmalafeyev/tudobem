@@ -7,9 +7,7 @@ export interface DatabaseExercise {
   correct_answer: string;
   topic: string;
   level: LanguageLevel;
-  hint_infinitive?: string;
-  hint_person?: string;
-  hint_form?: string;
+  hint?: string;  // Changed to single text field
   multiple_choice_options: string[];
   explanation_pt: string;
   explanation_en: string;
@@ -28,9 +26,7 @@ export class ExerciseDatabase {
           correct_answer TEXT NOT NULL,
           topic VARCHAR(100) NOT NULL,
           level VARCHAR(10) NOT NULL,
-          hint_infinitive VARCHAR(100),
-          hint_person VARCHAR(50),
-          hint_form VARCHAR(100),
+          hint TEXT,  -- Single text field for flexible hints
           multiple_choice_options TEXT[] NOT NULL,
           explanation_pt TEXT NOT NULL,
           explanation_en TEXT NOT NULL,
@@ -65,7 +61,7 @@ export class ExerciseDatabase {
     correctAnswer: string;
     topic: string;
     level: string;
-    hint?: { infinitive?: string; person?: string; form?: string };
+    hint?: string | { infinitive?: string; person?: string; form?: string };  // Accept both formats
     multipleChoiceOptions?: string[];
     explanations?: { pt: string; en: string; uk: string };
   }[]) {
@@ -73,19 +69,39 @@ export class ExerciseDatabase {
       const savedExercises = [];
       
       for (const exercise of exercises) {
+        // Convert hint to string format if it's an object
+        let hintText: string | null = null;
+        if (exercise.hint) {
+          if (typeof exercise.hint === 'string') {
+            hintText = exercise.hint;
+          } else {
+            // Convert object format to string
+            const { infinitive, person, form } = exercise.hint;
+            if (infinitive && person) {
+              hintText = `${infinitive} (${person})`;
+            } else if (infinitive && form) {
+              hintText = `${infinitive} (${form})`;
+            } else if (infinitive) {
+              hintText = infinitive;
+            } else if (person) {
+              hintText = `(${person})`;
+            } else if (form) {
+              hintText = `(${form})`;
+            }
+          }
+        }
+        
         const result = await sql`
           INSERT INTO exercises (
             sentence, correct_answer, topic, level,
-            hint_infinitive, hint_person, hint_form,
+            hint,
             multiple_choice_options, explanation_pt, explanation_en, explanation_uk
           ) VALUES (
             ${exercise.sentence},
             ${exercise.correctAnswer},
             ${exercise.topic},
             ${exercise.level},
-            ${exercise.hint?.infinitive || null},
-            ${exercise.hint?.person || null},
-            ${exercise.hint?.form || null},
+            ${hintText},
             ${JSON.stringify(exercise.multipleChoiceOptions || [])},
             ${exercise.explanations?.pt || ''},
             ${exercise.explanations?.en || ''},
@@ -121,15 +137,10 @@ export class ExerciseDatabase {
       return result.rows.map(row => ({
         id: row.id,
         sentence: row.sentence,
-        gapIndex: row.sentence.indexOf('_____'),
         correctAnswer: row.correct_answer,
         topic: row.topic,
         level: row.level as LanguageLevel,
-        hint: {
-          infinitive: row.hint_infinitive || undefined,
-          person: row.hint_person || undefined,
-          form: row.hint_form || undefined
-        },
+        hint: row.hint || undefined,  // Now just a string
         multipleChoiceOptions: row.multiple_choice_options || [],
         detailedExplanation: {
           pt: row.explanation_pt,
@@ -156,15 +167,10 @@ export class ExerciseDatabase {
       return result.rows.map(row => ({
         id: row.id,
         sentence: row.sentence,
-        gapIndex: row.sentence.indexOf('_____'),
         correctAnswer: row.correct_answer,
         topic: row.topic,
         level: row.level as LanguageLevel,
-        hint: {
-          infinitive: row.hint_infinitive || undefined,
-          person: row.hint_person || undefined,
-          form: row.hint_form || undefined
-        },
+        hint: row.hint || undefined,  // Now just a string
         multipleChoiceOptions: row.multiple_choice_options || [],
         detailedExplanation: {
           pt: row.explanation_pt,

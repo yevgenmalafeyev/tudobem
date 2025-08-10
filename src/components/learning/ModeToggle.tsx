@@ -10,10 +10,7 @@ interface ModeToggleProps {
 
 export default function ModeToggle({ learningMode, setLearningMode, appLanguage }: ModeToggleProps) {
   return (
-    <div className="flex items-center space-x-3">
-      <span className="text-xs sm:text-sm" style={{ color: 'var(--neo-text-muted)' }}>
-        {t('learningMode', appLanguage)}:
-      </span>
+    <div className="flex items-center">
       <div className="flex neo-inset-sm rounded-lg p-1">
         <button
           onClick={() => setLearningMode('input')}

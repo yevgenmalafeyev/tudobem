@@ -6,14 +6,12 @@ import GrammarExplanation from './GrammarExplanation';
 interface FeedbackDisplayProps {
   feedback: { isCorrect: boolean; explanation: string } | null;
   appLanguage: AppLanguage;
-  detailedExplanation?: string;
   currentExercise?: EnhancedExercise | null;
 }
 
 export default function FeedbackDisplay({ 
   feedback, 
   appLanguage, 
-  detailedExplanation, 
   currentExercise 
 }: FeedbackDisplayProps) {
   if (!feedback) return null;
@@ -56,25 +54,9 @@ export default function FeedbackDisplay({
           </div>
         )}
         
-        {/* Legacy detailed explanation fallback */}
-        {!feedback.isCorrect && !enhancedExplanation && detailedExplanation && (
-          <div className="mt-3 p-3 neo-inset-sm rounded" style={{ backgroundColor: 'var(--neo-background-muted)' }}>
-            <div className="font-medium mb-2" style={{ color: 'var(--neo-text)' }}>
-              📚 Grammar Details:
-            </div>
-            <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
-              {detailedExplanation}
-            </div>
-          </div>
-        )}
-        
         {/* Grammar explanation for incorrect answers */}
-        {currentExercise && (
-          <GrammarExplanation 
-            exercise={currentExercise}
-            appLanguage={appLanguage}
-            isVisible={!feedback.isCorrect}
-          />
+        {currentExercise && !feedback.isCorrect && (
+          <GrammarExplanation />
         )}
       </div>
     </div>

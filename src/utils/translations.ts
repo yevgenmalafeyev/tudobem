@@ -171,6 +171,11 @@ export const translations = {
     en: 'Press Enter for next question',
     uk: 'Натисніть Enter для наступного питання'
   },
+  clickToShowTopic: {
+    pt: 'Clique para mostrar o tópico',
+    en: 'Click to show topic',
+    uk: 'Клацніть, щоб показати тему'
+  },
   
   // Learning modes
   inputMode: {

@@ -40,5 +40,8 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
+    env: {
+      POSTGRES_URL: 'postgresql://yevgenmalafeyev@localhost:5432/tudobem_dev',
+    },
   },
 });

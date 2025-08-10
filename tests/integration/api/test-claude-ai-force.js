@@ -24,7 +24,7 @@ async function testForceClaudeAI() {
     console.log('🧪 Making request to force AI generation...');
     const startTime = Date.now();
     
-    const response = await fetch('http://localhost:3000/api/generate-exercise-batch', {
+    const response = await fetch('http://localhost:3000/api/generate-batch-exercises-batch', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

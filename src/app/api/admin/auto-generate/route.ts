@@ -40,7 +40,7 @@ For each exercise, create a fill-in-the-blank sentence with this structure:
 - correctAnswer: The correct word/phrase to fill the blank
 - topic: One of the specified topics
 - level: {LEVEL}
-- hint: Object with infinitive, person, and form if applicable
+- hint: Simple string hint based on topic (e.g., "estudar (1ª pessoa)" or "poder / conseguir")
 - multipleChoiceOptions: Array of 4 options including the correct answer
 - explanations: Object with Portuguese (pt), English (en), and Ukrainian (uk) explanations
 
@@ -53,11 +53,7 @@ Example format:
     "correctAnswer": "estudo",
     "topic": "verbos",
     "level": "{LEVEL}",
-    "hint": {
-      "infinitive": "estudar",
-      "person": "primeira pessoa singular",
-      "form": "presente do indicativo"
-    },
+    "hint": "estudar (1ª pessoa)",
     "multipleChoiceOptions": ["estudo", "estudas", "estuda", "estudamos"],
     "explanations": {
       "pt": "Primeira pessoa do singular do verbo 'estudar' no presente do indicativo.",
