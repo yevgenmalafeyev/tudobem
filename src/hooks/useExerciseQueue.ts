@@ -153,7 +153,7 @@ export function useExerciseQueue({
       setExerciseQueue(prev => ({
         ...prev,
         exercises,
-        currentIndex: 0,
+        currentIndex: 1, // Set to 1 since exercises[0] is already being displayed
         isBackgroundLoading: false,
         generationSource: result.data.source,
         totalGenerated: result.data.generatedCount

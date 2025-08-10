@@ -1,8 +1,7 @@
-import { NextRequest } from 'next/server';
 import { createApiResponse, createApiError, requireAdminAuth, withErrorHandling } from '@/lib/api-utils';
 import { enhanceAllHints, getExercisesNeedingHintAnalysis } from '@/scripts/enhance-hints';
 
-export const POST = withErrorHandling(async (_request: NextRequest) => {
+export const POST = withErrorHandling(async () => {
   console.log('🚀 [DEBUG] Hint enhancement API endpoint called');
   
   // Require admin authentication
@@ -51,7 +50,7 @@ export const POST = withErrorHandling(async (_request: NextRequest) => {
   }
 });
 
-export const GET = withErrorHandling(async (_request: NextRequest) => {
+export const GET = withErrorHandling(async () => {
   console.log('🔍 [DEBUG] Getting hint enhancement preview');
   
   // Require admin authentication
