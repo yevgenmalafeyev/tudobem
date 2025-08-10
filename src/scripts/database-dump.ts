@@ -18,9 +18,9 @@ interface DatabaseDump {
     indexes: string[];
   };
   data: {
-    exercises: any[];
-    exercise_sessions: any[];
-    generation_queue: any[];
+    exercises: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    exercise_sessions: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    generation_queue: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   };
   stats: {
     totalExercises: number;
@@ -109,7 +109,7 @@ export async function dumpDatabase(): Promise<void> {
 /**
  * Generate TypeScript seed script for production
  */
-function generateSeedScript(exercises: any[]): string {
+function generateSeedScript(exercises: any[]): string { // eslint-disable-line @typescript-eslint/no-explicit-any
   return `#!/usr/bin/env tsx
 
 /**

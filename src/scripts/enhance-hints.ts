@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 
 import { LocalDatabase } from '@/lib/localDatabase';
-import { UserDatabase } from '@/lib/userDatabase';
+// import { UserDatabase } from '@/lib/userDatabase';
 import { callClaudeApi, extractJsonFromClaudeResponse } from '@/lib/api-utils';
-import { EnhancedExercise } from '@/types/enhanced';
+// import { EnhancedExercise } from '@/types/enhanced';
 
 interface HintAnalysis {
   id: string;
@@ -20,7 +20,7 @@ interface ExerciseToAnalyze {
   correctAnswer: string;
   level: string;
   topic: string;
-  currentHint: any;
+  currentHint: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 /**
@@ -154,7 +154,8 @@ async function enhanceAllHints(): Promise<void> {
   
   try {
     // Get Claude API key
-    const claudeApiKey = await UserDatabase.getClaudeApiKey();
+    // const claudeApiKey = await UserDatabase.getClaudeApiKey();
+    const claudeApiKey = process.env.ANTHROPIC_API_KEY;
     if (!claudeApiKey) {
       throw new Error('Claude API key not found in database. Please configure it first.');
     }

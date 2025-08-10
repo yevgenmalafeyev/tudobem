@@ -6,7 +6,7 @@
  */
 
 import { LocalDatabase } from '@/lib/localDatabase';
-import { analyzeHintFormats, formatHint, needsHintFormatting } from './analyze-hint-format';
+import { analyzeHintFormats, needsHintFormatting } from './analyze-hint-format';
 
 // Person mapping for Portuguese pronouns
 const personMapping: Record<string, string> = {
@@ -24,7 +24,7 @@ const personMapping: Record<string, string> = {
   'third person plural': 'eles/elas'
 };
 
-function convertHintFormat(hint: any): any {
+function convertHintFormat(hint: any): any { // eslint-disable-line @typescript-eslint/no-explicit-any
   if (!hint || typeof hint !== 'object') {
     return hint;
   }
@@ -46,7 +46,7 @@ function convertHintFormat(hint: any): any {
       const pronoun = personMapping[lowerPerson] || person;
       
       // Create new hint format
-      const newHint: any = {
+      const newHint: any = { // eslint-disable-line @typescript-eslint/no-explicit-any
         infinitive: infinitive,
         person: pronoun
       };

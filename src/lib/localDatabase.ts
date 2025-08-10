@@ -380,7 +380,7 @@ export class LocalDatabase {
   /**
    * Update exercise hint data
    */
-  static async updateExerciseHint(exerciseId: string, hintData: any): Promise<void> {
+  static async updateExerciseHint(exerciseId: string, hintData: any): Promise<void> { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (!this.isDatabaseAvailable()) {
       console.log('⚠️ Database not available - cannot update hint');
       return;

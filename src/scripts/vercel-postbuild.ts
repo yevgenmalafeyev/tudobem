@@ -29,7 +29,7 @@ async function syncProductionDatabase(): Promise<void> {
     
     try {
       await fs.access(seedFile);
-    } catch (error) {
+    } catch (_error) {
       console.log('⚠️ No production seed file found. Creating empty database...');
       
       // Import and run basic database initialization

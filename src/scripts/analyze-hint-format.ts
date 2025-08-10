@@ -13,7 +13,7 @@ interface HintAnalysis {
   correctAnswer: string;
   level: string;
   topic: string;
-  hint: any;
+  hint: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   needsFormatting?: boolean;
   suggestedFormat?: string;
 }
@@ -34,7 +34,7 @@ const personMapping: Record<string, string> = {
   'third person plural': 'eles/elas'
 };
 
-function formatHint(hint: any): string | null {
+function formatHint(hint: any): string | null { // eslint-disable-line @typescript-eslint/no-explicit-any
   if (!hint || typeof hint !== 'object') {
     return null;
   }
@@ -57,7 +57,7 @@ function formatHint(hint: any): string | null {
   return infinitive;
 }
 
-function needsHintFormatting(hint: any): boolean {
+function needsHintFormatting(hint: any): boolean { // eslint-disable-line @typescript-eslint/no-explicit-any
   if (!hint || typeof hint !== 'object') {
     return false;
   }

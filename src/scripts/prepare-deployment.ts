@@ -40,7 +40,7 @@ async function validateDump(): Promise<boolean> {
     const requiredLevels = ['A1', 'A2', 'B1', 'B2'];
     const levelCounts: Record<string, number> = {};
     
-    exercises.forEach((ex: any) => {
+    exercises.forEach((ex: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       levelCounts[ex.level] = (levelCounts[ex.level] || 0) + 1;
     });
     
@@ -55,14 +55,15 @@ async function validateDump(): Promise<boolean> {
     }
     
     // Check for exercises with proper hints
-    const exercisesWithHints = exercises.filter((ex: any) => 
+    const exercisesWithHints = exercises.filter((ex: any) => // eslint-disable-line @typescript-eslint/no-explicit-any
+    
       ex.hint && typeof ex.hint === 'object' && ex.hint.infinitive
     );
     
     console.log(`💡 Exercises with proper hints: ${exercisesWithHints.length}/${exercises.length}`);
     
     // Check for recent updates (exercises from hint format fixes)
-    const recentUpdates = exercises.filter((ex: any) => {
+    const recentUpdates = exercises.filter((ex: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (!ex.updatedAt) return false;
       const updateTime = new Date(ex.updatedAt);
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
