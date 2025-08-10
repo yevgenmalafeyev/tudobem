@@ -53,7 +53,7 @@ For each exercise, generate a complete JSON object with the following exact stru
 ### 1. Sentence Construction:
 - Use authentic, natural Portuguese suitable for B2 level
 - Create realistic, contextual sentences (daily life, work, relationships, etc.)
-- Place the gap (\_\_\_\_\_) at the position where the answer should go
+- Place the gap (\_\_\_) at the position where the answer should go
 - Sentences should be 8-20 words long
 
 ### 2. Correct Answers:

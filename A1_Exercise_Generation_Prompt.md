@@ -1,6 +1,6 @@
 # Portuguese A1 Level Exercise Generation Prompt
 
-Generate **10 complete exercises** for each of the following A1 level Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
+Generate **10 complete exercises** for each of the following A1 level European Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
 
 ## A1 Topics to Generate (10 exercises each):
 
@@ -55,7 +55,7 @@ For each exercise, generate a complete JSON object with the following exact stru
 ### 1. Sentence Construction:
 - Use authentic, natural Portuguese suitable for A1 level
 - Create realistic, contextual sentences (daily life, work, relationships, etc.)
-- Place the gap (\_\_\_\_\_) at the position where the answer should go
+- Place the gap (\_\_\_) at the position where the answer should go
 - Sentences should be 8-20 words long
 
 ### 2. Correct Answers:

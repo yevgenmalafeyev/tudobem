@@ -1,7 +1,7 @@
 [
   {
     "id": null,
-    "sentence": "É importante que todos _____ a ata antes da reunião.",
+    "sentence": "É importante que todos ___ a ata antes da reunião.",
     "correctAnswer": "leiam",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -22,7 +22,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que ele _____ tempo para terminar hoje.",
+    "sentence": "Duvido que ele ___ tempo para terminar hoje.",
     "correctAnswer": "tenha",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -43,7 +43,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora _____ tarde, continuámos a conversar.",
+    "sentence": "Embora ___ tarde, continuámos a conversar.",
     "correctAnswer": "fosse",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -64,7 +64,7 @@
   },
   {
     "id": null,
-    "sentence": "Procuro alguém que _____ experiência em auditoria.",
+    "sentence": "Procuro alguém que ___ experiência em auditoria.",
     "correctAnswer": "tenha",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -85,7 +85,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que tudo _____ como planeámos.",
+    "sentence": "Tomara que tudo ___ como planeámos.",
     "correctAnswer": "corra",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -106,7 +106,7 @@
   },
   {
     "id": null,
-    "sentence": "Não acredito que eles nos _____ sem avisar.",
+    "sentence": "Não acredito que eles nos ___ sem avisar.",
     "correctAnswer": "deixem",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -127,7 +127,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que a entrega não _____ amanhã.",
+    "sentence": "É possível que a entrega não ___ amanhã.",
     "correctAnswer": "chegue",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -148,7 +148,7 @@
   },
   {
     "id": null,
-    "sentence": "Esperamos que o projeto _____ até ao verão.",
+    "sentence": "Esperamos que o projeto ___ até ao verão.",
     "correctAnswer": "avance",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -169,7 +169,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes que _____, precisamos de alinhar expectativas.",
+    "sentence": "Antes que ___, precisamos de alinhar expectativas.",
     "correctAnswer": "surjam",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -190,7 +190,7 @@
   },
   {
     "id": null,
-    "sentence": "Que ele _____ a verdade, custe o que custar!",
+    "sentence": "Que ele ___ a verdade, custe o que custar!",
     "correctAnswer": "diga",
     "topic": "conjuntivo-geral",
     "level": "B2",
@@ -211,7 +211,7 @@
   },
   {
     "id": null,
-    "sentence": "Acho que ele _____ amanhã, mas é provável que não _____.",
+    "sentence": "Acho que ele ___ amanhã, mas é provável que não ___.",
     "correctAnswer": "vem",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -232,7 +232,7 @@
   },
   {
     "id": null,
-    "sentence": "É provável que eles _____ mais cedo do que pensas.",
+    "sentence": "É provável que eles ___ mais cedo do que pensas.",
     "correctAnswer": "cheguem",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -253,7 +253,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes de _____, confirma se tens o passaporte.",
+    "sentence": "Antes de ___, confirma se tens o passaporte.",
     "correctAnswer": "viajares",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -274,7 +274,7 @@
   },
   {
     "id": null,
-    "sentence": "Apesar de ele não _____, decidimos avançar.",
+    "sentence": "Apesar de ele não ___, decidimos avançar.",
     "correctAnswer": "concordar",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -295,7 +295,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que tu _____ a tempo, mas talvez sim.",
+    "sentence": "Duvido que tu ___ a tempo, mas talvez sim.",
     "correctAnswer": "chegues",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -316,7 +316,7 @@
   },
   {
     "id": null,
-    "sentence": "Para _____ melhor, precisamos de mais dados.",
+    "sentence": "Para ___ melhor, precisamos de mais dados.",
     "correctAnswer": "decidir",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -337,7 +337,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom _____ feedback claro aos estagiários.",
+    "sentence": "É bom ___ feedback claro aos estagiários.",
     "correctAnswer": "dar",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -358,7 +358,7 @@
   },
   {
     "id": null,
-    "sentence": "Convém que vocês _____ as instruções até ao fim.",
+    "sentence": "Convém que vocês ___ as instruções até ao fim.",
     "correctAnswer": "leiam",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -379,7 +379,7 @@
   },
   {
     "id": null,
-    "sentence": "Sei que ela _____ bem francês desde criança.",
+    "sentence": "Sei que ela ___ bem francês desde criança.",
     "correctAnswer": "fala",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -400,7 +400,7 @@
   },
   {
     "id": null,
-    "sentence": "Depois de _____ o relatório, envia-mo, por favor.",
+    "sentence": "Depois de ___ o relatório, envia-mo, por favor.",
     "correctAnswer": "terminares",
     "topic": "indicativo-conjuntivo-infinitivo-avancado",
     "level": "B2",
@@ -421,7 +421,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem me dera que ela _____ comigo nesta viagem!",
+    "sentence": "Quem me dera que ela ___ comigo nesta viagem!",
     "correctAnswer": "fosse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -442,7 +442,7 @@
   },
   {
     "id": null,
-    "sentence": "Oxalá _____ mais tempo para a família!",
+    "sentence": "Oxalá ___ mais tempo para a família!",
     "correctAnswer": "tivéssemos",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -463,7 +463,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem dera que os prazos _____ mais folgados!",
+    "sentence": "Quem dera que os prazos ___ mais folgados!",
     "correctAnswer": "fossem",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -484,7 +484,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes _____ ouvido o teu conselho!",
+    "sentence": "Antes ___ ouvido o teu conselho!",
     "correctAnswer": "tivesse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -505,7 +505,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem me dera que tudo _____ mais simples!",
+    "sentence": "Quem me dera que tudo ___ mais simples!",
     "correctAnswer": "fosse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -526,7 +526,7 @@
   },
   {
     "id": null,
-    "sentence": "Ah, se eu _____ coragem para mudar agora!",
+    "sentence": "Ah, se eu ___ coragem para mudar agora!",
     "correctAnswer": "tivesse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -547,7 +547,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem dera que eles _____ a nossa proposta!",
+    "sentence": "Quem dera que eles ___ a nossa proposta!",
     "correctAnswer": "aceitassem",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -568,7 +568,7 @@
   },
   {
     "id": null,
-    "sentence": "Se ao menos _____ uma solução rápida!",
+    "sentence": "Se ao menos ___ uma solução rápida!",
     "correctAnswer": "houvesse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -589,7 +589,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem me dera que o trânsito _____ leve hoje!",
+    "sentence": "Quem me dera que o trânsito ___ leve hoje!",
     "correctAnswer": "estivesse",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -610,7 +610,7 @@
   },
   {
     "id": null,
-    "sentence": "Ah, se tu _____ mais paciente comigo!",
+    "sentence": "Ah, se tu ___ mais paciente comigo!",
     "correctAnswer": "fosses",
     "topic": "preterito-imperfeito-conjuntivo-exclamativas",
     "level": "B2",
@@ -631,7 +631,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu _____ mais tempo, viajaria pelo interior.",
+    "sentence": "Se eu ___ mais tempo, viajaria pelo interior.",
     "correctAnswer": "tivesse",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -652,7 +652,7 @@
   },
   {
     "id": null,
-    "sentence": "Se vocês _____ o aviso, não teria havido confusão.",
+    "sentence": "Se vocês ___ o aviso, não teria havido confusão.",
     "correctAnswer": "tivessem lido",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -673,7 +673,7 @@
   },
   {
     "id": null,
-    "sentence": "Se ele _____ a verdade, tudo seria diferente.",
+    "sentence": "Se ele ___ a verdade, tudo seria diferente.",
     "correctAnswer": "soubesse",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -694,7 +694,7 @@
   },
   {
     "id": null,
-    "sentence": "Se nós _____ mais cedo, evitávamos o trânsito.",
+    "sentence": "Se nós ___ mais cedo, evitávamos o trânsito.",
     "correctAnswer": "saíssemos",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -715,7 +715,7 @@
   },
   {
     "id": null,
-    "sentence": "Se tu _____ menos, descansarias melhor.",
+    "sentence": "Se tu ___ menos, descansarias melhor.",
     "correctAnswer": "trabalhasses",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -736,7 +736,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eles _____ ajuda, chamavam-nos imediatamente.",
+    "sentence": "Se eles ___ ajuda, chamavam-nos imediatamente.",
     "correctAnswer": "precisassem de",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -757,7 +757,7 @@
   },
   {
     "id": null,
-    "sentence": "Se ela _____ mais cedo, teria visto o diretor.",
+    "sentence": "Se ela ___ mais cedo, teria visto o diretor.",
     "correctAnswer": "tivesse chegado",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -778,7 +778,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu _____ melhor o orçamento, não aceitava o risco.",
+    "sentence": "Se eu ___ melhor o orçamento, não aceitava o risco.",
     "correctAnswer": "conhecesse",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -799,7 +799,7 @@
   },
   {
     "id": null,
-    "sentence": "Se a equipa _____ unida, venceríamos mais jogos.",
+    "sentence": "Se a equipa ___ unida, venceríamos mais jogos.",
     "correctAnswer": "estivesse",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -820,7 +820,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu te _____ antes, explicava tudo com calma.",
+    "sentence": "Se eu te ___ antes, explicava tudo com calma.",
     "correctAnswer": "visse",
     "topic": "se-preterito-imperfeito-conjuntivo",
     "level": "B2",
@@ -841,7 +841,7 @@
   },
   {
     "id": null,
-    "sentence": "Queria que tu _____ comigo hoje à tarde.",
+    "sentence": "Queria que tu ___ comigo hoje à tarde.",
     "correctAnswer": "viesses",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -862,7 +862,7 @@
   },
   {
     "id": null,
-    "sentence": "Quero que tu _____ comigo amanhã.",
+    "sentence": "Quero que tu ___ comigo amanhã.",
     "correctAnswer": "venhas",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -883,7 +883,7 @@
   },
   {
     "id": null,
-    "sentence": "Preferia que vocês não _____ tão tarde.",
+    "sentence": "Preferia que vocês não ___ tão tarde.",
     "correctAnswer": "chegassem",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -904,7 +904,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom que ele _____ os prazos combinados.",
+    "sentence": "É bom que ele ___ os prazos combinados.",
     "correctAnswer": "cumpra",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -925,7 +925,7 @@
   },
   {
     "id": null,
-    "sentence": "Seria melhor que ela _____ com antecedência.",
+    "sentence": "Seria melhor que ela ___ com antecedência.",
     "correctAnswer": "avisasse",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -946,7 +946,7 @@
   },
   {
     "id": null,
-    "sentence": "É necessário que nós _____ o relatório hoje.",
+    "sentence": "É necessário que nós ___ o relatório hoje.",
     "correctAnswer": "entreguemos",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -967,7 +967,7 @@
   },
   {
     "id": null,
-    "sentence": "Gostava que vocês _____ mais o vosso tempo.",
+    "sentence": "Gostava que vocês ___ mais o vosso tempo.",
     "correctAnswer": "organizassem",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -988,7 +988,7 @@
   },
   {
     "id": null,
-    "sentence": "É provável que a reunião _____ adiada.",
+    "sentence": "É provável que a reunião ___ adiada.",
     "correctAnswer": "seja",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -1009,7 +1009,7 @@
   },
   {
     "id": null,
-    "sentence": "Era importante que ele nos _____ a verdade.",
+    "sentence": "Era importante que ele nos ___ a verdade.",
     "correctAnswer": "dissesse",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -1030,7 +1030,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom que tu _____ os dados antes de decidir.",
+    "sentence": "É bom que tu ___ os dados antes de decidir.",
     "correctAnswer": "verifiques",
     "topic": "imperfeito-vs-presente-conjuntivo",
     "level": "B2",
@@ -1051,7 +1051,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando eu _____ ao aeroporto, mando-te mensagem.",
+    "sentence": "Quando eu ___ ao aeroporto, mando-te mensagem.",
     "correctAnswer": "chegar",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1072,7 +1072,7 @@
   },
   {
     "id": null,
-    "sentence": "Assim que _____ os resultados, marcamos a apresentação.",
+    "sentence": "Assim que ___ os resultados, marcamos a apresentação.",
     "correctAnswer": "tiverem",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1093,7 +1093,7 @@
   },
   {
     "id": null,
-    "sentence": "Logo que _____ o pagamento, enviamos a fatura final.",
+    "sentence": "Logo que ___ o pagamento, enviamos a fatura final.",
     "correctAnswer": "recebermos",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1114,7 +1114,7 @@
   },
   {
     "id": null,
-    "sentence": "Sempre que _____ dúvidas, fala comigo.",
+    "sentence": "Sempre que ___ dúvidas, fala comigo.",
     "correctAnswer": "tiveres",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1135,7 +1135,7 @@
   },
   {
     "id": null,
-    "sentence": "Enquanto _____ luz natural, aproveitem para fotografar.",
+    "sentence": "Enquanto ___ luz natural, aproveitem para fotografar.",
     "correctAnswer": "houver",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1156,7 +1156,7 @@
   },
   {
     "id": null,
-    "sentence": "Depois que _____ as autorizações, iniciamos as obras.",
+    "sentence": "Depois que ___ as autorizações, iniciamos as obras.",
     "correctAnswer": "chegarem",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1177,7 +1177,7 @@
   },
   {
     "id": null,
-    "sentence": "Mal _____ a luz, vamos sair com cuidado.",
+    "sentence": "Mal ___ a luz, vamos sair com cuidado.",
     "correctAnswer": "apagar",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1198,7 +1198,7 @@
   },
   {
     "id": null,
-    "sentence": "Sempre que _____ oportunidade, vamos visitar os avós.",
+    "sentence": "Sempre que ___ oportunidade, vamos visitar os avós.",
     "correctAnswer": "houver",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1219,7 +1219,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando _____ a confirmação, avisem a equipa.",
+    "sentence": "Quando ___ a confirmação, avisem a equipa.",
     "correctAnswer": "receberem",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1240,7 +1240,7 @@
   },
   {
     "id": null,
-    "sentence": "Assim que tu _____ disponível, marcamos a reunião.",
+    "sentence": "Assim que tu ___ disponível, marcamos a reunião.",
     "correctAnswer": "estiveres",
     "topic": "futuro-conjuntivo-conjuncoes",
     "level": "B2",
@@ -1261,7 +1261,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem _____ primeiro ao local deve esperar pelos outros.",
+    "sentence": "Quem ___ primeiro ao local deve esperar pelos outros.",
     "correctAnswer": "chegar",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1282,7 +1282,7 @@
   },
   {
     "id": null,
-    "sentence": "Os candidatos que _____ a prova prática serão chamados.",
+    "sentence": "Os candidatos que ___ a prova prática serão chamados.",
     "correctAnswer": "passarem",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1303,7 +1303,7 @@
   },
   {
     "id": null,
-    "sentence": "A primeira equipa que _____ cem pontos vence o jogo.",
+    "sentence": "A primeira equipa que ___ cem pontos vence o jogo.",
     "correctAnswer": "atingir",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1324,7 +1324,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem _____ dúvidas poderá enviá-las por email.",
+    "sentence": "Quem ___ dúvidas poderá enviá-las por email.",
     "correctAnswer": "tiver",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1345,7 +1345,7 @@
   },
   {
     "id": null,
-    "sentence": "Os alunos que _____ atraso deverão esperar fora.",
+    "sentence": "Os alunos que ___ atraso deverão esperar fora.",
     "correctAnswer": "chegarem com",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1366,7 +1366,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem _____ melhor proposta ficará com o contrato.",
+    "sentence": "Quem ___ melhor proposta ficará com o contrato.",
     "correctAnswer": "apresentar",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1387,7 +1387,7 @@
   },
   {
     "id": null,
-    "sentence": "O colaborador que _____ esta meta receberá um bónus.",
+    "sentence": "O colaborador que ___ esta meta receberá um bónus.",
     "correctAnswer": "alcançar",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1408,7 +1408,7 @@
   },
   {
     "id": null,
-    "sentence": "As pessoas que _____ a inscrição receberão confirmação.",
+    "sentence": "As pessoas que ___ a inscrição receberão confirmação.",
     "correctAnswer": "submeterem",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1429,7 +1429,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem _____ problemas técnicos deve contactar o suporte.",
+    "sentence": "Quem ___ problemas técnicos deve contactar o suporte.",
     "correctAnswer": "tiver",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1450,7 +1450,7 @@
   },
   {
     "id": null,
-    "sentence": "Os clientes que _____ o formulário serão atendidos primeiro.",
+    "sentence": "Os clientes que ___ o formulário serão atendidos primeiro.",
     "correctAnswer": "preencherem",
     "topic": "futuro-conjuntivo-relativas",
     "level": "B2",
@@ -1471,7 +1471,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora _____ caro, o concerto vale a pena.",
+    "sentence": "Embora ___ caro, o concerto vale a pena.",
     "correctAnswer": "seja",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1492,7 +1492,7 @@
   },
   {
     "id": null,
-    "sentence": "Mesmo que _____ chuva, vamos continuar o evento.",
+    "sentence": "Mesmo que ___ chuva, vamos continuar o evento.",
     "correctAnswer": "haja",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1513,7 +1513,7 @@
   },
   {
     "id": null,
-    "sentence": "Ainda que _____ pouco, ajudaremos como pudermos.",
+    "sentence": "Ainda que ___ pouco, ajudaremos como pudermos.",
     "correctAnswer": "ganhemos",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1534,7 +1534,7 @@
   },
   {
     "id": null,
-    "sentence": "Por mais que tu _____, não mudará a decisão.",
+    "sentence": "Por mais que tu ___, não mudará a decisão.",
     "correctAnswer": "insistas",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1555,7 +1555,7 @@
   },
   {
     "id": null,
-    "sentence": "Ainda que nos _____, manteremos a proposta.",
+    "sentence": "Ainda que nos ___, manteremos a proposta.",
     "correctAnswer": "critiquem",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1576,7 +1576,7 @@
   },
   {
     "id": null,
-    "sentence": "Mesmo que _____ tarde, envia o relatório hoje.",
+    "sentence": "Mesmo que ___ tarde, envia o relatório hoje.",
     "correctAnswer": "seja",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1597,7 +1597,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora tu não me _____, tentarei explicar outra vez.",
+    "sentence": "Embora tu não me ___, tentarei explicar outra vez.",
     "correctAnswer": "entendas",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1618,7 +1618,7 @@
   },
   {
     "id": null,
-    "sentence": "Por muito que _____, não conseguirás agradar a todos.",
+    "sentence": "Por muito que ___, não conseguirás agradar a todos.",
     "correctAnswer": "faças",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1639,7 +1639,7 @@
   },
   {
     "id": null,
-    "sentence": "Ainda que _____ ajuda, prefere trabalhar sozinho.",
+    "sentence": "Ainda que ___ ajuda, prefere trabalhar sozinho.",
     "correctAnswer": "lhe ofereçam",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1660,7 +1660,7 @@
   },
   {
     "id": null,
-    "sentence": "Mesmo que _____ tempo, não vou ao cinema hoje.",
+    "sentence": "Mesmo que ___ tempo, não vou ao cinema hoje.",
     "correctAnswer": "tenha",
     "topic": "presente-futuro-conjuntivo-concessivas",
     "level": "B2",
@@ -1681,7 +1681,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu _____ cedo, passo pelo teu escritório.",
+    "sentence": "Se eu ___ cedo, passo pelo teu escritório.",
     "correctAnswer": "chegar",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1702,7 +1702,7 @@
   },
   {
     "id": null,
-    "sentence": "Se vocês _____ disponibilidade, agendamos para sexta.",
+    "sentence": "Se vocês ___ disponibilidade, agendamos para sexta.",
     "correctAnswer": "tiverem",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1723,7 +1723,7 @@
   },
   {
     "id": null,
-    "sentence": "Se ele _____ a tempo, abrimos a loja mais cedo.",
+    "sentence": "Se ele ___ a tempo, abrimos a loja mais cedo.",
     "correctAnswer": "chegar",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1744,7 +1744,7 @@
   },
   {
     "id": null,
-    "sentence": "Se tu _____ dúvidas, liga-me sem hesitar.",
+    "sentence": "Se tu ___ dúvidas, liga-me sem hesitar.",
     "correctAnswer": "tiveres",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1765,7 +1765,7 @@
   },
   {
     "id": null,
-    "sentence": "Se a encomenda _____ amanhã, montamos tudo à tarde.",
+    "sentence": "Se a encomenda ___ amanhã, montamos tudo à tarde.",
     "correctAnswer": "chegar",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1786,7 +1786,7 @@
   },
   {
     "id": null,
-    "sentence": "Se nós _____ tempo, passamos pelo museu.",
+    "sentence": "Se nós ___ tempo, passamos pelo museu.",
     "correctAnswer": "tivermos",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1807,7 +1807,7 @@
   },
   {
     "id": null,
-    "sentence": "Se a diretora _____, anuncio as mudanças.",
+    "sentence": "Se a diretora ___, anuncio as mudanças.",
     "correctAnswer": "aprovar",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1828,7 +1828,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eles _____ a proposta, iniciamos o projeto.",
+    "sentence": "Se eles ___ a proposta, iniciamos o projeto.",
     "correctAnswer": "aceitarem",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1849,7 +1849,7 @@
   },
   {
     "id": null,
-    "sentence": "Se houver atrasos, _____ o plano.",
+    "sentence": "Se houver atrasos, ___ o plano.",
     "correctAnswer": "revemos",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1870,7 +1870,7 @@
   },
   {
     "id": null,
-    "sentence": "Se tu me _____ amanhã, levo-te os documentos.",
+    "sentence": "Se tu me ___ amanhã, levo-te os documentos.",
     "correctAnswer": "telefonares",
     "topic": "se-futuro-conjuntivo",
     "level": "B2",
@@ -1891,7 +1891,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que eles _____ prazos muito apertados ultimamente.",
+    "sentence": "É possível que eles ___ prazos muito apertados ultimamente.",
     "correctAnswer": "tenham cumprido",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -1912,7 +1912,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que a equipa _____ bem nos últimos jogos.",
+    "sentence": "Duvido que a equipa ___ bem nos últimos jogos.",
     "correctAnswer": "tenha jogado",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -1933,7 +1933,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora _____ muito, não chegaram ao objetivo.",
+    "sentence": "Embora ___ muito, não chegaram ao objetivo.",
     "correctAnswer": "tenham trabalhado",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -1954,7 +1954,7 @@
   },
   {
     "id": null,
-    "sentence": "É provável que tu _____ melhor ultimamente.",
+    "sentence": "É provável que tu ___ melhor ultimamente.",
     "correctAnswer": "tenhas dormido",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -1975,7 +1975,7 @@
   },
   {
     "id": null,
-    "sentence": "Pode ser que nós _____ erros nos últimos relatórios.",
+    "sentence": "Pode ser que nós ___ erros nos últimos relatórios.",
     "correctAnswer": "tenhamos cometido",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -1996,7 +1996,7 @@
   },
   {
     "id": null,
-    "sentence": "Não creio que eles _____ muito tempo para praticar.",
+    "sentence": "Não creio que eles ___ muito tempo para praticar.",
     "correctAnswer": "tenham tido",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2017,7 +2017,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom que os alunos _____ as leituras semanais.",
+    "sentence": "É bom que os alunos ___ as leituras semanais.",
     "correctAnswer": "tenham feito",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2038,7 +2038,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora eu não _____ muito, avancei no projeto.",
+    "sentence": "Embora eu não ___ muito, avancei no projeto.",
     "correctAnswer": "tenha dormido",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2059,7 +2059,7 @@
   },
   {
     "id": null,
-    "sentence": "É improvável que a empresa _____ lucros altos estes meses.",
+    "sentence": "É improvável que a empresa ___ lucros altos estes meses.",
     "correctAnswer": "tenha registado",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2080,7 +2080,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que vocês _____ as metas todas este trimestre.",
+    "sentence": "Duvido que vocês ___ as metas todas este trimestre.",
     "correctAnswer": "tenham alcançado",
     "topic": "preterito-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2101,7 +2101,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando tu _____ o curso, candidata-te à vaga.",
+    "sentence": "Quando tu ___ o curso, candidata-te à vaga.",
     "correctAnswer": "tiveres terminado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2122,7 +2122,7 @@
   },
   {
     "id": null,
-    "sentence": "Assim que _____ a auditoria, enviem o relatório.",
+    "sentence": "Assim que ___ a auditoria, enviem o relatório.",
     "correctAnswer": "tiverem concluído",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2143,7 +2143,7 @@
   },
   {
     "id": null,
-    "sentence": "Logo que eu _____ tudo, descanso.",
+    "sentence": "Logo que eu ___ tudo, descanso.",
     "correctAnswer": "tiver acabado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2164,7 +2164,7 @@
   },
   {
     "id": null,
-    "sentence": "Depois que _____ o pagamento, liberamos o acesso.",
+    "sentence": "Depois que ___ o pagamento, liberamos o acesso.",
     "correctAnswer": "tiverem processado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2185,7 +2185,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando _____ o relatório, falamos com a direção.",
+    "sentence": "Quando ___ o relatório, falamos com a direção.",
     "correctAnswer": "tivermos enviado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2206,7 +2206,7 @@
   },
   {
     "id": null,
-    "sentence": "Assim que ela _____ as revisões, seguimos para produção.",
+    "sentence": "Assim que ela ___ as revisões, seguimos para produção.",
     "correctAnswer": "tiver feito",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2227,7 +2227,7 @@
   },
   {
     "id": null,
-    "sentence": "Logo que _____ a inspeção, abrimos ao público.",
+    "sentence": "Logo que ___ a inspeção, abrimos ao público.",
     "correctAnswer": "tivermos passado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2248,7 +2248,7 @@
   },
   {
     "id": null,
-    "sentence": "Depois que tu _____ as tarefas, podes sair.",
+    "sentence": "Depois que tu ___ as tarefas, podes sair.",
     "correctAnswer": "tiveres concluído",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2269,7 +2269,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando eles _____ as correções, seguimos com o teste.",
+    "sentence": "Quando eles ___ as correções, seguimos com o teste.",
     "correctAnswer": "tiverem aplicado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2290,7 +2290,7 @@
   },
   {
     "id": null,
-    "sentence": "Assim que _____ as contas, fechamos o mês.",
+    "sentence": "Assim que ___ as contas, fechamos o mês.",
     "correctAnswer": "tivermos fechado",
     "topic": "futuro-perfeito-conjuntivo",
     "level": "B2",
@@ -2311,7 +2311,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu _____ a verdade, teria decidido diferente.",
+    "sentence": "Se eu ___ a verdade, teria decidido diferente.",
     "correctAnswer": "tivesse sabido",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2332,7 +2332,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eles _____ o prazo, o cliente não teria reclamado.",
+    "sentence": "Se eles ___ o prazo, o cliente não teria reclamado.",
     "correctAnswer": "tivessem cumprido",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2353,7 +2353,7 @@
   },
   {
     "id": null,
-    "sentence": "Se nós _____ o contrato, evitaríamos problemas legais.",
+    "sentence": "Se nós ___ o contrato, evitaríamos problemas legais.",
     "correctAnswer": "tivéssemos assinado",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2374,7 +2374,7 @@
   },
   {
     "id": null,
-    "sentence": "Se tu _____ mais cedo, apanhavas o comboio.",
+    "sentence": "Se tu ___ mais cedo, apanhavas o comboio.",
     "correctAnswer": "tivesses chegado",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2395,7 +2395,7 @@
   },
   {
     "id": null,
-    "sentence": "Se ela _____ a tempo, não perderia a entrevista.",
+    "sentence": "Se ela ___ a tempo, não perderia a entrevista.",
     "correctAnswer": "tivesse saído",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2416,7 +2416,7 @@
   },
   {
     "id": null,
-    "sentence": "Se vocês _____ o backup, nada se teria perdido.",
+    "sentence": "Se vocês ___ o backup, nada se teria perdido.",
     "correctAnswer": "tivessem feito",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2437,7 +2437,7 @@
   },
   {
     "id": null,
-    "sentence": "Se eu te _____ ontem, combinávamos logo.",
+    "sentence": "Se eu te ___ ontem, combinávamos logo.",
     "correctAnswer": "tivesse encontrado",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2458,7 +2458,7 @@
   },
   {
     "id": null,
-    "sentence": "Se a equipa _____ o plano, evitaria erros.",
+    "sentence": "Se a equipa ___ o plano, evitaria erros.",
     "correctAnswer": "tivesse seguido",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2479,7 +2479,7 @@
   },
   {
     "id": null,
-    "sentence": "Se os prazos _____ claros, não haveria dúvidas.",
+    "sentence": "Se os prazos ___ claros, não haveria dúvidas.",
     "correctAnswer": "tivessem sido",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2500,7 +2500,7 @@
   },
   {
     "id": null,
-    "sentence": "Se tu _____ a proposta, ganharíamos o cliente.",
+    "sentence": "Se tu ___ a proposta, ganharíamos o cliente.",
     "correctAnswer": "tivesses enviado",
     "topic": "mais-que-perfeito-composto-conjuntivo",
     "level": "B2",
@@ -2521,7 +2521,7 @@
   },
   {
     "id": null,
-    "sentence": "Oxalá _____ boas notícias em breve!",
+    "sentence": "Oxalá ___ boas notícias em breve!",
     "correctAnswer": "cheguem",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2542,7 +2542,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que tu me _____ hoje mesmo!",
+    "sentence": "Tomara que tu me ___ hoje mesmo!",
     "correctAnswer": "ligues",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2563,7 +2563,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem me dera que este ano _____ diferente!",
+    "sentence": "Quem me dera que este ano ___ diferente!",
     "correctAnswer": "fosse",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2584,7 +2584,7 @@
   },
   {
     "id": null,
-    "sentence": "Oxalá a equipa _____ o campeonato!",
+    "sentence": "Oxalá a equipa ___ o campeonato!",
     "correctAnswer": "vença",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2605,7 +2605,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem dera que tudo _____ certo no final!",
+    "sentence": "Quem dera que tudo ___ certo no final!",
     "correctAnswer": "corresse",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2626,7 +2626,7 @@
   },
   {
     "id": null,
-    "sentence": "Oxalá não _____ mais cancelamentos este mês!",
+    "sentence": "Oxalá não ___ mais cancelamentos este mês!",
     "correctAnswer": "haja",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2647,7 +2647,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que eu _____ forças para continuar!",
+    "sentence": "Tomara que eu ___ forças para continuar!",
     "correctAnswer": "tenha",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2668,7 +2668,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem me dera que eles _____ a minha ideia!",
+    "sentence": "Quem me dera que eles ___ a minha ideia!",
     "correctAnswer": "aceitassem",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2689,7 +2689,7 @@
   },
   {
     "id": null,
-    "sentence": "Oxalá tu _____ um ótimo dia hoje!",
+    "sentence": "Oxalá tu ___ um ótimo dia hoje!",
     "correctAnswer": "tenhas",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2710,7 +2710,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que as coisas _____ depressa!",
+    "sentence": "Tomara que as coisas ___ depressa!",
     "correctAnswer": "andem",
     "topic": "frases-exclamativas-desejo",
     "level": "B2",
@@ -2731,7 +2731,7 @@
   },
   {
     "id": null,
-    "sentence": "Amanhã a esta hora já _____ a documentação.",
+    "sentence": "Amanhã a esta hora já ___ a documentação.",
     "correctAnswer": "terei enviado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2752,7 +2752,7 @@
   },
   {
     "id": null,
-    "sentence": "Dentro de uma hora, eles já _____ o relatório final.",
+    "sentence": "Dentro de uma hora, eles já ___ o relatório final.",
     "correctAnswer": "terão concluído",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2773,7 +2773,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando voltares, eu já _____ de casa.",
+    "sentence": "Quando voltares, eu já ___ de casa.",
     "correctAnswer": "terei saído",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2794,7 +2794,7 @@
   },
   {
     "id": null,
-    "sentence": "Até amanhã, a equipa _____ todos os testes.",
+    "sentence": "Até amanhã, a equipa ___ todos os testes.",
     "correctAnswer": "terá terminado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2815,7 +2815,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando eles chegarem, nós já _____ tudo pronto.",
+    "sentence": "Quando eles chegarem, nós já ___ tudo pronto.",
     "correctAnswer": "teremos deixado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2836,7 +2836,7 @@
   },
   {
     "id": null,
-    "sentence": "Ao meio-dia, eu já _____ as compras todas.",
+    "sentence": "Ao meio-dia, eu já ___ as compras todas.",
     "correctAnswer": "terei feito",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2857,7 +2857,7 @@
   },
   {
     "id": null,
-    "sentence": "Na próxima semana à esta hora, tu já _____ o exame.",
+    "sentence": "Na próxima semana à esta hora, tu já ___ o exame.",
     "correctAnswer": "terás terminado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2878,7 +2878,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando o cliente ligar, eu já _____ o orçamento.",
+    "sentence": "Quando o cliente ligar, eu já ___ o orçamento.",
     "correctAnswer": "terei enviado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2899,7 +2899,7 @@
   },
   {
     "id": null,
-    "sentence": "Daqui a pouco, vocês já _____ tudo o que precisavam.",
+    "sentence": "Daqui a pouco, vocês já ___ tudo o que precisavam.",
     "correctAnswer": "terão resolvido",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",
@@ -2920,7 +2920,7 @@
   },
   {
     "id": null,
-    "sentence": "Quando sairmos, já _____ todas as luzes.",
+    "sentence": "Quando sairmos, já ___ todas as luzes.",
     "correctAnswer": "teremos apagado",
     "topic": "futuro-perfeito-indicativo",
     "level": "B2",

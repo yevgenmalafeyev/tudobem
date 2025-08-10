@@ -1,7 +1,7 @@
 [
   {
     "id": null,
-    "sentence": "Eu _____ chegar cedo amanhã.",
+    "sentence": "Eu ___ chegar cedo amanhã.",
     "correctAnswer": "consigo",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -22,7 +22,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ abrir a janela um pouco.",
+    "sentence": "Tu ___ abrir a janela um pouco.",
     "correctAnswer": "podes",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -43,7 +43,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ terminar o relatório hoje.",
+    "sentence": "Ele ___ terminar o relatório hoje.",
     "correctAnswer": "consegue",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -64,7 +64,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ resolver este problema juntos.",
+    "sentence": "Nós ___ resolver este problema juntos.",
     "correctAnswer": "conseguimos",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -85,7 +85,7 @@
   },
   {
     "id": null,
-    "sentence": "Vocês _____ falar com a diretora agora.",
+    "sentence": "Vocês ___ falar com a diretora agora.",
     "correctAnswer": "podem",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -106,7 +106,7 @@
   },
   {
     "id": null,
-    "sentence": "Eles _____ ajudar com a mudança.",
+    "sentence": "Eles ___ ajudar com a mudança.",
     "correctAnswer": "conseguem",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -127,7 +127,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela _____ correr cinco quilómetros sem parar.",
+    "sentence": "Ela ___ correr cinco quilómetros sem parar.",
     "correctAnswer": "consegue",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -148,7 +148,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ usar o teu computador um minuto.",
+    "sentence": "Eu ___ usar o teu computador um minuto.",
     "correctAnswer": "posso",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -169,7 +169,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ marcar a reunião para terça.",
+    "sentence": "Nós ___ marcar a reunião para terça.",
     "correctAnswer": "podemos",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -190,7 +190,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ levantar esse peso sozinho.",
+    "sentence": "Ele ___ levantar esse peso sozinho.",
     "correctAnswer": "consegue",
     "topic": "poder-conseguir",
     "level": "B1",
@@ -211,7 +211,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ tocar guitarra muito bem.",
+    "sentence": "Eu ___ tocar guitarra muito bem.",
     "correctAnswer": "sei",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -232,7 +232,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ onde fica a estação.",
+    "sentence": "Tu ___ onde fica a estação.",
     "correctAnswer": "sabes",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -253,7 +253,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ o novo vizinho do terceiro andar.",
+    "sentence": "Ele ___ o novo vizinho do terceiro andar.",
     "correctAnswer": "conhece",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -274,7 +274,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ as regras do jogo.",
+    "sentence": "Nós ___ as regras do jogo.",
     "correctAnswer": "sabemos",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -295,7 +295,7 @@
   },
   {
     "id": null,
-    "sentence": "Vocês _____ este restaurante desde 2019.",
+    "sentence": "Vocês ___ este restaurante desde 2019.",
     "correctAnswer": "conhecem",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -316,7 +316,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ falar um pouco de alemão.",
+    "sentence": "Eu ___ falar um pouco de alemão.",
     "correctAnswer": "sei",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -337,7 +337,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ o caminho até ao museu.",
+    "sentence": "Ele ___ o caminho até ao museu.",
     "correctAnswer": "sabe",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -358,7 +358,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ a diretora da escola pessoalmente.",
+    "sentence": "Nós ___ a diretora da escola pessoalmente.",
     "correctAnswer": "conhecemos",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -379,7 +379,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ resolver esta equação.",
+    "sentence": "Tu ___ resolver esta equação.",
     "correctAnswer": "sabes",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -400,7 +400,7 @@
   },
   {
     "id": null,
-    "sentence": "Vocês _____ bem a cidade do Porto.",
+    "sentence": "Vocês ___ bem a cidade do Porto.",
     "correctAnswer": "conhecem",
     "topic": "saber-conhecer",
     "level": "B1",
@@ -421,7 +421,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ estudar mais para o exame.",
+    "sentence": "Eu ___ estudar mais para o exame.",
     "correctAnswer": "devo",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -442,7 +442,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ ir ao médico hoje.",
+    "sentence": "Tu ___ ir ao médico hoje.",
     "correctAnswer": "tens de",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -463,7 +463,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ pagar a renda até sexta.",
+    "sentence": "Ele ___ pagar a renda até sexta.",
     "correctAnswer": "tem de",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -484,7 +484,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ chegar a horas às reuniões.",
+    "sentence": "Nós ___ chegar a horas às reuniões.",
     "correctAnswer": "devemos",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -505,7 +505,7 @@
   },
   {
     "id": null,
-    "sentence": "Vocês _____ descansar um pouco no fim de semana.",
+    "sentence": "Vocês ___ descansar um pouco no fim de semana.",
     "correctAnswer": "devem",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -526,7 +526,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ cumprir as regras da empresa.",
+    "sentence": "Eu ___ cumprir as regras da empresa.",
     "correctAnswer": "devo",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -547,7 +547,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele _____ fazer a manutenção do carro.",
+    "sentence": "Ele ___ fazer a manutenção do carro.",
     "correctAnswer": "tem de",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -568,7 +568,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ ouvir os conselhos do treinador.",
+    "sentence": "Nós ___ ouvir os conselhos do treinador.",
     "correctAnswer": "devemos",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -589,7 +589,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ entregar o relatório amanhã.",
+    "sentence": "Tu ___ entregar o relatório amanhã.",
     "correctAnswer": "tens de",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -610,7 +610,7 @@
   },
   {
     "id": null,
-    "sentence": "Vocês _____ usar capacete na obra.",
+    "sentence": "Vocês ___ usar capacete na obra.",
     "correctAnswer": "têm de",
     "topic": "dever-ter-de",
     "level": "B1",
@@ -631,7 +631,7 @@
   },
   {
     "id": null,
-    "sentence": "O relatório _____ pelo diretor ontem.",
+    "sentence": "O relatório ___ pelo diretor ontem.",
     "correctAnswer": "foi aprovado",
     "topic": "voz-passiva",
     "level": "B1",
@@ -652,7 +652,7 @@
   },
   {
     "id": null,
-    "sentence": "As cartas _____ pela equipa de vendas.",
+    "sentence": "As cartas ___ pela equipa de vendas.",
     "correctAnswer": "são enviadas",
     "topic": "voz-passiva",
     "level": "B1",
@@ -673,7 +673,7 @@
   },
   {
     "id": null,
-    "sentence": "A ponte _____ em 2020.",
+    "sentence": "A ponte ___ em 2020.",
     "correctAnswer": "foi inaugurada",
     "topic": "voz-passiva",
     "level": "B1",
@@ -694,7 +694,7 @@
   },
   {
     "id": null,
-    "sentence": "Os bilhetes _____ online rapidamente.",
+    "sentence": "Os bilhetes ___ online rapidamente.",
     "correctAnswer": "são comprados",
     "topic": "voz-passiva",
     "level": "B1",
@@ -715,7 +715,7 @@
   },
   {
     "id": null,
-    "sentence": "A casa _____ por arquitetos famosos.",
+    "sentence": "A casa ___ por arquitetos famosos.",
     "correctAnswer": "é projetada",
     "topic": "voz-passiva",
     "level": "B1",
@@ -736,7 +736,7 @@
   },
   {
     "id": null,
-    "sentence": "As reuniões _____ todas as segundas-feiras.",
+    "sentence": "As reuniões ___ todas as segundas-feiras.",
     "correctAnswer": "são marcadas",
     "topic": "voz-passiva",
     "level": "B1",
@@ -757,7 +757,7 @@
   },
   {
     "id": null,
-    "sentence": "O contrato _____ pelas duas partes.",
+    "sentence": "O contrato ___ pelas duas partes.",
     "correctAnswer": "foi assinado",
     "topic": "voz-passiva",
     "level": "B1",
@@ -778,7 +778,7 @@
   },
   {
     "id": null,
-    "sentence": "As encomendas _____ no armazém central.",
+    "sentence": "As encomendas ___ no armazém central.",
     "correctAnswer": "são preparadas",
     "topic": "voz-passiva",
     "level": "B1",
@@ -799,7 +799,7 @@
   },
   {
     "id": null,
-    "sentence": "A música _____ por um coro infantil.",
+    "sentence": "A música ___ por um coro infantil.",
     "correctAnswer": "é cantada",
     "topic": "voz-passiva",
     "level": "B1",
@@ -820,7 +820,7 @@
   },
   {
     "id": null,
-    "sentence": "Os dados _____ por especialistas.",
+    "sentence": "Os dados ___ por especialistas.",
     "correctAnswer": "são analisados",
     "topic": "voz-passiva",
     "level": "B1",
@@ -841,7 +841,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela disse: \"Eu estou cansada\" → Ela disse que _____ cansada.",
+    "sentence": "Ela disse: \"Eu estou cansada\" → Ela disse que ___ cansada.",
     "correctAnswer": "estava",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -862,7 +862,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele afirmou: \"Farei isso amanhã\" → Ele afirmou que _____ isso no dia seguinte.",
+    "sentence": "Ele afirmou: \"Farei isso amanhã\" → Ele afirmou que ___ isso no dia seguinte.",
     "correctAnswer": "faria",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -883,7 +883,7 @@
   },
   {
     "id": null,
-    "sentence": "Disseram: \"Podemos ajudar\" → Disseram que _____ ajudar.",
+    "sentence": "Disseram: \"Podemos ajudar\" → Disseram que ___ ajudar.",
     "correctAnswer": "podiam",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -904,7 +904,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela perguntou: \"Onde moras?\" → Ela perguntou onde eu _____ .",
+    "sentence": "Ela perguntou: \"Onde moras?\" → Ela perguntou onde eu ___ .",
     "correctAnswer": "morava",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -925,7 +925,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele contou: \"Conheço o gerente\" → Ele contou que _____ o gerente.",
+    "sentence": "Ele contou: \"Conheço o gerente\" → Ele contou que ___ o gerente.",
     "correctAnswer": "conhecia",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -946,7 +946,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela garantiu: \"Vou chegar cedo\" → Ela garantiu que _____ chegar cedo.",
+    "sentence": "Ela garantiu: \"Vou chegar cedo\" → Ela garantiu que ___ chegar cedo.",
     "correctAnswer": "ia",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -967,7 +967,7 @@
   },
   {
     "id": null,
-    "sentence": "O chefe disse: \"Entreguem hoje\" → O chefe disse que _____ entregar naquele dia.",
+    "sentence": "O chefe disse: \"Entreguem hoje\" → O chefe disse que ___ entregar naquele dia.",
     "correctAnswer": "deviam",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -988,7 +988,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele prometeu: \"Estarei lá\" → Ele prometeu que _____ lá.",
+    "sentence": "Ele prometeu: \"Estarei lá\" → Ele prometeu que ___ lá.",
     "correctAnswer": "estaria",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -1009,7 +1009,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela comentou: \"Trabalho aqui\" → Ela comentou que _____ ali.",
+    "sentence": "Ela comentou: \"Trabalho aqui\" → Ela comentou que ___ ali.",
     "correctAnswer": "trabalhava",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -1030,7 +1030,7 @@
   },
   {
     "id": null,
-    "sentence": "Eles disseram: \"Vamos ajudar\" → Eles disseram que _____ ajudar.",
+    "sentence": "Eles disseram: \"Vamos ajudar\" → Eles disseram que ___ ajudar.",
     "correctAnswer": "iam",
     "topic": "discurso-direto-indireto",
     "level": "B1",
@@ -1051,7 +1051,7 @@
   },
   {
     "id": null,
-    "sentence": "Não _____ esqueças de enviar o ficheiro.",
+    "sentence": "Não ___ esqueças de enviar o ficheiro.",
     "correctAnswer": "te",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1072,7 +1072,7 @@
   },
   {
     "id": null,
-    "sentence": "Quero _____ ver amanhã cedo.",
+    "sentence": "Quero ___ ver amanhã cedo.",
     "correctAnswer": "te",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1093,7 +1093,7 @@
   },
   {
     "id": null,
-    "sentence": "O documento, que _____ enviei, está correto.",
+    "sentence": "O documento, que ___ enviei, está correto.",
     "correctAnswer": "te",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1114,7 +1114,7 @@
   },
   {
     "id": null,
-    "sentence": "Entrega-_____ o livro depois da aula.",
+    "sentence": "Entrega-___ o livro depois da aula.",
     "correctAnswer": "lhe",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1135,7 +1135,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela _____ levantou muito cedo hoje.",
+    "sentence": "Ela ___ levantou muito cedo hoje.",
     "correctAnswer": "se",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1156,7 +1156,7 @@
   },
   {
     "id": null,
-    "sentence": "Podem _____ ajudar com estas caixas?",
+    "sentence": "Podem ___ ajudar com estas caixas?",
     "correctAnswer": "me",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1177,7 +1177,7 @@
   },
   {
     "id": null,
-    "sentence": "Espero que _____ digas a verdade.",
+    "sentence": "Espero que ___ digas a verdade.",
     "correctAnswer": "me",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1198,7 +1198,7 @@
   },
   {
     "id": null,
-    "sentence": "Veste-_____ rapidamente, por favor.",
+    "sentence": "Veste-___ rapidamente, por favor.",
     "correctAnswer": "te",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1219,7 +1219,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem _____ chamou ontem?",
+    "sentence": "Quem ___ chamou ontem?",
     "correctAnswer": "te",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1240,7 +1240,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele quer oferecer-_____ um presente.",
+    "sentence": "Ele quer oferecer-___ um presente.",
     "correctAnswer": "lhe",
     "topic": "colocacao-pronominal",
     "level": "B1",
@@ -1261,7 +1261,7 @@
   },
   {
     "id": null,
-    "sentence": "Gosto muito _____ livro aqui na minha mão.",
+    "sentence": "Gosto muito ___ livro aqui na minha mão.",
     "correctAnswer": "deste",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1282,7 +1282,7 @@
   },
   {
     "id": null,
-    "sentence": "Vês _____ cadeira ao teu lado?",
+    "sentence": "Vês ___ cadeira ao teu lado?",
     "correctAnswer": "essa",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1303,7 +1303,7 @@
   },
   {
     "id": null,
-    "sentence": "Prefiro _____ montanha lá ao fundo.",
+    "sentence": "Prefiro ___ montanha lá ao fundo.",
     "correctAnswer": "aquela",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1324,7 +1324,7 @@
   },
   {
     "id": null,
-    "sentence": "O que é _____ no chão ao pé de ti?",
+    "sentence": "O que é ___ no chão ao pé de ti?",
     "correctAnswer": "isso",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1345,7 +1345,7 @@
   },
   {
     "id": null,
-    "sentence": "Queres _____ caneta que tenho aqui?",
+    "sentence": "Queres ___ caneta que tenho aqui?",
     "correctAnswer": "esta",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1366,7 +1366,7 @@
   },
   {
     "id": null,
-    "sentence": "Olha _____ foto antiga na parede distante.",
+    "sentence": "Olha ___ foto antiga na parede distante.",
     "correctAnswer": "aquela",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1387,7 +1387,7 @@
   },
   {
     "id": null,
-    "sentence": "Traz-me _____ copo que está aí contigo.",
+    "sentence": "Traz-me ___ copo que está aí contigo.",
     "correctAnswer": "esse",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1408,7 +1408,7 @@
   },
   {
     "id": null,
-    "sentence": "Não toques _____ objeto aqui na mesa.",
+    "sentence": "Não toques ___ objeto aqui na mesa.",
     "correctAnswer": "neste",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1429,7 +1429,7 @@
   },
   {
     "id": null,
-    "sentence": "Sabes o que é _____ barulho aí?",
+    "sentence": "Sabes o que é ___ barulho aí?",
     "correctAnswer": "esse",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1450,7 +1450,7 @@
   },
   {
     "id": null,
-    "sentence": "Quem deixou _____ casaco lá fora?",
+    "sentence": "Quem deixou ___ casaco lá fora?",
     "correctAnswer": "aquele",
     "topic": "pronomes-demonstrativos",
     "level": "B1",
@@ -1471,7 +1471,7 @@
   },
   {
     "id": null,
-    "sentence": "Há _____ à porta a perguntar por ti.",
+    "sentence": "Há ___ à porta a perguntar por ti.",
     "correctAnswer": "alguém",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1492,7 +1492,7 @@
   },
   {
     "id": null,
-    "sentence": "Não vi _____ no escritório hoje.",
+    "sentence": "Não vi ___ no escritório hoje.",
     "correctAnswer": "ninguém",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1513,7 +1513,7 @@
   },
   {
     "id": null,
-    "sentence": "Tens _____ dúvida sobre o contrato?",
+    "sentence": "Tens ___ dúvida sobre o contrato?",
     "correctAnswer": "alguma",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1534,7 +1534,7 @@
   },
   {
     "id": null,
-    "sentence": "_____ está pronto; podemos começar.",
+    "sentence": "___ está pronto; podemos começar.",
     "correctAnswer": "Tudo",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1555,7 +1555,7 @@
   },
   {
     "id": null,
-    "sentence": "_____ me pareceu estranho naquela reunião.",
+    "sentence": "___ me pareceu estranho naquela reunião.",
     "correctAnswer": "Algo",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1576,7 +1576,7 @@
   },
   {
     "id": null,
-    "sentence": "Não sobrou _____ depois da festa.",
+    "sentence": "Não sobrou ___ depois da festa.",
     "correctAnswer": "nada",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1597,7 +1597,7 @@
   },
   {
     "id": null,
-    "sentence": "_____ alunos faltaram hoje.",
+    "sentence": "___ alunos faltaram hoje.",
     "correctAnswer": "Alguns",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1618,7 +1618,7 @@
   },
   {
     "id": null,
-    "sentence": "_____ funcionário pode responder a isso.",
+    "sentence": "___ funcionário pode responder a isso.",
     "correctAnswer": "Qualquer",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1639,7 +1639,7 @@
   },
   {
     "id": null,
-    "sentence": "Hoje _____ quer trabalhar até tarde.",
+    "sentence": "Hoje ___ quer trabalhar até tarde.",
     "correctAnswer": "ninguém",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1660,7 +1660,7 @@
   },
   {
     "id": null,
-    "sentence": "_____ destas caixas está vazia.",
+    "sentence": "___ destas caixas está vazia.",
     "correctAnswer": "Alguma",
     "topic": "pronomes-indefinidos",
     "level": "B1",
@@ -1681,7 +1681,7 @@
   },
   {
     "id": null,
-    "sentence": "Conheci a pessoa _____ me telefonou ontem.",
+    "sentence": "Conheci a pessoa ___ me telefonou ontem.",
     "correctAnswer": "que",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1702,7 +1702,7 @@
   },
   {
     "id": null,
-    "sentence": "É o autor _____ livros admiro.",
+    "sentence": "É o autor ___ livros admiro.",
     "correctAnswer": "cujos",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1723,7 +1723,7 @@
   },
   {
     "id": null,
-    "sentence": "Os amigos _____ falei já chegaram.",
+    "sentence": "Os amigos ___ falei já chegaram.",
     "correctAnswer": "de quem",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1744,7 +1744,7 @@
   },
   {
     "id": null,
-    "sentence": "A empresa _____ trabalho mudou de sede.",
+    "sentence": "A empresa ___ trabalho mudou de sede.",
     "correctAnswer": "onde",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1765,7 +1765,7 @@
   },
   {
     "id": null,
-    "sentence": "A proposta, _____ foi aprovada, segue hoje.",
+    "sentence": "A proposta, ___ foi aprovada, segue hoje.",
     "correctAnswer": "a qual",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1786,7 +1786,7 @@
   },
   {
     "id": null,
-    "sentence": "Os estudantes, _____ projetos foram premiados, celebraram.",
+    "sentence": "Os estudantes, ___ projetos foram premiados, celebraram.",
     "correctAnswer": "cujos",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1807,7 +1807,7 @@
   },
   {
     "id": null,
-    "sentence": "O bairro _____ eles moram é tranquilo.",
+    "sentence": "O bairro ___ eles moram é tranquilo.",
     "correctAnswer": "onde",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1828,7 +1828,7 @@
   },
   {
     "id": null,
-    "sentence": "É uma decisão _____ não concordo.",
+    "sentence": "É uma decisão ___ não concordo.",
     "correctAnswer": "com a qual",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1849,7 +1849,7 @@
   },
   {
     "id": null,
-    "sentence": "A senhora _____ falei é simpática.",
+    "sentence": "A senhora ___ falei é simpática.",
     "correctAnswer": "a quem",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1870,7 +1870,7 @@
   },
   {
     "id": null,
-    "sentence": "O relatório _____ te referiste está na pasta.",
+    "sentence": "O relatório ___ te referiste está na pasta.",
     "correctAnswer": "a que",
     "topic": "pronomes-relativos",
     "level": "B1",
@@ -1891,7 +1891,7 @@
   },
   {
     "id": null,
-    "sentence": "Vou _____ cinema com os meus amigos.",
+    "sentence": "Vou ___ cinema com os meus amigos.",
     "correctAnswer": "ao",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -1912,7 +1912,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele voltou _____ escritório depois do almoço.",
+    "sentence": "Ele voltou ___ escritório depois do almoço.",
     "correctAnswer": "ao",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -1933,7 +1933,7 @@
   },
   {
     "id": null,
-    "sentence": "Chegámos _____ aeroporto três horas antes.",
+    "sentence": "Chegámos ___ aeroporto três horas antes.",
     "correctAnswer": "ao",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -1954,7 +1954,7 @@
   },
   {
     "id": null,
-    "sentence": "Precisamos _____ relatório do mês passado.",
+    "sentence": "Precisamos ___ relatório do mês passado.",
     "correctAnswer": "do",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -1975,7 +1975,7 @@
   },
   {
     "id": null,
-    "sentence": "Falou _____ diretora sobre o plano.",
+    "sentence": "Falou ___ diretora sobre o plano.",
     "correctAnswer": "com a",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -1996,7 +1996,7 @@
   },
   {
     "id": null,
-    "sentence": "A chave está _____ gaveta.",
+    "sentence": "A chave está ___ gaveta.",
     "correctAnswer": "na",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -2017,7 +2017,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele veio _____ Brasil no verão.",
+    "sentence": "Ele veio ___ Brasil no verão.",
     "correctAnswer": "do",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -2038,7 +2038,7 @@
   },
   {
     "id": null,
-    "sentence": "A reunião foi _____ sala grande.",
+    "sentence": "A reunião foi ___ sala grande.",
     "correctAnswer": "na",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -2059,7 +2059,7 @@
   },
   {
     "id": null,
-    "sentence": "Entreguei a carta _____ correios.",
+    "sentence": "Entreguei a carta ___ correios.",
     "correctAnswer": "nos",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -2080,7 +2080,7 @@
   },
   {
     "id": null,
-    "sentence": "Vamos _____ parque depois das aulas.",
+    "sentence": "Vamos ___ parque depois das aulas.",
     "correctAnswer": "ao",
     "topic": "contraccoes-preposicoes",
     "level": "B1",
@@ -2101,7 +2101,7 @@
   },
   {
     "id": null,
-    "sentence": "O carro ficou _____ casa toda a tarde.",
+    "sentence": "O carro ficou ___ casa toda a tarde.",
     "correctAnswer": "ao lado da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2122,7 +2122,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele esperou _____ estação durante vinte minutos.",
+    "sentence": "Ele esperou ___ estação durante vinte minutos.",
     "correctAnswer": "em frente da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2143,7 +2143,7 @@
   },
   {
     "id": null,
-    "sentence": "Cancelaram o evento _____ chuva.",
+    "sentence": "Cancelaram o evento ___ chuva.",
     "correctAnswer": "devido à",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2164,7 +2164,7 @@
   },
   {
     "id": null,
-    "sentence": "Cheguei atrasado _____ trânsito intenso.",
+    "sentence": "Cheguei atrasado ___ trânsito intenso.",
     "correctAnswer": "por causa do",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2185,7 +2185,7 @@
   },
   {
     "id": null,
-    "sentence": "Guardámos as caixas _____ mesa.",
+    "sentence": "Guardámos as caixas ___ mesa.",
     "correctAnswer": "debaixo da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2206,7 +2206,7 @@
   },
   {
     "id": null,
-    "sentence": "O café fica _____ biblioteca.",
+    "sentence": "O café fica ___ biblioteca.",
     "correctAnswer": "perto da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2227,7 +2227,7 @@
   },
   {
     "id": null,
-    "sentence": "A reunião será _____ feriado nacional.",
+    "sentence": "A reunião será ___ feriado nacional.",
     "correctAnswer": "após o",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2248,7 +2248,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele passou _____ ponte velha.",
+    "sentence": "Ele passou ___ ponte velha.",
     "correctAnswer": "por baixo da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2269,7 +2269,7 @@
   },
   {
     "id": null,
-    "sentence": "O museu está _____ praça central.",
+    "sentence": "O museu está ___ praça central.",
     "correctAnswer": "no meio da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2290,7 +2290,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela sentou-se _____ janela.",
+    "sentence": "Ela sentou-se ___ janela.",
     "correctAnswer": "perto da",
     "topic": "locuções-prepositivas",
     "level": "B1",
@@ -2311,7 +2311,7 @@
   },
   {
     "id": null,
-    "sentence": "Comprámos camisas _____ para a equipa.",
+    "sentence": "Comprámos camisas ___ para a equipa.",
     "correctAnswer": "novas",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2332,7 +2332,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela trouxe uma mala muito _____.",
+    "sentence": "Ela trouxe uma mala muito ___.",
     "correctAnswer": "pesada",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2353,7 +2353,7 @@
   },
   {
     "id": null,
-    "sentence": "O relatório apresenta dados _____ e claros.",
+    "sentence": "O relatório apresenta dados ___ e claros.",
     "correctAnswer": "precisos",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2374,7 +2374,7 @@
   },
   {
     "id": null,
-    "sentence": "As soluções eram _____ e práticas.",
+    "sentence": "As soluções eram ___ e práticas.",
     "correctAnswer": "eficazes",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2395,7 +2395,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele fez uma escolha _____.",
+    "sentence": "Ele fez uma escolha ___.",
     "correctAnswer": "dificil",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2416,7 +2416,7 @@
   },
   {
     "id": null,
-    "sentence": "Procuramos pessoas _____ para o projeto.",
+    "sentence": "Procuramos pessoas ___ para o projeto.",
     "correctAnswer": "motivadas",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2437,7 +2437,7 @@
   },
   {
     "id": null,
-    "sentence": "Os resultados estão _____ hoje.",
+    "sentence": "Os resultados estão ___ hoje.",
     "correctAnswer": "ótimos",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2458,7 +2458,7 @@
   },
   {
     "id": null,
-    "sentence": "As caixas ficaram _____ de poeira.",
+    "sentence": "As caixas ficaram ___ de poeira.",
     "correctAnswer": "cheias",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2479,7 +2479,7 @@
   },
   {
     "id": null,
-    "sentence": "A tarefa parece _____ demais para agora.",
+    "sentence": "A tarefa parece ___ demais para agora.",
     "correctAnswer": "complexa",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2500,7 +2500,7 @@
   },
   {
     "id": null,
-    "sentence": "Eles apresentaram propostas muito _____.",
+    "sentence": "Eles apresentaram propostas muito ___.",
     "correctAnswer": "interessantes",
     "topic": "concordancia-nominal",
     "level": "B1",
@@ -2521,7 +2521,7 @@
   },
   {
     "id": null,
-    "sentence": "Os alunos _____ cedo para o exame.",
+    "sentence": "Os alunos ___ cedo para o exame.",
     "correctAnswer": "chegaram",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2542,7 +2542,7 @@
   },
   {
     "id": null,
-    "sentence": "A equipa _____ motivada para o jogo.",
+    "sentence": "A equipa ___ motivada para o jogo.",
     "correctAnswer": "está",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2563,7 +2563,7 @@
   },
   {
     "id": null,
-    "sentence": "Metade dos participantes _____ presente.",
+    "sentence": "Metade dos participantes ___ presente.",
     "correctAnswer": "está",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2584,7 +2584,7 @@
   },
   {
     "id": null,
-    "sentence": "Eu _____ o relatório amanhã.",
+    "sentence": "Eu ___ o relatório amanhã.",
     "correctAnswer": "entrego",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2605,7 +2605,7 @@
   },
   {
     "id": null,
-    "sentence": "Tu _____ muito durante a semana.",
+    "sentence": "Tu ___ muito durante a semana.",
     "correctAnswer": "trabalhas",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2626,7 +2626,7 @@
   },
   {
     "id": null,
-    "sentence": "Os dados _____ incorretos ontem.",
+    "sentence": "Os dados ___ incorretos ontem.",
     "correctAnswer": "estavam",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2647,7 +2647,7 @@
   },
   {
     "id": null,
-    "sentence": "A maior parte dos clientes _____ satisfeita.",
+    "sentence": "A maior parte dos clientes ___ satisfeita.",
     "correctAnswer": "está",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2668,7 +2668,7 @@
   },
   {
     "id": null,
-    "sentence": "As crianças _____ no parque todos os dias.",
+    "sentence": "As crianças ___ no parque todos os dias.",
     "correctAnswer": "brincam",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2689,7 +2689,7 @@
   },
   {
     "id": null,
-    "sentence": "Nós _____ a proposta agora.",
+    "sentence": "Nós ___ a proposta agora.",
     "correctAnswer": "analisamos",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2710,7 +2710,7 @@
   },
   {
     "id": null,
-    "sentence": "Eles _____ de acordo com a decisão.",
+    "sentence": "Eles ___ de acordo com a decisão.",
     "correctAnswer": "estão",
     "topic": "concordancia-verbal",
     "level": "B1",
@@ -2731,7 +2731,7 @@
   },
   {
     "id": null,
-    "sentence": "Espero que ele _____ cedo.",
+    "sentence": "Espero que ele ___ cedo.",
     "correctAnswer": "chege",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2752,7 +2752,7 @@
   },
   {
     "id": null,
-    "sentence": "É importante que nós _____ o contrato.",
+    "sentence": "É importante que nós ___ o contrato.",
     "correctAnswer": "assinemos",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2773,7 +2773,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que tu _____ a resposta.",
+    "sentence": "Duvido que tu ___ a resposta.",
     "correctAnswer": "saibas",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2794,7 +2794,7 @@
   },
   {
     "id": null,
-    "sentence": "Querem que eu _____ amanhã.",
+    "sentence": "Querem que eu ___ amanhã.",
     "correctAnswer": "trabalhe",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2815,7 +2815,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que eles _____ cedo.",
+    "sentence": "É possível que eles ___ cedo.",
     "correctAnswer": "partam",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2836,7 +2836,7 @@
   },
   {
     "id": null,
-    "sentence": "Preciso que vocês _____ atenção.",
+    "sentence": "Preciso que vocês ___ atenção.",
     "correctAnswer": "prestem",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2857,7 +2857,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que ela _____ o emprego.",
+    "sentence": "Tomara que ela ___ o emprego.",
     "correctAnswer": "consega",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2878,7 +2878,7 @@
   },
   {
     "id": null,
-    "sentence": "É melhor que tu _____ cedo hoje.",
+    "sentence": "É melhor que tu ___ cedo hoje.",
     "correctAnswer": "cheges",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2899,7 +2899,7 @@
   },
   {
     "id": null,
-    "sentence": "Convém que nós _____ os detalhes.",
+    "sentence": "Convém que nós ___ os detalhes.",
     "correctAnswer": "resolvamos",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2920,7 +2920,7 @@
   },
   {
     "id": null,
-    "sentence": "Desejo que vocês _____ felizes.",
+    "sentence": "Desejo que vocês ___ felizes.",
     "correctAnswer": "sejam",
     "topic": "presente-conjuntivo-regulares",
     "level": "B1",
@@ -2941,7 +2941,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom que ela _____ calma.",
+    "sentence": "É bom que ela ___ calma.",
     "correctAnswer": "esteja",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -2962,7 +2962,7 @@
   },
   {
     "id": null,
-    "sentence": "Espero que tu _____ paciente.",
+    "sentence": "Espero que tu ___ paciente.",
     "correctAnswer": "sejas",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -2983,7 +2983,7 @@
   },
   {
     "id": null,
-    "sentence": "Quero que vocês _____ aqui às nove.",
+    "sentence": "Quero que vocês ___ aqui às nove.",
     "correctAnswer": "venham",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3004,7 +3004,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que ele _____ ajudar.",
+    "sentence": "É possível que ele ___ ajudar.",
     "correctAnswer": "possa",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3025,7 +3025,7 @@
   },
   {
     "id": null,
-    "sentence": "Desejam que nós _____ o projeto.",
+    "sentence": "Desejam que nós ___ o projeto.",
     "correctAnswer": "façamos",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3046,7 +3046,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que ela _____ a resposta.",
+    "sentence": "Duvido que ela ___ a resposta.",
     "correctAnswer": "saiba",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3067,7 +3067,7 @@
   },
   {
     "id": null,
-    "sentence": "Tomara que eles _____ a verdade.",
+    "sentence": "Tomara que eles ___ a verdade.",
     "correctAnswer": "digam",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3088,7 +3088,7 @@
   },
   {
     "id": null,
-    "sentence": "Convém que eu _____ cedo.",
+    "sentence": "Convém que eu ___ cedo.",
     "correctAnswer": "vá",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3109,7 +3109,7 @@
   },
   {
     "id": null,
-    "sentence": "É necessário que tu _____ atenção.",
+    "sentence": "É necessário que tu ___ atenção.",
     "correctAnswer": "tenhas",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3130,7 +3130,7 @@
   },
   {
     "id": null,
-    "sentence": "Rezo para que ele _____ forças.",
+    "sentence": "Rezo para que ele ___ forças.",
     "correctAnswer": "tenha",
     "topic": "presente-conjuntivo-irregulares",
     "level": "B1",
@@ -3151,7 +3151,7 @@
   },
   {
     "id": null,
-    "sentence": "Acho que ele _____ amanhã.",
+    "sentence": "Acho que ele ___ amanhã.",
     "correctAnswer": "vem",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3172,7 +3172,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que eles _____ tarde.",
+    "sentence": "É possível que eles ___ tarde.",
     "correctAnswer": "cheguem",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3193,7 +3193,7 @@
   },
   {
     "id": null,
-    "sentence": "Para _____ cedo, precisamos de nos deitar antes.",
+    "sentence": "Para ___ cedo, precisamos de nos deitar antes.",
     "correctAnswer": "chegarmos",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3214,7 +3214,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que tu _____ a tempo.",
+    "sentence": "Duvido que tu ___ a tempo.",
     "correctAnswer": "consigas",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3235,7 +3235,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes de _____, lê o contrato com atenção.",
+    "sentence": "Antes de ___, lê o contrato com atenção.",
     "correctAnswer": "assinares",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3256,7 +3256,7 @@
   },
   {
     "id": null,
-    "sentence": "Se _____ bom tempo, vamos à praia.",
+    "sentence": "Se ___ bom tempo, vamos à praia.",
     "correctAnswer": "fizer",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3277,7 +3277,7 @@
   },
   {
     "id": null,
-    "sentence": "É certo que ela _____ aqui.",
+    "sentence": "É certo que ela ___ aqui.",
     "correctAnswer": "está",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3298,7 +3298,7 @@
   },
   {
     "id": null,
-    "sentence": "Para eles _____ melhor, precisamos explicar outra vez.",
+    "sentence": "Para eles ___ melhor, precisamos explicar outra vez.",
     "correctAnswer": "entenderem",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3319,7 +3319,7 @@
   },
   {
     "id": null,
-    "sentence": "Talvez nós _____ o projeto hoje.",
+    "sentence": "Talvez nós ___ o projeto hoje.",
     "correctAnswer": "terminemos",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3340,7 +3340,7 @@
   },
   {
     "id": null,
-    "sentence": "Depois de _____ o relatório, envia-me.",
+    "sentence": "Depois de ___ o relatório, envia-me.",
     "correctAnswer": "terminares",
     "topic": "indicativo-conjuntivo-infinitivo",
     "level": "B1",
@@ -3361,7 +3361,7 @@
   },
   {
     "id": null,
-    "sentence": "Acho que ele _____ sincero.",
+    "sentence": "Acho que ele ___ sincero.",
     "correctAnswer": "é",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3382,7 +3382,7 @@
   },
   {
     "id": null,
-    "sentence": "Duvido que tu _____ a verdade.",
+    "sentence": "Duvido que tu ___ a verdade.",
     "correctAnswer": "digas",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3403,7 +3403,7 @@
   },
   {
     "id": null,
-    "sentence": "Tenho medo de que eles não _____ tempo.",
+    "sentence": "Tenho medo de que eles não ___ tempo.",
     "correctAnswer": "tenham",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3424,7 +3424,7 @@
   },
   {
     "id": null,
-    "sentence": "Gosto que vocês _____ cedo.",
+    "sentence": "Gosto que vocês ___ cedo.",
     "correctAnswer": "cheguem",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3445,7 +3445,7 @@
   },
   {
     "id": null,
-    "sentence": "É provável que ela _____ amanhã.",
+    "sentence": "É provável que ela ___ amanhã.",
     "correctAnswer": "venha",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3466,7 +3466,7 @@
   },
   {
     "id": null,
-    "sentence": "Estou certo de que nós _____ preparados.",
+    "sentence": "Estou certo de que nós ___ preparados.",
     "correctAnswer": "estamos",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3487,7 +3487,7 @@
   },
   {
     "id": null,
-    "sentence": "Lamento que tu não _____ participar.",
+    "sentence": "Lamento que tu não ___ participar.",
     "correctAnswer": "possas",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3508,7 +3508,7 @@
   },
   {
     "id": null,
-    "sentence": "Espero que ele _____ o e-mail.",
+    "sentence": "Espero que ele ___ o e-mail.",
     "correctAnswer": "leia",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3529,7 +3529,7 @@
   },
   {
     "id": null,
-    "sentence": "Não acredito que isso _____ verdade.",
+    "sentence": "Não acredito que isso ___ verdade.",
     "correctAnswer": "seja",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3550,7 +3550,7 @@
   },
   {
     "id": null,
-    "sentence": "Tenho a sensação de que tudo _____ bem.",
+    "sentence": "Tenho a sensação de que tudo ___ bem.",
     "correctAnswer": "vai",
     "topic": "verbos-opiniao-sentimento",
     "level": "B1",
@@ -3571,7 +3571,7 @@
   },
   {
     "id": null,
-    "sentence": "É necessário que vocês _____ silêncio.",
+    "sentence": "É necessário que vocês ___ silêncio.",
     "correctAnswer": "façam",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3592,7 +3592,7 @@
   },
   {
     "id": null,
-    "sentence": "É provável que ela _____ mais cedo.",
+    "sentence": "É provável que ela ___ mais cedo.",
     "correctAnswer": "chegue",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3613,7 +3613,7 @@
   },
   {
     "id": null,
-    "sentence": "É certo que ele _____ aqui.",
+    "sentence": "É certo que ele ___ aqui.",
     "correctAnswer": "está",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3634,7 +3634,7 @@
   },
   {
     "id": null,
-    "sentence": "Convém que nós _____ prudentes.",
+    "sentence": "Convém que nós ___ prudentes.",
     "correctAnswer": "sejamos",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3655,7 +3655,7 @@
   },
   {
     "id": null,
-    "sentence": "É possível que tu _____ amanhã.",
+    "sentence": "É possível que tu ___ amanhã.",
     "correctAnswer": "venhas",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3676,7 +3676,7 @@
   },
   {
     "id": null,
-    "sentence": "Importa que eles _____ a verdade.",
+    "sentence": "Importa que eles ___ a verdade.",
     "correctAnswer": "digam",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3697,7 +3697,7 @@
   },
   {
     "id": null,
-    "sentence": "É natural que eu não _____ tudo.",
+    "sentence": "É natural que eu não ___ tudo.",
     "correctAnswer": "saiba",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3718,7 +3718,7 @@
   },
   {
     "id": null,
-    "sentence": "É bom que vocês _____ descansar.",
+    "sentence": "É bom que vocês ___ descansar.",
     "correctAnswer": "possam",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3739,7 +3739,7 @@
   },
   {
     "id": null,
-    "sentence": "É evidente que nós _____ razão.",
+    "sentence": "É evidente que nós ___ razão.",
     "correctAnswer": "temos",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3760,7 +3760,7 @@
   },
   {
     "id": null,
-    "sentence": "É improvável que ele _____ hoje.",
+    "sentence": "É improvável que ele ___ hoje.",
     "correctAnswer": "venha",
     "topic": "expressoes-impessoais",
     "level": "B1",
@@ -3781,7 +3781,7 @@
   },
   {
     "id": null,
-    "sentence": "Falo baixo para que ele _____ dormir.",
+    "sentence": "Falo baixo para que ele ___ dormir.",
     "correctAnswer": "possa",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3802,7 +3802,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora tu _____ cansado, continuaste.",
+    "sentence": "Embora tu ___ cansado, continuaste.",
     "correctAnswer": "estejas",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3823,7 +3823,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes que eles _____, prepara tudo.",
+    "sentence": "Antes que eles ___, prepara tudo.",
     "correctAnswer": "cheguem",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3844,7 +3844,7 @@
   },
   {
     "id": null,
-    "sentence": "Caso nós não _____ tempo, avisamos.",
+    "sentence": "Caso nós não ___ tempo, avisamos.",
     "correctAnswer": "tenhamos",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3865,7 +3865,7 @@
   },
   {
     "id": null,
-    "sentence": "A menos que vocês _____ agora, perdemos o comboio.",
+    "sentence": "A menos que vocês ___ agora, perdemos o comboio.",
     "correctAnswer": "saiam",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3886,7 +3886,7 @@
   },
   {
     "id": null,
-    "sentence": "Embora ela não _____, tentaremos.",
+    "sentence": "Embora ela não ___, tentaremos.",
     "correctAnswer": "queira",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3907,7 +3907,7 @@
   },
   {
     "id": null,
-    "sentence": "Para que eu _____, repete devagar.",
+    "sentence": "Para que eu ___, repete devagar.",
     "correctAnswer": "entenda",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3928,7 +3928,7 @@
   },
   {
     "id": null,
-    "sentence": "Antes que _____ tarde, vamos.",
+    "sentence": "Antes que ___ tarde, vamos.",
     "correctAnswer": "seja",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3949,7 +3949,7 @@
   },
   {
     "id": null,
-    "sentence": "Caso tu _____ dúvidas, pergunta.",
+    "sentence": "Caso tu ___ dúvidas, pergunta.",
     "correctAnswer": "tenhas",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3970,7 +3970,7 @@
   },
   {
     "id": null,
-    "sentence": "A menos que ele _____, não entramos.",
+    "sentence": "A menos que ele ___, não entramos.",
     "correctAnswer": "traga",
     "topic": "conjuncoes-conjuntivo",
     "level": "B1",
@@ -3991,7 +3991,7 @@
   },
   {
     "id": null,
-    "sentence": "Procuro alguém que _____ francês.",
+    "sentence": "Procuro alguém que ___ francês.",
     "correctAnswer": "saiba",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4012,7 +4012,7 @@
   },
   {
     "id": null,
-    "sentence": "Não há quem _____ melhor do que ela.",
+    "sentence": "Não há quem ___ melhor do que ela.",
     "correctAnswer": "faça",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4033,7 +4033,7 @@
   },
   {
     "id": null,
-    "sentence": "Preciso de um técnico que _____ hoje.",
+    "sentence": "Preciso de um técnico que ___ hoje.",
     "correctAnswer": "venha",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4054,7 +4054,7 @@
   },
   {
     "id": null,
-    "sentence": "Queremos uma solução que _____ rápida.",
+    "sentence": "Queremos uma solução que ___ rápida.",
     "correctAnswer": "seja",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4075,7 +4075,7 @@
   },
   {
     "id": null,
-    "sentence": "Conheces alguém que _____ o sistema?",
+    "sentence": "Conheces alguém que ___ o sistema?",
     "correctAnswer": "entenda",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4096,7 +4096,7 @@
   },
   {
     "id": null,
-    "sentence": "Não encontro quem _____ isto agora.",
+    "sentence": "Não encontro quem ___ isto agora.",
     "correctAnswer": "resolva",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4117,7 +4117,7 @@
   },
   {
     "id": null,
-    "sentence": "Preciso de pessoas que _____ em equipa.",
+    "sentence": "Preciso de pessoas que ___ em equipa.",
     "correctAnswer": "trabalhem",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4138,7 +4138,7 @@
   },
   {
     "id": null,
-    "sentence": "Quero um computador que _____ rápido.",
+    "sentence": "Quero um computador que ___ rápido.",
     "correctAnswer": "funcione",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4159,7 +4159,7 @@
   },
   {
     "id": null,
-    "sentence": "Buscamos fornecedores que _____ prazos.",
+    "sentence": "Buscamos fornecedores que ___ prazos.",
     "correctAnswer": "cumpram",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4180,7 +4180,7 @@
   },
   {
     "id": null,
-    "sentence": "Não há alunos que _____ a sala.",
+    "sentence": "Não há alunos que ___ a sala.",
     "correctAnswer": "ocupem",
     "topic": "oracoes-relativas-conjuntivo",
     "level": "B1",
@@ -4201,7 +4201,7 @@
   },
   {
     "id": null,
-    "sentence": "Estudo muito para que eles _____ entender.",
+    "sentence": "Estudo muito para que eles ___ entender.",
     "correctAnswer": "possam",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4222,7 +4222,7 @@
   },
   {
     "id": null,
-    "sentence": "Falou alto para _____ ouvir.",
+    "sentence": "Falou alto para ___ ouvir.",
     "correctAnswer": "o público",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4243,7 +4243,7 @@
   },
   {
     "id": null,
-    "sentence": "Trabalhámos tanto que todos _____ exaustos.",
+    "sentence": "Trabalhámos tanto que todos ___ exaustos.",
     "correctAnswer": "ficaram",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4264,7 +4264,7 @@
   },
   {
     "id": null,
-    "sentence": "Ela correu tão depressa que _____ a prova.",
+    "sentence": "Ela correu tão depressa que ___ a prova.",
     "correctAnswer": "ganhou",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4285,7 +4285,7 @@
   },
   {
     "id": null,
-    "sentence": "Fez silêncio para que a criança _____ dormir.",
+    "sentence": "Fez silêncio para que a criança ___ dormir.",
     "correctAnswer": "pudesse",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4306,7 +4306,7 @@
   },
   {
     "id": null,
-    "sentence": "Chegámos cedo para _____ lugares.",
+    "sentence": "Chegámos cedo para ___ lugares.",
     "correctAnswer": "conseguirmos",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4327,7 +4327,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele falou devagar para que tu _____ tudo.",
+    "sentence": "Ele falou devagar para que tu ___ tudo.",
     "correctAnswer": "entendesses",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4348,7 +4348,7 @@
   },
   {
     "id": null,
-    "sentence": "Treinaram tanto que a equipa _____ campeã.",
+    "sentence": "Treinaram tanto que a equipa ___ campeã.",
     "correctAnswer": "foi",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4369,7 +4369,7 @@
   },
   {
     "id": null,
-    "sentence": "Organizei a lista para vocês _____ decidir rápido.",
+    "sentence": "Organizei a lista para vocês ___ decidir rápido.",
     "correctAnswer": "poderem",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
@@ -4390,7 +4390,7 @@
   },
   {
     "id": null,
-    "sentence": "Ele estudou o bastante para que _____ aprovado.",
+    "sentence": "Ele estudou o bastante para que ___ aprovado.",
     "correctAnswer": "fosse",
     "topic": "oracoes-finais-consecutivas",
     "level": "B1",
