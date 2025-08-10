@@ -23,8 +23,8 @@ export async function withAdminAuth(
 }
 
 export const ADMIN_CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME || 'admin',
-  password: process.env.ADMIN_PASSWORD || 'tudobem2024'
+  username: process.env.ADMIN_USERNAME || 'admin@tudobem.blaster.app',
+  password: process.env.ADMIN_PASSWORD || '321admin123'
 };
 
 export async function setAdminSession(): Promise<void> {

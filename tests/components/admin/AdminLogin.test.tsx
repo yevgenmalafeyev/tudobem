@@ -117,7 +117,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       const submitButton = screen.getByRole('button', { name: 'Sign In' })
       
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
       
@@ -133,7 +133,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       
       // Add values to make form valid
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       
       // Create a spy on the form's submit method to verify default submission is prevented
@@ -159,7 +159,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       const submitButton = screen.getByRole('button', { name: 'Sign In' })
       
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
       
@@ -200,7 +200,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       const submitButton = screen.getByRole('button', { name: 'Sign In' })
       
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
       
@@ -226,7 +226,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       const submitButton = screen.getByRole('button', { name: 'Sign In' })
       
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.click(submitButton)
       
@@ -289,7 +289,7 @@ describe('AdminLogin Component', () => {
       const submitButton = screen.getByRole('button', { name: 'Sign In' })
       
       await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'admin' } })
+        fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
         fireEvent.change(passwordInput, { target: { value: 'password123' } })
         fireEvent.click(submitButton)
         
@@ -421,7 +421,7 @@ describe('AdminLogin Component', () => {
       const passwordInput = screen.getByLabelText('Password')
       const form = container.querySelector('form')!
       
-      fireEvent.change(usernameInput, { target: { value: 'admin' } })
+      fireEvent.change(usernameInput, { target: { value: 'admin@tudobem.blaster.app' } })
       fireEvent.change(passwordInput, { target: { value: 'password123' } })
       fireEvent.submit(form)
       

@@ -8,7 +8,7 @@ interface AdminLoginRequest {
 }
 
 // Hardcoded admin credentials
-const ADMIN_USERNAME = 'admin';
+const ADMIN_USERNAME = 'admin@tudobem.blaster.app';
 const ADMIN_PASSWORD = '321admin123';
 
 async function adminLoginHandler(request: NextRequest) {

@@ -104,7 +104,7 @@ describe('Admin API Routes', () => {
       const { POST } = await import('../login/route');
       
       const mockRequest = createMockRequest({
-        username: 'admin',
+        username: 'admin@tudobem.blaster.app',
         password: '321admin123'
       });
 
@@ -113,7 +113,7 @@ describe('Admin API Routes', () => {
 
       expect(response.status).toBe(200);
       expect(responseData.success).toBe(true);
-      expect(responseData.data.admin.username).toBe('admin');
+      expect(responseData.data.admin.username).toBe('admin@tudobem.blaster.app');
       expect(responseData.data.admin.role).toBe('admin');
       expect(mockSet).toHaveBeenCalledWith('admin-session', 'authenticated', expect.objectContaining({
         httpOnly: true,
@@ -126,7 +126,7 @@ describe('Admin API Routes', () => {
       const { POST } = await import('../login/route');
       
       const mockRequest = createMockRequest({
-        username: 'admin',
+        username: 'admin@tudobem.blaster.app',
         password: 'wrongpassword'
       });
 
@@ -142,7 +142,7 @@ describe('Admin API Routes', () => {
       const { POST } = await import('../login/route');
       
       const mockRequest = createMockRequest({
-        username: 'admin'
+        username: 'admin@tudobem.blaster.app'
         // missing password
       });
 

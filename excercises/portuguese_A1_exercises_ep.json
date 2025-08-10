@@ -1,0 +1,3362 @@
+[
+  {
+    "id": null,
+    "sentence": "Eu ___ em casa hoje, porque está a chover muito.",
+    "correctAnswer": "estou",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estás",
+      "está",
+      "estou",
+      "estamos"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ no escritório, na Rua da Liberdade, número quarenta.",
+    "correctAnswer": "estás",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estamos",
+      "estou",
+      "está",
+      "estás"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele ___ cansado depois do treino de futebol.",
+    "correctAnswer": "está",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estamos",
+      "estás",
+      "estou",
+      "está"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Ana ___ muito contente com as boas notícias da manhã.",
+    "correctAnswer": "está",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estamos",
+      "está",
+      "estou",
+      "estás"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ atrasados para a aula de português.",
+    "correctAnswer": "estamos",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estás",
+      "está",
+      "estamos",
+      "estou"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ prontos para sair às oito em ponto.",
+    "correctAnswer": "estão",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estão",
+      "estou",
+      "estás",
+      "está"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ doente e vou marcar uma consulta.",
+    "correctAnswer": "estão",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "está",
+      "estão",
+      "estou",
+      "estás"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O meu irmão ___ na cozinha a preparar o jantar.",
+    "correctAnswer": "está",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estamos",
+      "está",
+      "estás",
+      "estou"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os alunos ___ nervosos antes da apresentação importante.",
+    "correctAnswer": "estão",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estás",
+      "estou",
+      "está",
+      "estão"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A equipa ___ de férias no Algarve esta semana.",
+    "correctAnswer": "está",
+    "topic": "verbo-estar",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "estou",
+      "está",
+      "estás",
+      "estamos"
+    ],
+    "explanations": {
+      "pt": "Usamos «estar» para estados temporários, localização e emoções. Presente irregular: estou, estás, está, estamos, estão.",
+      "en": "Use «estar» for temporary states, location, feelings. Present is irregular.",
+      "uk": "«Estar» для тимчасових станів, місця, почуттів. Теперішній — неправильний."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ português com os meus colegas todos os dias.",
+    "correctAnswer": "falo",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "falar",
+    "multipleChoiceOptions": [
+      "fala",
+      "falo",
+      "falas",
+      "falamos"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ café ao pequeno-almoço e chá ao jantar.",
+    "correctAnswer": "bebes",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "beber",
+    "multipleChoiceOptions": [
+      "bebes",
+      "bebemos",
+      "bebe",
+      "bebo"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele ___ no Porto com a família do norte.",
+    "correctAnswer": "vive",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "viver",
+    "multipleChoiceOptions": [
+      "vives",
+      "vive",
+      "vivemos",
+      "vivo"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ no centro de Lisboa perto do metro.",
+    "correctAnswer": "moramos",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "morar",
+    "multipleChoiceOptions": [
+      "moras",
+      "moro",
+      "moramos",
+      "mora"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ muito cedo durante a semana.",
+    "correctAnswer": "acordam",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "acordar",
+    "multipleChoiceOptions": [
+      "acordam",
+      "acorda",
+      "acordas",
+      "acordo"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os estudantes ___ muito para o exame final.",
+    "correctAnswer": "estudam",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "estudar",
+    "multipleChoiceOptions": [
+      "estudam",
+      "estudo",
+      "estuda",
+      "estudas"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Maria ___ portas e janelas para arejar a casa.",
+    "correctAnswer": "abre",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "abrir",
+    "multipleChoiceOptions": [
+      "abres",
+      "abrimos",
+      "abre",
+      "abro"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ sopa e salada ao almoço.",
+    "correctAnswer": "comemos",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "comer",
+    "multipleChoiceOptions": [
+      "comemos",
+      "comes",
+      "come",
+      "como"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ televisão depois do trabalho.",
+    "correctAnswer": "assistem",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "assistir",
+    "multipleChoiceOptions": [
+      "assistes",
+      "assisto",
+      "assiste",
+      "assistem"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O Pedro e a Inês ___ ao ginásio três vezes por semana.",
+    "correctAnswer": "treinam",
+    "topic": "presente-indicativo-regulares",
+    "level": "A1",
+    "hint": "treinar",
+    "multipleChoiceOptions": [
+      "treinas",
+      "treino",
+      "treinam",
+      "treina"
+    ],
+    "explanations": {
+      "pt": "Presente regular: -ar → o, as, a, amos, am; -er → o, es, e, emos, em; -ir → o, es, e, imos, em.",
+      "en": "Regular present endings as given.",
+      "uk": "Звичайні закінчення як наведено."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ ao supermercado depois do trabalho.",
+    "correctAnswer": "vou",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "ir",
+    "multipleChoiceOptions": [
+      "vamos",
+      "vai",
+      "vais",
+      "vou"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ um computador novo para o curso.",
+    "correctAnswer": "tens",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "ter",
+    "multipleChoiceOptions": [
+      "tem",
+      "tenho",
+      "tens",
+      "temos"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele não ___ abrir a janela por causa do vento.",
+    "correctAnswer": "pode",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "poder",
+    "multipleChoiceOptions": [
+      "posso",
+      "podes",
+      "podemos",
+      "pode"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ sopa ao jantar quase sempre.",
+    "correctAnswer": "fazemos",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "fazer",
+    "multipleChoiceOptions": [
+      "fazemos",
+      "faço",
+      "faz",
+      "fazes"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ vir connosco ao teatro hoje?",
+    "correctAnswer": "querem",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "querer",
+    "multipleChoiceOptions": [
+      "queres",
+      "quero",
+      "querem",
+      "quer"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ cedo porque têm aula às oito.",
+    "correctAnswer": "vão",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "ir",
+    "multipleChoiceOptions": [
+      "vai",
+      "vou",
+      "vais",
+      "vão"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Ana ___ muito frio no inverno.",
+    "correctAnswer": "tem",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "ter",
+    "multipleChoiceOptions": [
+      "tens",
+      "tenho",
+      "tem",
+      "temos"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ ver o mar daqui da varanda.",
+    "correctAnswer": "podemos",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "poder",
+    "multipleChoiceOptions": [
+      "podes",
+      "pode",
+      "posso",
+      "podemos"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ sempre a verdade aos teus amigos.",
+    "correctAnswer": "dizes",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "dizer",
+    "multipleChoiceOptions": [
+      "dizemos",
+      "dizes",
+      "digo",
+      "diz"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ televisão depois do jantar.",
+    "correctAnswer": "veem",
+    "topic": "presente-indicativo-irregulares",
+    "level": "A1",
+    "hint": "ver",
+    "multipleChoiceOptions": [
+      "vê",
+      "veem",
+      "vês",
+      "vejo"
+    ],
+    "explanations": {
+      "pt": "Alguns verbos são irregulares e mudam a raiz/terminações no presente.",
+      "en": "Some presents are irregular.",
+      "uk": "Деякі теперішні форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu estou a ___ o relatório agora mesmo.",
+    "correctAnswer": "fazer",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "fazer",
+    "multipleChoiceOptions": [
+      "fazer",
+      "fazendo",
+      "fazers",
+      "faz"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Marta está a ___ música no quarto dela.",
+    "correctAnswer": "ouvir",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "ouvir",
+    "multipleChoiceOptions": [
+      "faço",
+      "ouvindo",
+      "ouvirs",
+      "ouvir"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós estamos a ___ para o exame de amanhã.",
+    "correctAnswer": "estudar",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "estudar",
+    "multipleChoiceOptions": [
+      "estudars",
+      "estudar",
+      "faço",
+      "estudando"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles estão a ___ um filme no cinema do bairro.",
+    "correctAnswer": "ver",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "ver",
+    "multipleChoiceOptions": [
+      "ver",
+      "faço",
+      "vers",
+      "vendo"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O João está a ___ o jantar para a família.",
+    "correctAnswer": "cozinhar",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "cozinhar",
+    "multipleChoiceOptions": [
+      "cozinhar",
+      "cozinhando",
+      "faço",
+      "cozinhars"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês estão a ___ português com a professora Ana.",
+    "correctAnswer": "falar",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "falar",
+    "multipleChoiceOptions": [
+      "falars",
+      "falar",
+      "faço",
+      "falando"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu estou a ___ o autocarro junto à praça.",
+    "correctAnswer": "esperar",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "esperar",
+    "multipleChoiceOptions": [
+      "esperando",
+      "esperars",
+      "faço",
+      "esperar"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós estamos a ___ as janelas porque está calor.",
+    "correctAnswer": "abrir",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "abrir",
+    "multipleChoiceOptions": [
+      "abrirs",
+      "abrir",
+      "faço",
+      "abrindo"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela está a ___ a casa ao fim de semana.",
+    "correctAnswer": "limpar",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "limpar",
+    "multipleChoiceOptions": [
+      "limpando",
+      "limpars",
+      "limpar",
+      "faço"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os alunos estão a ___ as instruções com atenção.",
+    "correctAnswer": "ler",
+    "topic": "presente-continuo",
+    "level": "A1",
+    "hint": "ler",
+    "multipleChoiceOptions": [
+      "ler",
+      "lers",
+      "faço",
+      "lendo"
+    ],
+    "explanations": {
+      "pt": "EP: «estar a» + infinitivo indica ação em progresso.",
+      "en": "EP uses «estar a» + infinitive.",
+      "uk": "EP використовує «estar a» + інфінітив."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ dois irmãos e uma irmã mais nova.",
+    "correctAnswer": "tenho",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tem",
+      "temos",
+      "tens",
+      "tenho"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ uma reunião às nove da manhã.",
+    "correctAnswer": "tens",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "temos",
+      "tens",
+      "tem",
+      "tenho"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele ___ aulas de piano à terça e à quinta.",
+    "correctAnswer": "tem",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "temos",
+      "tens",
+      "tem",
+      "tenho"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ um carro pequeno para a cidade.",
+    "correctAnswer": "temos",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "temos",
+      "tens",
+      "tenho",
+      "tem"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ tempo para almoçar connosco hoje?",
+    "correctAnswer": "têm",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tenho",
+      "têm",
+      "tens",
+      "tem"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ muitos livros na estante da sala.",
+    "correctAnswer": "têm",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tem",
+      "têm",
+      "tenho",
+      "tens"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Ana ___ vinte e cinco anos hoje.",
+    "correctAnswer": "tem",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tenho",
+      "tens",
+      "temos",
+      "tem"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ de estudar mais esta semana.",
+    "correctAnswer": "temos",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tem",
+      "temos",
+      "tenho",
+      "tens"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ fome depois do treino?",
+    "correctAnswer": "tens",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "temos",
+      "tem",
+      "tenho",
+      "tens"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os meus pais ___ uma casa no campo.",
+    "correctAnswer": "têm",
+    "topic": "verbo-ter",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "tens",
+      "tem",
+      "têm",
+      "tenho"
+    ],
+    "explanations": {
+      "pt": "«Ter» expressa posse/idade; tenho, tens, tem, temos, têm.",
+      "en": "«Ter» expresses possession/age; present forms irregular.",
+      "uk": "«Ter» виражає володіння/вік; форми неправильні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ontem eu ___ ao mercado e comprei fruta fresca.",
+    "correctAnswer": "fui",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "ir",
+    "multipleChoiceOptions": [
+      "fui",
+      "fomos",
+      "foste",
+      "foi"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "No sábado, nós ___ um jantar para os amigos.",
+    "correctAnswer": "fizemos",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "fazer",
+    "multipleChoiceOptions": [
+      "fizeste",
+      "fez",
+      "fiz",
+      "fizemos"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Ana ___ muito estudo e passou no exame.",
+    "correctAnswer": "fez",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "fazer",
+    "multipleChoiceOptions": [
+      "fizeste",
+      "fiz",
+      "fez",
+      "fizemos"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ cedo para aproveitar a praia.",
+    "correctAnswer": "chegaram",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "chegar",
+    "multipleChoiceOptions": [
+      "cheguei",
+      "chegaste",
+      "chegaram",
+      "chegou"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ uma mensagem ao professor na semana passada.",
+    "correctAnswer": "enviaste",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "enviar",
+    "multipleChoiceOptions": [
+      "enviaste",
+      "enviou",
+      "enviei",
+      "enviámos"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ um livro muito interessante em dois dias.",
+    "correctAnswer": "lemos",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "ler",
+    "multipleChoiceOptions": [
+      "leste",
+      "leu",
+      "li",
+      "lemos"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele ___ a porta porque estava frio.",
+    "correctAnswer": "abriu",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "abrir",
+    "multipleChoiceOptions": [
+      "abrimos",
+      "abri",
+      "abriu",
+      "abriste"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ arroz e peixe para o almoço.",
+    "correctAnswer": "comeram",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "comer",
+    "multipleChoiceOptions": [
+      "comeram",
+      "comi",
+      "comeu",
+      "comeste"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ o bilhete de comboio online ontem à noite.",
+    "correctAnswer": "comprei",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "comprar",
+    "multipleChoiceOptions": [
+      "comprou",
+      "compraste",
+      "comprei",
+      "comprámos"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os meus avós ___ em Lisboa durante muitos anos.",
+    "correctAnswer": "viveram",
+    "topic": "preterito-perfeito-simples",
+    "level": "A1",
+    "hint": "viver",
+    "multipleChoiceOptions": [
+      "viveu",
+      "vivi",
+      "viveste",
+      "viveram"
+    ],
+    "explanations": {
+      "pt": "Pretérito perfeito: ações concluídas no passado; há formas irregulares.",
+      "en": "Simple past: completed actions; some irregular forms.",
+      "uk": "Минулий доконаний: завершені дії; є неправильні форми."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ levanto às sete e meia todos os dias.",
+    "correctAnswer": "me",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "me",
+      "nos",
+      "te",
+      "se"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ chamas Pedro ou Paulo?",
+    "correctAnswer": "te",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "me",
+      "te",
+      "nos",
+      "se"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela ___ veste rapidamente para não se atrasar.",
+    "correctAnswer": "se",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "se",
+      "nos",
+      "te",
+      "me"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ deitamos cedo ao domingo.",
+    "correctAnswer": "nos",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "me",
+      "te",
+      "nos",
+      "se"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ sentam aqui ao lado da janela.",
+    "correctAnswer": "se",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "me",
+      "nos",
+      "te",
+      "se"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ olham ao espelho antes de sair.",
+    "correctAnswer": "se",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "nos",
+      "me",
+      "se",
+      "te"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Maria ___ esqueceu de trazer a carteira.",
+    "correctAnswer": "se",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "te",
+      "me",
+      "se",
+      "nos"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando é que tu ___ casas?",
+    "correctAnswer": "te",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "se",
+      "nos",
+      "me",
+      "te"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ encontramos no café da esquina às dez.",
+    "correctAnswer": "nos",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "nos",
+      "te",
+      "me",
+      "se"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O João ___ corta sempre quando faz a barba.",
+    "correctAnswer": "se",
+    "topic": "pronomes-reflexos",
+    "level": "A1",
+    "hint": "pronome reflexo",
+    "multipleChoiceOptions": [
+      "se",
+      "nos",
+      "te",
+      "me"
+    ],
+    "explanations": {
+      "pt": "Pron. reflexos: me, te, se, nos, se. A ação recai no sujeito.",
+      "en": "Reflexive pronouns show the action returns to subject.",
+      "uk": "Рефлексивні займенники вказують на дію до підмета."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando cheguei, ele ___ a cozinhar o jantar.",
+    "correctAnswer": "estava",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "estar",
+    "multipleChoiceOptions": [
+      "estavam",
+      "estavas",
+      "estávamos",
+      "estava"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Naquela época nós ___ no Porto, perto do rio.",
+    "correctAnswer": "morávamos",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "morar",
+    "multipleChoiceOptions": [
+      "morávamos",
+      "morava",
+      "moravas",
+      "nenhuma"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ muito devagar por causa do trânsito.",
+    "correctAnswer": "conduzia",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "conduzir",
+    "multipleChoiceOptions": [
+      "condуzia",
+      "conduzias",
+      "conduzia",
+      "conduzíamos"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os miúdos ___ no parque toda a tarde.",
+    "correctAnswer": "brincavam",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "brincar",
+    "multipleChoiceOptions": [
+      "brincava",
+      "brincavam",
+      "nenhuma",
+      "brincavas"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ cansado depois do trabalho todos os dias.",
+    "correctAnswer": "estavas",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "estar",
+    "multipleChoiceOptions": [
+      "estava",
+      "estavas",
+      "estávamos",
+      "nenhuma"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela ___ a porta porque fazia frio.",
+    "correctAnswer": "fechava",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "fechar",
+    "multipleChoiceOptions": [
+      "fechava",
+      "fechavam",
+      "fechavas",
+      "fechávamos"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ sempre sopa antes do prato principal.",
+    "correctAnswer": "comíamos",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "comer",
+    "multipleChoiceOptions": [
+      "comias",
+      "nenhuma",
+      "comíamos",
+      "comia"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O Pedro ___ muito cedo naquele mês.",
+    "correctAnswer": "acordava",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "acordar",
+    "multipleChoiceOptions": [
+      "acordava",
+      "acordávamos",
+      "acordavam",
+      "acordavas"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ televisão enquanto esperavam o jantar.",
+    "correctAnswer": "viam",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "ver",
+    "multipleChoiceOptions": [
+      "viam",
+      "via",
+      "nenhuma",
+      "vias"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ aula de piano às segundas-feiras.",
+    "correctAnswer": "tinha",
+    "topic": "preterito-imperfeito-durativo",
+    "level": "A1",
+    "hint": "ter",
+    "multipleChoiceOptions": [
+      "tinhas",
+      "tínhamos",
+      "tinham",
+      "tinha"
+    ],
+    "explanations": {
+      "pt": "Imperfeito: ação em curso no passado, sem início/fim definidos.",
+      "en": "Imperfect: ongoing past action.",
+      "uk": "Імперфект: тривала минула дія."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quando era criança, eu ___ ao parque todos os dias.",
+    "correctAnswer": "ia",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "ir",
+    "multipleChoiceOptions": [
+      "ias",
+      "ia",
+      "iam",
+      "íamos"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "No verão, nós ___ gelados na praia muitas vezes.",
+    "correctAnswer": "comíamos",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "comer",
+    "multipleChoiceOptions": [
+      "comias",
+      "comíamos",
+      "nenhuma",
+      "comia"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela ___ muito cedo antes do trabalho, todas as manhãs.",
+    "correctAnswer": "acordava",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "acordar",
+    "multipleChoiceOptions": [
+      "acordavas",
+      "acordávamos",
+      "acordavam",
+      "acordava"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Os meus avós ___ histórias à noite frequentemente.",
+    "correctAnswer": "contavam",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "contar",
+    "multipleChoiceOptions": [
+      "contava",
+      "contavas",
+      "nenhuma",
+      "contavam"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu ___ futebol com os amigos todas as semanas.",
+    "correctAnswer": "jogavas",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "jogar",
+    "multipleChoiceOptions": [
+      "jogava",
+      "nenhuma",
+      "jogávamos",
+      "jogavas"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles ___ de comboio para a escola habitualmente.",
+    "correctAnswer": "iam",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "ir",
+    "multipleChoiceOptions": [
+      "nenhuma",
+      "ias",
+      "ia",
+      "iam"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O Pedro ___ livros de aventura quase sempre.",
+    "correctAnswer": "lia",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "ler",
+    "multipleChoiceOptions": [
+      "lia",
+      "lias",
+      "liam",
+      "líamos"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós ___ televisão depois do jantar muitas noites.",
+    "correctAnswer": "víamos",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "ver",
+    "multipleChoiceOptions": [
+      "via",
+      "nenhuma",
+      "vias",
+      "víamos"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu ___ muito exercício naquela altura.",
+    "correctAnswer": "fazia",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "fazer",
+    "multipleChoiceOptions": [
+      "faziam",
+      "fazia",
+      "fazias",
+      "fazíamos"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês ___ cedo no inverno, por causa do frio.",
+    "correctAnswer": "deitavam",
+    "topic": "preterito-imperfeito-frequentativo",
+    "level": "A1",
+    "hint": "deitar",
+    "multipleChoiceOptions": [
+      "deitavam",
+      "deitavas",
+      "nenhuma",
+      "deitava"
+    ],
+    "explanations": {
+      "pt": "Usa-se o imperfeito para hábitos no passado.",
+      "en": "Imperfect for past habits.",
+      "uk": "Імперфект для звичок у минулому."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ gato da vizinha dorme sempre no meu tapete.",
+    "correctAnswer": "O",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "A",
+      "Um",
+      "O",
+      "Os"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Preciso de ___ caderno para a aula de amanhã.",
+    "correctAnswer": "um",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "uns",
+      "um",
+      "uma",
+      "o"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Comprámos ___ maçãs no mercado esta manhã.",
+    "correctAnswer": "umas",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "as",
+      "umas",
+      "uns",
+      "uma"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ amigas da Carla chegam hoje de avião.",
+    "correctAnswer": "As",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "A",
+      "As",
+      "Umas",
+      "Os"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vou visitar ___ museu que abriu na semana passada.",
+    "correctAnswer": "o",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "um",
+      "os",
+      "uma",
+      "o"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quero ___ bolo e ___ chá, por favor.",
+    "correctAnswer": "um",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "um",
+      "uns",
+      "uma",
+      "o"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele trouxe ___ flores para a mãe.",
+    "correctAnswer": "umas",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "as",
+      "uma",
+      "umas",
+      "uns"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ professora nova é muito simpática.",
+    "correctAnswer": "A",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "A",
+      "As",
+      "Uma",
+      "O"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Podemos ver ___ estrelas esta noite no campo.",
+    "correctAnswer": "as",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "a",
+      "umas",
+      "os",
+      "as"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Há ___ restaurante bom perto daqui.",
+    "correctAnswer": "um",
+    "topic": "artigos-definidos-indefinidos",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "uns",
+      "uma",
+      "o",
+      "um"
+    ],
+    "explanations": {
+      "pt": "Artigos definidos e indefinidos; concordância obrigatória.",
+      "en": "Definite vs indefinite articles.",
+      "uk": "Означені й неозначені артиклі."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Gosto muito ___ livro aqui perto de mim.",
+    "correctAnswer": "deste",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "deste",
+      "desta",
+      "desse",
+      "daquele"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem é ___ senhora ao lado da porta?",
+    "correctAnswer": "essa",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "essa",
+      "esta",
+      "esse",
+      "aquela"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Trazes ___ caixas lá ao fundo?",
+    "correctAnswer": "aquelas",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "aqueles",
+      "estas",
+      "aquelas",
+      "essas"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ rapaz aqui é o meu irmão.",
+    "correctAnswer": "Este",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Aquele",
+      "Esta",
+      "Este",
+      "Esse"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Prefiro ___ sapatos aí perto de ti.",
+    "correctAnswer": "esses",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "aqueles",
+      "essas",
+      "esses",
+      "estes"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela falou sobre ___ problema que vimos ontem.",
+    "correctAnswer": "aquele",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "aquele",
+      "esse",
+      "aqueles",
+      "este"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Pega ___ canetas aqui na mesa.",
+    "correctAnswer": "estas",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "essas",
+      "aquelas",
+      "estas",
+      "estes"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Queres comprar ___ camisa aí no balcão?",
+    "correctAnswer": "essa",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "aquela",
+      "esta",
+      "esse",
+      "essa"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Não conheço ___ pessoas lá longe.",
+    "correctAnswer": "aquelas",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "essas",
+      "aquelas",
+      "aqueles",
+      "estas"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ fotografia aqui ficou muito bonita.",
+    "correctAnswer": "Esta",
+    "topic": "demonstrativos-variaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Este",
+      "Aquela",
+      "Esta",
+      "Essa"
+    ],
+    "explanations": {
+      "pt": "Demonstrativos concordam e marcam distância.",
+      "en": "Demonstratives agree and show distance.",
+      "uk": "Вказівні узгоджуються й позначають відстань."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O que é ___? Parece um presente para mim.",
+    "correctAnswer": "isto",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "isso",
+      "isto",
+      "aquilo",
+      "estes"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Que barulho é ___ aí? É a máquina?",
+    "correctAnswer": "isso",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "essas",
+      "aquilo",
+      "isso",
+      "isto"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vês ___ lá no céu? É um avião.",
+    "correctAnswer": "aquilo",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "aquele",
+      "isso",
+      "isto",
+      "aquilo"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ é muito caro para mim, prefiro outro.",
+    "correctAnswer": "Isto",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Isto",
+      "Isso",
+      "Aquilo",
+      "Estas"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se ouvires ___, chama o técnico.",
+    "correctAnswer": "isso",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "isto",
+      "essas",
+      "isso",
+      "aquilo"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ parece difícil, mas eu ajudo.",
+    "correctAnswer": "Isto",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Isto",
+      "Isso",
+      "Aquilo",
+      "Estes"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Quem deixou ___ na secretária?",
+    "correctAnswer": "isto",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "isso",
+      "estes",
+      "isto",
+      "aquilo"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Não digas ___ outra vez, por favor.",
+    "correctAnswer": "isso",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "isso",
+      "aquilo",
+      "essas",
+      "isto"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Olha ___ lá fora, é um arco-íris!",
+    "correctAnswer": "aquilo",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "isso",
+      "aquilo",
+      "isto",
+      "aqueles"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ não é meu, é do João.",
+    "correctAnswer": "Isso",
+    "topic": "demonstrativos-invariaveis",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Isto",
+      "Esse",
+      "Aquilo",
+      "Isso"
+    ],
+    "explanations": {
+      "pt": "Isto/isso/aquilo não variam.",
+      "en": "Invariable demonstratives.",
+      "uk": "Незмінні вказівні."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Ana visitou ___ avó no fim de semana.",
+    "correctAnswer": "a sua",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "a minha",
+      "a tua",
+      "a sua",
+      "as suas"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Onde estão ___ chaves? Não as encontro.",
+    "correctAnswer": "as minhas",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "a minha",
+      "as tuas",
+      "as suas",
+      "as minhas"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O Pedro trouxe ___ computador para a reunião.",
+    "correctAnswer": "o seu",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "o seu",
+      "os seus",
+      "o teu",
+      "o meu"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Nós já fizemos ___ trabalhos de casa.",
+    "correctAnswer": "os nossos",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "os vossos",
+      "os meus",
+      "os seus",
+      "os nossos"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vocês falaram com ___ professor hoje?",
+    "correctAnswer": "o vosso",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "o vosso",
+      "os vossos",
+      "o nosso",
+      "o seu"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela gosta muito de ___ cidade.",
+    "correctAnswer": "sua",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "tua",
+      "minha",
+      "sua",
+      "nossa"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ele perdeu ___ carteira no autocarro.",
+    "correctAnswer": "a sua",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "a tua",
+      "a sua",
+      "a minha",
+      "as suas"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eu terminei ___ tarefa antes do almoço.",
+    "correctAnswer": "a minha",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "as minhas",
+      "a minha",
+      "a sua",
+      "a tua"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Eles venderam ___ carro antigo.",
+    "correctAnswer": "o seu",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "o vosso",
+      "os seus",
+      "o nosso",
+      "o seu"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Partilhamos ___ ideias no encontro de hoje.",
+    "correctAnswer": "as nossas",
+    "topic": "possessivos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "as nossas",
+      "as suas",
+      "as minhas",
+      "as vossas"
+    ],
+    "explanations": {
+      "pt": "Possessivos concordam com o nome.",
+      "en": "Possessives agree with noun.",
+      "uk": "Присвійні узгоджуються з іменником."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ é o teu nome completo?",
+    "correctAnswer": "Qual",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Como",
+      "Qual",
+      "Quem",
+      "Que"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ moras? É perto do centro?",
+    "correctAnswer": "Onde",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Onde",
+      "Quando",
+      "Como",
+      "Porquê"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ custa este bilhete de metro?",
+    "correctAnswer": "Quanto",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Que",
+      "Quanto",
+      "Qual",
+      "Quando"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ chega o autocarro para o aeroporto?",
+    "correctAnswer": "Quando",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Quando",
+      "Onde",
+      "Quem",
+      "Que"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ está a porta do edifício principal?",
+    "correctAnswer": "Onde",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Onde",
+      "Qual",
+      "Como",
+      "Quem"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ é que estudas português, por necessidade ou gosto?",
+    "correctAnswer": "Por que",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Por que",
+      "Quando",
+      "Quem",
+      "Como"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ é o professor de matemática desta turma?",
+    "correctAnswer": "Quem",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Quem",
+      "Qual",
+      "Como",
+      "Que"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ preferes, chá ou café?",
+    "correctAnswer": "O que",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Qual",
+      "Quem",
+      "Como",
+      "O que"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ se diz «thank you» em português?",
+    "correctAnswer": "Como",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Como",
+      "Quando",
+      "Que",
+      "Quem"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ livros precisas para o curso?",
+    "correctAnswer": "Quantos",
+    "topic": "interrogativos",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Quanto",
+      "Que",
+      "Quem",
+      "Quantos"
+    ],
+    "explanations": {
+      "pt": "Palavras interrogativas comuns.",
+      "en": "Common question words.",
+      "uk": "Поширені питальні слова."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ estudo português todos os dias depois do trabalho.",
+    "correctAnswer": "Eu",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Tu",
+      "Eu",
+      "Ele",
+      "Nós"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ vivem em Braga há três anos.",
+    "correctAnswer": "Eles",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Ela",
+      "Eles",
+      "Vocês",
+      "Ele"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ queremos almoçar no restaurante da esquina.",
+    "correctAnswer": "Nós",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Eles",
+      "Eu",
+      "Vocês",
+      "Nós"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Tu e a Ana, ___ vão ao concerto amanhã?",
+    "correctAnswer": "vocês",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "vós",
+      "eles",
+      "vocês",
+      "nós"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ és o novo colega do escritório?",
+    "correctAnswer": "Tu",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Ele",
+      "Eu",
+      "Tu",
+      "Você"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "A Marta é simpática, ___ ajuda sempre.",
+    "correctAnswer": "ela",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "ele",
+      "ela",
+      "elas",
+      "eles"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O João e eu, ___ trabalhamos juntos.",
+    "correctAnswer": "nós",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "nós",
+      "vocês",
+      "eles",
+      "vós"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Professor, ___ pode repetir a explicação?",
+    "correctAnswer": "você",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "tu",
+      "você",
+      "ela",
+      "ele"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "___ são de que país, por favor?",
+    "correctAnswer": "Vocês",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "Vós",
+      "Nós",
+      "Vocês",
+      "Eles"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Se a Rita não vier, ___ fico preocupado.",
+    "correctAnswer": "eu",
+    "topic": "pronomes-pessoais",
+    "level": "A1",
+    "hint": "-",
+    "multipleChoiceOptions": [
+      "ele",
+      "tu",
+      "nós",
+      "eu"
+    ],
+    "explanations": {
+      "pt": "Pronomes sujeitos em EP.",
+      "en": "Subject pronouns in EP.",
+      "uk": "Займенники-підмети в EP."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vou ___ cinema com os meus amigos amanhã.",
+    "correctAnswer": "ao",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "no",
+      "para o",
+      "do",
+      "ao"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Ela mora ___ Lisboa, perto do Tejo.",
+    "correctAnswer": "em",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "em",
+      "de",
+      "para",
+      "a"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Chegamos ___ aeroporto às sete da manhã.",
+    "correctAnswer": "ao",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "no",
+      "ao",
+      "à",
+      "do"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Posso falar ___ diretor agora?",
+    "correctAnswer": "com o",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "do",
+      "com o",
+      "ao",
+      "para o"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O autocarro vem ___ Porto às nove e meia.",
+    "correctAnswer": "do",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "ao",
+      "em",
+      "para o",
+      "do"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Deixa o casaco ___ cadeira, por favor.",
+    "correctAnswer": "na",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "na",
+      "da",
+      "à",
+      "pela"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vou ___ farmácia comprar medicamentos.",
+    "correctAnswer": "à",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "a",
+      "à",
+      "na",
+      "da"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Precisamos ___ água para a caminhada.",
+    "correctAnswer": "de",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "em",
+      "a",
+      "com",
+      "de"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "Vamos ___ praia se estiver sol.",
+    "correctAnswer": "à",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "na",
+      "da",
+      "pela",
+      "à"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  },
+  {
+    "id": null,
+    "sentence": "O livro está ___ mochila desde ontem.",
+    "correctAnswer": "na",
+    "topic": "preposicoes",
+    "level": "A1",
+    "hint": "",
+    "multipleChoiceOptions": [
+      "na",
+      "à",
+      "da",
+      "pela"
+    ],
+    "explanations": {
+      "pt": "Preposições e contrações.",
+      "en": "Prepositions and contractions.",
+      "uk": "Прийменники та злиття."
+    },
+    "difficultyScore": 0.6,
+    "usageCount": 0
+  }
+]
