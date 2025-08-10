@@ -8,6 +8,7 @@ import { useAnswerChecking } from '@/hooks/useAnswerChecking';
 import { useDetailedExplanation } from '@/hooks/useDetailedExplanation';
 import { EnhancedExercise } from '@/types/enhanced';
 import { Exercise } from '@/types';
+import { topics } from '@/data/topics';
 // import GenerationStatusIndicator from './GenerationStatusIndicator'; // Hidden per user request
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
@@ -16,6 +17,14 @@ import FeedbackDisplay from './learning/FeedbackDisplay';
 import ActionButtons from './learning/ActionButtons';
 
 export default function Learning() {
+  // Helper function to get topic display name
+  const getTopicDisplayName = useCallback((topicId: string, language: string = 'en') => {
+    const topic = topics.find(t => t.id === topicId);
+    if (!topic) return '';
+    
+    return language === 'pt' ? topic.namePt : topic.name;
+  }, []);
+
   const {
     // State
     userAnswer,
@@ -289,12 +298,19 @@ export default function Learning() {
       /> */}
       
       <div className="neo-card-lg">
-        {/* Header with level and mode toggle */}
+        {/* Header with level, topic and mode toggle */}
         <div className="mb-4 sm:mb-6">
           <div className="flex justify-between items-center mb-4">
-            <span className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1" style={{ color: 'var(--neo-accent-text)' }}>
-              {currentExercise?.level || 'A1'}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1" style={{ color: 'var(--neo-accent-text)' }}>
+                {currentExercise?.level || 'A1'}
+              </span>
+              {currentExercise?.topic && (
+                <span className="neo-outset-sm text-xs sm:text-sm px-2 sm:px-3 py-1" style={{ color: 'var(--neo-text-secondary)' }}>
+                  {getTopicDisplayName(currentExercise.topic, configuration.appLanguage)}
+                </span>
+              )}
+            </div>
             
             <ModeToggle 
               learningMode={learningMode}
