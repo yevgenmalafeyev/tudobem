@@ -23,15 +23,6 @@ export interface CheckAnswerResponse {
   explanation: string;
 }
 
-export interface GenerateMultipleChoiceRequest {
-  exercise: Exercise;
-  claudeApiKey?: string;
-  explanationLanguage?: AppLanguage;
-}
-
-export interface GenerateMultipleChoiceResponse {
-  options: string[];
-}
 
 export interface APIError {
   error: string;

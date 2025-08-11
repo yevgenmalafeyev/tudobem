@@ -11,6 +11,28 @@ import PWAInstallModal from './PWAInstallModal';
 
 const levels: LanguageLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
+const allTenses: string[] = [
+  'presente_indicativo', 'pps', 'preterito_imperfeito',
+  'imperativo_positivo', 'imperativo_negativo', 'infinitivo_pessoal',
+  'futuro_imperfeito', 'condicional_presente', 'conjuntivo_presente',
+  'conjuntivo_passado', 'conjuntivo_futuro', 'participio_passado'
+];
+
+const TENSE_DISPLAY_NAMES: Record<string, string> = {
+  'presente_indicativo': 'Presente Indicativo',
+  'pps': 'Pretérito Perfeito Simples',
+  'preterito_imperfeito': 'Pretérito Imperfeito',
+  'imperativo_positivo': 'Imperativo Positivo',
+  'imperativo_negativo': 'Imperativo Negativo',
+  'infinitivo_pessoal': 'Infinitivo Pessoal',
+  'futuro_imperfeito': 'Futuro Imperfeito',
+  'condicional_presente': 'Condicional Presente',
+  'conjuntivo_presente': 'Conjuntivo Presente',
+  'conjuntivo_passado': 'Conjuntivo Passado',
+  'conjuntivo_futuro': 'Conjuntivo Futuro',
+  'participio_passado': 'Particípio Passado'
+};
+
 interface ConfigurationProps {
   onSave?: () => void;
 }
@@ -22,6 +44,14 @@ export default function Configuration({ onSave }: ConfigurationProps) {
   const [appLanguage, setAppLanguage] = useState<AppLanguage>(configuration.appLanguage);
   const [showPWAModal, setShowPWAModal] = useState(false);
   const [showPWAButton, setShowPWAButton] = useState(false);
+  const [selectedTenses, setSelectedTenses] = useState<string[]>(
+    configuration.irregularVerbsEnabledTenses?.length > 0 
+      ? configuration.irregularVerbsEnabledTenses as string[]
+      : allTenses
+  );
+  const [includeVos, setIncludeVos] = useState<boolean>(
+    configuration.irregularVerbsIncludeVos ?? false
+  );
 
   const availableTopics = topics.filter(topic => 
     topic.levels.some(level => selectedLevels.includes(level))
@@ -95,11 +125,29 @@ export default function Configuration({ onSave }: ConfigurationProps) {
     );
   };
 
+  const handleTenseToggle = (tense: string) => {
+    setSelectedTenses(prev => 
+      prev.includes(tense)
+        ? prev.filter(t => t !== tense)
+        : [...prev, tense]
+    );
+  };
+
+  const handleSelectAllTenses = () => {
+    setSelectedTenses(allTenses);
+  };
+
+  const handleDeselectAllTenses = () => {
+    setSelectedTenses([]);
+  };
+
   const handleSave = () => {
     const configToSave = {
       selectedLevels,
       selectedTopics,
-      appLanguage
+      appLanguage,
+      irregularVerbsEnabledTenses: selectedTenses,
+      irregularVerbsIncludeVos: includeVos
     };
     
     console.log('⚙️ [DEBUG] Configuration handleSave called:', {
@@ -187,6 +235,71 @@ export default function Configuration({ onSave }: ConfigurationProps) {
         </div>
       )}
 
+      {/* Irregular Verbs Tenses */}
+      <div className="neo-card mb-6 sm:mb-8">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold" style={{ color: 'var(--neo-text)' }}>
+            Verbos Irregulares - Tempos Verbais
+          </h2>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSelectAllTenses}
+              className="neo-button neo-button-secondary text-xs px-2 py-1"
+            >
+              Todos
+            </button>
+            <button
+              onClick={handleDeselectAllTenses}
+              className="neo-button neo-button-secondary text-xs px-2 py-1"
+            >
+              Nenhum
+            </button>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {allTenses.map(tense => (
+            <label key={tense} className="flex items-start space-x-3 cursor-pointer neo-card-sm hover-lift">
+              <input
+                type="checkbox"
+                checked={selectedTenses.includes(tense)}
+                onChange={() => handleTenseToggle(tense)}
+                className="neo-checkbox mt-0.5"
+              />
+              <div className="flex-1 min-w-0">
+                <span className="text-sm font-medium" style={{ color: 'var(--neo-text)' }}>
+                  {TENSE_DISPLAY_NAMES[tense as keyof typeof TENSE_DISPLAY_NAMES] || tense}
+                </span>
+              </div>
+            </label>
+          ))}
+        </div>
+        
+        {/* Include Vós Toggle */}
+        <div className="mt-4 p-3 neo-inset-sm rounded-lg">
+          <label className="flex items-center space-x-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeVos}
+              onChange={(e) => setIncludeVos(e.target.checked)}
+              className="neo-checkbox"
+            />
+            <div className="flex-1">
+              <span className="text-sm font-medium" style={{ color: 'var(--neo-text)' }}>
+                Incluir formas de &quot;vós&quot;
+              </span>
+              <p className="text-xs mt-1" style={{ color: 'var(--neo-text-muted)' }}>
+                Incluir as formas de segunda pessoa do plural (vós) nos exercícios
+              </p>
+            </div>
+          </label>
+        </div>
+        
+        <p className="text-xs mt-4" style={{ color: 'var(--neo-text-muted)' }}>
+          Selecione os tempos verbais que deseja praticar nos exercícios de verbos irregulares.
+        </p>
+      </div>
+
       {/* App Language */}
       <div className="neo-card mb-6 sm:mb-8">
         <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: 'var(--neo-text)' }}>
@@ -245,7 +358,7 @@ export default function Configuration({ onSave }: ConfigurationProps) {
       <div className="text-center">
         <button
           onClick={handleSave}
-          disabled={selectedLevels.length === 0 || selectedTopics.length === 0}
+          disabled={selectedLevels.length === 0 || selectedTopics.length === 0 || selectedTenses.length === 0}
           className="neo-button neo-button-success w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base min-h-[44px]"
         >
           {t('saveAndStart', appLanguage)}

@@ -8,7 +8,6 @@ import { useAnswerChecking } from '@/hooks/useAnswerChecking';
 import { EnhancedExercise } from '@/types/enhanced';
 import { Exercise } from '@/types';
 import { topics } from '@/data/topics';
-// import GenerationStatusIndicator from './GenerationStatusIndicator'; // Hidden per user request
 import ModeToggle from './learning/ModeToggle';
 import ExerciseDisplay from './learning/ExerciseDisplay';
 import MultipleChoiceOptions from './learning/MultipleChoiceOptions';
@@ -74,9 +73,6 @@ export default function Learning() {
     loadInitialBatch,
     getNextExercise,
     isLoading: queueLoading,
-    // isBackgroundLoading,
-    // generationSource,
-    // queueStats,
     loadingError
   } = useExerciseQueue({
     configuration,
@@ -238,10 +234,6 @@ export default function Learning() {
         <div className="neo-card text-xl" style={{ color: 'var(--neo-text)' }}>
           {t('loadingExercise', configuration.appLanguage)}
         </div>
-{/* <GenerationStatusIndicator
-          source={generationSource}
-          isBackgroundLoading={true}
-        /> */}
       </div>
     );
   }
@@ -290,19 +282,6 @@ export default function Learning() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 relative">
-{/* Generation Status Indicator - Hidden per user request */}
-      {/* <GenerationStatusIndicator
-        source={generationSource}
-        isBackgroundLoading={isBackgroundLoading}
-        exerciseCount={queueStats.remaining}
-        totalGenerated={queueStats.totalGenerated}
-        currentProgress={{
-          completed: queueStats.completed,
-          total: queueStats.total,
-          progressPercentage: queueStats.progressPercentage
-        }}
-      /> */}
-      
       <div className="neo-card-lg">
         {/* Header with level, topic and mode toggle */}
         <div className="mb-4 sm:mb-6">

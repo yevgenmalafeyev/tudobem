@@ -23,7 +23,8 @@ export const DEFAULT_CONFIGURATION = {
   selectedLevels: ['A1', 'A2'] as LanguageLevel[],
   selectedTopics: [],
   explanationLanguage: 'pt' as const,
-  appLanguage: 'pt' as const
+  appLanguage: 'pt' as const,
+  irregularVerbsIncludeVos: false // Default to not including 'vós' forms
 };
 
 export const ERROR_MESSAGES = {

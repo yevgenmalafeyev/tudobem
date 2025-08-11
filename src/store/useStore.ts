@@ -46,6 +46,12 @@ const defaultConfiguration: UserConfiguration = {
     'futuro-conjuntivo-conjuncoes'
   ], // Default B1/B2 topics for intermediate learners
   appLanguage: 'pt',
+  irregularVerbsEnabledTenses: [
+    'presente_indicativo', 'pps', 'preterito_imperfeito',
+    'imperativo_positivo', 'imperativo_negativo', 'infinitivo_pessoal',
+    'futuro_imperfeito', 'condicional_presente', 'conjuntivo_presente',
+    'conjuntivo_passado', 'conjuntivo_futuro', 'participio_passado'
+  ]
 };
 
 const defaultProgress: UserProgress = {
@@ -65,9 +71,11 @@ export const useStore = create<AppState>()(
       
       setConfiguration: (config) => set({ 
         configuration: config,
-        // Configuration is complete if user has selected levels and topics
+        // Configuration is complete if user has selected levels, topics, and tenses
         // API key is optional for database-driven mode
-        isConfigured: config.selectedLevels.length > 0 && config.selectedTopics.length > 0
+        isConfigured: config.selectedLevels.length > 0 && 
+                     config.selectedTopics.length > 0 && 
+                     config.irregularVerbsEnabledTenses.length > 0
       }),
       
       setCurrentExercise: (exercise) => set({ currentExercise: exercise }),

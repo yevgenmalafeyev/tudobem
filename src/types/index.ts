@@ -15,6 +15,8 @@ export interface UserConfiguration {
   selectedTopics: string[];
   appLanguage: AppLanguage;
   claudeApiKey?: string;
+  irregularVerbsEnabledTenses: string[]; // VerbTense[] imported from irregular-verbs types
+  irregularVerbsIncludeVos?: boolean; // Include 'vós' forms in irregular verbs exercises (default: false)
 }
 
 export interface Exercise {
