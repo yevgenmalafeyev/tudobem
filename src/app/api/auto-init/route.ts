@@ -111,9 +111,20 @@ export async function POST() {
       '$1\t'
     );
 
-    // Execute the complete dump (much faster than parsing line by line)
-    console.log('⚡ Executing database dump directly...');
-    await pool.query(processedDump);
+    // Clean up PostgreSQL-specific commands that might cause issues
+    console.log('🧹 Cleaning PostgreSQL-specific commands...');
+    const lines = processedDump.split('\n').filter(line => {
+      const trimmed = line.trim();
+      return !trimmed.startsWith('SET ') && 
+             !trimmed.startsWith('SELECT pg_catalog.') &&
+             !trimmed.startsWith('--') &&
+             trimmed.length > 0;
+    });
+
+    // Execute the cleaned dump
+    console.log('⚡ Executing cleaned database dump...');
+    const cleanedDump = lines.join('\n');
+    await pool.query(cleanedDump);
 
     // Get final statistics
     const result = await pool.query(`
