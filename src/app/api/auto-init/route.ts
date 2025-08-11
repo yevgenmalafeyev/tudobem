@@ -8,8 +8,8 @@ export async function POST() {
   console.log('🚀 Auto-initializing database on first deployment...');
   
   try {
-    // Check if we have a database connection
-    const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+    // Check if we have a database connection (use DATABASE_URL to avoid Vercel secret reference issues)
+    const dbUrl = process.env.DATABASE_URL;
     if (!dbUrl) {
       return NextResponse.json({
         success: false,

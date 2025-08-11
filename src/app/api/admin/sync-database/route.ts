@@ -25,12 +25,12 @@ export async function POST() {
   console.log('🔄 Starting database sync from local dump...');
   
   try {
-    // Check if we have a database connection
-    const dbUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+    // Check if we have a database connection (use DATABASE_URL to avoid Vercel secret reference issues)
+    const dbUrl = process.env.DATABASE_URL;
     if (!dbUrl) {
       return NextResponse.json({
         success: false,
-        error: 'Database connection string not configured (POSTGRES_URL or DATABASE_URL)'
+        error: 'DATABASE_URL not configured'
       }, { status: 500 });
     }
 
