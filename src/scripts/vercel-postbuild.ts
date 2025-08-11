@@ -18,6 +18,11 @@ function isProductionDeployment(): boolean {
          process.env.NODE_ENV === 'production';
 }
 
+// No longer needed - database sync moved to runtime API
+// function isVercelBuildEnvironment(): boolean {
+//   return process.env.VERCEL === '1' && !process.env.VERCEL_URL;
+// }
+
 /**
  * Sync production database using the latest local dump
  */
