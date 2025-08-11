@@ -98,100 +98,22 @@ export async function POST() {
     const dumpContent = fs.readFileSync(dumpPath, 'utf8');
     
     // Replace API key placeholders with actual environment values
-    const processedDump = dumpContent.replace(
+    let processedDump = dumpContent.replace(
       /YOUR_ANTHROPIC_API_KEY_HERE/g,
       process.env.ANTHROPIC_API_KEY || 'YOUR_ANTHROPIC_API_KEY_HERE'
     );
 
-    // Parse dump file and handle COPY commands properly
-    console.log('📝 Parsing database dump file...');
-    
-    const lines = processedDump.split('\n');
-    let currentTable = '';
-    let copyMode = false;
-    let copyColumns: string[] = [];
-    let copyData: string[] = [];
-    
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-      
-      // Skip comments, SET statements, and other PostgreSQL-specific commands
-      if (trimmedLine.startsWith('--') || 
-          trimmedLine.startsWith('SET') || 
-          trimmedLine.startsWith('SELECT pg_catalog') || 
-          trimmedLine.length === 0) {
-        continue;
-      }
-      
-      // Handle COPY command start
-      if (trimmedLine.startsWith('COPY public.')) {
-        copyMode = true;
-        const match = trimmedLine.match(/COPY public\.(\w+) \((.*?)\) FROM stdin/);
-        if (match) {
-          currentTable = match[1];
-          copyColumns = match[2].split(',').map(col => col.trim());
-          copyData = [];
-          console.log(`📊 Processing COPY data for table: ${currentTable}`);
-        }
-        continue;
-      }
-      
-      // Handle COPY command end
-      if (trimmedLine === '\\.') {
-        if (copyMode && currentTable && copyData.length > 0) {
-          // Convert COPY data to INSERT statements
-          console.log(`📝 Converting ${copyData.length} COPY rows to INSERT statements for ${currentTable}`);
-          
-          for (const dataRow of copyData) {
-            const values = dataRow.split('\t');
-            if (values.length === copyColumns.length) {
-              // Create parameterized insert
-              const placeholders = values.map((_, index) => `$${index + 1}`).join(', ');
-              const insertSQL = `INSERT INTO ${currentTable} (${copyColumns.join(', ')}) VALUES (${placeholders})`;
-              
-              // Convert values, handle NULL markers and quoted strings
-              const processedValues = values.map(val => {
-                if (val === '\\N') return null;
-                // Remove quotes from quoted values (like UUIDs)
-                if (val.startsWith('"') && val.endsWith('"')) {
-                  return val.slice(1, -1);
-                }
-                return val;
-              });
-              
-              try {
-                await pool.query(insertSQL, processedValues);
-              } catch (error) {
-                console.error(`❌ Failed to insert data into ${currentTable}:`, error);
-                // Continue with other data, don't fail completely
-              }
-            }
-          }
-        }
-        copyMode = false;
-        currentTable = '';
-        copyData = [];
-        continue;
-      }
-      
-      // Collect COPY data
-      if (copyMode) {
-        copyData.push(trimmedLine);
-        continue;
-      }
-      
-      // Handle regular SQL statements
-      if (trimmedLine.endsWith(';') && !copyMode) {
-        try {
-          await pool.query(trimmedLine);
-        } catch (error) {
-          console.error(`❌ Failed to execute SQL: ${trimmedLine.substring(0, 100)}...`, error);
-          // Continue with other statements, don't fail completely
-        }
-      }
-    }
-    
-    console.log('✅ Database dump processing completed');
+    // Fix the specific UUID parsing issue by removing quotes from problematic UUIDs
+    // This is a targeted fix for the "trailing junk after numeric literal" error
+    console.log('🔧 Fixing UUID parsing issues in dump...');
+    processedDump = processedDump.replace(
+      /^"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"\t/gm,
+      '$1\t'
+    );
+
+    // Execute the complete dump (much faster than parsing line by line)
+    console.log('⚡ Executing database dump directly...');
+    await pool.query(processedDump);
 
     // Get final statistics
     const result = await pool.query(`
