@@ -1,0 +1,50 @@
+-- =====================================================
+-- TUDOBEM DATABASE IMPORT INSTRUCTIONS
+-- =====================================================
+-- Total exercises: 1194
+-- Split into 4 files for manageable import
+-- =====================================================
+
+IMPORT SEQUENCE:
+================
+
+1. neon-import-1-structure.sql
+   - Creates all tables and indexes
+   - Sets up admin configuration
+   - MUST BE RUN FIRST
+
+2. neon-import-2-exercises-1-500.sql
+   - Exercises 1 to 500 (500 records)
+
+3. neon-import-3-exercises-501-1000.sql
+   - Exercises 501 to 1000 (500 records)
+
+4. neon-import-4-exercises-1001-1194.sql
+   - Exercises 1001 to 1194 (194 records)
+
+HOW TO IMPORT:
+==============
+1. Go to Neon Dashboard → SQL Editor
+2. Copy and paste each file in order
+3. Click "Run" after each file
+4. Wait for success message before proceeding to next file
+5. Each file should take 10-30 seconds to execute
+
+TROUBLESHOOTING:
+================
+- If you get an error, check which part failed
+- You can re-run individual parts if needed
+- The structure file (Part 1) includes DROP SCHEMA, so only run it once
+- Exercise files can be re-run safely (they use INSERT, not INSERT OR REPLACE)
+
+VERIFICATION:
+=============
+After all imports, run this query to verify:
+
+SELECT 
+  (SELECT COUNT(*) FROM exercises) as total_exercises,
+  (SELECT COUNT(*) FROM admin_config) as admin_records,
+  (SELECT COUNT(*) FROM exercises WHERE level = 'A1') as a1_count,
+  (SELECT COUNT(*) FROM exercises WHERE level = 'A2') as a2_count,
+  (SELECT COUNT(*) FROM exercises WHERE level = 'B1') as b1_count,
+  (SELECT COUNT(*) FROM exercises WHERE level = 'B2') as b2_count;
