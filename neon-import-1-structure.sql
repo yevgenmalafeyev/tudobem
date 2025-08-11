@@ -1,49 +1,51 @@
 -- =====================================================
--- PART 1: Database Structure and Admin Configuration
+-- PART 1: Database Structure and Admin Configuration (FIXED)
 -- =====================================================
 -- Execute this FIRST to set up the database structure
+-- All ALTER TABLE statements properly formatted
 -- =====================================================
 
 -- Clean start (only run once)
 DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 
--- =====================================================
--- Tudobem Database - Neon SQL Editor Version (INSERT statements)
--- Generated: 2025-08-11T22:53:51.265Z
--- =====================================================
--- This dump uses INSERT statements instead of COPY commands
--- Compatible with Neon SQL Editor and other web-based SQL tools
--- All UUIDs are properly formatted
--- 
--- INSTRUCTIONS:
--- 1. Open Neon Dashboard → SQL Editor
--- 2. (Optional) Clear existing data first with:
---    DROP SCHEMA public CASCADE; CREATE SCHEMA public;
--- 3. Copy and paste this entire file
--- 4. Click "Run" to execute
--- =====================================================
--- Clear existing data (uncomment if needed)
--- DROP TABLE IF EXISTS exercise_sessions CASCADE;
--- DROP TABLE IF EXISTS exercises CASCADE;
--- DROP TABLE IF EXISTS admin_config CASCADE;
--- DROP TABLE IF EXISTS users CASCADE;
 --
 -- PostgreSQL database dump
 --
+
 -- Dumped from database version 15.13 (Homebrew)
 -- Dumped by pg_dump version 15.13 (Homebrew)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --
 -- Name: admin_config; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.admin_config (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     claude_api_key text,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
+
+
 --
 -- Name: exercise_sessions; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.exercise_sessions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_session_id character varying(100) NOT NULL,
@@ -52,9 +54,12 @@ CREATE TABLE public.exercise_sessions (
     response_time_ms integer,
     created_at timestamp with time zone DEFAULT now()
 );
+
+
 --
 -- Name: exercises; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.exercises (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     sentence text NOT NULL,
@@ -72,9 +77,12 @@ CREATE TABLE public.exercises (
     updated_at timestamp with time zone DEFAULT now(),
     CONSTRAINT exercises_level_check CHECK (((level)::text = ANY ((ARRAY['A1'::character varying, 'A2'::character varying, 'B1'::character varying, 'B2'::character varying, 'C1'::character varying, 'C2'::character varying])::text[])))
 );
+
+
 --
 -- Name: generation_queue; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.generation_queue (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_session_id character varying(100) NOT NULL,
@@ -86,9 +94,12 @@ CREATE TABLE public.generation_queue (
     processed_at timestamp with time zone,
     CONSTRAINT generation_queue_status_check CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'processing'::character varying, 'completed'::character varying, 'failed'::character varying])::text[])))
 );
+
+
 --
 -- Name: irregular_verbs; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.irregular_verbs (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     infinitive character varying(50) NOT NULL,
@@ -225,9 +236,12 @@ CREATE TABLE public.irregular_verbs (
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
+
+
 --
 -- Name: user_exercise_attempts; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.user_exercise_attempts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid,
@@ -236,9 +250,12 @@ CREATE TABLE public.user_exercise_attempts (
     user_answer text NOT NULL,
     attempted_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
+
+
 --
 -- Name: user_sessions; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.user_sessions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid,
@@ -246,9 +263,12 @@ CREATE TABLE public.user_sessions (
     expires_at timestamp with time zone NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
+
+
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
+
 CREATE TABLE public.users (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     username character varying(50) NOT NULL,
@@ -258,51 +278,285 @@ CREATE TABLE public.users (
     last_login timestamp with time zone,
     is_active boolean DEFAULT true
 );
+
+
 --
 -- Data for Name: admin_config; Type: TABLE DATA; Schema: public; Owner: -
 --
--- Data for table: admin_config
--- Inserting 1 rows into admin_config
+
+
+
 --
 -- Data for Name: exercise_sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
--- Data for table: exercise_sessions
--- Inserting 10010 rows into exercise_sessions
+
+
+
 --
 -- Data for Name: exercises; Type: TABLE DATA; Schema: public; Owner: -
 --
--- Data for table: exercises
--- Inserting 1194 rows into exercises
+
+
+
+--
+-- Data for Name: generation_queue; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: irregular_verbs; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: user_exercise_attempts; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: user_sessions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Name: admin_config admin_config_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.admin_config
+    ADD CONSTRAINT admin_config_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exercise_sessions exercise_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.exercise_sessions
+    ADD CONSTRAINT exercise_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exercises exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.exercises
+    ADD CONSTRAINT exercises_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exercises exercises_sentence_correct_answer_topic_level_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.exercises
+    ADD CONSTRAINT exercises_sentence_correct_answer_topic_level_key UNIQUE (sentence, correct_answer, topic, level);
+
+
+--
+-- Name: exercises exercises_sentence_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.exercises
+    ADD CONSTRAINT exercises_sentence_unique UNIQUE (sentence);
+
+
+--
+-- Name: generation_queue generation_queue_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.generation_queue
+    ADD CONSTRAINT generation_queue_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: irregular_verbs irregular_verbs_infinitive_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.irregular_verbs
+    ADD CONSTRAINT irregular_verbs_infinitive_key UNIQUE (infinitive);
+
+
+--
+-- Name: irregular_verbs irregular_verbs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.irregular_verbs
+    ADD CONSTRAINT irregular_verbs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_exercise_attempts user_exercise_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_exercise_attempts
+    ADD CONSTRAINT user_exercise_attempts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_sessions user_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_sessions
+    ADD CONSTRAINT user_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_sessions user_sessions_session_token_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_sessions
+    ADD CONSTRAINT user_sessions_session_token_key UNIQUE (session_token);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: idx_exercises_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_exercises_created_at ON public.exercises USING btree (created_at DESC);
+
+
+--
+-- Name: idx_exercises_level_topic; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_exercises_level_topic ON public.exercises USING btree (level, topic);
+
+
+--
+-- Name: idx_exercises_usage_count; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_exercises_usage_count ON public.exercises USING btree (usage_count);
+
+
+--
+-- Name: idx_irregular_verbs_infinitive; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_irregular_verbs_infinitive ON public.irregular_verbs USING btree (infinitive);
+
+
+--
+-- Name: idx_sessions_token; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_sessions_token ON public.user_sessions USING btree (session_token);
+
+
+--
+-- Name: idx_sessions_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_sessions_user_id ON public.user_sessions USING btree (user_id);
+
+
+--
+-- Name: idx_user_attempts_correct; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_user_attempts_correct ON public.user_exercise_attempts USING btree (user_id, is_correct);
+
+
+--
+-- Name: idx_user_attempts_exercise_id; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_user_attempts_exercise_id ON public.user_exercise_attempts USING btree (exercise_id);
+
+
+--
+-- Name: idx_user_attempts_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_user_attempts_user_id ON public.user_exercise_attempts USING btree (user_id);
+
+
+--
+-- Name: idx_users_email; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_users_email ON public.users USING btree (email);
+
+
+--
+-- Name: idx_users_username; Type: INDEX; Schema: public; Owner: -
+--
+
 CREATE INDEX idx_users_username ON public.users USING btree (username);
+
+
+--
+-- Name: user_exercise_attempts user_exercise_attempts_exercise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_exercise_attempts
+    ADD CONSTRAINT user_exercise_attempts_exercise_id_fkey FOREIGN KEY (exercise_id) REFERENCES public.exercises(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_exercise_attempts user_exercise_attempts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_exercise_attempts
+    ADD CONSTRAINT user_exercise_attempts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_sessions user_sessions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY public.user_sessions
+    ADD CONSTRAINT user_sessions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+
+
 
 -- Insert admin configuration
-INSERT INTO public.admin_config (id, claude_api_key, updated_at) VALUES ('4c7b7041-4de5-46d7-91d5-b4d8b71de900'::uuid, 'YOUR_ANTHROPIC_API_KEY_HERE', '2025-07-26 15:29:47.867598+01');
+INSERT INTO public.admin_config (id, claude_api_key, updated_at) 
+VALUES ('4c7b7041-4de5-46d7-91d5-b4d8b71de900'::uuid, 'YOUR_ANTHROPIC_API_KEY_HERE', '2025-07-26 15:29:47.867598+01');
 
-SELECT 'Part 1 complete: Structure and admin config created' as status;
+
+-- Verify structure creation
+SELECT 
+  COUNT(*) as tables_created
+FROM information_schema.tables 
+WHERE table_schema = 'public';
+
+SELECT 'Part 1 complete: Database structure created successfully' as status;
