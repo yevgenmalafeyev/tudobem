@@ -77,7 +77,7 @@ export async function POST() {
     const zipBuffer = await zip.generateAsync({ type: 'nodebuffer' });
 
     // Return ZIP file
-    return new NextResponse(zipBuffer, {
+    return new NextResponse(zipBuffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="tudobem-questions-${new Date().toISOString().split('T')[0]}.zip"`
