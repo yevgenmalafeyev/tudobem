@@ -83,5 +83,11 @@
     "tsx": "^4.20.3",
     "typescript": "^5",
     "whatwg-fetch": "^3.6.20"
+  },
+  "overrides": {
+    "glob": "^11.0.0",
+    "inflight": "npm:@npmcli/fs@^4.0.0",
+    "source-map": "^0.7.4",
+    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.4.15"
   }
 }
