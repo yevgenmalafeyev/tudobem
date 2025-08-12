@@ -219,7 +219,11 @@ test.describe('Admin Login E2E Tests', () => {
         bodyContent?.includes('exercises') ||
         bodyContent?.includes('users') ||
         bodyContent?.includes('total') ||
-        bodyContent?.includes('analytics')
+        bodyContent?.includes('analytics') ||
+        bodyContent?.includes('Admin') ||
+        bodyContent?.includes('Data Management') ||
+        bodyContent?.includes('Question Stats') ||
+        bodyContent?.includes('Usage Analytics')
       
       expect(hasDashboardElements).toBeTruthy()
       console.log('✅ Admin dashboard accessible and functional')

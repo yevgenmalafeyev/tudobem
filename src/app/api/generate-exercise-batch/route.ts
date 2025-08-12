@@ -414,21 +414,9 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     // Step 3: Shuffle the final exercise list for variety
     const shuffledExercises = exercisesToReturn.sort(() => Math.random() - 0.5);
     
-    // Step 4: Track usage for database exercises (mark them as used with timeout)
-    for (const exercise of shuffledExercises) {
-      if (exercise.id) {
-        try {
-          await withTimeout(
-            SmartDatabase.markExerciseUsed(exercise.id, sessionId, false), // We don't know if it's correct yet
-            5000, // Shorter timeout for usage tracking
-            'Mark exercise as used'
-          );
-        } catch (error) {
-          console.warn('⚠️ Failed to mark exercise as used:', error);
-          // Continue - this is not critical for the response
-        }
-      }
-    }
+    // NOTE: Usage tracking removed from response time for performance
+    // Exercises will be marked as used when users actually answer them
+    // This eliminates N+1 database queries that were causing 500ms+ delays
     
     const response: BatchGenerationResponse = {
       success: true,

@@ -12,21 +12,28 @@ import { LanguageLevel } from '@/types';
  * Smart Database - automatically chooses between Vercel Postgres and Local Postgres
  */
 export class SmartDatabase {
+  private static _isLocal: boolean | undefined;
+  private static _activeDatabase: typeof ExerciseDatabase | typeof LocalDatabase;
+
   private static isLocalMode(): boolean {
-    const url = process.env.POSTGRES_URL;
-    const isLocal = !!(url && (url.includes('localhost') || url.includes('127.0.0.1')));
-    console.log('🗄️ [DEBUG] SmartDatabase mode check:', {
-      postgresUrl: url ? `${url.substring(0, 30)}...` : 'NOT_SET',
-      isLocal,
-      databaseType: isLocal ? 'LocalDatabase' : 'ExerciseDatabase'
-    });
-    return isLocal;
+    if (this._isLocal === undefined) {
+      const url = process.env.POSTGRES_URL;
+      this._isLocal = !!(url && (url.includes('localhost') || url.includes('127.0.0.1')));
+      console.log('🗄️ [DEBUG] SmartDatabase mode check:', {
+        postgresUrl: url ? `${url.substring(0, 30)}...` : 'NOT_SET',
+        isLocal: this._isLocal,
+        databaseType: this._isLocal ? 'LocalDatabase' : 'ExerciseDatabase'
+      });
+    }
+    return this._isLocal;
   }
 
   private static getActiveDatabase() {
-    const db = this.isLocalMode() ? LocalDatabase : ExerciseDatabase;
-    console.log('🗄️ [DEBUG] Using database adapter:', this.isLocalMode() ? 'Local' : 'Vercel');
-    return db;
+    if (!this._activeDatabase) {
+      this._activeDatabase = this.isLocalMode() ? LocalDatabase : ExerciseDatabase;
+      console.log('🗄️ [DEBUG] Using database adapter:', this.isLocalMode() ? 'Local' : 'Vercel');
+    }
+    return this._activeDatabase;
   }
 
   /**
