@@ -13,6 +13,7 @@ import ExerciseDisplay from './learning/ExerciseDisplay';
 import MultipleChoiceOptions from './learning/MultipleChoiceOptions';
 import FeedbackDisplay from './learning/FeedbackDisplay';
 import ActionButtons from './learning/ActionButtons';
+import ProblemReportButton from './learning/ProblemReportButton';
 import NotLoggedInPrompt from './NotLoggedInPrompt';
 
 export default function Learning() {
@@ -305,6 +306,15 @@ export default function Learning() {
                   }
                 </button>
               )}
+              
+              {/* Problem Report Button */}
+              <ProblemReportButton
+                exercise={currentExercise}
+                showAnswer={showAnswer}
+                learningMode={learningMode}
+                appLanguage={configuration.appLanguage}
+                feedback={feedback}
+              />
             </div>
             
             <ModeToggle 

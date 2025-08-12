@@ -628,6 +628,125 @@ export const translations = {
     pt: 'Alterações nos Termos',
     en: 'Changes to Terms',
     uk: 'Зміни в Умовах'
+  },
+
+  // Problem Report
+  problemReport: {
+    pt: 'Reportar Problema',
+    en: 'Report Problem',
+    uk: 'Повідомити про Проблему'
+  },
+  button: {
+    pt: 'Reportar Problema',
+    en: 'Report Problem',
+    uk: 'Повідомити про Проблему'
+  },
+  buttonTitle: {
+    pt: 'Reportar um problema com este exercício',
+    en: 'Report a problem with this exercise',
+    uk: 'Повідомити про проблему з цією вправою'
+  },
+  title: {
+    pt: 'Reportar Problema com Exercício',
+    en: 'Report Exercise Problem',
+    uk: 'Повідомити про Проблему з Вправою'
+  },
+  exercisePreview: {
+    pt: 'Pré-visualização do Exercício',
+    en: 'Exercise Preview',
+    uk: 'Попередній Перегляд Вправи'
+  },
+  sentence: {
+    pt: 'Frase',
+    en: 'Sentence',
+    uk: 'Речення'
+  },
+  hint: {
+    pt: 'Dica',
+    en: 'Hint',
+    uk: 'Підказка'
+  },
+  options: {
+    pt: 'Opções',
+    en: 'Options',
+    uk: 'Варіанти'
+  },
+  selectProblem: {
+    pt: 'Selecione o tipo de problema:',
+    en: 'Select the type of problem:',
+    uk: 'Оберіть тип проблеми:'
+  },
+  detailsLabel: {
+    pt: 'Descreva detalhadamente o que está errado',
+    en: 'Describe in detail what is wrong',
+    uk: 'Детально опишіть, що не так'
+  },
+  detailsPlaceholder: {
+    pt: 'Por favor, explique o problema que encontrou com este exercício...',
+    en: 'Please explain the problem you found with this exercise...',
+    uk: 'Будь ласка, поясніть проблему, яку ви знайшли з цією вправою...'
+  },
+  required: {
+    pt: 'obrigatório',
+    en: 'required',
+    uk: 'обов\'язково'
+  },
+  submit: {
+    pt: 'Enviar Relatório',
+    en: 'Submit Report',
+    uk: 'Надіслати Звіт'
+  },
+  submitting: {
+    pt: 'A enviar...',
+    en: 'Submitting...',
+    uk: 'Надсилання...'
+  },
+  thankYou: {
+    pt: 'Obrigado!',
+    en: 'Thank You!',
+    uk: 'Дякуємо!'
+  },
+  submitted: {
+    pt: 'O seu relatório foi enviado com sucesso. Agradecemos a sua ajuda para tornar o Tudobem melhor!',
+    en: 'Your report has been submitted successfully. Thank you for helping to make Tudobem better!',
+    uk: 'Ваш звіт було успішно надіслано. Дякуємо за допомогу в покращенні Tudobem!'
+  },
+  commentTooShort: {
+    pt: 'O comentário deve ter pelo menos 10 caracteres',
+    en: 'Comment must be at least 10 characters long',
+    uk: 'Коментар повинен містити щонайменше 10 символів'
+  },
+  submitError: {
+    pt: 'Erro ao enviar o relatório. Tente novamente.',
+    en: 'Error submitting report. Please try again.',
+    uk: 'Помилка під час надсилання звіту. Спробуйте ще раз.'
+  },
+  networkError: {
+    pt: 'Erro de conexão. Verifique a sua ligação à internet.',
+    en: 'Network error. Please check your internet connection.',
+    uk: 'Помилка мережі. Перевірте підключення до інтернету.'
+  },
+
+  // Problem Types
+  'problemType.irrelevantHint': {
+    pt: 'A dica é irrelevante ou torna a solução muito simples',
+    en: 'The hint is irrelevant or makes the solution too simple',
+    uk: 'Підказка нерелевантна або робить рішення занадто простим'
+  },
+  'problemType.incorrectAnswer': {
+    pt: 'A resposta correta apresentada pelo Tudobem está incorreta',
+    en: 'The correct answer claimed by Tudobem is incorrect',
+    uk: 'Правильна відповідь, заявлена Tudobem, неправильна'
+  },
+  'problemType.missingOption': {
+    pt: 'A opção correta está ausente entre as sugeridas',
+    en: 'The correct option is absent among the suggested',
+    uk: 'Правильний варіант відсутній серед запропонованих'
+  },
+  'problemType.other': {
+    pt: 'Outro',
+    en: 'Other',
+    uk: 'Інше'
   }
 };
 

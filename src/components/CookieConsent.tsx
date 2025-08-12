@@ -6,39 +6,26 @@ import { useStore } from '@/store/useStore';
 export default function CookieConsent() {
   const { configuration } = useStore();
   const [showBanner, setShowBanner] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Mark as client-side to prevent hydration issues
+    setIsClient(true);
+
     // Don't show cookie banner during E2E tests
     if (typeof window !== 'undefined' && window.location.search.includes('e2e-test')) {
       return;
     }
 
-    // Check if user is logged in
-    const checkLoginStatus = async () => {
-      try {
-        const response = await fetch('/api/auth/status', {
-          credentials: 'include'
-        });
-        if (response.ok) {
-          const result = await response.json();
-          setIsLoggedIn(result.authenticated);
-        } else {
-          setIsLoggedIn(false);
-        }
-      } catch {
-        setIsLoggedIn(false);
-      }
-    };
-
-    checkLoginStatus();
-
-    // Show cookie banner only for non-logged users who haven't accepted cookies
-    const hasAcceptedCookies = localStorage.getItem('tudobem-cookies-accepted');
-    if (!hasAcceptedCookies && !isLoggedIn) {
+    // Check if user has already made a cookie choice
+    const cookieChoice = localStorage.getItem('tudobem-cookies-accepted');
+    
+    // Show banner only if user hasn't made any choice yet
+    // (cookieChoice will be 'true', 'essential-only', or null)
+    if (!cookieChoice) {
       setShowBanner(true);
     }
-  }, [isLoggedIn]);
+  }, []);
 
   const acceptCookies = () => {
     localStorage.setItem('tudobem-cookies-accepted', 'true');
@@ -51,7 +38,8 @@ export default function CookieConsent() {
     setShowBanner(false);
   };
 
-  if (!showBanner || isLoggedIn) {
+  // Don't render anything during server-side rendering or if banner shouldn't show
+  if (!isClient || !showBanner) {
     return null;
   }
 
