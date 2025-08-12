@@ -430,6 +430,204 @@ export const translations = {
     pt: 'Explicação',
     en: 'Explanation',
     uk: 'Пояснення'
+  },
+
+  // User Profile
+  userProfile: {
+    pt: 'Perfil do Utilizador',
+    en: 'User Profile',
+    uk: 'Профіль Користувача'
+  },
+  accountInformation: {
+    pt: 'Informações da Conta',
+    en: 'Account Information',
+    uk: 'Інформація про Обліковий Запис'
+  },
+  username: {
+    pt: 'Nome de Utilizador',
+    en: 'Username',
+    uk: 'Ім\'я Користувача'
+  },
+  memberSince: {
+    pt: 'Membro Desde',
+    en: 'Member Since',
+    uk: 'Учасник З'
+  },
+  lastActive: {
+    pt: 'Última Atividade',
+    en: 'Last Active',
+    uk: 'Остання Активність'
+  },
+  verified: {
+    pt: 'Verificado',
+    en: 'Verified',
+    uk: 'Підтверджено'
+  },
+  pending: {
+    pt: 'Pendente',
+    en: 'Pending',
+    uk: 'Очікує'
+  },
+  overallPerformance: {
+    pt: 'Desempenho Geral',
+    en: 'Overall Performance',
+    uk: 'Загальні Результати'
+  },
+  totalAttempts: {
+    pt: 'Total de Tentativas',
+    en: 'Total Attempts',
+    uk: 'Загальних Спроб'
+  },
+  correctAnswers: {
+    pt: 'Respostas Corretas',
+    en: 'Correct Answers',
+    uk: 'Правильних Відповідей'
+  },
+  accuracyRate: {
+    pt: 'Taxa de Acerto',
+    en: 'Accuracy Rate',
+    uk: 'Точність'
+  },
+  progressByLevel: {
+    pt: 'Progresso por Nível',
+    en: 'Progress by Level',
+    uk: 'Прогрес за Рівнями'
+  },
+  attempts: {
+    pt: 'tentativas',
+    en: 'attempts',
+    uk: 'спроб'
+  },
+  topicPerformance: {
+    pt: 'Desempenho por Tópico',
+    en: 'Topic Performance',
+    uk: 'Результати за Темами'
+  },
+  correctCount: {
+    pt: 'corretas',
+    en: 'correct',
+    uk: 'правильних'
+  },
+  userDataNotAvailable: {
+    pt: 'Dados do utilizador não disponíveis',
+    en: 'User data not available',
+    uk: 'Дані користувача недоступні'
+  },
+  authenticationRequired: {
+    pt: 'Autenticação necessária',
+    en: 'Authentication required',
+    uk: 'Потрібна автентифікація'
+  },
+  failedToLoadUserData: {
+    pt: 'Falha ao carregar dados do utilizador',
+    en: 'Failed to load user data',
+    uk: 'Не вдалося завантажити дані користувача'
+  },
+
+  // Privacy Policy
+  privacyPolicy: {
+    pt: 'Política de Privacidade',
+    en: 'Privacy Policy',
+    uk: 'Політика Конфіденційності'
+  },
+  termsOfService: {
+    pt: 'Termos de Uso',
+    en: 'Terms of Service',
+    uk: 'Умови Використання'
+  },
+  lastUpdated: {
+    pt: 'Última atualização',
+    en: 'Last updated',
+    uk: 'Останнє оновлення'
+  },
+
+  // Privacy sections
+  introduction: {
+    pt: 'Introdução',
+    en: 'Introduction',
+    uk: 'Вступ'
+  },
+  dataCollection: {
+    pt: 'Informações que Coletamos',
+    en: 'Information We Collect',
+    uk: 'Інформація, яку ми Збираємо'
+  },
+  dataUse: {
+    pt: 'Como Usamos Suas Informações',
+    en: 'How We Use Your Information',
+    uk: 'Як ми Використовуємо вашу Інформацію'
+  },
+  dataSharing: {
+    pt: 'Compartilhamento de Dados',
+    en: 'Data Sharing',
+    uk: 'Обмін Даними'
+  },
+  cookies: {
+    pt: 'Cookies',
+    en: 'Cookies',
+    uk: 'Файли Cookie'
+  },
+  yourRights: {
+    pt: 'Seus Direitos (GDPR)',
+    en: 'Your Rights (GDPR)',
+    uk: 'Ваші Права (GDPR)'
+  },
+  security: {
+    pt: 'Segurança',
+    en: 'Security',
+    uk: 'Безпека'
+  },
+  contact: {
+    pt: 'Contato',
+    en: 'Contact',
+    uk: 'Контакт'
+  },
+
+  // Terms sections
+  acceptanceOfTerms: {
+    pt: 'Aceitação dos Termos',
+    en: 'Acceptance of Terms',
+    uk: 'Прийняття Умов'
+  },
+  serviceDescription: {
+    pt: 'Descrição do Serviço',
+    en: 'Service Description',
+    uk: 'Опис Сервісу'
+  },
+  userAccounts: {
+    pt: 'Contas de Usuário',
+    en: 'User Accounts',
+    uk: 'Облікові Записи Користувачів'
+  },
+  acceptableUse: {
+    pt: 'Uso Aceitável',
+    en: 'Acceptable Use',
+    uk: 'Допустиме Використання'
+  },
+  intellectualProperty: {
+    pt: 'Propriedade Intelectual',
+    en: 'Intellectual Property',
+    uk: 'Інтелектуальна Власність'
+  },
+  privacy: {
+    pt: 'Privacidade',
+    en: 'Privacy',
+    uk: 'Конфіденційність'
+  },
+  termination: {
+    pt: 'Encerramento',
+    en: 'Termination',
+    uk: 'Припинення'
+  },
+  disclaimers: {
+    pt: 'Isenções de Responsabilidade',
+    en: 'Disclaimers',
+    uk: 'Відмови від Відповідальності'
+  },
+  changesToTerms: {
+    pt: 'Alterações nos Termos',
+    en: 'Changes to Terms',
+    uk: 'Зміни в Умовах'
   }
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import { ProgressStats } from '@/lib/userDatabase';
@@ -25,11 +25,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -46,18 +42,22 @@ export default function UserProfile({ onBack }: UserProfileProps) {
           setUser(progressResult.user);
           setProgress(progressResult.progress);
         } else {
-          setError('Failed to load user data');
+          setError(t('failedToLoadUserData', configuration.appLanguage));
         }
       } else {
-        setError('Authentication required');
+        setError(t('authenticationRequired', configuration.appLanguage));
       }
     } catch (err) {
       console.error('Error fetching user data:', err);
-      setError('Failed to load user data');
+      setError(t('failedToLoadUserData', configuration.appLanguage));
     } finally {
       setLoading(false);
     }
-  };
+  }, [configuration.appLanguage]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(configuration.appLanguage === 'pt' ? 'pt-PT' : 'en-US', {
@@ -91,7 +91,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
       <div className="max-w-4xl mx-auto p-4 sm:p-6">
         <div className="neo-card">
           <div className="text-center py-8">
-            <p className="text-red-500 mb-4">{error || 'User data not available'}</p>
+            <p className="text-red-500 mb-4">{error || t('userDataNotAvailable', configuration.appLanguage)}</p>
             <button 
               onClick={onBack}
               className="neo-button neo-button-secondary"
@@ -109,7 +109,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: 'var(--neo-text)' }}>
-          User Profile
+          {t('userProfile', configuration.appLanguage)}
         </h1>
         {onBack && (
           <button
@@ -126,13 +126,13 @@ export default function UserProfile({ onBack }: UserProfileProps) {
         <div className="lg:col-span-1">
           <div className="neo-card">
             <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-              Account Information
+              {t('accountInformation', configuration.appLanguage)}
             </h2>
             
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-medium" style={{ color: 'var(--neo-text-muted)' }}>
-                  Username
+                  {t('username', configuration.appLanguage)}
                 </label>
                 <p className="text-base" style={{ color: 'var(--neo-text)' }}>
                   {user.username}
@@ -142,7 +142,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
               {user.email && (
                 <div>
                   <label className="text-sm font-medium" style={{ color: 'var(--neo-text-muted)' }}>
-                    Email
+                    {t('email', configuration.appLanguage)}
                   </label>
                   <div className="flex items-center gap-2">
                     <p className="text-base" style={{ color: 'var(--neo-text)' }}>
@@ -150,11 +150,11 @@ export default function UserProfile({ onBack }: UserProfileProps) {
                     </p>
                     {user.email_verified ? (
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                        ✓ Verified
+                        ✓ {t('verified', configuration.appLanguage)}
                       </span>
                     ) : (
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
-                        Pending
+                        {t('pending', configuration.appLanguage)}
                       </span>
                     )}
                   </div>
@@ -163,7 +163,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
 
               <div>
                 <label className="text-sm font-medium" style={{ color: 'var(--neo-text-muted)' }}>
-                  Member Since
+                  {t('memberSince', configuration.appLanguage)}
                 </label>
                 <p className="text-base" style={{ color: 'var(--neo-text)' }}>
                   {formatDate(user.created_at)}
@@ -173,7 +173,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
               {user.last_login && (
                 <div>
                   <label className="text-sm font-medium" style={{ color: 'var(--neo-text-muted)' }}>
-                    Last Active
+                    {t('lastActive', configuration.appLanguage)}
                   </label>
                   <p className="text-base" style={{ color: 'var(--neo-text)' }}>
                     {formatDate(user.last_login)}
@@ -190,23 +190,23 @@ export default function UserProfile({ onBack }: UserProfileProps) {
             {/* Overall Stats */}
             <div className="neo-card">
               <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-                Overall Performance
+                {t('overallPerformance', configuration.appLanguage)}
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span style={{ color: 'var(--neo-text-muted)' }}>Total Attempts</span>
+                  <span style={{ color: 'var(--neo-text-muted)' }}>{t('totalAttempts', configuration.appLanguage)}</span>
                   <span className="font-semibold text-lg" style={{ color: 'var(--neo-text)' }}>
                     {progress.totalAttempts.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span style={{ color: 'var(--neo-text-muted)' }}>Correct Answers</span>
+                  <span style={{ color: 'var(--neo-text-muted)' }}>{t('correctAnswers', configuration.appLanguage)}</span>
                   <span className="font-semibold text-lg" style={{ color: getAccuracyColor(progress.accuracyRate) }}>
                     {progress.correctAttempts.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span style={{ color: 'var(--neo-text-muted)' }}>Accuracy Rate</span>
+                  <span style={{ color: 'var(--neo-text-muted)' }}>{t('accuracyRate', configuration.appLanguage)}</span>
                   <span className="font-semibold text-xl" style={{ color: getAccuracyColor(progress.accuracyRate) }}>
                     {progress.accuracyRate.toFixed(1)}%
                   </span>
@@ -217,7 +217,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
             {/* Progress by Level */}
             <div className="neo-card">
               <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-                Progress by Level
+                {t('progressByLevel', configuration.appLanguage)}
               </h3>
               <div className="space-y-3">
                 {Object.entries(progress.levelProgress).map(([level, stats]) => {
@@ -229,7 +229,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
                           {level}
                         </span>
                         <span className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
-                          {stats.total} attempts
+                          {stats.total} {t('attempts', configuration.appLanguage)}
                         </span>
                       </div>
                       <span 
@@ -248,7 +248,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
           {/* Top Topics */}
           <div className="neo-card">
             <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-              Topic Performance
+              {t('topicPerformance', configuration.appLanguage)}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(progress.topicProgress)
@@ -263,7 +263,7 @@ export default function UserProfile({ onBack }: UserProfileProps) {
                           {topic}
                         </p>
                         <p className="text-xs" style={{ color: 'var(--neo-text-muted)' }}>
-                          {stats.total} attempts • {stats.correct} correct
+                          {stats.total} {t('attempts', configuration.appLanguage)} • {stats.correct} {t('correctCount', configuration.appLanguage)}
                         </p>
                       </div>
                       <span 

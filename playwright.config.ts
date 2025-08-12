@@ -11,6 +11,11 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Set Portuguese locale for consistent testing
+    locale: 'pt-PT',
+    extraHTTPHeaders: {
+      'Accept-Language': 'pt-PT,pt;q=0.9,en;q=0.8'
+    }
   },
 
   projects: [

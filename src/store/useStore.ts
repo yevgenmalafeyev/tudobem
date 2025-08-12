@@ -8,6 +8,7 @@ interface AppState {
   progress: UserProgress;
   currentExercise: EnhancedExercise | null;
   isConfigured: boolean;
+  configurationSaved: boolean; // Track if user has manually saved configuration
   collections: FlashcardCollection[];
   
   setConfiguration: (config: UserConfiguration) => void;
@@ -45,7 +46,7 @@ const defaultConfiguration: UserConfiguration = {
     'se-preterito-imperfeito-conjuntivo',
     'futuro-conjuntivo-conjuncoes'
   ], // Default B1/B2 topics for intermediate learners
-  appLanguage: 'pt',
+  appLanguage: 'pt', // Default language, will be auto-detected if not saved
   irregularVerbsEnabledTenses: [
     'presente_indicativo', 'pps', 'preterito_imperfeito',
     'imperativo_positivo', 'imperativo_negativo', 'infinitivo_pessoal',
@@ -67,6 +68,7 @@ export const useStore = create<AppState>()(
       progress: defaultProgress,
       currentExercise: null,
       isConfigured: true, // Default to true since we have valid default configuration
+      configurationSaved: false, // Track if user has manually saved configuration
       collections: [],
       
       setConfiguration: (config) => set({ 
@@ -75,7 +77,8 @@ export const useStore = create<AppState>()(
         // API key is optional for database-driven mode
         isConfigured: config.selectedLevels.length > 0 && 
                      config.selectedTopics.length > 0 && 
-                     config.irregularVerbsEnabledTenses.length > 0
+                     config.irregularVerbsEnabledTenses.length > 0,
+        configurationSaved: true // Mark that user has saved configuration
       }),
       
       setCurrentExercise: (exercise) => set({ currentExercise: exercise }),
@@ -232,6 +235,7 @@ export const useStore = create<AppState>()(
         configuration: state.configuration,
         progress: state.progress,
         isConfigured: state.isConfigured,
+        configurationSaved: state.configurationSaved,
         collections: state.collections
       })
     }

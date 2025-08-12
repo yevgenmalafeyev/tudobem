@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import CookieConsent from "@/components/CookieConsent";
+import LanguageDetectionWrapper from "@/components/LanguageDetectionWrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -63,8 +64,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextAuthProvider>
-          {children}
-          <CookieConsent />
+          <LanguageDetectionWrapper>
+            {children}
+            <CookieConsent />
+          </LanguageDetectionWrapper>
         </NextAuthProvider>
       </body>
     </html>

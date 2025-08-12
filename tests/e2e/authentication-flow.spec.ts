@@ -31,7 +31,20 @@ async function cleanupTestUser(page: Page) {
 
 test.describe('Authentication Flow', () => {
   test.beforeEach(async ({ page }) => {
+    // Set Portuguese locale for consistent testing
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'language', {
+        get() { return 'pt-PT'; }
+      });
+      Object.defineProperty(navigator, 'languages', {
+        get() { return ['pt-PT', 'pt', 'en']; }
+      });
+    });
+    
     await page.goto('/?e2e-test=true');
+    
+    // Wait for page to load and ensure Portuguese language
+    await page.waitForTimeout(1000);
   });
 
   test.afterEach(async ({ page }) => {
@@ -40,7 +53,7 @@ test.describe('Authentication Flow', () => {
   });
 
   test('should complete full authentication flow', async ({ page }) => {
-    // 1. Navigate to login page
+    // 1. Navigate to login page (should be in Portuguese)
     await page.click('button:has-text("Entrar")');
     await expect(page.locator('h1:has-text("Entrar")')).toBeVisible();
 
@@ -291,10 +304,10 @@ test.describe('Authentication Flow', () => {
     // Click on profile button
     await page.click(`button:has-text("👤 ${TEST_USER.username}")`);
 
-    // Verify profile page is displayed
-    await expect(page.locator('h1:has-text("User Profile")')).toBeVisible();
-    await expect(page.locator('text=/Account Information/')).toBeVisible();
-    await expect(page.locator('text=/Overall Performance/')).toBeVisible();
+    // Verify profile page is displayed (should be in Portuguese)
+    await expect(page.locator('h1:has-text("Perfil do Utilizador")')).toBeVisible();
+    await expect(page.locator('text=/Informações da Conta/')).toBeVisible();
+    await expect(page.locator('text=/Desempenho Geral/')).toBeVisible();
     // Check for accuracy rate - use first() since there might be multiple
     await expect(page.locator('text=/83.3%/').first()).toBeVisible();
   });
