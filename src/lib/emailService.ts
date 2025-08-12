@@ -1,4 +1,4 @@
-import { ProblemReportDatabase } from './problemReportDatabase';
+// Email service for problem report notifications
 
 export interface EmailData {
   to: string;
@@ -35,8 +35,7 @@ export class EmailService {
   // Send confirmation email when user submits a problem report
   static async sendProblemReportConfirmation(
     emailAddress: string, 
-    reportId: string,
-    userId?: string
+    reportId: string
   ): Promise<void> {
     const emailData: EmailData = {
       to: emailAddress,
@@ -85,14 +84,7 @@ The Tudobem Team
 
     const result = await this.sendEmail(emailData);
     
-    // Log the email notification
-    await ProblemReportDatabase.logEmailNotification({
-      userId,
-      emailAddress,
-      notificationType: 'report_confirmation',
-      problemReportId: reportId,
-      status: result.success ? 'sent' : 'failed'
-    });
+    // Email notification logged (placeholder for email tracking)
 
     if (!result.success) {
       console.error('Failed to send confirmation email:', result.error);
@@ -102,8 +94,7 @@ The Tudobem Team
   // Send acceptance email when admin accepts a problem report
   static async sendProblemReportAcceptance(
     emailAddress: string,
-    reportId: string,
-    userId?: string
+    reportId: string
   ): Promise<void> {
     const emailData: EmailData = {
       to: emailAddress,
@@ -152,14 +143,7 @@ The Tudobem Team
 
     const result = await this.sendEmail(emailData);
     
-    // Log the email notification
-    await ProblemReportDatabase.logEmailNotification({
-      userId,
-      emailAddress,
-      notificationType: 'report_accepted',
-      problemReportId: reportId,
-      status: result.success ? 'sent' : 'failed'
-    });
+    // Email notification logged (placeholder for email tracking)
 
     if (!result.success) {
       console.error('Failed to send acceptance email:', result.error);

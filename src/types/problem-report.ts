@@ -14,7 +14,7 @@ export interface ProblemReport {
     sqlCorrection?: string;
   };
   createdAt: Date;
-  processedAt?: Date;
+  processedAt?: Date | null;
   processedBy?: string;
 }
 
@@ -33,10 +33,7 @@ export interface ProblemReportWithExercise extends ProblemReport {
 export interface AIPromptTemplate {
   id: string;
   name: string;
-  version: number;
-  systemPrompt: string;
-  userTemplate: string;
-  isActive: boolean;
+  content?: string;
   createdAt: Date;
   updatedAt: Date;
 }

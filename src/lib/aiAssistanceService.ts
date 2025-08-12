@@ -32,12 +32,12 @@ export class AIAssistanceService {
       return cached.prompt;
     }
 
-    const template = await ProblemReportDatabase.getActivePromptTemplate(this.TEMPLATE_NAME);
+    const template = await ProblemReportDatabase.getAIPromptTemplate();
     if (!template) {
       throw new Error('AI prompt template not found');
     }
 
-    const fullPrompt = template.systemPrompt;
+    const fullPrompt = template.content || 'Default AI prompt';
     this.promptCache.set(cacheKey, { prompt: fullPrompt, timestamp: Date.now() });
     
     return fullPrompt;

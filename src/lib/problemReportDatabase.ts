@@ -36,7 +36,7 @@ class VercelProblemReportDatabase {
         adminComment: report.admin_comment,
         aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
         createdAt: new Date(report.created_at),
-        processedAt: report.processed_at ? new Date(report.processed_at) : null,
+        processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
     } catch (error) {
       console.error('Error creating problem report:', error);
@@ -109,27 +109,27 @@ class VercelProblemReportDatabase {
             OFFSET ${offset}
           `;
 
-      const reports: ProblemReportWithExercise[] = result.rows.map(row => ({
-        id: row.id,
-        userId: row.user_id,
-        exerciseId: row.exercise_id,
-        problemType: row.problem_type,
-        userComment: row.user_comment,
-        status: row.status,
-        adminComment: row.admin_comment,
-        aiResponse: row.ai_response ? JSON.parse(row.ai_response) : null,
-        createdAt: new Date(row.created_at),
-        processedAt: row.processed_at ? new Date(row.processed_at) : null,
-        processedBy: row.processed_by,
+      const reports: ProblemReportWithExercise[] = result.rows.map((row: Record<string, unknown>) => ({
+        id: row.id as string,
+        userId: row.user_id as string,
+        exerciseId: row.exercise_id as string,
+        problemType: row.problem_type as ProblemType,
+        userComment: row.user_comment as string,
+        status: row.status as 'pending' | 'accepted' | 'declined',
+        adminComment: row.admin_comment as string,
+        aiResponse: row.ai_response ? JSON.parse(row.ai_response as string) : null,
+        createdAt: new Date(row.created_at as string),
+        processedAt: row.processed_at ? new Date(row.processed_at as string) : undefined,
+        processedBy: row.processed_by as string,
         exercise: {
-          id: row.exercise_id,
-          sentence: row.sentence,
-          correctAnswer: row.correct_answer,
-          hint: row.hint,
-          multipleChoiceOptions: row.multiple_choice_options || [],
-          level: row.level,
-          topic: row.topic,
-          explanation: row.explanation,
+          id: row.exercise_id as string,
+          sentence: row.sentence as string,
+          correctAnswer: row.correct_answer as string,
+          hint: row.hint as string,
+          multipleChoiceOptions: (row.multiple_choice_options as string[]) || [],
+          level: row.level as string,
+          topic: row.topic as string,
+          explanation: row.explanation as string,
         },
       }));
 
@@ -182,7 +182,7 @@ class VercelProblemReportDatabase {
         adminComment: report.admin_comment,
         aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
         createdAt: new Date(report.created_at),
-        processedAt: report.processed_at ? new Date(report.processed_at) : null,
+        processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
     } catch (error) {
       console.error('Error updating problem report:', error);
@@ -301,7 +301,7 @@ class LocalProblemReportDatabase {
         adminComment: report.admin_comment,
         aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
         createdAt: new Date(report.created_at),
-        processedAt: report.processed_at ? new Date(report.processed_at) : null,
+        processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
     } catch (error) {
       console.error('Error creating problem report:', error);
@@ -365,27 +365,27 @@ class LocalProblemReportDatabase {
       const reportsParams = status ? [status, pageSize, offset] : [pageSize, offset];
       const result = await pool.query(reportsQuery, reportsParams);
 
-      const reports: ProblemReportWithExercise[] = result.rows.map(row => ({
-        id: row.id,
-        userId: row.user_id,
-        exerciseId: row.exercise_id,
-        problemType: row.problem_type,
-        userComment: row.user_comment,
-        status: row.status,
-        adminComment: row.admin_comment,
-        aiResponse: row.ai_response ? JSON.parse(row.ai_response) : null,
-        createdAt: new Date(row.created_at),
-        processedAt: row.processed_at ? new Date(row.processed_at) : null,
-        processedBy: row.processed_by,
+      const reports: ProblemReportWithExercise[] = result.rows.map((row: Record<string, unknown>) => ({
+        id: row.id as string,
+        userId: row.user_id as string,
+        exerciseId: row.exercise_id as string,
+        problemType: row.problem_type as ProblemType,
+        userComment: row.user_comment as string,
+        status: row.status as 'pending' | 'accepted' | 'declined',
+        adminComment: row.admin_comment as string,
+        aiResponse: row.ai_response ? JSON.parse(row.ai_response as string) : null,
+        createdAt: new Date(row.created_at as string),
+        processedAt: row.processed_at ? new Date(row.processed_at as string) : undefined,
+        processedBy: row.processed_by as string,
         exercise: {
-          id: row.exercise_id,
-          sentence: row.sentence,
-          correctAnswer: row.correct_answer,
-          hint: row.hint,
-          multipleChoiceOptions: row.multiple_choice_options || [],
-          level: row.level,
-          topic: row.topic,
-          explanation: row.explanation,
+          id: row.exercise_id as string,
+          sentence: row.sentence as string,
+          correctAnswer: row.correct_answer as string,
+          hint: row.hint as string,
+          multipleChoiceOptions: (row.multiple_choice_options as string[]) || [],
+          level: row.level as string,
+          topic: row.topic as string,
+          explanation: row.explanation as string,
         },
       }));
 
@@ -445,7 +445,7 @@ class LocalProblemReportDatabase {
         adminComment: report.admin_comment,
         aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
         createdAt: new Date(report.created_at),
-        processedAt: report.processed_at ? new Date(report.processed_at) : null,
+        processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
     } catch (error) {
       console.error('Error updating problem report:', error);
@@ -589,5 +589,5 @@ export class ProblemReportDatabase {
 
 // Global variable for local pool
 declare global {
-  var localProblemReportPool: any;
+  var localProblemReportPool: import('pg').Pool;
 }

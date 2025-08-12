@@ -77,8 +77,7 @@ export async function POST(
         
         await EmailService.sendProblemReportAcceptance(
           userEmail,
-          updatedReport.id,
-          updatedReport.userId
+          updatedReport.id
         );
       } catch (emailError) {
         console.error('Failed to send acceptance email:', emailError);
