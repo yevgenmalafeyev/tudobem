@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Exit on any error
+set -e
+
+echo "🚀 Running pre-push checks..."
+
+# Check if we're in the right directory
+if [ ! -f "package.json" ]; then
+    echo "❌ Error: package.json not found. Are you in the project root?"
+    exit 1
+fi
+
+echo "🔒 Running comprehensive security audit..."
+
+# Run npm audit with stricter checks for push
+npm audit --audit-level low
+
+if [ $? -eq 0 ]; then
+    echo "✅ Security audit passed! No vulnerabilities found."
+else
+    echo "❌ Security vulnerabilities found! Please fix them before pushing."
+    echo "💡 Tip: Run 'npm audit fix' to automatically fix issues, or 'npm audit' for details."
+    exit 1
+fi
+
+echo "🏗️ Running build check..."
+
+# Ensure the project builds successfully before push
+npm run build
+
+if [ $? -eq 0 ]; then
+    echo "✅ Build check passed!"
+else
+    echo "❌ Build failed! Please fix build errors before pushing."
+    exit 1
+fi
+
+echo "✨ Pre-push checks passed! Ready to deploy."

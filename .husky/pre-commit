@@ -11,6 +11,19 @@ if [ ! -f "package.json" ]; then
     exit 1
 fi
 
+echo "🔒 Running security audit..."
+
+# Run npm audit to check for vulnerabilities
+npm audit --audit-level moderate
+
+if [ $? -eq 0 ]; then
+    echo "✅ Security audit passed! No vulnerabilities found."
+else
+    echo "❌ Security vulnerabilities found! Please fix them before committing."
+    echo "💡 Tip: Run 'npm audit fix' to automatically fix issues, or 'npm audit' for details."
+    exit 1
+fi
+
 echo "📝 Checking TypeScript types..."
 
 # Run TypeScript compiler in check mode (no emit), using build config that excludes test files

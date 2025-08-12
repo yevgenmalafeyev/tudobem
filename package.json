@@ -43,6 +43,10 @@
     "deploy:prepare": "npx tsx src/scripts/prepare-deployment.ts",
     "enhanced:setup": "npm run db:setup",
     "enhanced:test": "npm run test:enhanced",
+    "security:audit": "npm audit",
+    "security:fix": "npm audit fix",
+    "deploy:local": "npm run security:audit && npm run build && npm run dev",
+    "deploy:safe": "npm run security:audit && npm run lint && npm run build",
     "prepare": "husky"
   },
   "dependencies": {
