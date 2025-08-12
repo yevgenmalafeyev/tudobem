@@ -6,10 +6,12 @@
   
   /* Neomorphism colors */
   --neo-bg: #e8ecf3;
+  --neo-bg-secondary: #d9dde5;
   --neo-shadow-dark: #c5c9d0;
   --neo-shadow-light: #ffffff;
   --neo-text: #2c3e50;
   --neo-text-muted: #6c7b8a;
+  --neo-text-secondary: #5a6b7d;
   --neo-accent: #9be8fa;
   --neo-accent-hover: #7dd3f5;
   --neo-accent-text: #027aeb;
@@ -19,6 +21,7 @@
   --neo-warning: #fcc0fa;
   --neo-error: #e74c3c;
   --neo-error-hover: #c0392b;
+  --neo-border: #bfc6ce;
   
   /* Neomorphism shadows */
   --neo-shadow-inset: inset 6px 6px 12px var(--neo-shadow-dark), inset -6px -6px 12px var(--neo-shadow-light);
@@ -202,6 +205,38 @@ button,
 
 .neo-button-error {
   background: linear-gradient(135deg, var(--neo-error), var(--neo-error-hover));
+  color: white;
+}
+
+.neo-button-sm {
+  background: var(--neo-bg);
+  color: var(--neo-text);
+  border-radius: 8px;
+  box-shadow: var(--neo-shadow-outset-sm);
+  border: none;
+  padding: 6px 12px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-button-sm:hover {
+  box-shadow: 2px 2px 4px var(--neo-shadow-dark), -2px -2px 4px var(--neo-shadow-light);
+}
+
+.neo-button-sm:active {
+  box-shadow: var(--neo-shadow-inset);
+}
+
+.neo-button-sm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: var(--neo-shadow-outset-sm);
+}
+
+.neo-button-sm.neo-button-primary {
+  background: linear-gradient(135deg, var(--neo-accent), var(--neo-accent-hover));
   color: white;
 }
 

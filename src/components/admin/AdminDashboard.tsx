@@ -5,12 +5,13 @@ import Logo from '@/components/Logo';
 import DataManagement from './DataManagement';
 import QuestionStats from './QuestionStats';
 import UsageAnalytics from './UsageAnalytics';
+import Users from './Users';
 
 interface AdminDashboardProps {
   onLogout: () => void;
 }
 
-type AdminView = 'data' | 'stats' | 'analytics';
+type AdminView = 'data' | 'stats' | 'analytics' | 'users';
 
 export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [currentView, setCurrentView] = useState<AdminView>('data');
@@ -18,7 +19,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const views = [
     { id: 'data' as AdminView, name: 'Data Management', icon: '📁' },
     { id: 'stats' as AdminView, name: 'Question Stats', icon: '📊' },
-    { id: 'analytics' as AdminView, name: 'Usage Analytics', icon: '📈' }
+    { id: 'analytics' as AdminView, name: 'Usage Analytics', icon: '📈' },
+    { id: 'users' as AdminView, name: 'Users', icon: '👥' }
   ];
 
   const renderCurrentView = () => {
@@ -29,6 +31,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         return <QuestionStats />;
       case 'analytics':
         return <UsageAnalytics />;
+      case 'users':
+        return <Users />;
       default:
         return <DataManagement />;
     }

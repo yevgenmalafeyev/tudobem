@@ -838,4 +838,220 @@ export class UserDatabase {
     }
   }
 
+  // Admin: Get all users with statistics for admin dashboard
+  static async getAdminUsersList(
+    page: number = 1,
+    limit: number = 20,
+    search: string = ''
+  ): Promise<{
+    users: Array<{
+      id: string;
+      username: string;
+      email: string | null;
+      created_at: Date;
+      last_login: Date | null;
+      is_active: boolean;
+      email_verified: boolean;
+      totalExercises: number;
+      correctExercises: number;
+      incorrectExercises: number;
+      estimatedLevel: string;
+      lastActivity: Date | null;
+    }>;
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+  }> {
+    try {
+      const pool = getPool();
+      const offset = (page - 1) * limit;
+      
+      // Build search condition for flexible search
+      let searchCondition = '';
+      let searchParams: string[] = [];
+      
+      if (search.trim()) {
+        const searchTerm = `%${search.toLowerCase()}%`;
+        searchCondition = `
+          WHERE (
+            LOWER(u.username) LIKE $1 OR 
+            LOWER(u.email) LIKE $1
+          )
+        `;
+        searchParams = [searchTerm];
+      }
+      
+      // Get total count for pagination
+      const countQuery = `
+        SELECT COUNT(*) as total
+        FROM users u
+        ${searchCondition}
+      `;
+      
+      const countResult = await pool.query(countQuery, searchParams);
+      const totalCount = parseInt(countResult.rows[0].total);
+      const totalPages = Math.ceil(totalCount / limit);
+      
+      // Main query with user statistics
+      const usersQuery = `
+        SELECT 
+          u.id,
+          u.username,
+          u.email,
+          u.created_at,
+          u.last_login,
+          u.is_active,
+          COALESCE(u.email_marketing_consent, false) as email_verified,
+          COALESCE(stats.total_exercises, 0) as total_exercises,
+          COALESCE(stats.correct_exercises, 0) as correct_exercises,
+          COALESCE(stats.incorrect_exercises, 0) as incorrect_exercises,
+          COALESCE(stats.last_activity, u.last_login) as last_activity,
+          COALESCE(level_stats.estimated_level, 'A1') as estimated_level
+        FROM users u
+        LEFT JOIN (
+          SELECT 
+            user_id,
+            COUNT(*) as total_exercises,
+            COUNT(CASE WHEN is_correct = true THEN 1 END) as correct_exercises,
+            COUNT(CASE WHEN is_correct = false THEN 1 END) as incorrect_exercises,
+            MAX(attempted_at) as last_activity
+          FROM user_exercise_attempts
+          GROUP BY user_id
+        ) stats ON u.id = stats.user_id
+        LEFT JOIN (
+          SELECT 
+            user_id,
+            CASE 
+              WHEN c2_acc >= 70 THEN 'C2'
+              WHEN c1_acc >= 70 THEN 'C1'  
+              WHEN b2_acc >= 70 THEN 'B2'
+              WHEN b1_acc >= 70 THEN 'B1'
+              WHEN a2_acc >= 70 THEN 'A2'
+              ELSE 'A1'
+            END as estimated_level
+          FROM (
+            SELECT 
+              user_id,
+              ROUND(AVG(CASE WHEN exercise_level = 'A1' AND is_correct THEN 100.0 ELSE 0 END), 1) as a1_acc,
+              ROUND(AVG(CASE WHEN exercise_level = 'A2' AND is_correct THEN 100.0 ELSE 0 END), 1) as a2_acc,
+              ROUND(AVG(CASE WHEN exercise_level = 'B1' AND is_correct THEN 100.0 ELSE 0 END), 1) as b1_acc,
+              ROUND(AVG(CASE WHEN exercise_level = 'B2' AND is_correct THEN 100.0 ELSE 0 END), 1) as b2_acc,
+              ROUND(AVG(CASE WHEN exercise_level = 'C1' AND is_correct THEN 100.0 ELSE 0 END), 1) as c1_acc,
+              ROUND(AVG(CASE WHEN exercise_level = 'C2' AND is_correct THEN 100.0 ELSE 0 END), 1) as c2_acc
+            FROM user_exercise_attempts
+            GROUP BY user_id
+            HAVING COUNT(*) >= 5
+          ) level_accuracies
+        ) level_stats ON u.id = level_stats.user_id
+        ${searchCondition}
+        ORDER BY COALESCE(stats.total_exercises, 0) DESC, u.created_at DESC
+        LIMIT $${searchParams.length + 1} OFFSET $${searchParams.length + 2}
+      `;
+      
+      const queryParams = [...searchParams, limit, offset];
+      const usersResult = await pool.query(usersQuery, queryParams);
+      
+      const users = usersResult.rows.map(row => ({
+        id: row.id,
+        username: row.username,
+        email: row.email,
+        created_at: row.created_at,
+        last_login: row.last_login,
+        is_active: row.is_active,
+        email_verified: row.email_verified,
+        totalExercises: parseInt(row.total_exercises),
+        correctExercises: parseInt(row.correct_exercises),
+        incorrectExercises: parseInt(row.incorrect_exercises),
+        estimatedLevel: row.estimated_level,
+        lastActivity: row.last_activity
+      }));
+      
+      return {
+        users,
+        totalCount,
+        totalPages,
+        currentPage: page
+      };
+      
+    } catch (error) {
+      console.error('Error getting admin users list:', error);
+      throw error;
+    }
+  }
+
+  // Admin: Get detailed user statistics
+  static async getDetailedUserStats(userId: string): Promise<{
+    user: User;
+    stats: ProgressStats;
+    levelAccuracies: Record<string, number>;
+    recentSessions: Array<{
+      date: string;
+      exerciseCount: number;
+      accuracy: number;
+    }>;
+  } | null> {
+    try {
+      const pool = getPool();
+      
+      // Get user basic info
+      const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+      if (userResult.rows.length === 0) {
+        return null;
+      }
+      
+      const user = userResult.rows[0] as User;
+      
+      // Get comprehensive stats
+      const stats = await this.getUserProgress(userId);
+      
+      // Get level accuracies
+      const levelAccuracyResult = await pool.query(`
+        SELECT 
+          exercise_level,
+          COUNT(*) as total_attempts,
+          COUNT(CASE WHEN is_correct = true THEN 1 END) as correct_attempts,
+          ROUND((COUNT(CASE WHEN is_correct = true THEN 1 END) * 100.0 / COUNT(*)), 1) as accuracy
+        FROM user_exercise_attempts
+        WHERE user_id = $1
+        GROUP BY exercise_level
+        ORDER BY exercise_level
+      `, [userId]);
+      
+      const levelAccuracies: Record<string, number> = {};
+      levelAccuracyResult.rows.forEach(row => {
+        levelAccuracies[row.exercise_level] = parseFloat(row.accuracy || '0');
+      });
+      
+      // Get recent session activity (last 7 days)
+      const recentSessionsResult = await pool.query(`
+        SELECT 
+          DATE(attempted_at) as session_date,
+          COUNT(*) as exercise_count,
+          ROUND((COUNT(CASE WHEN is_correct = true THEN 1 END) * 100.0 / COUNT(*)), 1) as accuracy
+        FROM user_exercise_attempts
+        WHERE user_id = $1 
+        AND attempted_at >= CURRENT_DATE - INTERVAL '7 days'
+        GROUP BY DATE(attempted_at)
+        ORDER BY session_date DESC
+      `, [userId]);
+      
+      const recentSessions = recentSessionsResult.rows.map(row => ({
+        date: row.session_date,
+        exerciseCount: parseInt(row.exercise_count),
+        accuracy: parseFloat(row.accuracy || '0')
+      }));
+      
+      return {
+        user,
+        stats,
+        levelAccuracies,
+        recentSessions
+      };
+      
+    } catch (error) {
+      console.error('Error getting detailed user stats:', error);
+      throw error;
+    }
+  }
+
 }
