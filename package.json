@@ -25,7 +25,6 @@
     "test:ai": "playwright test tests/e2e/ai-integration-full-flow.spec.ts --headed",
     "test:ai:ci": "playwright test tests/e2e/ai-integration-full-flow.spec.ts",
     "test:ai:setup": "node scripts/test-ai-integration.js",
-    "db:init": "npx tsx src/scripts/initializeDatabase.ts",
     "db:migrate": "npx tsx src/scripts/migrateStaticExercises.ts migrate",
     "db:validate": "npx tsx src/scripts/migrateStaticExercises.ts validate",
     "db:rollback": "npx tsx src/scripts/migrateStaticExercises.ts rollback",
