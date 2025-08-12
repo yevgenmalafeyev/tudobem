@@ -13,22 +13,14 @@ async function getAdminStatsHandler(/* _request: NextRequest */) {
     await UserDatabase.initializeTables();
     await ExerciseDatabase.initializeTables();
     
-    // Get database statistics
-    const userStats = await UserDatabase.getDatabaseStats();
+    // Get exercise statistics in the format expected by frontend
     const exerciseStats = await ExerciseDatabase.getStats();
     
+    // Return the stats directly in the format expected by QuestionStats component
     return createApiResponse({
-      database: {
-        exercises: exerciseStats,
-        users: userStats
-      },
-      summary: {
-        totalUsers: userStats.totalUsers,
-        activeUsers: userStats.activeUsers,
-        totalExercises: userStats.totalExercises,
-        totalAttempts: userStats.totalAttempts,
-        overallAccuracy: userStats.averageAccuracy
-      }
+      total: exerciseStats.total,
+      byLevel: exerciseStats.byLevel,
+      byTopic: exerciseStats.byTopic
     });
   } catch (error) {
     throw error;

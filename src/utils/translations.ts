@@ -299,6 +299,51 @@ export const translations = {
     en: 'Reset Password',
     uk: 'Скинути Пароль'
   },
+  enterNewPassword: {
+    pt: 'Digite sua nova senha abaixo',
+    en: 'Enter your new password below',
+    uk: 'Введіть новий пароль нижче'
+  },
+  newPassword: {
+    pt: 'Nova Senha',
+    en: 'New Password',
+    uk: 'Новий Пароль'
+  },
+  confirmPassword: {
+    pt: 'Confirmar Senha',
+    en: 'Confirm Password',
+    uk: 'Підтвердити Пароль'
+  },
+  confirmNewPassword: {
+    pt: 'Confirme sua nova senha',
+    en: 'Confirm your new password',
+    uk: 'Підтвердіть новий пароль'
+  },
+  resetPasswordButton: {
+    pt: 'Redefinir Senha',
+    en: 'Reset Password',
+    uk: 'Скинути Пароль'
+  },
+  backToHome: {
+    pt: 'Voltar ao início',
+    en: 'Back to home',
+    uk: 'Повернутися на головну'
+  },
+  passwordResetSuccess: {
+    pt: 'Senha redefinida com sucesso! Agora você pode fazer login com sua nova senha.',
+    en: 'Password reset successfully! You can now log in with your new password.',
+    uk: 'Пароль успішно скинуто! Тепер ви можете увійти з новим паролем.'
+  },
+  redirectingToHome: {
+    pt: 'Redirecionando para a página inicial em alguns segundos...',
+    en: 'Redirecting to home page in a few seconds...',
+    uk: 'Перенаправлення на головну сторінку через кілька секунд...'
+  },
+  invalidResetToken: {
+    pt: 'Token de redefinição inválido ou ausente',
+    en: 'Invalid or missing reset token',
+    uk: 'Недійсний або відсутній токен скидання'
+  },
   name: {
     pt: 'Nome',
     en: 'Name',

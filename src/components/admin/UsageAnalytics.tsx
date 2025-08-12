@@ -266,19 +266,137 @@ export default function UsageAnalytics() {
         </div>
       </div>
 
-      {/* Daily Chart Placeholder */}
+      {/* Daily Activity Chart */}
       <div className="neo-card">
         <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-          📊 Daily Activity
+          📊 Daily Activity ({stats.dailyStats.length} days)
         </h3>
-        <div className="text-center py-8" style={{ color: 'var(--neo-text-muted)' }}>
-          <div className="text-sm">
-            Chart visualization will be implemented here
+        
+        {stats.dailyStats.length > 0 ? (
+          <div className="space-y-6">
+            {/* Questions Chart */}
+            <div>
+              <h4 className="text-sm font-medium mb-3" style={{ color: 'var(--neo-text-muted)' }}>
+                Questions Answered Per Day
+              </h4>
+              <div className="relative h-32 flex items-end justify-between px-2 py-2 bg-gray-50 rounded-lg">
+                {stats.dailyStats.map((day, index) => {
+                  const maxQuestions = Math.max(...stats.dailyStats.map(d => d.questions));
+                  const height = maxQuestions > 0 ? (day.questions / maxQuestions) * 100 : 0;
+                  const isToday = new Date(day.date).toDateString() === new Date().toDateString();
+                  
+                  return (
+                    <div 
+                      key={day.date}
+                      className="flex flex-col items-center group relative"
+                      style={{ flex: '1 1 0%', maxWidth: '40px' }}
+                    >
+                      {/* Bar */}
+                      <div 
+                        className={`w-full min-w-[8px] rounded-t transition-all duration-200 ${isToday ? 'bg-green-500' : 'bg-blue-400 hover:bg-blue-500'}`}
+                        style={{ 
+                          height: `${Math.max(height, 2)}%`,
+                          minHeight: day.questions > 0 ? '4px' : '2px'
+                        }}
+                      />
+                      
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+                        <div>{new Date(day.date).toLocaleDateString()}</div>
+                        <div>{day.questions} questions</div>
+                        <div>{day.correct} correct</div>
+                        <div>{day.users} users</div>
+                      </div>
+                      
+                      {/* Date label (show every 3rd day for readability) */}
+                      {index % 3 === 0 && (
+                        <div className="text-xs mt-1 text-center" style={{ color: 'var(--neo-text-muted)' }}>
+                          {new Date(day.date).getDate()}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Legend */}
+              <div className="flex justify-between mt-2 text-xs" style={{ color: 'var(--neo-text-muted)' }}>
+                <span>0</span>
+                <span>{Math.max(...stats.dailyStats.map(d => d.questions))} questions (max)</span>
+              </div>
+            </div>
+
+            {/* Users Chart */}
+            <div>
+              <h4 className="text-sm font-medium mb-3" style={{ color: 'var(--neo-text-muted)' }}>
+                Active Users Per Day
+              </h4>
+              <div className="relative h-24 flex items-end justify-between px-2 py-2 bg-gray-50 rounded-lg">
+                {stats.dailyStats.map((day) => {
+                  const maxUsers = Math.max(...stats.dailyStats.map(d => d.users));
+                  const height = maxUsers > 0 ? (day.users / maxUsers) * 100 : 0;
+                  const isToday = new Date(day.date).toDateString() === new Date().toDateString();
+                  
+                  return (
+                    <div 
+                      key={`users-${day.date}`}
+                      className="flex flex-col items-center group relative"
+                      style={{ flex: '1 1 0%', maxWidth: '40px' }}
+                    >
+                      {/* Bar */}
+                      <div 
+                        className={`w-full min-w-[8px] rounded-t transition-all duration-200 ${isToday ? 'bg-green-500' : 'bg-purple-400 hover:bg-purple-500'}`}
+                        style={{ 
+                          height: `${Math.max(height, 2)}%`,
+                          minHeight: day.users > 0 ? '4px' : '2px'
+                        }}
+                      />
+                      
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+                        <div>{new Date(day.date).toLocaleDateString()}</div>
+                        <div>{day.users} users</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Legend */}
+              <div className="flex justify-between mt-2 text-xs" style={{ color: 'var(--neo-text-muted)' }}>
+                <span>0</span>
+                <span>{Math.max(...stats.dailyStats.map(d => d.users))} users (max)</span>
+              </div>
+            </div>
+
+            {/* Summary Stats */}
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t" style={{ borderColor: 'var(--neo-border)' }}>
+              <div className="text-center">
+                <div className="text-lg font-bold" style={{ color: 'var(--neo-accent-text)' }}>
+                  {stats.dailyStats.reduce((sum, day) => sum + day.questions, 0)}
+                </div>
+                <div className="text-xs" style={{ color: 'var(--neo-text-muted)' }}>Total Questions</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold" style={{ color: 'var(--neo-accent-text)' }}>
+                  {stats.dailyStats.reduce((sum, day) => sum + day.correct, 0)}
+                </div>
+                <div className="text-xs" style={{ color: 'var(--neo-text-muted)' }}>Correct Answers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold" style={{ color: 'var(--neo-accent-text)' }}>
+                  {Math.round((stats.dailyStats.reduce((sum, day) => sum + day.correct, 0) / 
+                    Math.max(stats.dailyStats.reduce((sum, day) => sum + day.questions, 0), 1)) * 100)}%
+                </div>
+                <div className="text-xs" style={{ color: 'var(--neo-text-muted)' }}>Accuracy</div>
+              </div>
+            </div>
           </div>
-          <div className="text-xs mt-2">
-            Daily stats: {stats.dailyStats.length} data points
+        ) : (
+          <div className="text-center py-8" style={{ color: 'var(--neo-text-muted)' }}>
+            <div className="text-sm">No daily activity data available</div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Refresh Button */}
