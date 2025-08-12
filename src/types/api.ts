@@ -1,15 +1,4 @@
-import { Exercise, LanguageLevel, AppLanguage } from './index';
-
-export interface GenerateExerciseRequest {
-  levels: LanguageLevel[];
-  topics: string[];
-  claudeApiKey?: string;
-}
-
-export interface GenerateExerciseResponse {
-  exercise?: Exercise;
-  error?: string;
-}
+import { Exercise, AppLanguage } from './index';
 
 export interface CheckAnswerRequest {
   exercise: Exercise;
