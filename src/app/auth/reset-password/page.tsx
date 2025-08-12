@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import Logo from '@/components/Logo';
 
-export default function ResetPassword() {
+function ResetPasswordContent() {
   const { configuration } = useStore();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -171,5 +171,28 @@ export default function ResetPassword() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--neo-bg)' }}>
+        <div className="max-w-md w-full mx-4">
+          <div className="bg-white rounded-lg shadow-lg p-8" style={{ background: 'var(--neo-card-bg)', border: '1px solid var(--neo-border)' }}>
+            <div className="text-center">
+              <div className="flex justify-center mb-4">
+                <Logo className="w-16 h-16" />
+              </div>
+              <p className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+                Loading...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }
