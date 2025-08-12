@@ -25,8 +25,8 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       const exercisesCompleted = 5
       
       for (let i = 0; i < exercisesCompleted; i++) {
-        // Wait for exercise to load
-        await page.waitForSelector('text=___', { timeout: 15000 })
+        // Wait for exercise container to load
+        await page.waitForSelector('.exercise-container', { timeout: 15000 })
         
         // Take screenshot of exercise
         await page.screenshot({ 
@@ -37,25 +37,26 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
         // Test both input and multiple choice modes
         if (i % 2 === 0) {
           // Input mode
-          await page.click('text=Type answer')
-          await page.waitForSelector('input[type="text"]')
+          await page.click('text=Digitar Resposta')
+          await page.waitForSelector('[data-testid="exercise-input"]')
           
           // Fill in a Portuguese word (may not be correct, but tests functionality)
-          await page.fill('input[type="text"]', 'teste')
+          await page.fill('[data-testid="exercise-input"]', 'teste')
           
           // Check answer
-          await page.click('text=Check Answer')
+          await page.click('text=Verificar Resposta')
           
         } else {
           // Multiple choice mode
-          await page.click('text=Show options')
+          await page.click('text=Mostrar Opções')
           await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
           
-          // Select first option
+          // Select first option (verification is automatic in multiple choice mode)
           const options = await page.locator('[data-testid="multiple-choice-option"]').all()
           if (options.length > 0) {
             await options[0].click()
-            await page.click('text=Check Answer')
+            // Wait a moment for automatic verification
+            await page.waitForTimeout(500)
           }
         }
         
@@ -68,7 +69,7 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
         
         // Move to next exercise (except for last one)
         if (i < exercisesCompleted - 1) {
-          await page.click('text=Next Exercise')
+          await page.click('text=Próximo Exercício')
           await page.waitForTimeout(1000) // Allow for loading
         }
       }
@@ -80,25 +81,24 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
     test('should handle rapid exercise completion', async () => {
       // Test rapid clicking and interaction
       for (let i = 0; i < 3; i++) {
-        await page.waitForSelector('text=___', { timeout: 10000 })
+        await page.waitForSelector('.exercise-container', { timeout: 10000 })
         
         // Rapidly switch between modes
-        await page.click('text=Show options')
+        await page.click('text=Mostrar Opções')
         await page.waitForTimeout(500)
-        await page.click('text=Type answer')
+        await page.click('text=Digitar Resposta')
         await page.waitForTimeout(500)
-        await page.click('text=Show options')
+        await page.click('text=Mostrar Opções')
         
-        // Quick selection and answer
+        // Quick selection and answer (verification is automatic in multiple choice)
         await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
         const options = await page.locator('[data-testid="multiple-choice-option"]').all()
         if (options.length > 0) {
           await options[0].click()
-          await page.click('text=Check Answer')
           await page.waitForSelector('.neo-inset', { timeout: 10000 })
           
           if (i < 2) {
-            await page.click('text=Next Exercise')
+            await page.click('text=Próximo Exercício')
           }
         }
       }
@@ -115,21 +115,19 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       await page.waitForLoadState('networkidle')
       
       // Should default to multiple choice on mobile
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Check if multiple choice is default (may need to wait for auto-selection)
       await page.waitForTimeout(2000)
       
       // Test mobile-specific interactions
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
-      // Test touch interactions
+      // Test touch interactions (verification is automatic in multiple choice)
       const options = await page.locator('[data-testid="multiple-choice-option"]').all()
       if (options.length > 0) {
         await options[0].tap()
-        await page.waitForSelector('text=Check Answer')
-        await page.tap('text=Check Answer')
         await page.waitForSelector('.neo-inset', { timeout: 10000 })
       }
     })
@@ -137,14 +135,14 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
     test('should handle orientation changes', async () => {
       // Start in portrait
       await page.setViewportSize({ width: 375, height: 667 })
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Switch to landscape
       await page.setViewportSize({ width: 667, height: 375 })
       await page.waitForTimeout(1000)
       
       // Ensure functionality still works
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Back to portrait
@@ -163,13 +161,13 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
   test.describe('Network Conditions', () => {
     test('should handle offline mode', async () => {
       // Start online
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Go offline
       await page.context().setOffline(true)
       
       // Try to interact with the app
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       
       // Should still work with cached/fallback content
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
@@ -188,10 +186,10 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
         await route.continue()
       })
       
-      await page.waitForSelector('text=___', { timeout: 15000 })
+      await page.waitForSelector('.exercise-container', { timeout: 15000 })
       
       // Test that app still works with slow network
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 15000 })
       
       const options = await page.locator('[data-testid="multiple-choice-option"]').all()
@@ -205,9 +203,9 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       })
       
       // Should still work with fallback content
-      await page.waitForSelector('text=___', { timeout: 15000 })
+      await page.waitForSelector('.exercise-container', { timeout: 15000 })
       
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 15000 })
       
       // Should have fallback options
@@ -218,7 +216,7 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
   test.describe('Accessibility', () => {
     test('should be keyboard navigable', async () => {
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Test keyboard navigation
       await page.keyboard.press('Tab')
@@ -238,8 +236,8 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
     })
 
     test('should have proper ARIA attributes', async () => {
-      await page.waitForSelector('text=___', { timeout: 10000 })
-      await page.click('text=Show options')
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Check ARIA attributes
@@ -253,10 +251,10 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
     test('should work with screen reader simulation', async () => {
       // Simulate screen reader behavior
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Test that elements have proper labels
-      const modeToggle = page.locator('text=Show options')
+      const modeToggle = page.locator('text=Mostrar Opções')
       await expect(modeToggle).toBeVisible()
       
       await modeToggle.click()
@@ -277,25 +275,25 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       const startTime = Date.now()
       
       await page.goto('/')
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       const loadTime = Date.now() - startTime
       expect(loadTime).toBeLessThan(5000) // Should load within 5 seconds
     })
 
     test('should handle multiple rapid interactions', async () => {
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Rapid mode switching
       for (let i = 0; i < 10; i++) {
-        await page.click('text=Show options')
+        await page.click('text=Mostrar Opções')
         await page.waitForTimeout(100)
-        await page.click('text=Type answer')
+        await page.click('text=Digitar Resposta')
         await page.waitForTimeout(100)
       }
       
       // Should still be functional
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       const options = await page.locator('[data-testid="multiple-choice-option"]').all()
@@ -305,22 +303,23 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
 
   test.describe('Data Persistence', () => {
     test('should maintain state across page reloads', async () => {
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
       // Interact with the app
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Get current exercise content
-      await page.locator('text=___').textContent()
+      const exerciseVisible = await page.locator('.exercise-container').count() > 0
+      expect(exerciseVisible).toBe(true)
       
       // Reload the page
       await page.reload()
       await page.waitForLoadState('networkidle')
       
       // Should still be functional
-      await page.waitForSelector('text=___', { timeout: 10000 })
-      await page.click('text=Show options')
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
     })
   })
@@ -343,9 +342,9 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       })
       
       await page.reload()
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Should handle long words properly
@@ -370,9 +369,9 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
       })
       
       await page.reload()
-      await page.waitForSelector('text=___', { timeout: 10000 })
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
       
-      await page.click('text=Show options')
+      await page.click('text=Mostrar Opções')
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })
       
       // Should display special characters correctly
@@ -390,8 +389,8 @@ test.describe('Complete Learning Flow - Functional Tests', () => {
         })
       })
       
-      await page.waitForSelector('text=___', { timeout: 10000 })
-      await page.click('text=Show options')
+      await page.waitForSelector('.exercise-container', { timeout: 10000 })
+      await page.click('text=Mostrar Opções')
       
       // Should still provide fallback options
       await page.waitForSelector('[data-testid="multiple-choice-option"]', { timeout: 10000 })

@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Logo from './Logo';
 
 interface HeaderProps {
-  currentView: 'learning' | 'configuration' | 'flashcards' | 'login';
-  onViewChange: (view: 'learning' | 'configuration' | 'flashcards' | 'login') => void;
+  currentView: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs';
+  onViewChange: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs') => void;
 }
 
 export default function Header({ currentView, onViewChange }: HeaderProps) {
@@ -39,6 +39,16 @@ export default function Header({ currentView, onViewChange }: HeaderProps) {
                   }`}
                 >
                   {t('learning', configuration.appLanguage)}
+                </button>
+                <button
+                  onClick={() => onViewChange('irregular-verbs')}
+                  className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                    currentView === 'irregular-verbs'
+                      ? 'neo-button-primary'
+                      : ''
+                  }`}
+                >
+                  Verbos Irregulares
                 </button>
                 {/* Cards button temporarily hidden */}
                 {false && (
