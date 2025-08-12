@@ -67,7 +67,7 @@ test.describe('Irregular Verbs Learning Flow - Functional Tests', () => {
     await page.setViewportSize({ width: 1280, height: 720 })
     
     // Navigate to the application
-    await page.goto('/')
+    await page.goto('/?e2e-test=true')
     
     // Wait for application to load
     await page.waitForLoadState('networkidle')

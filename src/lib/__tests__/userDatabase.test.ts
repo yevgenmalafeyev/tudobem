@@ -416,6 +416,8 @@ describe('UserDatabase', () => {
       const attempt = await UserDatabase.recordAttempt(
         mockUser.id,
         exerciseId,
+        'A1',
+        'Present Tense',
         true,
         'falo'
       );

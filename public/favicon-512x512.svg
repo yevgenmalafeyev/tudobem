@@ -1,0 +1,22 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="224" fill="url(#bgGrad512)" stroke="#047857" stroke-width="16"/>
+  
+  <!-- Thumbs up icon -->
+  <path d="M192 384c-14 0-26-12-26-26v-102c0-14 12-26 26-26h19l32-51c6-13 22-19 35-16 19 3 29 19 29 38v38h38c14 0 26 12 26 26l-19 90c-3 13-13 19-26 19H192z" 
+        fill="#ffffff" stroke="#e5e7eb" stroke-width="6"/>
+  
+  <!-- Portuguese flag accent circles -->
+  <circle cx="128" cy="160" r="32" fill="#dc2626" opacity="0.8"/>
+  <circle cx="384" cy="352" r="32" fill="#fbbf24" opacity="0.8"/>
+  
+  <!-- Success checkmark -->
+  <path d="M176 256l32 32 64-64" stroke="#10b981" stroke-width="20" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

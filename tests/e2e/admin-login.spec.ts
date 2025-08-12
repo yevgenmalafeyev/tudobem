@@ -9,8 +9,8 @@ test.describe('Admin Login E2E Tests', () => {
     // Set up viewport for desktop testing
     await page.setViewportSize({ width: 1280, height: 720 })
     
-    // Navigate to the admin login page
-    await page.goto('/admin')
+    // Navigate to the admin login page with test parameter
+    await page.goto('/admin?e2e-test=true')
     
     // Wait for application to load
     await page.waitForLoadState('networkidle')
@@ -23,7 +23,7 @@ test.describe('Admin Login E2E Tests', () => {
   test.describe('Admin Login Flow', () => {
     test('should display admin login page correctly', async () => {
       // Check that we're on the admin login page
-      await expect(page).toHaveURL('/admin')
+      await expect(page).toHaveURL('/admin?e2e-test=true')
       
       // Verify login form elements are present
       await expect(page.locator('input[type="email"], input[type="text"]').first()).toBeVisible()
@@ -173,13 +173,14 @@ test.describe('Admin Login E2E Tests', () => {
       const bodyContent = await page.textContent('body')
       
       // Check for validation indicators
+      const invalidInputsCount = await page.locator('input:invalid').count()
       const hasValidationError = 
-        currentUrl.endsWith('/admin') || // Still on login page
+        currentUrl.endsWith('/admin?e2e-test=true') || // Still on login page
         bodyContent?.includes('required') ||
         bodyContent?.includes('Required') ||
         bodyContent?.includes('obrigatório') ||
         bodyContent?.includes('necessário') ||
-        page.locator('input:invalid').count() > 0 // HTML5 validation
+        invalidInputsCount > 0 // HTML5 validation
       
       expect(hasValidationError).toBeTruthy()
       console.log('✅ Empty fields properly validated')

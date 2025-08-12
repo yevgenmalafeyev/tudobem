@@ -211,6 +211,8 @@ describe('Database Migration', () => {
       const attempt = await UserDatabase.recordAttempt(
         user.id,
         exercise.id,
+        'A1',
+        'Present Tense',
         true,
         'falo'
       );
@@ -238,7 +240,7 @@ describe('Database Migration', () => {
       }]);
 
       // Create attempt and session
-      await UserDatabase.recordAttempt(user.id, exercises[0].id, true, 'estás');
+      await UserDatabase.recordAttempt(user.id, exercises[0].id, 'A1', 'Present Tense', true, 'estás');
       await UserDatabase.loginUser('migration_test_cascade', 'testpassword');
 
       // Verify data exists
@@ -303,7 +305,7 @@ describe('Database Migration', () => {
 
       // Simulate concurrent attempts
       const concurrentAttempts = Array.from({ length: 5 }, (_, i) =>
-        UserDatabase.recordAttempt(user.id, exercises[0].id, i % 2 === 0, `answer_${i}`)
+        UserDatabase.recordAttempt(user.id, exercises[0].id, 'A1', 'Present Tense', i % 2 === 0, `answer_${i}`)
       );
 
       const results = await Promise.all(concurrentAttempts);

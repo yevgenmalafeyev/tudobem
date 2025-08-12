@@ -1,42 +1,48 @@
-// import { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server';
 import { UserDatabase } from '@/lib/userDatabase';
 import { createApiResponse, createApiError, withErrorHandling } from '@/lib/api-utils';
+import jwt from 'jsonwebtoken';
 
-async function verifyHandler(/* _request: NextRequest */) {
-  try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('session-token')?.value;
+const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-key';
 
-    if (!sessionToken) {
-      return createApiError('No session token found', 401);
-    }
+export const GET = withErrorHandling(async (request: NextRequest) => {
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get('token');
 
-    // Verify token with database
-    const user = await UserDatabase.verifyToken(sessionToken);
-
-    if (!user) {
-      // Clear invalid cookie
-      cookieStore.delete('session-token');
-      return createApiError('Invalid or expired session', 401);
-    }
-
-    // Return user data without password hash
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password_hash, ...userResponse } = user;
-    
-    return createApiResponse({
-      user: userResponse,
-      valid: true
-    });
-  } catch {
-    // Clear cookie on any error
-    const cookieStore = await cookies();
-    cookieStore.delete('session-token');
-    
-    return createApiError('Session verification failed', 401);
+  if (!token) {
+    return createApiError('Verification token is required', 400);
   }
-}
 
-export const GET = withErrorHandling(verifyHandler);
-export const POST = withErrorHandling(verifyHandler); // Allow POST for convenience
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, JWT_SECRET) as { email: string; type: string };
+
+    if (decoded.type !== 'email_verification') {
+      return createApiError('Invalid token type', 400);
+    }
+
+    // Mark email as verified and activate user
+    const result = await UserDatabase.verifyEmail(decoded.email);
+
+    if (!result) {
+      return createApiError('User not found or already verified', 404);
+    }
+
+    // Auto-login the user after email verification
+    const loginResult = await UserDatabase.loginUserByEmail(decoded.email);
+
+    return createApiResponse({
+      message: 'Email verified successfully',
+      user: loginResult.user,
+      token: loginResult.token,
+      verified: true
+    });
+
+  } catch (error) {
+    console.error('Email verification error:', error);
+    if (error instanceof jwt.JsonWebTokenError) {
+      return createApiError('Invalid or expired verification token', 400);
+    }
+    return createApiError('Verification failed', 500);
+  }
+});

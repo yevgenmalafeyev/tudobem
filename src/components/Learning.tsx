@@ -13,6 +13,7 @@ import ExerciseDisplay from './learning/ExerciseDisplay';
 import MultipleChoiceOptions from './learning/MultipleChoiceOptions';
 import FeedbackDisplay from './learning/FeedbackDisplay';
 import ActionButtons from './learning/ActionButtons';
+import NotLoggedInPrompt from './NotLoggedInPrompt';
 
 export default function Learning() {
   // Helper function to get topic display name
@@ -354,6 +355,9 @@ export default function Learning() {
           onCheckAnswer={handleCheckAnswer}
           onNextExercise={handleNextExercise}
         />
+
+        {/* Not logged in prompt */}
+        <NotLoggedInPrompt className="mt-8" />
       </div>
     </div>
   );

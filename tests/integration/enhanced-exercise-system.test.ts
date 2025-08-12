@@ -142,7 +142,7 @@ describe('Database-Driven Exercise System Integration', () => {
       const exerciseId = exercises[0].id;
 
       // Record an attempt
-      const attempt = await UserDatabase.recordAttempt(testUser.id, exerciseId, true, 'somos');
+      const attempt = await UserDatabase.recordAttempt(testUser.id, exerciseId, 'A1', 'Present Tense', true, 'somos');
       expect(attempt.is_correct).toBe(true);
       expect(attempt.user_answer).toBe('somos');
 
@@ -176,8 +176,8 @@ describe('Database-Driven Exercise System Integration', () => {
       ]);
 
       // Record correct attempts for both exercises
-      await UserDatabase.recordAttempt(testUser.id, exercises[0].id, true, 'é');
-      await UserDatabase.recordAttempt(testUser.id, exercises[1].id, true, 'são');
+      await UserDatabase.recordAttempt(testUser.id, exercises[0].id, 'A1', 'Present Tense', true, 'é');
+      await UserDatabase.recordAttempt(testUser.id, exercises[1].id, 'A1', 'Present Tense', true, 'são');
 
       const correctExercises = await UserDatabase.getCorrectlyAnsweredExercises(testUser.id);
       expect(correctExercises).toHaveLength(2);

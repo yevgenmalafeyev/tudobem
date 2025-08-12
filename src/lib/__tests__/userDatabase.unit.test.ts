@@ -339,6 +339,8 @@ describe('UserDatabase Unit Tests', () => {
       const result = await UserDatabase.recordAttempt(
         'user-id',
         'exercise-id',
+        'A1',
+        'Present Tense',
         true,
         'falo'
       );

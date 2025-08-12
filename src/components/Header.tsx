@@ -1,17 +1,64 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import Link from 'next/link';
 import Logo from './Logo';
 
 interface HeaderProps {
-  currentView: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs';
-  onViewChange: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs') => void;
+  currentView: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile';
+  onViewChange: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile') => void;
 }
 
 export default function Header({ currentView, onViewChange }: HeaderProps) {
   const { isConfigured, configuration } = useStore();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await fetch('/api/auth/status', {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        if (result.authenticated && result.user) {
+          setIsLoggedIn(true);
+          setUsername(result.user.username);
+        } else {
+          setIsLoggedIn(false);
+          setUsername('');
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUsername('');
+      }
+    } catch {
+      // Network error - user not logged in
+      setIsLoggedIn(false);
+      setUsername('');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      setIsLoggedIn(false);
+      setUsername('');
+      onViewChange('learning');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <header className="neo-card-sm mx-2 my-2 sm:mx-4 sm:my-4 lg:mx-6">
@@ -76,16 +123,37 @@ export default function Header({ currentView, onViewChange }: HeaderProps) {
               </>
             )}
             
-            <button
-              onClick={() => onViewChange('login')}
-              className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
-                currentView === 'login'
-                  ? 'neo-button-primary'
-                  : ''
-              }`}
-            >
-              {t('login', configuration.appLanguage)}
-            </button>
+            {isLoggedIn ? (
+              <>
+                <button
+                  onClick={() => onViewChange('profile')}
+                  className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                    currentView === 'profile'
+                      ? 'neo-button-primary'
+                      : ''
+                  }`}
+                >
+                  👤 {username}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="neo-button neo-button-secondary text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap"
+                >
+                  {t('logout', configuration.appLanguage)}
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => onViewChange('login')}
+                className={`neo-button text-xs sm:text-sm lg:text-base min-h-[44px] px-2 sm:px-3 lg:px-4 py-2 whitespace-nowrap ${
+                  currentView === 'login'
+                    ? 'neo-button-primary'
+                    : ''
+                }`}
+              >
+                {t('login', configuration.appLanguage)}
+              </button>
+            )}
           </nav>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import NextAuthProvider from "@/components/NextAuthProvider";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,10 +46,12 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon-16x16.svg" type="image/svg+xml" sizes="16x16" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/icon-192x192.svg" />
+        <link rel="icon" href="/favicon-16x16.svg" type="image/svg+xml" sizes="16x16" />
+        <link rel="icon" href="/favicon-32x32.svg" type="image/svg+xml" sizes="32x32" />
+        <link rel="icon" href="/favicon-192x192.svg" type="image/svg+xml" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/favicon-192x192.svg" />
+        <link rel="apple-touch-icon" href="/favicon-512x512.svg" sizes="512x512" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Tudobem" />
@@ -58,7 +62,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NextAuthProvider>
+          {children}
+          <CookieConsent />
+        </NextAuthProvider>
       </body>
     </html>
   );

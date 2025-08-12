@@ -5,13 +5,15 @@ import { useStore } from '@/store/useStore';
 import Configuration from '@/components/Configuration';
 import Learning from '@/components/Learning';
 import Flashcards from '@/components/Flashcards';
-import Login from '@/components/Login';
 import IrregularVerbsLearning from '@/components/IrregularVerbsLearning';
+import UserProfile from '@/components/UserProfile';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import AuthForm from '@/components/AuthForm';
 
 export default function Home() {
   const { isConfigured, configuration } = useStore();
-  const [currentView, setCurrentView] = useState<'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs'>('learning');
+  const [currentView, setCurrentView] = useState<'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile'>('learning');
   
   useEffect(() => {
     console.log('🏠 [DEBUG] useEffect triggered:', { isConfigured, currentView });
@@ -28,7 +30,7 @@ export default function Home() {
     setCurrentView('learning');
   };
 
-  const handleViewChange = (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs') => {
+  const handleViewChange = (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile') => {
     console.log('🏠 [DEBUG] handleViewChange called:', { from: currentView, to: view, isConfigured });
     setCurrentView(view);
   };
@@ -48,13 +50,17 @@ export default function Home() {
         ) : currentView === 'flashcards' ? (
           <Flashcards />
         ) : currentView === 'login' ? (
-          <Login onSuccess={handleLoginSuccess} />
+          <AuthForm onSuccess={handleLoginSuccess} onBack={() => setCurrentView('learning')} />
         ) : currentView === 'irregular-verbs' ? (
           <IrregularVerbsLearning userConfig={configuration} />
+        ) : currentView === 'profile' ? (
+          <UserProfile onBack={() => setCurrentView('learning')} />
         ) : (
           <Learning />
         )}
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -32,8 +32,10 @@ async function getUserProgressHandler(/* _request: NextRequest */) {
         id: user.id,
         username: user.username,
         email: user.email,
-        lastLogin: user.last_login,
-        createdAt: user.created_at
+        last_login: user.last_login,
+        created_at: user.created_at,
+        email_verified: user.email_verified,
+        is_active: user.is_active
       }
     });
   } catch (error) {

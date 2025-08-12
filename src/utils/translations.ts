@@ -404,6 +404,16 @@ export const translations = {
     en: 'Reset link sent to your email.',
     uk: 'Посилання для скидання надіслано на вашу електронну пошту.'
   },
+  orContinueWith: {
+    pt: 'ou continuar com',
+    en: 'or continue with',
+    uk: 'або продовжити з'
+  },
+  passwordsDoNotMatch: {
+    pt: 'As senhas não coincidem',
+    en: 'Passwords do not match',
+    uk: 'Паролі не збігаються'
+  },
 
   // Common
   wellDone: {

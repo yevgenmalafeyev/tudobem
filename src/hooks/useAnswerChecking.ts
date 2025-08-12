@@ -48,6 +48,45 @@ export function useAnswerChecking({
   addIncorrectAnswer
 }: UseAnswerCheckingProps) {
   
+  // Function to record attempt for logged-in users
+  const recordAttempt = useCallback(async (
+    exerciseId: string,
+    exerciseLevel: string,
+    exerciseTopic: string,
+    isCorrect: boolean,
+    userAnswer: string
+  ) => {
+    try {
+      const response = await fetch('/api/progress/attempt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          exerciseId,
+          exerciseLevel,
+          exerciseTopic,
+          isCorrect,
+          userAnswer
+        }),
+        credentials: 'include' // Include session cookie
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('📊 Attempt recorded successfully:', result.attempt);
+      } else if (response.status === 401) {
+        // User not logged in - skip recording
+        console.log('📊 User not logged in - skipping attempt recording');
+      } else {
+        console.warn('Failed to record attempt:', response.status);
+      }
+    } catch (error) {
+      // Don't fail answer checking if recording fails
+      console.warn('Error recording attempt:', error);
+    }
+  }, []);
+  
   const checkAnswer = useCallback(async (request: CheckAnswerRequest) => {
     if (!request.exercise || !request.userAnswer) return;
 
@@ -69,6 +108,17 @@ export function useAnswerChecking({
       if (!feedback.isCorrect) {
         addIncorrectAnswer(request.userAnswer);
       }
+
+      // Record attempt for logged-in users (async, non-blocking)
+      if (request.exercise.id && request.exercise.level && request.exercise.topic) {
+        recordAttempt(
+          request.exercise.id,
+          request.exercise.level,
+          request.exercise.topic,
+          feedback.isCorrect,
+          request.userAnswer
+        ).catch(console.warn); // Log but don't fail
+      }
       
     } catch (error) {
       console.error('Error checking answer locally:', error);
@@ -85,10 +135,21 @@ export function useAnswerChecking({
       if (!isCorrect) {
         addIncorrectAnswer(request.userAnswer);
       }
+
+      // Record attempt even in fallback case
+      if (request.exercise.id && request.exercise.level && request.exercise.topic) {
+        recordAttempt(
+          request.exercise.id,
+          request.exercise.level,
+          request.exercise.topic,
+          isCorrect,
+          request.userAnswer
+        ).catch(console.warn); // Log but don't fail
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [setFeedback, setShowAnswer, setIsLoading, addIncorrectAnswer]);
+  }, [setFeedback, setShowAnswer, setIsLoading, addIncorrectAnswer, recordAttempt]);
 
   return { checkAnswer };
 }

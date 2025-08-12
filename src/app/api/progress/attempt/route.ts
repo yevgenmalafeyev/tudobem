@@ -5,6 +5,8 @@ import { createApiResponse, createApiError, parseRequestBody, withErrorHandling 
 
 interface AttemptRequest {
   exerciseId: string;
+  exerciseLevel: string;
+  exerciseTopic: string;
   isCorrect: boolean;
   userAnswer: string;
 }
@@ -24,11 +26,11 @@ async function recordAttemptHandler(request: NextRequest) {
     return createApiError('Invalid or expired session', 401);
   }
 
-  const { exerciseId, isCorrect, userAnswer } = await parseRequestBody<AttemptRequest>(request);
+  const { exerciseId, exerciseLevel, exerciseTopic, isCorrect, userAnswer } = await parseRequestBody<AttemptRequest>(request);
 
   // Validate required fields
-  if (!exerciseId || typeof isCorrect !== 'boolean' || !userAnswer) {
-    return createApiError('exerciseId, isCorrect, and userAnswer are required', 400);
+  if (!exerciseId || !exerciseLevel || !exerciseTopic || typeof isCorrect !== 'boolean' || !userAnswer) {
+    return createApiError('exerciseId, exerciseLevel, exerciseTopic, isCorrect, and userAnswer are required', 400);
   }
 
   try {
@@ -36,6 +38,8 @@ async function recordAttemptHandler(request: NextRequest) {
     const attempt = await UserDatabase.recordAttempt(
       user.id,
       exerciseId,
+      exerciseLevel,
+      exerciseTopic,
       isCorrect,
       userAnswer
     );
@@ -47,6 +51,8 @@ async function recordAttemptHandler(request: NextRequest) {
       attempt: {
         id: attempt.id,
         exerciseId: attempt.exercise_id,
+        exerciseLevel: attempt.exercise_level,
+        exerciseTopic: attempt.exercise_topic,
         isCorrect: attempt.is_correct,
         userAnswer: attempt.user_answer,
         attemptedAt: attempt.attempted_at

@@ -7,6 +7,7 @@ import type {
 } from '@/types/irregular-verbs';
 
 import type { UserConfiguration, AppLanguage } from '@/types';
+import NotLoggedInPrompt from './NotLoggedInPrompt';
 
 interface IrregularVerbsLearningProps {
   userConfig: UserConfiguration;
@@ -418,6 +419,9 @@ export default function IrregularVerbsLearning({
             )}
           </div>
         </div>
+
+        {/* Not logged in prompt */}
+        <NotLoggedInPrompt className="mt-8" />
       </div>
     </div>
   );
