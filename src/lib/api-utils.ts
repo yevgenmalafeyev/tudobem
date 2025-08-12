@@ -19,8 +19,21 @@ export function createApiError(message: string, status: number = 500): NextRespo
 
 export async function parseRequestBody<T>(request: NextRequest): Promise<T> {
   try {
-    return await request.json();
-  } catch {
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Content-Type must be application/json');
+    }
+    
+    const body = await request.text();
+    if (!body || body.trim() === '') {
+      throw new Error('Request body cannot be empty');
+    }
+    
+    return JSON.parse(body);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Invalid JSON in request body: ${error.message}`);
+    }
     throw new Error('Invalid JSON in request body');
   }
 }

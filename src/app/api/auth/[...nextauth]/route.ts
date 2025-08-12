@@ -1,40 +1,32 @@
 import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import FacebookProvider from "next-auth/providers/facebook"
-import AppleProvider from "next-auth/providers/apple"
+import Google from "next-auth/providers/google"
+import Facebook from "next-auth/providers/facebook"
+import Apple from "next-auth/providers/apple"
 import { UserDatabase } from "@/lib/userDatabase"
-// import PostgresAdapter from "@auth/pg-adapter"
-// import { Pool } from "pg"
 
-// const pool = new Pool({
-//   connectionString: process.env.POSTGRES_URL,
-//   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-// })
-
-const handler = NextAuth({
-  // adapter: PostgresAdapter(pool), // Commented out for testing
+const { handlers } = NextAuth({
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [
-      GoogleProvider({
+      Google({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
     ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET ? [
-      FacebookProvider({
+      Facebook({
         clientId: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       })
     ] : []),
     ...(process.env.APPLE_ID && process.env.APPLE_SECRET ? [
-      AppleProvider({
+      Apple({
         clientId: process.env.APPLE_ID,
         clientSecret: process.env.APPLE_SECRET,
       })
     ] : []),
   ],
   callbacks: {
-    async session({ session, token }) {
+    session({ session, token }) {
       // Send properties to the client from token
       if (session.user && token.id) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +34,7 @@ const handler = NextAuth({
       }
       return session
     },
-    async jwt({ token, user }) {
+    jwt({ token, user }) {
       // Persist user ID to token
       if (user) {
         token.id = user.id
@@ -96,9 +88,7 @@ const handler = NextAuth({
   },
   pages: {
     signIn: '/auth/signin',
-    // signOut: '/auth/signout',
-    // error: '/auth/error',
   },
 })
 
-export { handler as GET, handler as POST }
+export const { GET, POST } = handlers

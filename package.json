@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",
-    "@auth/core": "^0.34.2",
+    "@auth/core": "^0.40.0",
     "@auth/pg-adapter": "^1.10.0",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@types/jsonwebtoken": "^9.0.10",
@@ -57,7 +57,7 @@
     "jsonwebtoken": "^9.0.2",
     "jszip": "^3.10.1",
     "next": "15.4.1",
-    "next-auth": "^4.24.11",
+    "next-auth": "^5.0.0-beta.29",
     "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",

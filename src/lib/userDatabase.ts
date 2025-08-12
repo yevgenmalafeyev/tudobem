@@ -341,10 +341,19 @@ export class UserDatabase {
   // Verify Session Token with Auto-Renewal
   static async verifyToken(token: string): Promise<User | null> {
     try {
+      if (!token || typeof token !== 'string' || token.trim() === '') {
+        return null;
+      }
+
       const pool = getPool();
       
       // Verify JWT token
-      jwt.verify(token, this.JWT_SECRET);
+      try {
+        jwt.verify(token, this.JWT_SECRET);
+      } catch (jwtError) {
+        console.log('JWT verification failed:', jwtError instanceof Error ? jwtError.message : 'Unknown error');
+        return null;
+      }
       
       // Check if session exists in database and hasn't expired
       const sessionResult = await pool.query(`
