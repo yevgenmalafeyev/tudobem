@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/database-adapter';
 import JSZip from 'jszip';
 
 async function checkAdminAuth(): Promise<boolean> {

@@ -274,9 +274,9 @@ describe('Authentication API Routes', () => {
     });
   });
 
-  describe('GET /api/auth/verify', () => {
+  describe('GET /api/auth/status', () => {
     it('should verify valid session', async () => {
-      const { GET } = await import('../verify/route');
+      const { GET } = await import('../status/route');
       
       const response = await GET();
       const responseData = await response.json();
@@ -284,50 +284,52 @@ describe('Authentication API Routes', () => {
       expect(response.status).toBe(200);
       expect(responseData.success).toBe(true);
       expect(responseData.data.user.username).toBe('testuser');
-      expect(responseData.data.valid).toBe(true);
+      expect(responseData.data.authenticated).toBe(true);
       expect(responseData.data.user.password_hash).toBeUndefined(); // Should not return password
       expect(mockUserDatabase.verifyToken).toHaveBeenCalledWith('mock-session-token');
     });
 
-    it('should reject missing session token', async () => {
+    it('should handle missing session token', async () => {
       mockGet.mockReturnValueOnce(undefined);
       
-      const { GET } = await import('../verify/route');
+      const { GET } = await import('../status/route');
       
       const response = await GET();
       const responseData = await response.json();
 
-      expect(response.status).toBe(401);
-      expect(responseData.success).toBe(false);
-      expect(responseData.error).toBe('No session token found');
+      expect(response.status).toBe(200);
+      expect(responseData.success).toBe(true);
+      expect(responseData.data.authenticated).toBe(false);
+      expect(responseData.data.user).toBe(null);
     });
 
-    it('should reject invalid session token', async () => {
+    it('should handle invalid session token', async () => {
       mockUserDatabase.verifyToken.mockResolvedValueOnce(null);
       
-      const { GET } = await import('../verify/route');
+      const { GET } = await import('../status/route');
       
       const response = await GET();
       const responseData = await response.json();
 
-      expect(response.status).toBe(401);
-      expect(responseData.success).toBe(false);
-      expect(responseData.error).toBe('Invalid or expired session');
+      expect(response.status).toBe(200);
+      expect(responseData.success).toBe(true);
+      expect(responseData.data.authenticated).toBe(false);
+      expect(responseData.data.user).toBe(null);
       expect(mockDelete).toHaveBeenCalledWith('session-token');
     });
 
-    it('should handle verification errors', async () => {
+    it('should handle verification errors gracefully', async () => {
       mockUserDatabase.verifyToken.mockRejectedValueOnce(new Error('Database error'));
       
-      const { GET } = await import('../verify/route');
+      const { GET } = await import('../status/route');
       
       const response = await GET();
       const responseData = await response.json();
 
-      expect(response.status).toBe(401);
-      expect(responseData.success).toBe(false);
-      expect(responseData.error).toBe('Session verification failed');
-      expect(mockDelete).toHaveBeenCalledWith('session-token');
+      expect(response.status).toBe(200);
+      expect(responseData.success).toBe(true);
+      expect(responseData.data.authenticated).toBe(false);
+      expect(responseData.data.user).toBe(null);
     });
   });
 });

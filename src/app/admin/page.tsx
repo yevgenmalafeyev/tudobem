@@ -31,7 +31,8 @@ export default function AdminPage() {
         const data = await response.json();
         
         if (mounted) {
-          setIsAuthenticated(data.authenticated || false);
+          // Handle API response format: { success: true, data: { authenticated: boolean } }
+          setIsAuthenticated(data.data?.authenticated || false);
           setIsLoading(false);
         }
       } catch (error) {

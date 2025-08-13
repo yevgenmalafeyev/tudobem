@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from './database-adapter';
 import { 
   EnhancedExercise, 
   ExerciseFilter, 
@@ -218,9 +218,10 @@ export class ExerciseDatabase {
         params.push(filter.limit);
       }
 
-      const result = await sql.query(query, params);
+      // Execute the query using the sql template with parameters
+      const result = await sql([query] as any, ...params);
 
-      return result.rows.map(row => ({
+      return result.rows.map((row: any) => ({
         id: row.id,
         sentence: row.sentence,
         correctAnswer: row.correct_answer,

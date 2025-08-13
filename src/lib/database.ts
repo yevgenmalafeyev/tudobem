@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from './database-adapter';
 import { LanguageLevel } from '@/types';
 
 export interface DatabaseExercise {

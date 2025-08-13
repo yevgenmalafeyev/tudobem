@@ -2,14 +2,15 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import AdminDashboard from '@/components/admin/AdminDashboard'
 
-// Mock child components
+// Mock child components before importing AdminDashboard
 jest.mock('@/components/Logo', () => {
   return function MockLogo({ className }: { className?: string }) {
-    return <div data-testid="logo" className={className}>Logo</div>
+    return <svg data-testid="logo" className={className} width="40" height="40">Mock Logo</svg>
   }
 })
+
+import AdminDashboard from '@/components/admin/AdminDashboard'
 
 jest.mock('@/components/admin/DataManagement', () => {
   return function MockDataManagement() {

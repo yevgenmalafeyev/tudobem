@@ -48,11 +48,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run dev',
+    command: 'POSTGRES_URL="postgresql://yevgenmalafeyev:@localhost:5432/tudobem_dev" npm run dev -- --port 3002',
     url: 'http://localhost:3002',
     reuseExistingServer: !process.env.CI,
-    env: {
-      POSTGRES_URL: 'postgresql://yevgenmalafeyev@localhost:5432/tudobem_dev',
-    },
+    timeout: 120 * 1000,
   },
 });
