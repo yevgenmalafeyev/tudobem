@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import AdminLogin from '@/components/admin/AdminLogin';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

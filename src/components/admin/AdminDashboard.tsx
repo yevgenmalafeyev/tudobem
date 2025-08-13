@@ -6,12 +6,13 @@ import DataManagement from './DataManagement';
 import QuestionStats from './QuestionStats';
 import UsageAnalytics from './UsageAnalytics';
 import Users from './Users';
+import ProblemReportsModeration from './ProblemReportsModeration';
 
 interface AdminDashboardProps {
   onLogout: () => void;
 }
 
-type AdminView = 'data' | 'stats' | 'analytics' | 'users';
+type AdminView = 'data' | 'stats' | 'analytics' | 'users' | 'reports';
 
 export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [currentView, setCurrentView] = useState<AdminView>('data');
@@ -20,7 +21,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     { id: 'data' as AdminView, name: 'Data Management', icon: '📁' },
     { id: 'stats' as AdminView, name: 'Question Stats', icon: '📊' },
     { id: 'analytics' as AdminView, name: 'Usage Analytics', icon: '📈' },
-    { id: 'users' as AdminView, name: 'Users', icon: '👥' }
+    { id: 'users' as AdminView, name: 'Users', icon: '👥' },
+    { id: 'reports' as AdminView, name: 'Problem Reports', icon: '🚨' }
   ];
 
   const renderCurrentView = () => {
@@ -33,6 +35,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         return <UsageAnalytics />;
       case 'users':
         return <Users />;
+      case 'reports':
+        return <ProblemReportsModeration />;
       default:
         return <DataManagement />;
     }
