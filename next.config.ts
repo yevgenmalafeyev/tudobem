@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false, // Temporarily disable to prevent double mounting in tests
+  serverExternalPackages: ['pg'],
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,

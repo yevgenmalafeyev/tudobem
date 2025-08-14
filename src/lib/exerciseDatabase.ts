@@ -1,4 +1,4 @@
-import { sql, query } from './database-adapter';
+import { sql } from './database-adapter';
 import { 
   EnhancedExercise, 
   ExerciseFilter, 
@@ -180,63 +180,73 @@ export class ExerciseDatabase {
     }
 
     try {
-      let queryText = `
-        SELECT 
-          id, sentence, correct_answer, topic, level,
-          multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-          hint, difficulty_score, usage_count,
-          created_at, updated_at
-        FROM exercises
-        WHERE 1=1
-      `;
-
-      const params: (string | number | string[])[] = [];
-      let paramIndex = 1;
-
-      // Add level filter
-      if (filter.levels && filter.levels.length > 0) {
-        queryText += ` AND level = ANY($${paramIndex})`;
-        params.push(filter.levels);
-        paramIndex++;
+      // Build conditions dynamically but use template literals
+      let result;
+      
+      if (filter.levels && filter.levels.length > 0 && filter.topics && filter.topics.length > 0 && filter.limit) {
+        // Most common case: levels, topics, and limit
+        result = await sql`
+          SELECT 
+            id, sentence, correct_answer, topic, level,
+            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+            hint, difficulty_score, usage_count,
+            created_at, updated_at
+          FROM exercises
+          WHERE level = ANY(${filter.levels}) 
+            AND topic = ANY(${filter.topics})
+          ORDER BY usage_count ASC, created_at DESC
+          LIMIT ${filter.limit}
+        `;
+      } else if (filter.levels && filter.levels.length > 0 && filter.limit) {
+        // Levels and limit only
+        result = await sql`
+          SELECT 
+            id, sentence, correct_answer, topic, level,
+            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+            hint, difficulty_score, usage_count,
+            created_at, updated_at
+          FROM exercises
+          WHERE level = ANY(${filter.levels})
+          ORDER BY usage_count ASC, created_at DESC
+          LIMIT ${filter.limit}
+        `;
+      } else if (filter.topics && filter.topics.length > 0 && filter.limit) {
+        // Topics and limit only
+        result = await sql`
+          SELECT 
+            id, sentence, correct_answer, topic, level,
+            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+            hint, difficulty_score, usage_count,
+            created_at, updated_at
+          FROM exercises
+          WHERE topic = ANY(${filter.topics})
+          ORDER BY usage_count ASC, created_at DESC
+          LIMIT ${filter.limit}
+        `;
+      } else if (filter.limit) {
+        // Limit only
+        result = await sql`
+          SELECT 
+            id, sentence, correct_answer, topic, level,
+            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+            hint, difficulty_score, usage_count,
+            created_at, updated_at
+          FROM exercises
+          ORDER BY usage_count ASC, created_at DESC
+          LIMIT ${filter.limit}
+        `;
+      } else {
+        // No filters
+        result = await sql`
+          SELECT 
+            id, sentence, correct_answer, topic, level,
+            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+            hint, difficulty_score, usage_count,
+            created_at, updated_at
+          FROM exercises
+          ORDER BY usage_count ASC, created_at DESC
+        `;
       }
-
-      // Add topic filter
-      if (filter.topics && filter.topics.length > 0) {
-        queryText += ` AND topic = ANY($${paramIndex})`;
-        params.push(filter.topics);
-        paramIndex++;
-      }
-
-
-      // Exclude specific exercise IDs (for user-specific filtering)
-      if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
-        queryText += ` AND id != ALL($${paramIndex})`;
-        params.push(filter.excludeExerciseIds);
-        paramIndex++;
-      }
-
-      // User-specific filtering: exclude exercises the user has answered correctly
-      if (filter.userId) {
-        queryText += ` AND id NOT IN (
-          SELECT DISTINCT exercise_id 
-          FROM user_exercise_attempts 
-          WHERE user_id = $${paramIndex} AND is_correct = true
-        )`;
-        params.push(filter.userId);
-        paramIndex++;
-      }
-
-      // Order by usage count (least used first) and creation date
-      queryText += ` ORDER BY usage_count ASC, created_at DESC`;
-
-      // Add limit
-      if (filter.limit) {
-        queryText += ` LIMIT $${paramIndex}`;
-        params.push(filter.limit);
-      }
-
-      // Execute the query using the raw query method with parameters
-      const result = await query(queryText, params);
 
       return (result.rows as unknown as ExerciseRow[]).map((row: ExerciseRow) => ({
         id: row.id,
