@@ -75,7 +75,9 @@ export class ProblemReportDatabase {
         status: report.status,
         processedBy: report.processed_by,
         adminComment: report.admin_comment,
-        aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
+        aiResponse: report.ai_response ? 
+          (typeof report.ai_response === 'string' ? JSON.parse(report.ai_response) : report.ai_response) : 
+          null,
         createdAt: new Date(report.created_at),
         processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
@@ -105,7 +107,7 @@ export class ProblemReportDatabase {
       const total = parseInt((countResult.rows[0] as any).total);
       const totalPages = Math.ceil(total / pageSize);
 
-      // Get reports with exercise data
+      // Get reports with exercise data and user information
       const result = status
         ? await sql`
             SELECT 
@@ -116,9 +118,12 @@ export class ProblemReportDatabase {
               e.multiple_choice_options,
               e.level,
               e.topic,
-              e.explanation_en as explanation
+              e.explanation_en as explanation,
+              u.username as reporter_username,
+              u.email as reporter_email
             FROM problem_reports pr
             JOIN exercises e ON pr.exercise_id = e.id
+            LEFT JOIN users u ON pr.user_id = u.id
             WHERE pr.status = ${status}
             ORDER BY pr.created_at DESC
             LIMIT ${pageSize} OFFSET ${offset}
@@ -132,9 +137,12 @@ export class ProblemReportDatabase {
               e.multiple_choice_options,
               e.level,
               e.topic,
-              e.explanation_en as explanation
+              e.explanation_en as explanation,
+              u.username as reporter_username,
+              u.email as reporter_email
             FROM problem_reports pr
             JOIN exercises e ON pr.exercise_id = e.id
+            LEFT JOIN users u ON pr.user_id = u.id
             ORDER BY pr.created_at DESC
             LIMIT ${pageSize} OFFSET ${offset}
           `;
@@ -147,10 +155,14 @@ export class ProblemReportDatabase {
         userComment: row.user_comment,
         status: row.status as 'pending' | 'accepted' | 'declined',
         adminComment: row.admin_comment,
-        aiResponse: row.ai_response ? JSON.parse(row.ai_response) : null,
+        aiResponse: row.ai_response ? 
+          (typeof row.ai_response === 'string' ? JSON.parse(row.ai_response) : row.ai_response) : 
+          null,
         createdAt: new Date(row.created_at),
         processedAt: row.processed_at ? new Date(row.processed_at) : undefined,
         processedBy: row.processed_by,
+        reporterUsername: row.reporter_username,
+        reporterEmail: row.reporter_email,
         exercise: {
           id: row.exercise_id,
           sentence: row.sentence,
@@ -174,10 +186,67 @@ export class ProblemReportDatabase {
     }
   }
 
+  static async getProblemReportById(reportId: string): Promise<ProblemReportWithExercise | null> {
+    try {
+      const result = await sql`
+        SELECT 
+          pr.*,
+          e.sentence,
+          e.correct_answer,
+          e.hint,
+          e.multiple_choice_options,
+          e.level,
+          e.topic,
+          e.explanation_en as explanation,
+          u.username as reporter_username,
+          u.email as reporter_email
+        FROM problem_reports pr
+        JOIN exercises e ON pr.exercise_id = e.id
+        LEFT JOIN users u ON pr.user_id = u.id
+        WHERE pr.id = ${reportId}
+      `;
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const row = result.rows[0] as any;
+      return {
+        id: row.id,
+        userId: row.user_id,
+        exerciseId: row.exercise_id,
+        problemType: row.problem_type as ProblemType,
+        userComment: row.user_comment,
+        status: row.status as 'pending' | 'accepted' | 'declined',
+        adminComment: row.admin_comment,
+        aiResponse: row.ai_response ? 
+          (typeof row.ai_response === 'string' ? JSON.parse(row.ai_response) : row.ai_response) : 
+          null,
+        createdAt: new Date(row.created_at),
+        processedAt: row.processed_at ? new Date(row.processed_at) : undefined,
+        processedBy: row.processed_by,
+        reporterUsername: row.reporter_username,
+        reporterEmail: row.reporter_email,
+        exercise: {
+          sentence: row.sentence,
+          correctAnswer: row.correct_answer,
+          hint: row.hint,
+          multipleChoiceOptions: row.multiple_choice_options || [],
+          level: row.level,
+          topic: row.topic,
+          explanation: row.explanation,
+        },
+      };
+    } catch (error) {
+      console.error('Error getting problem report by ID:', error);
+      throw error;
+    }
+  }
+
   static async updateProblemReportStatus(
     reportId: string,
     status: 'pending' | 'accepted' | 'declined',
-    processedBy: string,
+    processedBy: string | null,
     adminComment?: string,
     aiResponse?: AIAssistanceResponse
   ): Promise<ProblemReport> {
@@ -208,7 +277,9 @@ export class ProblemReportDatabase {
         status: report.status,
         processedBy: report.processed_by,
         adminComment: report.admin_comment,
-        aiResponse: report.ai_response ? JSON.parse(report.ai_response) : null,
+        aiResponse: report.ai_response ? 
+          (typeof report.ai_response === 'string' ? JSON.parse(report.ai_response) : report.ai_response) : 
+          null,
         createdAt: new Date(report.created_at),
         processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };

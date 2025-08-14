@@ -39,7 +39,7 @@ const MOCK_AI_RESPONSES = {
   validIssue: {
     is_valid: true,
     explanation: 'The reported issue is valid. The correct answer should be "ao" instead of "a" for the contracted preposition.',
-    sql_correction: 'UPDATE exercises SET correct_answer = \'ao\' WHERE id = \'test-exercise-id\';'
+    sql_correction: 'UPDATE exercises SET correct_answer = \'ao\' WHERE id = \'550e8400-e29b-41d4-a716-446655440000\';'
   },
   invalidIssue: {
     is_valid: false,
@@ -49,7 +49,7 @@ const MOCK_AI_RESPONSES = {
   irrelevantHint: {
     is_valid: true,
     explanation: 'The hint is indeed too revealing. It should be simplified to maintain appropriate difficulty.',
-    sql_correction: 'UPDATE exercises SET hint = \'preposição contraída\' WHERE id = \'test-exercise-id\';'
+    sql_correction: 'UPDATE exercises SET hint = \'preposição contraída\' WHERE id = \'550e8400-e29b-41d4-a716-446655440000\';'
   }
 };
 
@@ -80,7 +80,7 @@ async function setupApiMocks(page: Page) {
             reports: [
               {
                 id: 'mock-report-id-123',
-                exerciseId: 'test-exercise-id',
+                exerciseId: '550e8400-e29b-41d4-a716-446655440000',
                 problemType: 'incorrect_answer',
                 userComment: 'The correct answer should be "ao" not "a"',
                 status: 'pending',

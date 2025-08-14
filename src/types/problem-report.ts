@@ -15,10 +15,12 @@ export interface ProblemReport {
   };
   createdAt: Date;
   processedAt?: Date | null;
-  processedBy?: string;
+  processedBy?: string | null;
 }
 
 export interface ProblemReportWithExercise extends ProblemReport {
+  reporterUsername?: string;
+  reporterEmail?: string;
   exercise: {
     sentence: string;
     correctAnswer: string;

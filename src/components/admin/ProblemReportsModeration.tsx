@@ -293,6 +293,9 @@ export default function ProblemReportsModeration() {
                     Report
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Reporter
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Exercise
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -313,6 +316,20 @@ export default function ProblemReportsModeration() {
                       <div className="text-sm text-gray-900">
                         <div className="font-medium">#{report.id.slice(0, 8)}</div>
                         <div className="text-gray-500">{formatDate(report.createdAt)}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {report.reporterUsername ? (
+                          <>
+                            <div className="font-medium">{report.reporterUsername}</div>
+                            {report.reporterEmail && (
+                              <div className="text-gray-500">{report.reporterEmail}</div>
+                            )}
+                          </>
+                        ) : (
+                          <div className="text-gray-500 italic">Anonymous</div>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">

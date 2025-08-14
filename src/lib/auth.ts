@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import Facebook from "next-auth/providers/facebook"
-import Apple from "next-auth/providers/apple"
 
 export const authOptions = {
   providers: [
@@ -15,12 +14,6 @@ export const authOptions = {
       Facebook({
         clientId: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      })
-    ] : []),
-    ...(process.env.APPLE_ID && process.env.APPLE_SECRET ? [
-      Apple({
-        clientId: process.env.APPLE_ID,
-        clientSecret: process.env.APPLE_SECRET,
       })
     ] : []),
   ],

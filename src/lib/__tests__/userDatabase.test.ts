@@ -395,7 +395,7 @@ describe('UserDatabase', () => {
       last_login: null,
       is_active: true
     };
-    const exerciseId = 'test-exercise-id';
+    const exerciseId = '550e8400-e29b-41d4-a716-446655440000';
 
     it('should record exercise attempt', async () => {
       const mockAttempt = {

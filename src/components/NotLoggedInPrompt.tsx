@@ -52,7 +52,7 @@ export default function NotLoggedInPrompt({ className = '' }: NotLoggedInPromptP
       <div className="inline-flex items-center gap-2 text-sm" style={{ color: 'var(--neo-text-muted)' }}>
         <span>ℹ️ {content.text}</span>
         <Link 
-          href="/?auth=signup" 
+          href="/auth/signin" 
           className="underline hover:no-underline transition-all"
           style={{ color: 'var(--neo-accent)' }}
         >

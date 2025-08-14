@@ -31,6 +31,7 @@ export default function IrregularVerbsLearning({
   const [sessionId] = useState(`irregular-verbs-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   
   const inputRef = useRef<HTMLInputElement>(null);
+  const exerciseContainerRef = useRef<HTMLDivElement>(null);
 
   // Get enabled tenses from user config or default to all
   const enabledTenses: VerbTense[] = useMemo(() => 
@@ -129,9 +130,9 @@ export default function IrregularVerbsLearning({
     }
   };
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     generateExercise();
-  };
+  }, [generateExercise]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -143,19 +144,40 @@ export default function IrregularVerbsLearning({
       }
     }
   };
-  
-  // Add global Enter key handler for feedback -> next exercise
+
+  // Global keydown handler for Enter key when feedback is shown
+  const handleGlobalKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && showFeedback) {
+      e.preventDefault();
+      handleNext();
+    }
+  };
+
+
+  // Focus management and global keyboard handling
   useEffect(() => {
-    const handleGlobalKeyPress = (e: KeyboardEvent) => {
+    const handleGlobalKeyboard = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && showFeedback) {
-        generateExercise();
+        e.preventDefault();
+        handleNext();
       }
     };
-    
-    window.addEventListener('keypress', handleGlobalKeyPress);
-    return () => window.removeEventListener('keypress', handleGlobalKeyPress);
-  }, [showFeedback, generateExercise]);
 
+    if (showFeedback) {
+      // Focus on the exercise container when feedback is shown for keyboard navigation
+      exerciseContainerRef.current?.focus();
+      
+      // Add global keyboard listener
+      document.addEventListener('keydown', handleGlobalKeyboard);
+      
+      return () => {
+        document.removeEventListener('keydown', handleGlobalKeyboard);
+      };
+    } else if (!showMultipleChoice && inputRef.current) {
+      // Focus on input in text mode when no feedback is shown
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [showFeedback, showMultipleChoice, handleNext]);
 
   // Generate first exercise on mount - use a separate effect to avoid infinite loops
   useEffect(() => {
@@ -259,7 +281,12 @@ export default function IrregularVerbsLearning({
         </div>
 
         {/* Exercise */}
-        <div className="neo-card">
+        <div 
+          ref={exerciseContainerRef}
+          className="neo-card"
+          onKeyDown={handleGlobalKeyDown}
+          tabIndex={showFeedback ? 0 : -1}
+        >
           {/* Mode Toggle */}
           <div className="flex justify-end mb-4">
             <div className="flex neo-inset-sm rounded-lg p-1">
@@ -401,7 +428,6 @@ export default function IrregularVerbsLearning({
               <button
                 onClick={handleNext}
                 className="neo-button neo-button-primary px-8 py-3"
-                autoFocus
               >
                 Próximo exercício →
               </button>

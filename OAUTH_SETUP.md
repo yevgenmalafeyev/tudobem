@@ -2,7 +2,7 @@
 
 ## Issue Resolution
 
-**Problem:** OAuth login (Google, Facebook, Apple) shows "Server error" because environment variables are not configured.
+**Problem:** OAuth login (Google, Facebook) shows "Server error" because environment variables are not configured.
 
 **Root Cause:** NextAuth.js requires OAuth provider credentials, but they're missing from both local and production environments.
 
@@ -19,9 +19,6 @@ GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
 FACEBOOK_CLIENT_ID="your-facebook-app-id"
 FACEBOOK_CLIENT_SECRET="your-facebook-app-secret"
 
-# Apple Sign-In (Optional - requires Apple Developer account)
-APPLE_ID="your-apple-service-id"
-APPLE_SECRET="your-apple-private-key-jwt"
 
 # NextAuth Configuration (Required)
 NEXTAUTH_URL="https://yourdomain.com"
@@ -49,14 +46,8 @@ NEXTAUTH_SECRET="your-secure-nextauth-secret-32-chars-min"
    - `http://localhost:3000/api/auth/callback/facebook` (for development)
 5. Copy App ID and App Secret
 
-### 3. Apple Sign-In Setup (Optional)
-1. Apple Developer account required ($99/year)
-2. Create Service ID in Apple Developer portal
-3. Configure Sign in with Apple
-4. Generate private key and create JWT
-5. This is more complex - consider enabling only Google/Facebook initially
 
-### 4. NextAuth Secret
+### 3. NextAuth Secret
 Generate a secure secret:
 ```bash
 openssl rand -base64 32

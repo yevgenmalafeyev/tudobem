@@ -126,7 +126,7 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
     }
   };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'facebook' | 'apple') => {
+  const handleOAuthSignIn = async (provider: 'google' | 'facebook') => {
     try {
       setLoading(true);
       const result = await signIn(provider, { 
@@ -383,17 +383,6 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
                     {configuration.appLanguage === 'pt' ? 'Continuar com Facebook' : 'Continue with Facebook'}
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleOAuthSignIn('apple')}
-                    disabled={loading}
-                    className="neo-button neo-button-secondary w-full flex items-center justify-center gap-3 py-3"
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12.017 0C10.458.013 8.653.789 7.602 2.074c-.946 1.156-1.762 2.93-1.546 4.646 1.619.121 3.307-.659 4.342-1.97C11.428 3.542 12.152 1.785 12.017 0zm2.98 3.73c-1.212 0-2.199.49-2.938.49-.789 0-1.893-.44-3.13-.44-1.618 0-3.133.93-3.969 2.36-1.718 2.93-.441 7.27 1.199 9.64.808 1.17 1.748 2.47 2.985 2.42 1.187-.05 1.638-.77 3.075-.77 1.437 0 1.838.77 3.075.72 1.287-.05 2.077-1.15 2.885-2.32.938-1.32 1.318-2.64 1.338-2.7-.03-.01-2.565-.98-2.585-3.88-.02-2.42 1.978-3.58 2.065-3.64-1.127-1.65-2.885-1.84-3.505-1.88z"/>
-                    </svg>
-                    {configuration.appLanguage === 'pt' ? 'Continuar com Apple' : 'Continue with Apple'}
-                  </button>
                 </div>
               </div>
             )}

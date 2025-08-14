@@ -14,9 +14,8 @@ export async function POST(
   try {
     const { id } = await params;
     
-    // Get the problem report with exercise data
-    const reportsResult = await ProblemReportDatabase.getProblemReports(1, 1);
-    const report = reportsResult.reports.find(r => r.id === id);
+    // Get the specific problem report with exercise data
+    const report = await ProblemReportDatabase.getProblemReportById(id);
     
     if (!report) {
       return NextResponse.json(
@@ -36,7 +35,7 @@ export async function POST(
     await ProblemReportDatabase.updateProblemReportStatus(
       id,
       report.status, // Keep current status
-      'admin', // Admin user ID
+      null, // Admin user ID (null since processed_by is UUID field)
       undefined, // No admin comment change
       aiResponse
     );

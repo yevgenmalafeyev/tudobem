@@ -25,7 +25,8 @@ export async function PATCH(
     }
 
     // Get admin user ID from session/token (simplified for now)
-    const adminUserId = 'admin'; // In production, get from authenticated session
+    // Since processed_by is UUID field but we don't have admin UUID, use null
+    const adminUserId = null; // In production, get actual admin UUID from authenticated session
 
     // Update the problem report
     const updatedReport = await ProblemReportDatabase.updateProblemReportStatus(
