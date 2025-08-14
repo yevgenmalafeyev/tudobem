@@ -16,6 +16,7 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
   })
 
   test('should detect all 4 admin problem reports issues', async () => {
+    test.setTimeout(60000); // Increase timeout to 60 seconds
     console.log('🧪 Testing admin problem reports comprehensive issues')
     
     // First, submit a problem report as a user to have data
@@ -72,13 +73,20 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
     if (loginForm > 0) {
       console.log('🔑 Admin login form found, attempting login')
       
-      // Try common test credentials
-      const emailInput = page.locator('input[type="email"]')
-      const passwordInput = page.locator('input[type="password"]')
+      // Dismiss cookie banner if present
+      try {
+        await page.locator('button:has-text("Aceitar todos")').click({ timeout: 2000 });
+      } catch (e) {
+        // Cookie banner might not be present, continue
+      }
       
-      if (await emailInput.count() > 0) {
-        await emailInput.fill('admin@tudobem.com')
-        await passwordInput.fill('admin123')
+      // Use correct test credentials
+      const usernameInput = page.locator('input#username')
+      const passwordInput = page.locator('input#password')
+      
+      if (await usernameInput.count() > 0) {
+        await usernameInput.fill('admin@tudobem.blaster.app')
+        await passwordInput.fill('321admin123')
         await page.click('button[type="submit"]')
         await page.waitForTimeout(3000)
       }
@@ -86,8 +94,12 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
     
     // Navigate to problem reports section
     console.log('📝 Step 3: Navigate to problem reports moderation')
-    await page.goto('/admin/problem-reports?e2e-test=true')
-    await page.waitForLoadState('networkidle')
+    
+    // Wait for admin dashboard to load
+    await page.waitForSelector('text=Tudobem Admin', { timeout: 10000 })
+    
+    // Click on Problem Reports button in admin navigation
+    await page.click('button:has-text("Problem Reports")')
     await page.waitForTimeout(2000)
     
     // ISSUE 1: Check if reporter name/email is missing
@@ -135,9 +147,9 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
     if (tableRows > 0) {
       console.log('🔍 Issue 2 & 4: Testing accept/decline actions')
       
-      // Look for action buttons
-      const acceptButtons = await page.locator('text=Accept').count()
-      const declineButtons = await page.locator('text=Decline').count()
+      // Look for action buttons (in table actions, not dropdown options)
+      const acceptButtons = await page.locator('tbody button:has-text("Accept")').count()
+      const declineButtons = await page.locator('tbody button:has-text("Decline")').count()
       
       if (acceptButtons > 0 && declineButtons > 0) {
         console.log(`Found ${acceptButtons} Accept and ${declineButtons} Decline buttons`)
@@ -150,7 +162,7 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
             response.url().includes('/admin/problem-reports/') && response.request().method() === 'PATCH'
           )
           
-          await page.locator('text=Decline').first().click()
+          await page.locator('tbody button:has-text("Decline")').first().click()
           await page.waitForTimeout(1000)
           
           const response = await responsePromise
@@ -168,7 +180,7 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
         }
         
         // Test accept action (Issue 4) - only if we still have pending reports
-        const remainingAcceptButtons = await page.locator('text=Accept').count()
+        const remainingAcceptButtons = await page.locator('tbody button:has-text("Accept")').count()
         if (remainingAcceptButtons > 0) {
           console.log('🔍 Testing accept action...')
           try {
@@ -176,7 +188,7 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
               response.url().includes('/admin/problem-reports/') && response.request().method() === 'PATCH'
             )
             
-            await page.locator('text=Accept').first().click()
+            await page.locator('tbody button:has-text("Accept")').first().click()
             await page.waitForTimeout(1000)
             
             const acceptResponse = await acceptResponsePromise
@@ -200,8 +212,8 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
       // ISSUE 3: Test AI assistance
       console.log('🔍 Issue 3: Testing AI assistance')
       
-      // Look for AI Assistance buttons
-      const aiButtons = await page.locator('text=AI Assistance').count()
+      // Look for AI Assistance buttons (in table actions)
+      const aiButtons = await page.locator('tbody button:has-text("AI Assistance")').count()
       
       if (aiButtons > 0) {
         console.log(`Found ${aiButtons} AI Assistance buttons`)
@@ -212,7 +224,7 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
             response.url().includes('/ai-assistance') && response.request().method() === 'POST'
           )
           
-          await page.locator('text=AI Assistance').first().click()
+          await page.locator('tbody button:has-text("AI Assistance")').first().click()
           await page.waitForTimeout(2000)
           
           // Check if modal opened

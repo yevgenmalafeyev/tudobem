@@ -6,7 +6,7 @@
  */
 
 // Type definition for SQL query result
-export interface QueryResult<T = any> {
+export interface QueryResult<T = Record<string, unknown>> {
   rows: T[];
   rowCount: number;
 }
@@ -68,6 +68,36 @@ if (useVercelPostgres) {
 
 // Export the sql template function
 export const sql = sqlTemplate;
+
+// Raw query function for dynamic SQL with parameters
+export const query = async (queryText: string, params: unknown[] = []): Promise<QueryResult> => {
+  if (useVercelPostgres) {
+    // For Vercel/production, we can't use raw query easily with @vercel/postgres
+    // We'll need to construct a template literal manually
+    throw new Error('Raw query not supported in production. Use sql template literals.');
+  } else {
+    // Use pg pool for local development
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { Pool } = require('pg');
+    const pool = new Pool({
+      connectionString: process.env.POSTGRES_URL,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    });
+
+    const client = await pool.connect();
+    try {
+      const result = await client.query(queryText, params);
+      return {
+        rows: result.rows,
+        rowCount: result.rowCount || 0
+      };
+    } finally {
+      client.release();
+    }
+  }
+};
 
 // Export utility functions
 export const getDatabaseInfo = () => ({

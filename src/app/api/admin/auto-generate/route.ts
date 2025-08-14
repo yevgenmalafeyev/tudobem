@@ -11,6 +11,11 @@ interface AutoGenerateRequest {
   topics?: string[];
 }
 
+interface DatabaseStatRow {
+  level: string;
+  count: number;
+}
+
 const DEFAULT_TOPICS = [
   'verbos',
   'substantivos', 
@@ -104,8 +109,8 @@ async function autoGenerateExercisesHandler(request: NextRequest) {
 
     // Get current database statistics
     const stats = await ExerciseDatabase.getStats();
-    const currentCounts = stats.byLevel.reduce((acc, item) => {
-      acc[item.level] = item.count;
+    const currentCounts = (stats.byLevel as unknown as DatabaseStatRow[]).reduce((acc, item) => {
+      acc[item.level] = Number(item.count);
       return acc;
     }, {} as Record<string, number>);
 

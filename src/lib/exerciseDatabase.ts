@@ -1,4 +1,4 @@
-import { sql } from './database-adapter';
+import { sql, query } from './database-adapter';
 import { 
   EnhancedExercise, 
   ExerciseFilter, 
@@ -6,6 +6,23 @@ import {
   GenerationQueueRecord 
 } from '@/types/enhanced';
 import { LanguageLevel } from '@/types';
+
+interface ExerciseRow {
+  id: string;
+  sentence: string;
+  correct_answer: string;
+  topic: string;
+  level: string;
+  multiple_choice_options: string[];
+  explanation_pt: string;
+  explanation_en: string;
+  explanation_uk: string;
+  hint: Record<string, unknown>;
+  difficulty_score: number;
+  usage_count: number;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export class ExerciseDatabase {
   /**
@@ -137,7 +154,7 @@ export class ExerciseDatabase {
           `;
 
           if (result.rows.length > 0) {
-            savedIds.push(result.rows[0].id);
+            savedIds.push(String(result.rows[0].id));
           }
         } catch (exerciseError) {
           console.error(`Error saving exercise: ${exercise.sentence}`, exerciseError);
@@ -163,7 +180,7 @@ export class ExerciseDatabase {
     }
 
     try {
-      let query = `
+      let queryText = `
         SELECT 
           id, sentence, correct_answer, topic, level,
           multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
@@ -178,14 +195,14 @@ export class ExerciseDatabase {
 
       // Add level filter
       if (filter.levels && filter.levels.length > 0) {
-        query += ` AND level = ANY($${paramIndex})`;
+        queryText += ` AND level = ANY($${paramIndex})`;
         params.push(filter.levels);
         paramIndex++;
       }
 
       // Add topic filter
       if (filter.topics && filter.topics.length > 0) {
-        query += ` AND topic = ANY($${paramIndex})`;
+        queryText += ` AND topic = ANY($${paramIndex})`;
         params.push(filter.topics);
         paramIndex++;
       }
@@ -193,14 +210,14 @@ export class ExerciseDatabase {
 
       // Exclude specific exercise IDs (for user-specific filtering)
       if (filter.excludeExerciseIds && filter.excludeExerciseIds.length > 0) {
-        query += ` AND id != ALL($${paramIndex})`;
+        queryText += ` AND id != ALL($${paramIndex})`;
         params.push(filter.excludeExerciseIds);
         paramIndex++;
       }
 
       // User-specific filtering: exclude exercises the user has answered correctly
       if (filter.userId) {
-        query += ` AND id NOT IN (
+        queryText += ` AND id NOT IN (
           SELECT DISTINCT exercise_id 
           FROM user_exercise_attempts 
           WHERE user_id = $${paramIndex} AND is_correct = true
@@ -210,18 +227,18 @@ export class ExerciseDatabase {
       }
 
       // Order by usage count (least used first) and creation date
-      query += ` ORDER BY usage_count ASC, created_at DESC`;
+      queryText += ` ORDER BY usage_count ASC, created_at DESC`;
 
       // Add limit
       if (filter.limit) {
-        query += ` LIMIT $${paramIndex}`;
+        queryText += ` LIMIT $${paramIndex}`;
         params.push(filter.limit);
       }
 
-      // Execute the query using the sql template with parameters
-      const result = await sql([query] as any, ...params);
+      // Execute the query using the raw query method with parameters
+      const result = await query(queryText, params);
 
-      return result.rows.map((row: any) => ({
+      return (result.rows as unknown as ExerciseRow[]).map((row: ExerciseRow) => ({
         id: row.id,
         sentence: row.sentence,
         correctAnswer: row.correct_answer,
@@ -233,7 +250,7 @@ export class ExerciseDatabase {
           en: row.explanation_en,
           uk: row.explanation_uk
         },
-        hint: row.hint,
+        hint: typeof row.hint === 'string' ? row.hint : JSON.stringify(row.hint),
         difficultyScore: row.difficulty_score,
         usageCount: row.usage_count,
         createdAt: row.created_at,
@@ -301,19 +318,19 @@ export class ExerciseDatabase {
         A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0
       };
       levelResult.rows.forEach(row => {
-        exercisesByLevel[row.level as LanguageLevel] = parseInt(row.count);
+        exercisesByLevel[row.level as LanguageLevel] = parseInt(String(row.count));
       });
 
       const exercisesByTopic: Record<string, number> = {};
       topicResult.rows.forEach(row => {
-        exercisesByTopic[row.topic] = parseInt(row.count);
+        exercisesByTopic[String(row.topic)] = parseInt(String(row.count));
       });
 
       return {
-        totalExercises: parseInt(totalResult.rows[0].total),
+        totalExercises: parseInt(String(totalResult.rows[0].total)),
         exercisesByLevel,
         exercisesByTopic,
-        averageUsageCount: parseFloat(avgUsageResult.rows[0].avg_usage || '0')
+        averageUsageCount: parseFloat(String(avgUsageResult.rows[0].avg_usage || '0'))
       };
     } catch (error) {
       console.error('Error getting usage stats:', error);
@@ -343,7 +360,7 @@ export class ExerciseDatabase {
         RETURNING id
       `;
 
-      return result.rows[0].id;
+      return String(result.rows[0].id);
     } catch (error) {
       console.error('Error adding to generation queue:', error);
       throw error;
@@ -363,14 +380,14 @@ export class ExerciseDatabase {
       `;
 
       return result.rows.map(row => ({
-        id: row.id,
-        userSessionId: row.user_session_id,
-        levels: row.levels,
-        topics: row.topics,
-        status: row.status,
-        priority: row.priority,
-        createdAt: row.created_at,
-        processedAt: row.processed_at
+        id: String(row.id),
+        userSessionId: String(row.user_session_id),
+        levels: row.levels as LanguageLevel[],
+        topics: row.topics as string[],
+        status: String(row.status) as 'pending' | 'processing' | 'completed' | 'failed',
+        priority: Number(row.priority),
+        createdAt: row.created_at as Date,
+        processedAt: row.processed_at ? row.processed_at as Date : undefined
       }));
     } catch (error) {
       console.error('Error getting pending queue items:', error);

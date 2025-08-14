@@ -224,7 +224,7 @@ export class ExerciseDatabase {
         AND level = ${level}
       `;
       
-      return result.rows[0].count > 0;
+      return Number(result.rows[0].count) > 0;
     } catch (error) {
       console.error('Error checking exercise existence:', error);
       return false;
@@ -471,28 +471,28 @@ export class AnalyticsDatabase {
       `;
 
       return {
-        totalUsers: parseInt(totalUsersResult.rows[0]?.total_users || '0'),
-        totalSessions: parseInt(totalSessionsResult.rows[0]?.total_sessions || '0'),
-        totalQuestions: parseInt(totalQuestionsResult.rows[0]?.total_questions || '0'),
-        correctAnswers: parseInt(correctAnswersResult.rows[0]?.correct_answers || '0'),
-        incorrectAnswers: parseInt(incorrectAnswersResult.rows[0]?.incorrect_answers || '0'),
+        totalUsers: parseInt(String(totalUsersResult.rows[0]?.total_users || '0')),
+        totalSessions: parseInt(String(totalSessionsResult.rows[0]?.total_sessions || '0')),
+        totalQuestions: parseInt(String(totalQuestionsResult.rows[0]?.total_questions || '0')),
+        correctAnswers: parseInt(String(correctAnswersResult.rows[0]?.correct_answers || '0')),
+        incorrectAnswers: parseInt(String(incorrectAnswersResult.rows[0]?.incorrect_answers || '0')),
         countries: countriesResult.rows.map(row => ({
-          country: row.country,
-          count: parseInt(row.count)
+          country: String(row.country),
+          count: parseInt(String(row.count))
         })),
         platforms: platformsResult.rows.map(row => ({
-          platform: row.platform,
-          count: parseInt(row.count)
+          platform: String(row.platform),
+          count: parseInt(String(row.count))
         })),
         levels: levelsResult.rows.map(row => ({
-          level: row.level,
-          count: parseInt(row.count)
+          level: String(row.level),
+          count: parseInt(String(row.count))
         })),
         dailyStats: dailyStatsResult.rows.map(row => ({
-          date: row.date,
-          users: parseInt(row.users),
-          questions: parseInt(row.questions),
-          correct: parseInt(row.correct)
+          date: String(row.date),
+          users: parseInt(String(row.users)),
+          questions: parseInt(String(row.questions)),
+          correct: parseInt(String(row.correct))
         }))
       };
     } catch (error) {

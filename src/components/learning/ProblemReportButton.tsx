@@ -196,6 +196,7 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
                         checked={selectedProblemType === type.value}
                         onChange={(e) => setSelectedProblemType(e.target.value as ProblemType)}
                         className="mr-3"
+                        data-testid="problem-type"
                       />
                       <span style={{ color: 'var(--neo-text)' }}>{type.label}</span>
                     </label>
@@ -218,6 +219,7 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
                   className="neo-inset w-full h-32 p-3 resize-none"
                   maxLength={1000}
                   required
+                  data-testid="problem-comment"
                 />
                 <div className="text-sm mt-1" style={{ color: 'var(--neo-text-muted)' }}>
                   {userComment.length}/1000
@@ -280,6 +282,7 @@ export default function ProblemReportButton({ exercise, showAnswer, learningMode
         className="neo-button neo-button-sm text-sm px-3 py-1 ml-2"
         style={{ color: 'var(--neo-text-secondary)' }}
         title={appLanguage === 'pt' ? 'Reportar um problema com este exercício' : 'Report a problem with this exercise'}
+        data-testid="report-problem-button"
       >
         {appLanguage === 'pt' ? 'Reportar Problema' : 'Report Problem'}
       </button>

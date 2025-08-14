@@ -284,7 +284,7 @@ export default function Learning() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 relative">
-      <div className="neo-card-lg">
+      <div className="neo-card-lg" data-testid="exercise-container">
         {/* Header with level, topic and mode toggle */}
         <div className="mb-4 sm:mb-6">
           <div className="flex justify-between items-center mb-4">

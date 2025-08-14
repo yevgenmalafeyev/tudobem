@@ -1,6 +1,40 @@
 import { ProblemReport, ProblemReportWithExercise, AIPromptTemplate, ProblemType, AIAssistanceResponse } from '@/types/problem-report';
 import { sql } from './database-adapter';
 
+interface ProblemReportRow {
+  id: string;
+  user_id: string | null;
+  exercise_id: string;
+  problem_type: string;
+  user_comment: string;
+  status: string;
+  processed_by: string | null;
+  admin_comment: string | null;
+  ai_response: string | Record<string, unknown> | null;
+  created_at: string;
+  processed_at: string | null;
+}
+
+interface ProblemReportWithExerciseRow extends ProblemReportRow {
+  sentence: string;
+  correct_answer: string;
+  hint: string;
+  multiple_choice_options: string[];
+  level: string;
+  topic: string;
+  explanation: string;
+  reporter_username: string | null;
+  reporter_email: string | null;
+}
+
+interface AIPromptTemplateRow {
+  id: string;
+  name: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // Initialize problem reports table
 export async function initializeProblemReportsTable() {
   try {
@@ -65,19 +99,19 @@ export class ProblemReportDatabase {
         RETURNING *
       `;
       
-      const report = result.rows[0] as any;
+      const report = result.rows[0] as unknown as ProblemReportRow;
       return {
         id: report.id,
-        userId: report.user_id,
+        userId: report.user_id || undefined,
         exerciseId: report.exercise_id,
-        problemType: report.problem_type,
+        problemType: report.problem_type as ProblemType,
         userComment: report.user_comment,
-        status: report.status,
-        processedBy: report.processed_by,
-        adminComment: report.admin_comment,
+        status: report.status as 'pending' | 'accepted' | 'declined',
+        processedBy: report.processed_by || undefined,
+        adminComment: report.admin_comment || undefined,
         aiResponse: report.ai_response ? 
           (typeof report.ai_response === 'string' ? JSON.parse(report.ai_response) : report.ai_response) : 
-          null,
+          undefined,
         createdAt: new Date(report.created_at),
         processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
@@ -104,7 +138,7 @@ export class ProblemReportDatabase {
         ? await sql`SELECT COUNT(*) as total FROM problem_reports WHERE status = ${status}`
         : await sql`SELECT COUNT(*) as total FROM problem_reports`;
       
-      const total = parseInt((countResult.rows[0] as any).total);
+      const total = parseInt((countResult.rows[0] as { total: string }).total);
       const totalPages = Math.ceil(total / pageSize);
 
       // Get reports with exercise data and user information
@@ -147,22 +181,22 @@ export class ProblemReportDatabase {
             LIMIT ${pageSize} OFFSET ${offset}
           `;
 
-      const reports: ProblemReportWithExercise[] = result.rows.map((row: any) => ({
+      const reports: ProblemReportWithExercise[] = (result.rows as unknown as ProblemReportWithExerciseRow[]).map((row: ProblemReportWithExerciseRow) => ({
         id: row.id,
-        userId: row.user_id,
+        userId: row.user_id || undefined,
         exerciseId: row.exercise_id,
         problemType: row.problem_type as ProblemType,
         userComment: row.user_comment,
         status: row.status as 'pending' | 'accepted' | 'declined',
-        adminComment: row.admin_comment,
+        adminComment: row.admin_comment || undefined,
         aiResponse: row.ai_response ? 
           (typeof row.ai_response === 'string' ? JSON.parse(row.ai_response) : row.ai_response) : 
-          null,
+          undefined,
         createdAt: new Date(row.created_at),
         processedAt: row.processed_at ? new Date(row.processed_at) : undefined,
-        processedBy: row.processed_by,
-        reporterUsername: row.reporter_username,
-        reporterEmail: row.reporter_email,
+        processedBy: row.processed_by || undefined,
+        reporterUsername: row.reporter_username || undefined,
+        reporterEmail: row.reporter_email || undefined,
         exercise: {
           id: row.exercise_id,
           sentence: row.sentence,
@@ -210,23 +244,23 @@ export class ProblemReportDatabase {
         return null;
       }
 
-      const row = result.rows[0] as any;
+      const row = result.rows[0] as unknown as ProblemReportWithExerciseRow;
       return {
         id: row.id,
-        userId: row.user_id,
+        userId: row.user_id || undefined,
         exerciseId: row.exercise_id,
         problemType: row.problem_type as ProblemType,
         userComment: row.user_comment,
         status: row.status as 'pending' | 'accepted' | 'declined',
-        adminComment: row.admin_comment,
+        adminComment: row.admin_comment || undefined,
         aiResponse: row.ai_response ? 
           (typeof row.ai_response === 'string' ? JSON.parse(row.ai_response) : row.ai_response) : 
-          null,
+          undefined,
         createdAt: new Date(row.created_at),
         processedAt: row.processed_at ? new Date(row.processed_at) : undefined,
-        processedBy: row.processed_by,
-        reporterUsername: row.reporter_username,
-        reporterEmail: row.reporter_email,
+        processedBy: row.processed_by || undefined,
+        reporterUsername: row.reporter_username || undefined,
+        reporterEmail: row.reporter_email || undefined,
         exercise: {
           sentence: row.sentence,
           correctAnswer: row.correct_answer,
@@ -267,19 +301,19 @@ export class ProblemReportDatabase {
         throw new Error('Problem report not found');
       }
 
-      const report = result.rows[0] as any;
+      const report = result.rows[0] as unknown as ProblemReportRow;
       return {
         id: report.id,
-        userId: report.user_id,
+        userId: report.user_id || undefined,
         exerciseId: report.exercise_id,
-        problemType: report.problem_type,
+        problemType: report.problem_type as ProblemType,
         userComment: report.user_comment,
-        status: report.status,
-        processedBy: report.processed_by,
-        adminComment: report.admin_comment,
+        status: report.status as 'pending' | 'accepted' | 'declined',
+        processedBy: report.processed_by || undefined,
+        adminComment: report.admin_comment || undefined,
         aiResponse: report.ai_response ? 
           (typeof report.ai_response === 'string' ? JSON.parse(report.ai_response) : report.ai_response) : 
-          null,
+          undefined,
         createdAt: new Date(report.created_at),
         processedAt: report.processed_at ? new Date(report.processed_at) : undefined,
       };
@@ -329,7 +363,7 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
         };
       }
 
-      const template = result.rows[0] as any;
+      const template = result.rows[0] as unknown as AIPromptTemplateRow;
       return {
         id: template.id,
         name: template.name,
