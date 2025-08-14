@@ -18,11 +18,14 @@ global.BroadcastChannel = class BroadcastChannel {
     this.name = name;
   }
   name: string;
+  onmessage: ((this: BroadcastChannel, ev: MessageEvent) => any) | null = null;
+  onmessageerror: ((this: BroadcastChannel, ev: MessageEvent) => any) | null = null;
   postMessage() {}
   close() {}
   addEventListener() {}
   removeEventListener() {}
-};
+  dispatchEvent() { return true; }
+} as any;
 
 // Mock zustand persist
 jest.mock('zustand/middleware', () => ({
@@ -95,7 +98,11 @@ Object.defineProperty(window, 'matchMedia', {
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
+  root: Element | null = null;
+  rootMargin: string = '';
+  thresholds: ReadonlyArray<number> = [];
   disconnect() {}
   observe() {}
   unobserve() {}
-};
+  takeRecords(): IntersectionObserverEntry[] { return []; }
+} as any;
