@@ -6,7 +6,7 @@ export interface AnswerCheckingPromptParams {
     correctAnswer: string;
     level: string;
     topic: string;
-    hint?: Record<string, string>;
+    hint?: string;
   };
   userAnswer: string;
   explanationLanguage: SupportedLanguage;
@@ -20,7 +20,7 @@ Exercise Details:
 - Student's answer: "${userAnswer}"
 - Level: ${exercise.level}
 - Topic: ${exercise.topic}
-- Hints provided: ${exercise.hint ? JSON.stringify(exercise.hint) : 'None'}
+- Hints provided: ${exercise.hint && exercise.hint !== 'null' ? exercise.hint : 'None'}
 `;
 
   const evaluationCriteria = `
@@ -67,7 +67,7 @@ Detalhes do Exercício:
 - Resposta do aluno: "${userAnswer}"
 - Nível: ${exercise.level}
 - Tópico: ${exercise.topic}
-- Dicas fornecidas: ${exercise.hint ? JSON.stringify(exercise.hint) : 'Nenhuma'}
+- Dicas fornecidas: ${exercise.hint && exercise.hint !== 'null' ? exercise.hint : 'Nenhuma'}
 
 Avalia se a resposta do aluno está correta para este exercício de português. Considera:
 1. Correspondências exatas
@@ -124,7 +124,7 @@ Be encouraging but thorough in explanations for incorrect answers.`;
 - Відповідь студента: "${userAnswer}"
 - Рівень: ${exercise.level}
 - Тема: ${exercise.topic}
-- Надані підказки: ${exercise.hint ? JSON.stringify(exercise.hint) : 'Немає'}
+- Надані підказки: ${exercise.hint && exercise.hint !== 'null' ? exercise.hint : 'Немає'}
 
 Оцини, чи правильна відповідь студента для цієї вправи з португальської мови. Враховуй:
 1. Точні збіги

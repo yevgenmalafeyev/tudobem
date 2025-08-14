@@ -129,20 +129,14 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
   const handleOAuthSignIn = async (provider: 'google') => {
     try {
       setLoading(true);
-      const result = await signIn(provider, { 
-        callbackUrl: '/',
-        redirect: false 
+      // For OAuth providers like Google, we need to allow redirect
+      await signIn(provider, { 
+        callbackUrl: '/'
       });
-      
-      if (result?.ok) {
-        if (onSuccess) onSuccess();
-      } else if (result?.error) {
-        setError(`OAuth login failed: ${result.error}`);
-      }
+      // This will redirect to Google, so code after this won't execute
     } catch (err) {
       console.error('OAuth error:', err);
       setError('OAuth login failed. Please try again.');
-    } finally {
       setLoading(false);
     }
   };

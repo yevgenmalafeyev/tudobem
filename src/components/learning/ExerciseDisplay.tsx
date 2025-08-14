@@ -25,8 +25,8 @@ export default function ExerciseDisplay({
 }: ExerciseDisplayProps) {
   const sentenceParts = exercise.sentence.split('___');
   
-  // Hint is now just a string, use it directly
-  const hintText = exercise.hint || '?';
+  // Properly handle null/undefined hints
+  const hintText = exercise.hint && exercise.hint !== 'null' ? exercise.hint : '?';
 
   return (
     <div className="exercise-container neo-card-sm text-base sm:text-lg lg:text-xl xl:text-2xl mb-3 sm:mb-4 lg:mb-6 leading-relaxed" style={{ color: 'var(--neo-text)' }}>

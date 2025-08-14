@@ -260,7 +260,7 @@ export class ExerciseDatabase {
           en: row.explanation_en,
           uk: row.explanation_uk
         },
-        hint: typeof row.hint === 'string' ? row.hint : JSON.stringify(row.hint),
+        hint: row.hint && typeof row.hint === 'string' ? row.hint : undefined,
         difficultyScore: row.difficulty_score,
         usageCount: row.usage_count,
         createdAt: row.created_at,
