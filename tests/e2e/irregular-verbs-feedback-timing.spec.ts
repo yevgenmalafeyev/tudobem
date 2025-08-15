@@ -66,9 +66,14 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
     if (correctFeedback) {
       console.log('✅ Answer was correct - testing auto-advance behavior')
       
-      // For correct answers, should show auto-advance message instead of next button
-      const autoAdvanceMessage = await page.locator('text=Próximo exercício em breve').count() > 0 ||
-                                 await page.locator('text=Next exercise coming up').count() > 0
+      // For correct answers, should show next button AND auto-advance message
+      const nextButtonVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
+                               await page.locator('text=Next Exercise').count() > 0 ||
+                               await page.locator('text=Próximo Exercício').count() > 0
+      expect(nextButtonVisible).toBe(true)
+      
+      const autoAdvanceMessage = await page.locator('text=Auto-avanço em').count() > 0 ||
+                                 await page.locator('text=Auto-advance in').count() > 0
       
       // Auto-advance should occur after ~2 seconds
       await page.waitForTimeout(2500) // Wait a bit longer than 2 seconds
@@ -148,6 +153,12 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
     
     if (correctFeedback) {
       console.log('✅ Answer was correct - checking for expected auto-progression behavior')
+      
+      // Next button should be visible for correct answers too now
+      const nextButtonVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
+                                await page.locator('text=Next Exercise').count() > 0 ||
+                                await page.locator('text=Próximo Exercício').count() > 0
+      expect(nextButtonVisible).toBe(true)
       
       // Record initial state
       const initialExerciseText = await page.locator('h2').textContent()

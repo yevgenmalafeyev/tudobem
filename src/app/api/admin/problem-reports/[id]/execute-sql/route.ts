@@ -72,9 +72,13 @@ export async function POST(
     }
 
     // Execute the SQL correction
+    console.log('🚀 About to execute SQL correction...');
     const executionResult = await ProblemReportDatabase.executeSQLCorrection(sqlCorrection);
     
+    console.log('📊 SQL execution result:', executionResult);
+    
     if (!executionResult.success) {
+      console.log('❌ SQL execution failed:', executionResult.error);
       return NextResponse.json(
         { error: `SQL execution failed: ${executionResult.error}` },
         { status: 400 }
@@ -119,8 +123,12 @@ export async function POST(
 
   } catch (error) {
     console.error('Error executing SQL correction:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
-      { error: 'Failed to execute SQL correction' },
+      { 
+        error: 'Failed to execute SQL correction', 
+        details: errorMessage
+      },
       { status: 500 }
     );
   }

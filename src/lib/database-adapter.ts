@@ -107,39 +107,75 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
 
 // Unsafe SQL execution for admin operations (use with extreme caution)
 export const executeUnsafeSQL = async (rawSQL: string): Promise<QueryResult> => {
+  console.log('🔧 executeUnsafeSQL called with:', { useVercelPostgres, rawSQLPreview: rawSQL.substring(0, 100) + '...' });
+  
   if (useVercelPostgres) {
-    // Use @vercel/postgres for production/Vercel
-    const { createPool } = await import('@vercel/postgres');
-    const pool = createPool({
-      connectionString: process.env.POSTGRES_URL
-    });
-    
-    // Execute raw SQL using the pool
-    const result = await pool.query(rawSQL);
-    return {
-      rows: result.rows,
-      rowCount: result.rowCount || 0
-    };
-  } else {
-    // Use pg for local development
-    const { Pool } = await import('pg');
-    
-    const pool = new Pool({
-      connectionString: process.env.POSTGRES_URL,
-      max: 10,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
-    });
-
-    const client = await pool.connect();
+    console.log('📡 Using @vercel/postgres with createClient...');
+    // Try to use createClient for Vercel environment
     try {
+      const { createClient } = await import('@vercel/postgres');
+      const client = createClient();
+      
+      console.log('✅ Created Vercel Postgres client');
+      
       const result = await client.query(rawSQL);
+      
+      console.log('✅ SQL execution result:', { 
+        rowCount: result.rowCount, 
+        rows: result.rows?.length,
+        command: result.command 
+      });
+      
+      // Make sure to close the client
+      await client.end();
+      
       return {
         rows: result.rows,
         rowCount: result.rowCount || 0
       };
-    } finally {
-      client.release();
+    } catch (vercelError) {
+      console.error('❌ Vercel Postgres execution failed:', vercelError);
+      console.log('🔄 Falling back to pg.Client...');
+      
+      // Fall back to pg.Client if Vercel approach fails
+    }
+  }
+  
+  // Use pg.Client for local development or as fallback
+  console.log('📡 Using pg.Client for direct connection...');
+  const { Client } = await import('pg');
+  
+  const client = new Client({
+    connectionString: process.env.POSTGRES_URL!,
+    ssl: useVercelPostgres ? { rejectUnauthorized: false } : undefined
+  });
+  
+  try {
+    await client.connect();
+    console.log('✅ Connected to database via pg.Client');
+    
+    // Execute raw SQL directly
+    const result = await client.query(rawSQL);
+    
+    console.log('✅ SQL execution result:', { 
+      rowCount: result.rowCount, 
+      rows: result.rows?.length,
+      command: result.command 
+    });
+    
+    return {
+      rows: result.rows,
+      rowCount: result.rowCount || 0
+    };
+  } catch (error) {
+    console.error('❌ SQL execution error:', error);
+    throw error;
+  } finally {
+    try {
+      await client.end();
+      console.log('✅ Database connection closed');
+    } catch (closeError) {
+      console.error('⚠️ Error closing connection:', closeError);
     }
   }
 };
