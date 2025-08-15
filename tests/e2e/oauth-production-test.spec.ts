@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('OAuth Production Test', () => {
   test('Google OAuth should be available on production signin page', async ({ page }) => {
+    // Skip this test if running locally (not on production domain)
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    if (baseUrl.includes('localhost')) {
+      test.skip('OAuth test only runs on production');
+      return;
+    }
     // Navigate to signin page
     await page.goto('/auth/signin');
     
@@ -24,6 +30,13 @@ test.describe('OAuth Production Test', () => {
   });
   
   test('OAuth providers API returns Google as available', async ({ page }) => {
+    // Skip this test if running locally (not on production domain)
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    if (baseUrl.includes('localhost')) {
+      test.skip('OAuth test only runs on production');
+      return;
+    }
+    
     // Test the providers endpoint directly
     const response = await page.request.get('/api/auth/providers');
     expect(response.status()).toBe(200);

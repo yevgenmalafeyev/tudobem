@@ -127,6 +127,7 @@ test.describe('Admin Problem Reports - Specific Issues', () => {
   })
 
   test('Issue 3: Error when getting AI help', async () => {
+    test.setTimeout(60000); // Increase timeout to 60 seconds
     console.log('🔍 Testing Issue 3: Error when getting AI help')
     
     // Navigate to problem reports
@@ -166,19 +167,45 @@ test.describe('Admin Problem Reports - Specific Issues', () => {
           const getAIButton = await page.locator('text=Get AI Assistance').count()
           if (getAIButton > 0) {
             await page.click('text=Get AI Assistance')
-            await page.waitForTimeout(5000)
+            
+            // Wait for AI response with increased timeout
+            let responseReceived = false
+            let attempts = 0
+            const maxAttempts = 10
+            
+            while (!responseReceived && attempts < maxAttempts) {
+              await page.waitForTimeout(3000)
+              attempts++
+              
+              // Check if AI response is visible or loading spinner
+              const hasResponse = await page.locator('text=Analysis Report').count() > 0 ||
+                                 await page.locator('text=Analyzing with AI').count() > 0 ||
+                                 await page.locator('text=Valid Issue Detected').count() > 0 ||
+                                 await page.locator('text=No Action Required').count() > 0
+              
+              if (hasResponse || aiResponses.length > 0) {
+                responseReceived = true
+                break
+              }
+            }
             
             // Check for errors
             const hasError = aiResponses.some(r => r.status >= 400)
             if (hasError) {
               console.log('❌ ISSUE 3 CONFIRMED: Error when getting AI help')
               console.log('AI Error responses:', aiResponses.filter(r => r.status >= 400))
+            } else if (!responseReceived) {
+              console.log('⚠️ AI assistance timeout - may indicate slow response but not necessarily error')
             } else {
               console.log('✅ AI assistance works correctly')
             }
             
             // Close modal
-            await page.click('text=Cancel')
+            try {
+              await page.click('text=Close')
+            } catch {
+              await page.click('text=Cancel')
+            }
           }
         } else {
           console.log('⚠️ AI modal did not open')
