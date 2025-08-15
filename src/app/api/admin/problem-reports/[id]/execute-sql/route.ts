@@ -85,7 +85,7 @@ export async function POST(
       ProblemReportDatabase.executeSQLCorrectionAndUpdateStatus(
         id,
         sqlCorrection,
-        'admin',
+        null, // Admin user ID (null since processed_by is UUID field)
         'Correction applied via AI assistance',
         report.aiResponse
       ),

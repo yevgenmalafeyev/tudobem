@@ -437,7 +437,7 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
   static async executeSQLCorrectionAndUpdateStatus(
     reportId: string,
     sqlCorrection: string,
-    processedBy: string,
+    processedBy: string | null,
     adminComment: string,
     aiResponse: AIAssistanceResponse
   ): Promise<{ success: boolean; error?: string; report?: ProblemReport }> {
