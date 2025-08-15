@@ -11,7 +11,12 @@ async function getAdminStatsHandler(/* _request: NextRequest */) {
 
   try {
     // Initialize databases if needed
-    await UserDatabase.initializeTables();
+    // Temporarily skip UserDatabase initialization in production due to schema mismatch
+    try {
+      await UserDatabase.initializeTables();
+    } catch (error) {
+      console.warn('UserDatabase initialization failed, continuing without it:', error);
+    }
     await ExerciseDatabase.initializeTables();
     await initializeProblemReportsTable();
     
