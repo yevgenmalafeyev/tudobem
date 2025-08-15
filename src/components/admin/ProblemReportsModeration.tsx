@@ -112,12 +112,56 @@ function AIAssistanceModal({ report, isOpen, onClose, onAccept }: AIAssistanceMo
             </button>
           </div>
 
-          {/* Report Summary */}
+          {/* Enhanced Report Summary - All AI Input Parameters */}
           <div className="bg-gray-50 p-4 rounded mb-6">
-            <h3 className="font-semibold mb-2">Report Summary</h3>
-            <p><strong>Type:</strong> {report.problemType}</p>
-            <p><strong>Exercise:</strong> {report.exercise.sentence}</p>
-            <p><strong>User Comment:</strong> {report.userComment}</p>
+            <h3 className="font-semibold mb-3">Report Summary - All AI Input Parameters</h3>
+            
+            {/* Report Metadata */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="space-y-2">
+                <p><strong>Report ID:</strong> {report.id}</p>
+                <p><strong>Problem Type:</strong> {report.problemType}</p>
+                <p><strong>Reporter:</strong> {report.reporterUsername || 'Anonymous'}</p>
+                <p><strong>Database ID:</strong> {report.exerciseId}</p>
+              </div>
+              <div className="space-y-2">
+                <p><strong>Level:</strong> {report.exercise.level}</p>
+                <p><strong>Topic:</strong> {report.exercise.topic}</p>
+                <p><strong>Correct Answer:</strong> {report.exercise.correctAnswer}</p>
+                <p><strong>Current Hint:</strong> {report.exercise.hint || 'NULL'}</p>
+              </div>
+            </div>
+            
+            {/* Exercise Content */}
+            <div className="space-y-3">
+              <div>
+                <strong>Exercise Sentence:</strong>
+                <div className="bg-white p-2 rounded border mt-1">{report.exercise.sentence}</div>
+              </div>
+              
+              <div>
+                <strong>User Comment:</strong>
+                <div className="bg-white p-2 rounded border mt-1">{report.userComment}</div>
+              </div>
+              
+              {/* Multiple Choice Options */}
+              {report.exercise.multipleChoiceOptions && report.exercise.multipleChoiceOptions.length > 0 && (
+                <div>
+                  <strong>Multiple Choice Options:</strong>
+                  <div className="bg-white p-2 rounded border mt-1">
+                    {report.exercise.multipleChoiceOptions.join(' | ')}
+                  </div>
+                </div>
+              )}
+              
+              {/* Portuguese Explanation */}
+              {report.exercise.explanation && (
+                <div>
+                  <strong>Portuguese Explanation:</strong>
+                  <div className="bg-white p-2 rounded border mt-1">{report.exercise.explanation}</div>
+                </div>
+              )}
+            </div>
           </div>
 
           {!aiResponse && !isLoading && (
