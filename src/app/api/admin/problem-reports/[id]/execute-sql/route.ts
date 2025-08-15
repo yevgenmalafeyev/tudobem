@@ -119,7 +119,7 @@ export async function POST(
     // Send acceptance email if user has email (non-blocking)
     if (updatedReport.userId) {
       // Don't await email sending to prevent blocking the response
-      setImmediate(async () => {
+      Promise.resolve().then(async () => {
         try {
           // Get user email - for now using placeholder
           // In production, you'd query the users table

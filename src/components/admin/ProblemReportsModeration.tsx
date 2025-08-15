@@ -610,8 +610,10 @@ export default function ProblemReportsModeration() {
             setAiModalOpen(false);
             setSelectedReport(null);
           }}
-          onAccept={(reportId) => {
-            handleStatusChange(reportId, 'accept');
+          onAccept={() => {
+            // SQL execution already marked report as accepted, just reload the list
+            loadReports();
+            setAiModalOpen(false);
             setSelectedReport(null);
           }}
         />
