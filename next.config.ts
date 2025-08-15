@@ -17,6 +17,13 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
+  fallbacks: {
+    image: "/offline.png",
+    document: "/offline.html", 
+  },
+  workboxOptions: {
+    disableDevLogs: true,
+  },
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

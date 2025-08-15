@@ -33,6 +33,29 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+  callbacks: {
+    async signIn() {
+      return true;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user, account }: any) {
+      if (account && user) {
+        token.provider = account.provider;
+        token.userId = user.id;
+      }
+      return token;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async session({ session, token }: any) {
+      if (token) {
+        Object.assign(session, {
+          provider: token.provider,
+          userId: token.userId
+        });
+      }
+      return session;
+    }
+  },
   debug: process.env.NODE_ENV === 'development',
 };
 
