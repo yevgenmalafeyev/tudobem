@@ -446,7 +446,23 @@ export default function ProblemReportsModeration() {
                   </tr>
                 </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {reports.map((report) => (
+                {reports.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-16 text-center">
+                      <div className="text-gray-500">
+                        <div className="text-lg mb-2">📭</div>
+                        <div className="text-sm">
+                          {statusFilter === 'all' ? 'No problem reports found' :
+                           statusFilter === 'pending' ? 'No pending problem reports' :
+                           statusFilter === 'accepted' ? 'No accepted problem reports' :
+                           statusFilter === 'declined' ? 'No declined problem reports' : 
+                           'No problem reports found'}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  reports.map((report) => (
                   <tr key={report.id} className="hover:bg-gray-50">
                     <td className="px-4 py-4 align-top">
                       <div className="text-sm text-gray-900">
@@ -560,7 +576,8 @@ export default function ProblemReportsModeration() {
                       )}
                     </td>
                   </tr>
-                ))}
+                  ))
+                )}
               </tbody>
             </table>
             </div>

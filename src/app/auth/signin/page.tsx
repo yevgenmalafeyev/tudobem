@@ -24,8 +24,8 @@ export default function SignIn() {
         // Try NextAuth providers first
         const nextAuthProviders = await getProviders()
         
-        // Also check our custom providers endpoint as fallback
-        const customResponse = await fetch('/api/auth/providers')
+        // Also check our custom provider status endpoint as fallback
+        const customResponse = await fetch('/api/auth/provider-status')
         const customProviders = await customResponse.json()
         
         console.log('NextAuth providers:', nextAuthProviders)
