@@ -1,5 +1,5 @@
 import { ProblemReport, ProblemReportWithExercise, AIPromptTemplate, ProblemType, AIAssistanceResponse } from '@/types/problem-report';
-import { sql } from './database-adapter';
+import { sql, executeUnsafeSQL } from './database-adapter';
 
 interface ProblemReportRow {
   id: string;
@@ -415,13 +415,13 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
       }
       
       // Execute the SQL with proper error handling
-      const result = await sql.unsafe(trimmedSQL);
+      const result = await executeUnsafeSQL(trimmedSQL);
       
       console.log('✅ SQL execution result:', result);
       
       return { 
         success: true, 
-        rowsAffected: result.count 
+        rowsAffected: result.rowCount 
       };
       
     } catch (error) {
