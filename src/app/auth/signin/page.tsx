@@ -20,9 +20,40 @@ export default function SignIn() {
 
   useEffect(() => {
     const fetchProviders = async () => {
-      const res = await getProviders()
-      setProviders(res)
-      setLoading(false)
+      try {
+        // Try NextAuth providers first
+        const nextAuthProviders = await getProviders()
+        
+        // Also check our custom providers endpoint as fallback
+        const customResponse = await fetch('/api/auth/providers')
+        const customProviders = await customResponse.json()
+        
+        console.log('NextAuth providers:', nextAuthProviders)
+        console.log('Custom providers check:', customProviders)
+        
+        // If NextAuth has providers, use them
+        if (nextAuthProviders && Object.keys(nextAuthProviders).length > 0) {
+          setProviders(nextAuthProviders)
+        } else if (customProviders.google) {
+          // Fallback: create Google provider manually if custom check says it's available
+          const googleProvider = {
+            id: 'google',
+            name: 'Google',
+            type: 'oauth',
+            signinUrl: '/api/auth/signin/google',
+            callbackUrl: '/api/auth/callback/google'
+          }
+          setProviders({ google: googleProvider })
+          console.log('Using fallback Google provider configuration')
+        } else {
+          setProviders(null)
+        }
+      } catch (error) {
+        console.error('Error fetching providers:', error)
+        setProviders(null)
+      } finally {
+        setLoading(false)
+      }
     }
 
     const checkSession = async () => {

@@ -1064,4 +1064,110 @@ export class UserDatabase {
     }
   }
 
+  // OAuth Integration Methods
+  
+  /**
+   * Create or link OAuth user with custom user system
+   * Used by NextAuth callbacks to integrate OAuth authentication
+   */
+  static async createOrLinkOAuthUser(userData: {
+    email: string;
+    name: string;
+    provider: string;
+    providerId: string;
+    image?: string;
+  }): Promise<User | null> {
+    try {
+      const pool = getPool();
+      
+      // Check if user already exists by email
+      const existingUser = await pool.query(
+        'SELECT * FROM users WHERE email = $1',
+        [userData.email]
+      );
+      
+      if (existingUser.rows.length > 0) {
+        const user = existingUser.rows[0];
+        
+        // Update OAuth provider if not already set
+        if (!user.oauth_provider) {
+          await pool.query(
+            'UPDATE users SET oauth_provider = $1, email_verified = true, is_active = true WHERE id = $2',
+            [userData.provider, user.id]
+          );
+        }
+        
+        console.log(`🔗 Linked existing user ${user.username} with ${userData.provider} OAuth`);
+        return user;
+      }
+      
+      // Create new OAuth user
+      const username = this.generateUsernameFromEmail(userData.email, userData.name);
+      const result = await pool.query(
+        `INSERT INTO users (
+          username, email, password_hash, is_active, email_verified, 
+          oauth_provider, created_at, last_login
+        ) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) 
+        RETURNING *`,
+        [
+          username,
+          userData.email,
+          '', // Empty password hash for OAuth users
+          true, // OAuth users are active by default
+          true, // OAuth emails are pre-verified
+          userData.provider
+        ]
+      );
+      
+      const newUser = result.rows[0];
+      console.log(`✅ Created new OAuth user: ${newUser.username} via ${userData.provider}`);
+      return newUser;
+      
+    } catch (error) {
+      console.error('Error creating/linking OAuth user:', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Get custom user data by email for OAuth integration
+   */
+  static async getUserByEmail(email: string): Promise<User | null> {
+    try {
+      const pool = getPool();
+      const result = await pool.query(
+        'SELECT * FROM users WHERE email = $1 AND is_active = true',
+        [email]
+      );
+      
+      return result.rows.length > 0 ? result.rows[0] : null;
+    } catch (error) {
+      console.error('Error getting user by email:', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Generate username from email and name for OAuth users
+   */
+  private static generateUsernameFromEmail(email: string, name?: string): string {
+    if (name) {
+      // Use name if provided, clean it up
+      const cleanName = name.toLowerCase()
+        .replace(/[^a-z0-9]/g, '')
+        .substring(0, 20);
+      if (cleanName.length >= 3) {
+        return cleanName;
+      }
+    }
+    
+    // Fallback to email prefix
+    const emailPrefix = email.split('@')[0]
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '')
+      .substring(0, 20);
+      
+    return emailPrefix.length >= 3 ? emailPrefix : `user${Date.now()}`;
+  }
+
 }
