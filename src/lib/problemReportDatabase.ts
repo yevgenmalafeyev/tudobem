@@ -432,4 +432,82 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
       };
     }
   }
+
+  // Execute SQL correction and update report status in a single transaction-like operation
+  static async executeSQLCorrectionAndUpdateStatus(
+    reportId: string,
+    sqlCorrection: string,
+    processedBy: string,
+    adminComment: string,
+    aiResponse: AIAssistanceResponse
+  ): Promise<{ success: boolean; error?: string; report?: ProblemReport }> {
+    try {
+      console.log('🔧 Executing SQL correction and updating status...');
+      
+      // First execute the SQL correction
+      const executionResult = await this.executeSQLCorrection(sqlCorrection);
+      
+      if (!executionResult.success) {
+        return {
+          success: false,
+          error: `SQL execution failed: ${executionResult.error}`
+        };
+      }
+      
+      console.log('✅ SQL executed successfully, now updating report status...');
+      
+      // Now update the report status using the same connection approach (executeUnsafeSQL)
+      const updateSQL = `
+        UPDATE problem_reports 
+        SET 
+          status = 'accepted',
+          processed_by = '${processedBy}',
+          admin_comment = '${adminComment.replace(/'/g, "''")}',
+          ai_response = '${JSON.stringify(aiResponse).replace(/'/g, "''")}',
+          processed_at = NOW()
+        WHERE id = '${reportId}'
+        RETURNING *
+      `;
+      
+      const updateResult = await executeUnsafeSQL(updateSQL);
+      
+      if (updateResult.rowCount === 0) {
+        return {
+          success: false,
+          error: 'Problem report not found for status update'
+        };
+      }
+      
+      const reportRow = updateResult.rows[0] as unknown as ProblemReportRow;
+      const updatedReport: ProblemReport = {
+        id: reportRow.id,
+        userId: reportRow.user_id || undefined,
+        exerciseId: reportRow.exercise_id,
+        problemType: reportRow.problem_type as ProblemType,
+        userComment: reportRow.user_comment,
+        status: reportRow.status as 'pending' | 'accepted' | 'declined',
+        processedBy: reportRow.processed_by || undefined,
+        adminComment: reportRow.admin_comment || undefined,
+        aiResponse: reportRow.ai_response ? 
+          (typeof reportRow.ai_response === 'string' ? JSON.parse(reportRow.ai_response) : reportRow.ai_response) : 
+          undefined,
+        createdAt: new Date(reportRow.created_at),
+        processedAt: reportRow.processed_at ? new Date(reportRow.processed_at) : undefined,
+      };
+      
+      console.log('✅ Report status updated successfully via unified method');
+      
+      return {
+        success: true,
+        report: updatedReport
+      };
+      
+    } catch (error) {
+      console.error('❌ Unified SQL correction and status update failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error in unified operation'
+      };
+    }
+  }
 }

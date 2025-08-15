@@ -71,8 +71,8 @@ export async function POST(
       );
     }
 
-    // Execute the SQL correction with timeout
-    console.log('🚀 About to execute SQL correction...');
+    // Execute the SQL correction and update status with unified method
+    console.log('🚀 About to execute SQL correction and update status...');
     
     // Add a timeout promise to prevent indefinite hanging
     const timeoutPromise = new Promise<never>((_, reject) => {
@@ -81,40 +81,28 @@ export async function POST(
       }, 45000); // 45 second timeout
     });
     
-    const executionResult = await Promise.race([
-      ProblemReportDatabase.executeSQLCorrection(sqlCorrection),
+    const result = await Promise.race([
+      ProblemReportDatabase.executeSQLCorrectionAndUpdateStatus(
+        id,
+        sqlCorrection,
+        'admin',
+        'Correction applied via AI assistance',
+        report.aiResponse
+      ),
       timeoutPromise
     ]);
     
-    console.log('📊 SQL execution result:', executionResult);
+    console.log('📊 Unified operation result:', result);
     
-    if (!executionResult.success) {
-      console.log('❌ SQL execution failed:', executionResult.error);
+    if (!result.success) {
+      console.log('❌ Unified operation failed:', result.error);
       return NextResponse.json(
-        { error: `SQL execution failed: ${executionResult.error}` },
-        { status: 400 }
-      );
-    }
-
-    // Mark the report as accepted
-    let updatedReport;
-    try {
-      updatedReport = await ProblemReportDatabase.updateProblemReportStatus(
-        id,
-        'accepted',
-        'admin', // Admin user ID
-        'Correction applied via AI assistance',
-        report.aiResponse
-      );
-      console.log('✅ Report status updated successfully:', updatedReport.id);
-    } catch (updateError) {
-      console.error('❌ Failed to update report status:', updateError);
-      // SQL executed successfully but status update failed
-      return NextResponse.json(
-        { error: 'SQL correction was executed successfully, but failed to update report status. Please refresh the page.' },
+        { error: `Operation failed: ${result.error}` },
         { status: 500 }
       );
     }
+
+    const updatedReport = result.report!;
 
     // Send acceptance email if user has email (non-blocking)
     if (updatedReport.userId) {
