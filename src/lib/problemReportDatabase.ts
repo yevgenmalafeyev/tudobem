@@ -457,17 +457,23 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
       console.log('✅ SQL executed successfully, now updating report status...');
       
       // Now update the report status using the same connection approach (executeUnsafeSQL)
+      const escapedComment = adminComment.replace(/'/g, "''");
+      const escapedAiResponse = JSON.stringify(aiResponse).replace(/'/g, "''");
+      
       const updateSQL = `
         UPDATE problem_reports 
         SET 
           status = 'accepted',
-          processed_by = '${processedBy}',
-          admin_comment = '${adminComment.replace(/'/g, "''")}',
-          ai_response = '${JSON.stringify(aiResponse).replace(/'/g, "''")}',
+          processed_by = ${processedBy ? `'${processedBy}'` : 'NULL'},
+          admin_comment = '${escapedComment}',
+          ai_response = '${escapedAiResponse}',
           processed_at = NOW()
         WHERE id = '${reportId}'
         RETURNING *
       `;
+      
+      console.log('🔍 Generated update SQL:', updateSQL);
+      console.log('🔍 Parameters:', { reportId, processedBy, escapedComment: escapedComment.substring(0, 50) + '...' });
       
       const updateResult = await executeUnsafeSQL(updateSQL);
       
