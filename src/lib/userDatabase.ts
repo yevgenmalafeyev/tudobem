@@ -165,8 +165,18 @@ export class UserDatabase {
       await client.query(`CREATE INDEX IF NOT EXISTS idx_user_attempts_correct ON user_exercise_attempts(user_id, is_correct)`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_user_attempts_level ON user_exercise_attempts(user_id, exercise_level)`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_user_attempts_topic ON user_exercise_attempts(user_id, exercise_topic)`);
-      await client.query(`CREATE INDEX IF NOT EXISTS idx_sessions_token ON user_sessions(session_token)`);
-      await client.query(`CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON user_sessions(user_id)`);
+      // Create indexes for user_sessions table (check if columns exist first)
+      try {
+        await client.query(`CREATE INDEX IF NOT EXISTS idx_sessions_token ON user_sessions(session_token)`);
+      } catch (error) {
+        console.warn('Could not create session_token index - column may not exist:', error);
+      }
+      
+      try {
+        await client.query(`CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON user_sessions(user_id)`);
+      } catch (error) {
+        console.warn('Could not create user_id index on user_sessions - column may not exist:', error);
+      }
 
       // Initialize admin config if it doesn't exist
       const configResult = await client.query('SELECT COUNT(*) as count FROM admin_config');

@@ -32,9 +32,10 @@ export default function QuestionStats() {
       if (!isMountedRef.current) return;
       
       if (response.ok) {
-        const data = await response.json();
+        const response_data = await response.json();
         if (isMountedRef.current) {
-          setStats(data);
+          // Extract the actual stats from the API response structure
+          setStats(response_data.data || response_data);
         }
       } else {
         if (isMountedRef.current) {
@@ -54,7 +55,7 @@ export default function QuestionStats() {
   };
 
   const formatNumber = (num: number) => {
-    return num.toLocaleString();
+    return num?.toLocaleString() || '0';
   };
 
   if (isLoading) {
@@ -115,7 +116,7 @@ export default function QuestionStats() {
           📈 Questions by Level
         </h3>
         <div className="space-y-3">
-          {stats.byLevel.map((level) => (
+          {(stats.byLevel || []).map((level) => (
             <div key={level.level} className="flex items-center justify-between p-3 neo-outset-sm">
               <div className="flex items-center space-x-3">
                 <span className="text-lg font-semibold" style={{ color: 'var(--neo-text)' }}>
@@ -141,7 +142,7 @@ export default function QuestionStats() {
           📚 Questions by Topic
         </h3>
         <div className="space-y-2 max-h-96 overflow-y-auto">
-          {stats.byTopic.map((topic) => (
+          {(stats.byTopic || []).map((topic) => (
             <div key={topic.topic} className="flex items-center justify-between p-2 neo-outset-sm">
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-medium truncate" style={{ color: 'var(--neo-text)' }}>
