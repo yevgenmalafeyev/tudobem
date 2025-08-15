@@ -6,9 +6,6 @@ import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
 import Logo from '@/components/Logo';
 
-// Force dynamic rendering for this page
-export const dynamic = 'force-dynamic';
-
 function ResetPasswordContent() {
   const { configuration } = useStore();
   const searchParams = useSearchParams();
