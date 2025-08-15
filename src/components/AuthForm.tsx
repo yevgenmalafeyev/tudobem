@@ -105,11 +105,11 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
     if (status === 'authenticated' && session?.user) {
       console.log('✅ OAuth authentication successful:', {
         user: session.user.email,
-        provider: (session as any)?.provider,
+        provider: (session as { provider?: string })?.provider,
         timestamp: new Date().toISOString()
       });
       
-      setSuccess(`Welcome ${session.user.name || session.user.email}! You have been successfully logged in via ${(session as any)?.provider || 'OAuth'}.`);
+      setSuccess(`Welcome ${session.user.name || session.user.email}! You have been successfully logged in via ${(session as { provider?: string })?.provider || 'OAuth'}.`);
       
       // Trigger success callback after a brief delay to show the success message
       setTimeout(() => {
@@ -249,21 +249,14 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
       
       console.log('✅ Google OAuth is configured, starting sign-in process');
       
-      // For OAuth providers like Google, we need to allow redirect
-      const result = await signIn(provider, { 
+      // For OAuth providers like Google, we redirect directly
+      // This will never return as it redirects to Google
+      await signIn(provider, { 
         callbackUrl: '/',
         redirect: true
       });
       
-      console.log('🔄 OAuth sign-in result:', result);
-      
-      // This will redirect to Google, so code after this won't execute normally
-      // If we reach here, it might be an error case
-      if (result?.error) {
-        console.error('❌ OAuth sign-in error:', result.error);
-        setError(`OAuth login failed: ${result.error}. Please try again or use email/password login.`);
-        setLoading(false);
-      }
+      // This code will never be reached as signIn redirects
     } catch (err) {
       console.error('❌ OAuth error caught:', err);
       
