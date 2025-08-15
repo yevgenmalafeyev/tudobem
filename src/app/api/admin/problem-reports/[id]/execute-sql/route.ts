@@ -97,31 +97,47 @@ export async function POST(
     }
 
     // Mark the report as accepted
-    const updatedReport = await ProblemReportDatabase.updateProblemReportStatus(
-      id,
-      'accepted',
-      'admin', // Admin user ID
-      'Correction applied via AI assistance',
-      report.aiResponse
-    );
-
-    // Send acceptance email if user has email
-    if (updatedReport.userId) {
-      try {
-        // Get user email - for now using placeholder
-        // In production, you'd query the users table
-        const userEmail = 'user@example.com'; // Replace with actual email lookup
-        
-        await EmailService.sendProblemReportAcceptance(
-          userEmail,
-          updatedReport.id
-        );
-      } catch (emailError) {
-        console.error('Failed to send acceptance email:', emailError);
-        // Don't fail the request if email fails
-      }
+    let updatedReport;
+    try {
+      updatedReport = await ProblemReportDatabase.updateProblemReportStatus(
+        id,
+        'accepted',
+        'admin', // Admin user ID
+        'Correction applied via AI assistance',
+        report.aiResponse
+      );
+      console.log('✅ Report status updated successfully:', updatedReport.id);
+    } catch (updateError) {
+      console.error('❌ Failed to update report status:', updateError);
+      // SQL executed successfully but status update failed
+      return NextResponse.json(
+        { error: 'SQL correction was executed successfully, but failed to update report status. Please refresh the page.' },
+        { status: 500 }
+      );
     }
 
+    // Send acceptance email if user has email (non-blocking)
+    if (updatedReport.userId) {
+      // Don't await email sending to prevent blocking the response
+      setImmediate(async () => {
+        try {
+          // Get user email - for now using placeholder
+          // In production, you'd query the users table
+          const userEmail = 'user@example.com'; // Replace with actual email lookup
+          
+          await EmailService.sendProblemReportAcceptance(
+            userEmail,
+            updatedReport.id
+          );
+          console.log('📧 Acceptance email sent successfully');
+        } catch (emailError) {
+          console.error('Failed to send acceptance email:', emailError);
+          // Email failure doesn't affect the main operation
+        }
+      });
+    }
+
+    console.log('✅ SQL correction process completed successfully');
     return NextResponse.json({
       success: true,
       message: 'SQL correction executed successfully and report marked as accepted',

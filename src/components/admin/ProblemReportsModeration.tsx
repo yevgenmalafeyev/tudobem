@@ -112,55 +112,22 @@ function AIAssistanceModal({ report, isOpen, onClose, onAccept }: AIAssistanceMo
             </button>
           </div>
 
-          {/* Enhanced Report Summary - All AI Input Parameters */}
+          {/* Report Summary */}
           <div className="bg-gray-50 p-4 rounded mb-6">
-            <h3 className="font-semibold mb-3">Report Summary - All AI Input Parameters</h3>
-            
-            {/* Report Metadata */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="space-y-2">
-                <p><strong>Report ID:</strong> {report.id}</p>
-                <p><strong>Problem Type:</strong> {report.problemType}</p>
-                <p><strong>Reporter:</strong> {report.reporterUsername || 'Anonymous'}</p>
-                <p><strong>Database ID:</strong> {report.exerciseId}</p>
-              </div>
-              <div className="space-y-2">
-                <p><strong>Level:</strong> {report.exercise.level}</p>
-                <p><strong>Topic:</strong> {report.exercise.topic}</p>
-                <p><strong>Correct Answer:</strong> {report.exercise.correctAnswer}</p>
-                <p><strong>Current Hint:</strong> {report.exercise.hint || 'NULL'}</p>
-              </div>
-            </div>
-            
-            {/* Exercise Content */}
-            <div className="space-y-3">
-              <div>
-                <strong>Exercise Sentence:</strong>
-                <div className="bg-white p-2 rounded border mt-1">{report.exercise.sentence}</div>
-              </div>
-              
-              <div>
-                <strong>User Comment:</strong>
-                <div className="bg-white p-2 rounded border mt-1">{report.userComment}</div>
-              </div>
-              
-              {/* Multiple Choice Options */}
+            <h3 className="font-semibold mb-2">Report Summary</h3>
+            <div className="text-sm space-y-1">
+              <p><strong>Type:</strong> {report.problemType} | <strong>Reporter:</strong> {report.reporterUsername || 'Anonymous'}</p>
+              <p><strong>Exercise:</strong> {report.exercise.sentence}</p>
+              <p><strong>Answer:</strong> {report.exercise.correctAnswer} | <strong>Level:</strong> {report.exercise.level} | <strong>Topic:</strong> {report.exercise.topic}</p>
+              <p><strong>Hint:</strong> {report.exercise.hint || 'NULL'}</p>
               {report.exercise.multipleChoiceOptions && report.exercise.multipleChoiceOptions.length > 0 && (
-                <div>
-                  <strong>Multiple Choice Options:</strong>
-                  <div className="bg-white p-2 rounded border mt-1">
-                    {report.exercise.multipleChoiceOptions.join(' | ')}
-                  </div>
-                </div>
+                <p><strong>Options:</strong> {report.exercise.multipleChoiceOptions.join(' | ')}</p>
               )}
-              
-              {/* Portuguese Explanation */}
+              <p><strong>User Comment:</strong> {report.userComment}</p>
               {report.exercise.explanation && (
-                <div>
-                  <strong>Portuguese Explanation:</strong>
-                  <div className="bg-white p-2 rounded border mt-1">{report.exercise.explanation}</div>
-                </div>
+                <p><strong>Explanation:</strong> {report.exercise.explanation}</p>
               )}
+              <p className="text-gray-500 text-xs mt-2">DB ID: {report.exerciseId} | Report ID: {report.id}</p>
             </div>
           </div>
 
