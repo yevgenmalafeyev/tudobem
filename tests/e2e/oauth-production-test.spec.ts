@@ -29,7 +29,10 @@ test.describe('OAuth Production Test', () => {
     expect(response.status()).toBe(200);
     
     const providers = await response.json();
-    expect(providers.google).toBe(true);
+    expect(providers.google).toBeDefined();
+    expect(providers.google.name).toBe('Google');
+    expect(providers.google.type).toBeDefined();
+    expect(providers.google.id).toBe('google');
     
     console.log('✅ Google OAuth provider is properly configured on production');
   });
