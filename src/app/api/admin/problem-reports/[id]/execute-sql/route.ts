@@ -71,9 +71,20 @@ export async function POST(
       );
     }
 
-    // Execute the SQL correction
+    // Execute the SQL correction with timeout
     console.log('🚀 About to execute SQL correction...');
-    const executionResult = await ProblemReportDatabase.executeSQLCorrection(sqlCorrection);
+    
+    // Add a timeout promise to prevent indefinite hanging
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error('SQL execution timeout - operation took longer than 45 seconds'));
+      }, 45000); // 45 second timeout
+    });
+    
+    const executionResult = await Promise.race([
+      ProblemReportDatabase.executeSQLCorrection(sqlCorrection),
+      timeoutPromise
+    ]);
     
     console.log('📊 SQL execution result:', executionResult);
     

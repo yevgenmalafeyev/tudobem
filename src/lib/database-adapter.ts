@@ -109,15 +109,38 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
 export const executeUnsafeSQL = async (rawSQL: string): Promise<QueryResult> => {
   console.log('🔧 executeUnsafeSQL called with:', { useVercelPostgres, rawSQLPreview: rawSQL.substring(0, 100) + '...' });
   
+  // Create a timeout promise to prevent hanging
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error('SQL execution timeout after 30 seconds')), 30000);
+  });
+  
   if (useVercelPostgres) {
-    console.log('📡 Using @vercel/postgres with createClient...');
-    // Try to use createClient for Vercel environment
+    console.log('📡 @vercel/postgres does not support raw SQL execution');
+    console.log('🔄 Using pg.Client for raw SQL support...');
+    // @vercel/postgres template literals cannot execute arbitrary raw SQL strings
+    // Skip directly to pg.Client approach
+  }
+  
+  // Use pg.Client for local development or as fallback
+  console.log('📡 Using pg.Client for direct connection...');
+  
+  const executeQuery = async (): Promise<QueryResult> => {
+    const { Client } = await import('pg');
+    
+    const client = new Client({
+      connectionString: process.env.POSTGRES_URL!,
+      ssl: useVercelPostgres ? { rejectUnauthorized: false } : undefined,
+      connectionTimeoutMillis: 10000, // 10 second connection timeout
+      query_timeout: 20000, // 20 second query timeout
+    });
+    
     try {
-      const { createClient } = await import('@vercel/postgres');
-      const client = createClient();
+      console.log('🔌 Attempting to connect to database...');
+      await client.connect();
+      console.log('✅ Connected to database via pg.Client');
       
-      console.log('✅ Created Vercel Postgres client');
-      
+      console.log('🔍 Executing SQL query...');
+      // Execute raw SQL directly
       const result = await client.query(rawSQL);
       
       console.log('✅ SQL execution result:', { 
@@ -126,56 +149,28 @@ export const executeUnsafeSQL = async (rawSQL: string): Promise<QueryResult> => 
         command: result.command 
       });
       
-      // Make sure to close the client
-      await client.end();
-      
       return {
         rows: result.rows,
         rowCount: result.rowCount || 0
       };
-    } catch (vercelError) {
-      console.error('❌ Vercel Postgres execution failed:', vercelError);
-      console.log('🔄 Falling back to pg.Client...');
-      
-      // Fall back to pg.Client if Vercel approach fails
+    } catch (error) {
+      console.error('❌ SQL execution error:', error);
+      throw error;
+    } finally {
+      try {
+        await client.end();
+        console.log('✅ Database connection closed');
+      } catch (closeError) {
+        console.error('⚠️ Error closing connection:', closeError);
+      }
     }
-  }
+  };
   
-  // Use pg.Client for local development or as fallback
-  console.log('📡 Using pg.Client for direct connection...');
-  const { Client } = await import('pg');
-  
-  const client = new Client({
-    connectionString: process.env.POSTGRES_URL!,
-    ssl: useVercelPostgres ? { rejectUnauthorized: false } : undefined
-  });
-  
+  // Race between the actual execution and timeout
   try {
-    await client.connect();
-    console.log('✅ Connected to database via pg.Client');
-    
-    // Execute raw SQL directly
-    const result = await client.query(rawSQL);
-    
-    console.log('✅ SQL execution result:', { 
-      rowCount: result.rowCount, 
-      rows: result.rows?.length,
-      command: result.command 
-    });
-    
-    return {
-      rows: result.rows,
-      rowCount: result.rowCount || 0
-    };
+    return await Promise.race([executeQuery(), timeoutPromise]);
   } catch (error) {
-    console.error('❌ SQL execution error:', error);
+    console.error('❌ SQL execution failed with error:', error);
     throw error;
-  } finally {
-    try {
-      await client.end();
-      console.log('✅ Database connection closed');
-    } catch (closeError) {
-      console.error('⚠️ Error closing connection:', closeError);
-    }
   }
 };
