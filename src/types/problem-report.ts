@@ -50,4 +50,9 @@ export interface AIAssistanceResponse {
   isValid: boolean;
   explanation: string;
   sqlCorrection?: string;
+  // Enhanced structured response fields
+  severity?: 'low' | 'medium' | 'high';
+  category?: 'content' | 'technical' | 'user_experience';
+  changes?: string;
+  reasoning?: string;
 }

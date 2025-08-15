@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
+import { useAuthSync } from '@/hooks/useAuthSync';
 import Configuration from '@/components/Configuration';
 import Learning from '@/components/Learning';
 import Flashcards from '@/components/Flashcards';
@@ -14,6 +15,9 @@ import AuthForm from '@/components/AuthForm';
 export default function HomeClient() {
   const { isConfigured, configuration } = useStore();
   const [currentView, setCurrentView] = useState<'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile'>('learning');
+  
+  // Initialize authentication sync
+  useAuthSync();
   
   useEffect(() => {
     console.log('🏠 [DEBUG] useEffect triggered:', { isConfigured, currentView });

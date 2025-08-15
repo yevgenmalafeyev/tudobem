@@ -20,7 +20,7 @@ interface ProblemReportModalProps {
 }
 
 function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemReportModalProps) {
-  const [selectedProblemType, setSelectedProblemType] = useState<ProblemType>('other');
+  const [selectedProblemType, setSelectedProblemType] = useState<ProblemType>('irrelevant_hint');
   const [userComment, setUserComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -48,7 +48,8 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
         button: 'Reportar Problema',
         buttonTitle: 'Reportar um problema com este exercício',
         submitError: 'Erro ao enviar o relatório',
-        networkError: 'Erro de rede. Tente novamente.'
+        networkError: 'Erro de rede. Tente novamente.',
+        hintDescription: 'A dica deve conter a forma infinitiva correta do verbo'
       },
       en: {
         title: 'Report a Problem',
@@ -69,7 +70,8 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
         button: 'Report Problem',
         buttonTitle: 'Report a problem with this exercise',
         submitError: 'Error submitting report',
-        networkError: 'Network error. Please try again.'
+        networkError: 'Network error. Please try again.',
+        hintDescription: 'The hint should contain the correct infinitive form of the verb'
       }
     };
     return translations[appLanguage] ? (translations[appLanguage][key] || translations['en'][key]) : translations['en'][key];
@@ -116,7 +118,7 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
           // Reset form state when modal closes
           setTimeout(() => {
             setSubmitted(false);
-            setSelectedProblemType('other');
+            setSelectedProblemType('irrelevant_hint');
             setUserComment('');
             setError(null);
           }, 300);
@@ -202,6 +204,15 @@ function ProblemReportModal({ exercise, isOpen, onClose, appLanguage }: ProblemR
                     </label>
                   ))}
                 </div>
+                
+                {/* Hint for irrelevant_hint option */}
+                {selectedProblemType === 'irrelevant_hint' && (
+                  <div className="mt-3 p-3 neo-inset" style={{ backgroundColor: 'var(--neo-info-bg)', border: '1px solid var(--neo-info)' }}>
+                    <p className="text-sm" style={{ color: 'var(--neo-info-text)' }}>
+                      💡 {getText('hintDescription')}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Comment Text Area */}

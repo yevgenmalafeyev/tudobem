@@ -65,9 +65,8 @@ export class AIAssistanceService {
     this.patternCache.set(cacheKey, { response, timestamp: Date.now() });
   }
 
-  // Generate minimal user prompt (optimized for token usage)
+  // Generate comprehensive user prompt with all database information
   private static generateUserPrompt(report: ProblemReportWithExercise): string {
-    // Ultra-compressed format to minimize tokens
     const options = report.exercise.multipleChoiceOptions?.join(' | ') || 'N/A';
     
     return `CONTEXT:
@@ -75,31 +74,62 @@ export class AIAssistanceService {
 - Topic: ${report.exercise.topic}
 - Exercise Type: sentence with a gap, the user needs to fill the gap with the correct word
 
-EXERCISE DETAILS:
+CURRENT EXERCISE IN DATABASE:
+- Database ID: ${report.exerciseId}
 - Sentence: ${report.exercise.sentence}
-- Hint (if provided): ${report.exercise.hint || 'N/A'}
-- Multiple Choice Options (if applicable): ${options}
 - Correct Answer: ${report.exercise.correctAnswer}
-- Answer Explanation: ${report.exercise.explanation || 'N/A'}
+- Current Hint: ${report.exercise.hint || 'NULL'}
+- Multiple Choice Options: ${options}
+- Level: ${report.exercise.level}
+- Topic: ${report.exercise.topic}
+- Portuguese Explanation: ${report.exercise.explanation || 'NULL'}
 
-PROBLEM REPORT:
-- Reported Issue Type: ${report.problemType}
-- User's Comment: ${report.userComment}
+PROBLEM REPORT DETAILS:
+- Report ID: ${report.id}
+- Issue Type: ${report.problemType}
+- User's Detailed Comment: ${report.userComment}
+- Reporter: ${report.reporterUsername || 'Anonymous'}
 
-DATABASE STRUCTURE:
-The exercise is stored in the following table structure:
+DATABASE TABLE STRUCTURE:
 CREATE TABLE exercises (
-  id UUID PRIMARY KEY,
-  sentence TEXT NOT NULL,
-  correct_answer TEXT NOT NULL,
-  topic VARCHAR(50) NOT NULL,
-  level VARCHAR(5) NOT NULL,
-  hint TEXT,
-  multiple_choice_options JSONB DEFAULT '[]',
-  explanation_pt TEXT,
-  explanation_en TEXT,
-  explanation_uk TEXT
-);`;
+  id UUID PRIMARY KEY,                    -- Current ID: ${report.exerciseId}
+  sentence TEXT NOT NULL,                 -- Current: "${report.exercise.sentence}"
+  correct_answer TEXT NOT NULL,           -- Current: "${report.exercise.correctAnswer}"
+  topic VARCHAR(50) NOT NULL,             -- Current: "${report.exercise.topic}"
+  level VARCHAR(5) NOT NULL,              -- Current: "${report.exercise.level}"
+  hint TEXT,                              -- Current: ${report.exercise.hint ? `"${report.exercise.hint}"` : 'NULL'}
+  multiple_choice_options JSONB DEFAULT '[]', -- Current: ${JSON.stringify(report.exercise.multipleChoiceOptions || [])}
+  explanation_pt TEXT,                    -- Current: ${report.exercise.explanation ? `"${report.exercise.explanation}"` : 'NULL'}
+  explanation_en TEXT,                    -- Current: NULL
+  explanation_uk TEXT                     -- Current: NULL
+);
+
+INSTRUCTIONS:
+Please analyze this problem report and provide:
+1. A clear assessment of whether the issue is valid
+2. A detailed explanation of your reasoning
+3. If the issue is valid, provide a specific SQL UPDATE statement to fix it
+4. Format your response as structured JSON for easy parsing
+
+Your response should be in this exact JSON format:
+{
+  "analysis": {
+    "isValid": boolean,
+    "severity": "low|medium|high",
+    "category": "content|technical|user_experience"
+  },
+  "explanation": {
+    "summary": "Brief assessment summary",
+    "details": "Detailed reasoning about the issue",
+    "impact": "How this affects user learning experience"
+  },
+  "correction": {
+    "needed": boolean,
+    "sqlStatement": "UPDATE exercises SET ... WHERE id = '${report.exerciseId}';",
+    "changes": "Description of what changes will be made",
+    "reasoning": "Why this specific correction addresses the issue"
+  }
+}`;
   }
 
   // Generate ultra-minimal prompt for conversation context
@@ -175,26 +205,77 @@ CREATE TABLE exercises (
     return aiResponse;
   }
 
-  // Parse AI response with error handling
+  // Parse AI response with enhanced structured format handling
   private static parseAIResponse(content: string): AIAssistanceResponse {
     try {
+      // First try to parse the new structured JSON format
       const parsed = JSON.parse(content);
+      
+      // Check if it's the new structured format
+      if (parsed.analysis && parsed.explanation && parsed.correction) {
+        return {
+          isValid: parsed.analysis.isValid,
+          explanation: this.formatStructuredExplanation(parsed),
+          sqlCorrection: parsed.correction.needed ? parsed.correction.sqlStatement : undefined,
+          severity: parsed.analysis.severity,
+          category: parsed.analysis.category,
+          changes: parsed.correction.changes,
+          reasoning: parsed.correction.reasoning
+        };
+      }
+      
+      // Fallback to old format for backward compatibility
       return {
-        isValid: parsed.is_valid,
+        isValid: parsed.is_valid || parsed.isValid,
         explanation: parsed.explanation,
-        sqlCorrection: parsed.sql_correction,
+        sqlCorrection: parsed.sql_correction || parsed.sqlCorrection,
       };
-    } catch {
-      // Fallback parsing for non-JSON responses
-      const isValid = content.toLowerCase().includes('"is_valid": true') || 
-                     content.toLowerCase().includes('valid') && !content.toLowerCase().includes('not valid');
+    } catch (parseError) {
+      console.log('JSON parse failed, trying fallback parsing:', parseError);
+      
+      // Advanced fallback parsing for non-JSON responses
+      const isValid = content.toLowerCase().includes('"isvalid": true') || 
+                     content.toLowerCase().includes('is_valid": true') ||
+                     (content.toLowerCase().includes('valid') && !content.toLowerCase().includes('not valid'));
+      
+      // Try to extract SQL statement from unstructured content
+      const sqlMatch = content.match(/UPDATE\s+exercises\s+SET.*?WHERE.*?;/i);
+      const sqlCorrection = sqlMatch ? sqlMatch[0] : undefined;
       
       return {
         isValid,
-        explanation: `Analysis: ${content}`,
-        sqlCorrection: undefined,
+        explanation: `Analysis: ${content.substring(0, 500)}${content.length > 500 ? '...' : ''}`,
+        sqlCorrection,
       };
     }
+  }
+
+  // Format structured explanation for better readability
+  private static formatStructuredExplanation(parsed: {
+    analysis: { severity: string; category: string };
+    explanation: { summary: string; details: string; impact: string };
+    correction: { needed: boolean; changes?: string; reasoning?: string };
+  }): string {
+    const { analysis, explanation, correction } = parsed;
+    
+    let formatted = `📋 **Assessment Summary**\n${explanation.summary}\n\n`;
+    
+    formatted += `🔍 **Detailed Analysis**\n${explanation.details}\n\n`;
+    
+    formatted += `📊 **Issue Classification**\n`;
+    formatted += `• Severity: ${analysis.severity.toUpperCase()}\n`;
+    formatted += `• Category: ${analysis.category.replace(/_/g, ' ').toUpperCase()}\n\n`;
+    
+    formatted += `🎯 **Impact on Learning**\n${explanation.impact}\n\n`;
+    
+    if (correction.needed) {
+      formatted += `🔧 **Proposed Solution**\n${correction.changes}\n\n`;
+      formatted += `💡 **Correction Reasoning**\n${correction.reasoning}`;
+    } else {
+      formatted += `✅ **No Action Required**\nThe exercise appears to be correctly structured and the reported issue does not require changes.`;
+    }
+    
+    return formatted;
   }
 
   // Main analysis method with hybrid approach

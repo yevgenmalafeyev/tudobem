@@ -10,6 +10,8 @@ interface AppState {
   isConfigured: boolean;
   configurationSaved: boolean; // Track if user has manually saved configuration
   collections: FlashcardCollection[];
+  isAuthenticated: boolean; // Track if user is logged in
+  guestConfiguration: UserConfiguration | null; // Store guest preferences separately
   
   setConfiguration: (config: UserConfiguration) => void;
   setCurrentExercise: (exercise: EnhancedExercise | null) => void;
@@ -18,6 +20,11 @@ interface AppState {
   addMasteredWord: (exercise: Exercise) => void;
   resetProgress: () => void;
   resetMasteredWords: () => void;
+  
+  // Authentication state management
+  setAuthenticated: (isAuth: boolean) => void;
+  setProfileConfiguration: (config: UserConfiguration) => void; // Set config from user profile
+  restoreGuestPreferences: () => void; // Restore guest preferences when logging out
   
   // Collection management
   addCollection: (collection: Omit<FlashcardCollection, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -70,15 +77,30 @@ export const useStore = create<AppState>()(
       isConfigured: true, // Default to true since we have valid default configuration
       configurationSaved: false, // Track if user has manually saved configuration
       collections: [],
+      isAuthenticated: false,
+      guestConfiguration: null,
       
-      setConfiguration: (config) => set({ 
-        configuration: config,
-        // Configuration is complete if user has selected levels, topics, and tenses
-        // API key is optional for database-driven mode
-        isConfigured: config.selectedLevels.length > 0 && 
-                     config.selectedTopics.length > 0 && 
-                     config.irregularVerbsEnabledTenses.length > 0,
-        configurationSaved: true // Mark that user has saved configuration
+      setConfiguration: (config) => set((state) => {
+        // If user is not authenticated, save as guest preferences
+        if (!state.isAuthenticated) {
+          return {
+            configuration: config,
+            guestConfiguration: config, // Save guest preferences separately
+            isConfigured: config.selectedLevels.length > 0 && 
+                         config.selectedTopics.length > 0 && 
+                         config.irregularVerbsEnabledTenses.length > 0,
+            configurationSaved: true
+          };
+        }
+        
+        // If authenticated, just update configuration (will sync to profile)
+        return {
+          configuration: config,
+          isConfigured: config.selectedLevels.length > 0 && 
+                       config.selectedTopics.length > 0 && 
+                       config.irregularVerbsEnabledTenses.length > 0,
+          configurationSaved: true
+        };
       }),
       
       setCurrentExercise: (exercise) => set({ currentExercise: exercise }),
@@ -130,6 +152,34 @@ export const useStore = create<AppState>()(
           ...state.progress,
           masteredWords: {}
         }
+      })),
+      
+      // Authentication state management
+      setAuthenticated: (isAuth) => set(() => ({
+        isAuthenticated: isAuth
+      })),
+      
+      setProfileConfiguration: (config) => set((state) => ({
+        // When user logs in, store their current guest preferences if any
+        guestConfiguration: !state.isAuthenticated ? state.configuration : state.guestConfiguration,
+        configuration: config,
+        isAuthenticated: true,
+        isConfigured: config.selectedLevels.length > 0 && 
+                     config.selectedTopics.length > 0 && 
+                     config.irregularVerbsEnabledTenses.length > 0,
+        configurationSaved: true
+      })),
+      
+      restoreGuestPreferences: () => set((state) => ({
+        // When user logs out, restore their guest preferences
+        configuration: state.guestConfiguration || defaultConfiguration,
+        isAuthenticated: false,
+        isConfigured: state.guestConfiguration ? 
+          (state.guestConfiguration.selectedLevels.length > 0 && 
+           state.guestConfiguration.selectedTopics.length > 0 && 
+           state.guestConfiguration.irregularVerbsEnabledTenses.length > 0) : 
+          true,
+        configurationSaved: !!state.guestConfiguration
       })),
       
       // Collection management
@@ -236,7 +286,9 @@ export const useStore = create<AppState>()(
         progress: state.progress,
         isConfigured: state.isConfigured,
         configurationSaved: state.configurationSaved,
-        collections: state.collections
+        collections: state.collections,
+        isAuthenticated: state.isAuthenticated,
+        guestConfiguration: state.guestConfiguration
       })
     }
   )

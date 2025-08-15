@@ -1,10 +1,15 @@
 # OAuth Authentication Setup Guide
 
-## Issue Resolution
+## Current Issue Resolution
 
-**Problem:** OAuth login (Google) shows "Server error" because environment variables are not configured.
+**Problem:** Google OAuth login shows an error when attempting to register/login via Google.
 
-**Root Cause:** NextAuth.js requires OAuth provider credentials, but they're missing from both local and production environments.
+**Root Cause:** The `.env.local` file contains placeholder OAuth credentials (`your-google-client-id-here`). The application correctly detects invalid credentials and disables OAuth accordingly.
+
+**Status:** 
+- ✅ The error handling is working correctly
+- ✅ LocalStorage persistence for logged-out users is now implemented
+- ❌ Google OAuth requires proper credentials to function
 
 ## Required Environment Variables
 
@@ -58,13 +63,32 @@ After adding environment variables:
 3. You should see the Google OAuth button
 4. Test login with Google
 
-## Current Status
+## Implementation Status
 
 - ✅ Code is ready and functional
 - ✅ Error handling implemented for missing provider
-- ❌ Environment variables need to be configured in production
+- ✅ LocalStorage persistence for logged-out user preferences implemented
+- ✅ Authentication state synchronization implemented  
+- ✅ Guest preferences preserved when logging in/out
+- ❌ Environment variables need to be configured for Google OAuth
 - ✅ User feedback added for missing OAuth configuration
 
-## Temporary Workaround
+## Current Authentication Features
 
-The app now shows a clear message when the OAuth provider is not configured instead of showing a server error.
+### ✅ Working Features:
+1. **Email/Password Authentication** - Full registration and login system
+2. **Guest Mode with Persistence** - User preferences saved in localStorage
+3. **Auth State Management** - Automatic sync between logged-in and guest states
+4. **Profile Configuration Override** - User profile settings override guest preferences when logging in
+5. **Guest Preference Restoration** - Guest preferences restored when logging out
+
+### ❌ Requires Setup:
+1. **Google OAuth** - Needs proper credentials in environment variables
+
+## User Experience
+
+- Users can configure language, levels, topics, and tense preferences while logged out
+- These preferences persist in localStorage across browser sessions
+- When logging in, user profile settings (if any) override guest preferences
+- When logging out, guest preferences are restored automatically
+- Google OAuth shows helpful error message until proper credentials are configured

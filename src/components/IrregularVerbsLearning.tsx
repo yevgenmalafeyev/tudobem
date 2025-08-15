@@ -459,23 +459,21 @@ export default function IrregularVerbsLearning({
           )}
 
           {/* Action Button */}
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center">
             {showFeedback ? (
               <>
-                {/* Only show next button for incorrect answers - correct answers auto-advance */}
-                {!isCorrect && (
-                  <button
-                    onClick={handleNext}
-                    disabled={isNextLoading}
-                    className="neo-button neo-button-primary px-8 py-3"
-                  >
-                    {isNextLoading ? 'Carregando...' : 'Próximo exercício →'}
-                  </button>
-                )}
-                {/* Show auto-advance message for correct answers */}
+                {/* Show next button for both correct and incorrect answers */}
+                <button
+                  onClick={handleNext}
+                  disabled={isNextLoading}
+                  className="neo-button neo-button-primary px-8 py-3"
+                >
+                  {isNextLoading ? 'Carregando...' : 'Próximo exercício →'}
+                </button>
+                {/* Show auto-advance hint for correct answers */}
                 {isCorrect && (
-                  <p className="text-sm opacity-70 text-center" style={{ color: 'var(--neo-success-text)' }}>
-                    ✨ Próximo exercício em breve...
+                  <p className="text-xs opacity-70 text-center mt-2" style={{ color: 'var(--neo-success-text)' }}>
+                    ✨ Auto-avanço em 2 segundos...
                   </p>
                 )}
               </>
