@@ -109,22 +109,17 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
 export const executeUnsafeSQL = async (rawSQL: string): Promise<QueryResult> => {
   if (useVercelPostgres) {
     // Use @vercel/postgres for production/Vercel
-    const { createClient } = await import('@vercel/postgres');
-    const client = createClient({
+    const { createPool } = await import('@vercel/postgres');
+    const pool = createPool({
       connectionString: process.env.POSTGRES_URL
     });
     
-    // Connect and execute raw SQL
-    await client.connect();
-    try {
-      const result = await client.query(rawSQL);
-      return {
-        rows: result.rows,
-        rowCount: result.rowCount || 0
-      };
-    } finally {
-      await client.end();
-    }
+    // Execute raw SQL using the pool
+    const result = await pool.query(rawSQL);
+    return {
+      rows: result.rows,
+      rowCount: result.rowCount || 0
+    };
   } else {
     // Use pg for local development
     const { Pool } = await import('pg');
