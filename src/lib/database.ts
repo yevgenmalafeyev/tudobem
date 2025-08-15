@@ -201,10 +201,23 @@ export class ExerciseDatabase {
         ORDER BY count DESC
       `;
 
+      // Convert BigInt values to regular numbers
+      const total = Number(totalResult.rows[0]?.total || 0);
+      const byLevel = levelResult.rows.map(row => ({
+        level: String(row.level),
+        count: Number(row.count)
+      }));
+      const byTopic = topicResult.rows.map(row => ({
+        topic: String(row.topic),
+        count: Number(row.count)
+      }));
+
+      console.log('📊 Database stats:', { total, byLevel: byLevel.length, byTopic: byTopic.length });
+
       return {
-        total: totalResult.rows[0].total,
-        byLevel: levelResult.rows,
-        byTopic: topicResult.rows
+        total,
+        byLevel,
+        byTopic
       };
     } catch (error) {
       console.error('Error getting database stats:', error);

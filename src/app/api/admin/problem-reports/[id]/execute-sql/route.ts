@@ -16,7 +16,10 @@ export async function POST(
     const body = await request.json();
     const { sqlCorrection } = body;
     
+    console.log('🔧 SQL execution request:', { id, sqlCorrection: sqlCorrection?.substring(0, 100) + '...' });
+    
     if (!sqlCorrection) {
+      console.log('❌ No SQL correction provided');
       return NextResponse.json(
         { error: 'SQL correction is required' },
         { status: 400 }
@@ -28,21 +31,40 @@ export async function POST(
     const report = reportsResult.reports.find(r => r.id === id);
     
     if (!report) {
+      console.log('❌ Problem report not found:', id);
       return NextResponse.json(
         { error: 'Problem report not found' },
         { status: 404 }
       );
     }
 
+    console.log('📋 Report found:', { 
+      id: report.id, 
+      hasAiResponse: !!report.aiResponse, 
+      hasSqlCorrection: !!report.aiResponse?.sqlCorrection 
+    });
+
     if (!report.aiResponse?.sqlCorrection) {
+      console.log('❌ No SQL correction available for this report');
       return NextResponse.json(
         { error: 'No SQL correction available for this report' },
         { status: 400 }
       );
     }
 
-    // Verify the SQL matches what was provided by AI
-    if (report.aiResponse.sqlCorrection !== sqlCorrection) {
+    // Verify the SQL matches what was provided by AI (normalize whitespace)
+    const normalizeSQL = (sql: string) => sql.trim().replace(/\s+/g, ' ');
+    const expectedSQL = normalizeSQL(report.aiResponse.sqlCorrection);
+    const providedSQL = normalizeSQL(sqlCorrection);
+    
+    console.log('🔍 SQL comparison:', { 
+      expected: expectedSQL.substring(0, 100) + '...',
+      provided: providedSQL.substring(0, 100) + '...',
+      matches: expectedSQL === providedSQL
+    });
+    
+    if (expectedSQL !== providedSQL) {
+      console.log('❌ SQL correction does not match AI recommendation');
       return NextResponse.json(
         { error: 'SQL correction does not match AI recommendation' },
         { status: 400 }
