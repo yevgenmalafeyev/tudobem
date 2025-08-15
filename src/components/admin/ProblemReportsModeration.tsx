@@ -611,8 +611,8 @@ export default function ProblemReportsModeration() {
             setSelectedReport(null);
           }}
           onAccept={() => {
-            // SQL execution already marked report as accepted, just reload the list
-            loadReports();
+            // SQL execution already marked report as accepted, just reload the list with current filter
+            loadReports(currentPage, statusFilter === 'all' ? undefined : statusFilter);
             setAiModalOpen(false);
             setSelectedReport(null);
           }}
