@@ -11,6 +11,24 @@ interface LevelStats {
   usersComplete: number;
 }
 
+interface LevelCosts {
+  level: string;
+  totalCostUsd: number;
+  totalQuestions: number;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  generationCount: number;
+  lastGeneration: string | null;
+}
+
+interface TotalCosts {
+  grandTotalCostUsd: number;
+  grandTotalQuestions: number;
+  grandTotalInputTokens: number;
+  grandTotalOutputTokens: number;
+  totalGenerations: number;
+}
+
 interface GenerationProgress {
   level: string;
   isGenerating: boolean;
@@ -21,6 +39,8 @@ interface GenerationProgress {
 
 export default function DataManagement() {
   const [levelStats, setLevelStats] = useState<LevelStats[]>([]);
+  const [levelCosts, setLevelCosts] = useState<LevelCosts[]>([]);
+  const [totalCosts, setTotalCosts] = useState<TotalCosts | null>(null);
   const [loading, setLoading] = useState(true);
   const [generationProgress, setGenerationProgress] = useState<GenerationProgress[]>([]);
   const [message, setMessage] = useState('');
@@ -28,22 +48,34 @@ export default function DataManagement() {
   const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
   useEffect(() => {
-    loadLevelStats();
+    loadData();
   }, []);
 
-  const loadLevelStats = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/level-stats');
-      if (response.ok) {
-        const data = await response.json();
-        setLevelStats(data.levelStats);
+      const [statsResponse, costsResponse] = await Promise.all([
+        fetch('/api/admin/level-stats'),
+        fetch('/api/admin/generation-costs')
+      ]);
+
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setLevelStats(statsData.levelStats);
       } else {
         setMessage('❌ Failed to load level statistics');
       }
+
+      if (costsResponse.ok) {
+        const costsData = await costsResponse.json();
+        setLevelCosts(costsData.levelCosts);
+        setTotalCosts(costsData.totalCosts);
+      } else {
+        console.warn('Failed to load cost data');
+      }
     } catch (error) {
-      console.error('Error loading level stats:', error);
-      setMessage('❌ Network error loading statistics');
+      console.error('Error loading data:', error);
+      setMessage('❌ Network error loading data');
     } finally {
       setLoading(false);
     }
@@ -84,8 +116,9 @@ export default function DataManagement() {
             ));
           } else if (data.type === 'complete') {
             setGenerationProgress(prev => prev.filter(p => p.level !== level));
-            setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!`);
-            loadLevelStats(); // Refresh the statistics
+            const costMsg = data.cost ? ` (Cost: $${data.cost.totalCostUsd.toFixed(3)})` : '';
+            setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!${costMsg}`);
+            loadData(); // Refresh the statistics and costs
             eventSource.close();
           } else if (data.type === 'error') {
             setGenerationProgress(prev => prev.filter(p => p.level !== level));
@@ -115,6 +148,16 @@ export default function DataManagement() {
     return generationProgress.find(p => p.level === level);
   };
 
+  const getLevelCost = (level: string) => {
+    return levelCosts.find(c => c.level === level);
+  };
+
+  const formatCost = (cost: number) => {
+    if (cost === 0) return '$0.000';
+    if (cost < 0.001) return '<$0.001';
+    return `$${cost.toFixed(3)}`;
+  };
+
   return (
     <div className="space-y-6">
       <div className="neo-card">
@@ -131,16 +174,31 @@ export default function DataManagement() {
           <div className="space-y-6">
             {levels.map((level) => {
               const stats = levelStats.find(s => s.level === level);
+              const costs = getLevelCost(level);
               const progress = getLevelProgress(level);
               
               return (
                 <div key={level} className="border rounded-lg p-6" style={{ borderColor: 'var(--neo-border)', backgroundColor: 'var(--neo-card-bg)' }}>
                   <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold" style={{ color: 'var(--neo-text)' }}>
-                        Level {level}
-                      </h3>
-                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-3 text-sm">
+                    <div className="flex-grow">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xl font-semibold" style={{ color: 'var(--neo-text)' }}>
+                          Level {level}
+                        </h3>
+                        {costs && (
+                          <div className="text-right">
+                            <div className="text-sm font-medium" style={{ color: 'var(--neo-text)' }}>Generation Cost:</div>
+                            <div className="text-lg font-bold" style={{ color: 'var(--neo-accent)' }}>
+                              {formatCost(costs.totalCostUsd)}
+                            </div>
+                            <div className="text-xs" style={{ color: 'var(--neo-text-muted)' }}>
+                              {costs.generationCount} generation{costs.generationCount !== 1 ? 's' : ''}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                         <div>
                           <span className="font-medium" style={{ color: 'var(--neo-text)' }}>Total Questions:</span>
                           <div className="text-lg font-bold" style={{ color: 'var(--neo-accent)' }}>
@@ -217,6 +275,56 @@ export default function DataManagement() {
         <div className="neo-card">
           <div className="text-sm" style={{ color: 'var(--neo-text)' }}>
             {message}
+          </div>
+        </div>
+      )}
+
+      {/* Total Cost Summary */}
+      {totalCosts && totalCosts.grandTotalCostUsd > 0 && (
+        <div className="neo-card">
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
+            💰 Total Generation Costs Summary
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="text-center p-4 rounded-lg" style={{ backgroundColor: 'var(--neo-hover)', borderColor: 'var(--neo-border)' }}>
+              <div className="text-2xl font-bold" style={{ color: 'var(--neo-accent)' }}>
+                {formatCost(totalCosts.grandTotalCostUsd)}
+              </div>
+              <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+                Total Cost
+              </div>
+            </div>
+            <div className="text-center p-4 rounded-lg" style={{ backgroundColor: 'var(--neo-hover)', borderColor: 'var(--neo-border)' }}>
+              <div className="text-2xl font-bold" style={{ color: 'var(--neo-accent)' }}>
+                {totalCosts.grandTotalQuestions.toLocaleString()}
+              </div>
+              <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+                Questions Generated
+              </div>
+            </div>
+            <div className="text-center p-4 rounded-lg" style={{ backgroundColor: 'var(--neo-hover)', borderColor: 'var(--neo-border)' }}>
+              <div className="text-2xl font-bold" style={{ color: 'var(--neo-accent)' }}>
+                {((totalCosts.grandTotalInputTokens + totalCosts.grandTotalOutputTokens) / 1000).toFixed(0)}K
+              </div>
+              <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+                Total Tokens
+              </div>
+            </div>
+            <div className="text-center p-4 rounded-lg" style={{ backgroundColor: 'var(--neo-hover)', borderColor: 'var(--neo-border)' }}>
+              <div className="text-2xl font-bold" style={{ color: 'var(--neo-accent)' }}>
+                {totalCosts.totalGenerations}
+              </div>
+              <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+                Total Generations
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--neo-bg)', borderColor: 'var(--neo-border)' }}>
+            <div className="text-sm" style={{ color: 'var(--neo-text-muted)' }}>
+              <strong>Cost per question:</strong> {totalCosts.grandTotalQuestions > 0 ? formatCost(totalCosts.grandTotalCostUsd / totalCosts.grandTotalQuestions) : '$0.000'}
+              {' • '}
+              <strong>Avg tokens per question:</strong> {totalCosts.grandTotalQuestions > 0 ? Math.round((totalCosts.grandTotalInputTokens + totalCosts.grandTotalOutputTokens) / totalCosts.grandTotalQuestions) : 0}
+            </div>
           </div>
         </div>
       )}

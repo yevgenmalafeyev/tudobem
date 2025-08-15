@@ -288,9 +288,9 @@ test.describe('Admin Problem Report Moderation', () => {
     await expect(page.locator('text=Vou _____ cinema')).toBeVisible();
     
     // Verify action buttons are present for pending reports
-    await expect(page.locator('button:has-text("Accept")')).toBeVisible();
-    await expect(page.locator('button:has-text("Decline")')).toBeVisible();
-    await expect(page.locator('button:has-text("AI Assistance")')).toBeVisible();
+    await expect(page.getByTestId('accept-report-button')).toBeVisible();
+    await expect(page.getByTestId('decline-report-button')).toBeVisible();
+    await expect(page.getByTestId('ai-assistance-button')).toBeVisible();
   });
 
   test('Admin can accept a problem report manually', async ({ page }) => {
@@ -300,7 +300,7 @@ test.describe('Admin Problem Report Moderation', () => {
     await page.locator('text=Problem Reports').click();
     
     // Accept the report
-    await page.locator('button:has-text("Accept")').first().click();
+    await page.getByTestId('accept-report-button').first().click();
     
     // Should see success feedback (mocked response)
     // In a real test, we'd verify the status changed to accepted
@@ -313,7 +313,7 @@ test.describe('Admin Problem Report Moderation', () => {
     await page.locator('text=Problem Reports').click();
     
     // Decline the report
-    await page.locator('button:has-text("Decline")').first().click();
+    await page.getByTestId('decline-report-button').first().click();
     
     // Should see success feedback (mocked response)
   });
@@ -325,18 +325,20 @@ test.describe('Admin Problem Report Moderation', () => {
     await loginAsAdmin(page);
     await page.locator('text=Problem Reports').click();
     
-    // Verify filter dropdown exists
-    const statusFilter = page.locator('select');
-    await expect(statusFilter).toBeVisible();
+    // Verify filter buttons exist
+    await expect(page.getByRole('button', { name: 'All Reports' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Pending' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Accepted' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Declined' })).toBeVisible();
     
     // Change filter to accepted
-    await statusFilter.selectOption('accepted');
+    await page.getByRole('button', { name: 'Accepted' }).click();
     
     // Verify API call was made with correct filter
     // (In real implementation, we'd verify the filtered results)
     
     // Change back to all
-    await statusFilter.selectOption('all');
+    await page.getByRole('button', { name: 'All Reports' }).click();
   });
 
 });

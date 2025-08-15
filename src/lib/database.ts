@@ -48,6 +48,31 @@ export class ExerciseDatabase {
         CREATE INDEX IF NOT EXISTS idx_exercises_level_topic ON exercises(level, topic)
       `;
 
+      // Create generation_costs table for tracking API costs
+      await sql`
+        CREATE TABLE IF NOT EXISTS generation_costs (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          level VARCHAR(10) NOT NULL,
+          topics_generated INTEGER NOT NULL,
+          questions_generated INTEGER NOT NULL,
+          input_tokens INTEGER NOT NULL,
+          output_tokens INTEGER NOT NULL,
+          total_tokens INTEGER NOT NULL,
+          input_cost_usd DECIMAL(10, 6) NOT NULL,
+          output_cost_usd DECIMAL(10, 6) NOT NULL,
+          total_cost_usd DECIMAL(10, 6) NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        )
+      `;
+
+      await sql`
+        CREATE INDEX IF NOT EXISTS idx_generation_costs_level ON generation_costs(level)
+      `;
+
+      await sql`
+        CREATE INDEX IF NOT EXISTS idx_generation_costs_created_at ON generation_costs(created_at)
+      `;
+
       console.log('Database tables initialized successfully');
     } catch (error) {
       console.error('Error initializing database tables:', error);

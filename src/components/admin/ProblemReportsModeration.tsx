@@ -553,12 +553,14 @@ export default function ProblemReportsModeration() {
                             <button
                               onClick={() => handleStatusChange(report.id, 'accept')}
                               className="bg-green-500 text-white px-3 py-1 rounded text-xs hover:bg-green-600"
+                              data-testid="accept-report-button"
                             >
                               Accept
                             </button>
                             <button
                               onClick={() => handleStatusChange(report.id, 'decline')}
                               className="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600"
+                              data-testid="decline-report-button"
                             >
                               Decline
                             </button>
@@ -569,6 +571,7 @@ export default function ProblemReportsModeration() {
                               setAiModalOpen(true);
                             }}
                             className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 w-full"
+                            data-testid="ai-assistance-button"
                           >
                             🤖 AI Assistance
                           </button>
