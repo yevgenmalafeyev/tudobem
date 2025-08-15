@@ -104,3 +104,38 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
     return false;
   }
 };
+
+// Unsafe SQL execution for admin operations (use with extreme caution)
+export const executeUnsafeSQL = async (rawSQL: string): Promise<QueryResult> => {
+  if (useVercelPostgres) {
+    // Use @vercel/postgres for production/Vercel
+    const { sql } = await import('@vercel/postgres');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await (sql as any).unsafe(rawSQL);
+    return {
+      rows: result.rows,
+      rowCount: result.rowCount || 0
+    };
+  } else {
+    // Use pg for local development
+    const { Pool } = await import('pg');
+    
+    const pool = new Pool({
+      connectionString: process.env.POSTGRES_URL,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    });
+
+    const client = await pool.connect();
+    try {
+      const result = await client.query(rawSQL);
+      return {
+        rows: result.rows,
+        rowCount: result.rowCount || 0
+      };
+    } finally {
+      client.release();
+    }
+  }
+};

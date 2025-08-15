@@ -377,14 +377,59 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
     }
   }
 
-  static async executeSQLCorrection(sqlCorrection: string): Promise<{ success: boolean; error?: string }> {
-    // For security reasons, SQL execution is disabled
-    // This would need proper implementation with strict validation
-    console.log('SQL correction would execute:', sqlCorrection);
-    
-    return { 
-      success: false, 
-      error: 'SQL execution is disabled for security reasons. This feature needs proper implementation.' 
-    };
+  static async executeSQLCorrection(sqlCorrection: string): Promise<{ success: boolean; error?: string; rowsAffected?: number }> {
+    try {
+      console.log('🔧 Executing SQL correction:', sqlCorrection);
+      
+      // Security validation: Only allow safe UPDATE statements on the exercises table
+      const trimmedSQL = sqlCorrection.trim();
+      
+      // Check if it's a valid UPDATE statement for exercises table
+      if (!trimmedSQL.match(/^UPDATE\s+exercises\s+SET\s+.+\s+WHERE\s+id\s*=\s*'[a-f0-9-]+'\s*;?\s*$/i)) {
+        return { 
+          success: false, 
+          error: 'SQL statement must be a safe UPDATE on exercises table with WHERE id clause' 
+        };
+      }
+      
+      // Check that only allowed columns are being updated
+      const allowedColumns = ['sentence', 'correct_answer', 'hint', 'multiple_choice_options', 'explanation_pt', 'explanation_en', 'explanation_uk'];
+      const setClause = trimmedSQL.match(/SET\s+(.+?)\s+WHERE/i)?.[1];
+      
+      if (!setClause) {
+        return { success: false, error: 'Invalid SET clause in SQL statement' };
+      }
+      
+      // Parse the SET clause to check columns
+      const columnUpdates = setClause.split(',').map(update => {
+        const columnName = update.trim().split(/\s*=\s*/)[0].trim();
+        return columnName.toLowerCase();
+      });
+      
+      const invalidColumns = columnUpdates.filter(col => !allowedColumns.includes(col));
+      if (invalidColumns.length > 0) {
+        return { 
+          success: false, 
+          error: `Invalid columns in UPDATE: ${invalidColumns.join(', ')}. Only allowed: ${allowedColumns.join(', ')}` 
+        };
+      }
+      
+      // Execute the SQL with proper error handling
+      const result = await sql.unsafe(trimmedSQL);
+      
+      console.log('✅ SQL execution result:', result);
+      
+      return { 
+        success: true, 
+        rowsAffected: result.count 
+      };
+      
+    } catch (error) {
+      console.error('❌ SQL execution error:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown SQL execution error' 
+      };
+    }
   }
 }

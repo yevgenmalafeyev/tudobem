@@ -49,9 +49,23 @@ function AIAssistanceModal({ report, isOpen, onClose, onAccept }: AIAssistanceMo
   };
 
   const handleExecuteCorrection = async () => {
-    if (!aiResponse?.sqlCorrection) return;
+    console.log('🔧 Execute correction clicked', { 
+      aiResponse: !!aiResponse, 
+      sqlCorrection: !!aiResponse?.sqlCorrection,
+      reportId: report.id 
+    });
+
+    if (!aiResponse?.sqlCorrection) {
+      console.error('❌ No SQL correction available');
+      setError('No SQL correction available');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
 
     try {
+      console.log('📡 Sending SQL execution request...');
       const response = await fetch(`/api/admin/problem-reports/${report.id}/execute-sql`, {
         method: 'POST',
         headers: {
@@ -62,16 +76,23 @@ function AIAssistanceModal({ report, isOpen, onClose, onAccept }: AIAssistanceMo
         }),
       });
 
+      console.log('📡 Response received:', response.status, response.statusText);
+
       if (response.ok) {
+        const data = await response.json();
+        console.log('✅ SQL execution successful:', data);
         onAccept(report.id);
         onClose();
       } else {
         const errorData = await response.json();
+        console.error('❌ SQL execution failed:', errorData);
         setError(errorData.error || 'Failed to execute correction');
       }
     } catch (error) {
-      console.error('Error executing correction:', error);
+      console.error('❌ Network error executing correction:', error);
       setError('Network error occurred');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -234,10 +255,15 @@ function AIAssistanceModal({ report, isOpen, onClose, onAccept }: AIAssistanceMo
                 {aiResponse.isValid && aiResponse.sqlCorrection && (
                   <button
                     onClick={handleExecuteCorrection}
-                    className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 font-medium flex items-center gap-2"
+                    disabled={isLoading}
+                    className={`px-6 py-2 rounded font-medium flex items-center gap-2 ${
+                      isLoading 
+                        ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                        : 'bg-green-600 text-white hover:bg-green-700'
+                    }`}
                   >
-                    <span>⚡</span>
-                    Execute Correction & Accept Report
+                    <span>{isLoading ? '⏳' : '⚡'}</span>
+                    {isLoading ? 'Executing...' : 'Execute Correction & Accept Report'}
                   </button>
                 )}
               </div>
