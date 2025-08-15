@@ -24,29 +24,37 @@ export default function SignIn() {
         // Try NextAuth providers first
         const nextAuthProviders = await getProviders()
         
-        // Also check our custom provider status endpoint as fallback
-        const customResponse = await fetch('/api/auth/provider-status')
-        const customProviders = await customResponse.json()
-        
         console.log('NextAuth providers:', nextAuthProviders)
-        console.log('Custom providers check:', customProviders)
         
-        // If NextAuth has providers, use them
-        if (nextAuthProviders && Object.keys(nextAuthProviders).length > 0) {
+        // Check if NextAuth returned proper provider objects (not just {"google": true})
+        const hasValidProviders = nextAuthProviders && 
+          Object.keys(nextAuthProviders).length > 0 &&
+          Object.values(nextAuthProviders).some(provider => provider && typeof provider === 'object' && 'name' in provider)
+        
+        if (hasValidProviders) {
           setProviders(nextAuthProviders)
-        } else if (customProviders.google) {
-          // Fallback: create Google provider manually if custom check says it's available
-          const googleProvider = {
-            id: 'google',
-            name: 'Google',
-            type: 'oauth',
-            signinUrl: '/api/auth/signin/google',
-            callbackUrl: '/api/auth/callback/google'
-          }
-          setProviders({ google: googleProvider })
-          console.log('Using fallback Google provider configuration')
+          console.log('Using NextAuth providers')
         } else {
-          setProviders(null)
+          // Fallback: check if Google OAuth is configured and create provider manually
+          const customResponse = await fetch('/api/auth/provider-status')
+          const customProviders = await customResponse.json()
+          
+          console.log('Custom provider status:', customProviders)
+          
+          if (customProviders.google) {
+            const googleProvider = {
+              id: 'google',
+              name: 'Google',
+              type: 'oauth',
+              signinUrl: '/api/auth/signin/google',
+              callbackUrl: '/api/auth/callback/google'
+            }
+            setProviders({ google: googleProvider })
+            console.log('Using fallback Google provider configuration')
+          } else {
+            setProviders(null)
+            console.log('No OAuth providers available')
+          }
         }
       } catch (error) {
         console.error('Error fetching providers:', error)
