@@ -75,8 +75,14 @@ test.describe('Irregular Verbs Learning Flow - Functional Tests', () => {
     // Check for errors after initial page load
     await checkForConsoleErrorsAndWarnings()
     
-    // Navigate to irregular verbs section
-    await page.click('text=Verbos Irregulares')
+    // Navigate to irregular verbs section - work with both Portuguese and English
+    try {
+      // Try Portuguese first (for i18n consistency)
+      await page.click('text=Verbos Irregulares')
+    } catch {
+      // Fall back to English if Portuguese not found
+      await page.click('text=Irregular Verbs')
+    }
     await page.waitForLoadState('networkidle')
     
     // Check for errors after navigation
@@ -214,8 +220,12 @@ test.describe('Irregular Verbs Learning Flow - Functional Tests', () => {
       // Check for console errors after navigation to configuration
       await checkForConsoleErrorsAndWarnings()
       
-      // Find irregular verbs tense section
-      await page.waitForSelector('text=Verbos Irregulares - Tempos Verbais', { timeout: 10000 })
+      // Find irregular verbs tense section - work with both Portuguese and English
+      try {
+        await page.waitForSelector('text=Verbos Irregulares - Tempos Verbais', { timeout: 5000 })
+      } catch {
+        await page.waitForSelector('text=Irregular Verbs - Tenses', { timeout: 5000 })
+      }
       
       // Check for console errors after configuration page loads
       await checkForConsoleErrorsAndWarnings()
@@ -241,8 +251,12 @@ test.describe('Irregular Verbs Learning Flow - Functional Tests', () => {
       // Check for console errors after saving configuration
       await checkForConsoleErrorsAndWarnings()
       
-      // Navigate back to irregular verbs
-      await page.click('text=Verbos Irregulares')
+      // Navigate back to irregular verbs - work with both Portuguese and English
+      try {
+        await page.click('text=Verbos Irregulares')
+      } catch {
+        await page.click('text=Irregular Verbs')
+      }
       await page.waitForLoadState('networkidle')
       
       // Check for console errors after navigating back to irregular verbs

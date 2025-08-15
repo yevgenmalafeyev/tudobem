@@ -17,6 +17,11 @@ export const translations = {
     en: 'Flashcards',
     uk: 'Картки'
   },
+  irregularVerbs: {
+    pt: 'Verbos Irregulares',
+    en: 'Irregular Verbs',
+    uk: 'Неправильні Дієслова'
+  },
   configuration: {
     pt: 'Configurar',
     en: 'Configure',
@@ -175,6 +180,21 @@ export const translations = {
     pt: 'Clique para mostrar o tópico',
     en: 'Click to show topic',
     uk: 'Клацніть, щоб показати тему'
+  },
+  verb: {
+    pt: 'Verbo',
+    en: 'Verb',
+    uk: 'Дієслово'
+  },
+  tense: {
+    pt: 'Tempo Verbal',
+    en: 'Tense',
+    uk: 'Час'
+  },
+  person: {
+    pt: 'Pessoa',
+    en: 'Person',
+    uk: 'Особа'
   },
   
   // Learning modes

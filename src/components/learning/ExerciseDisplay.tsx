@@ -29,9 +29,11 @@ export default function ExerciseDisplay({
   const hintText = exercise.hint && exercise.hint !== 'null' ? exercise.hint : '?';
 
   return (
-    <div className="exercise-container neo-card-sm text-base sm:text-lg lg:text-xl xl:text-2xl mb-3 sm:mb-4 lg:mb-6 leading-relaxed" style={{ color: 'var(--neo-text)' }}>
-      {sentenceParts[0]}
-      <span className="inline-block mx-1 sm:mx-2 min-w-12 sm:min-w-16 lg:min-w-24 text-center">
+    <div className="exercise-container neo-card-sm mb-3 sm:mb-4 lg:mb-6" style={{ color: 'var(--neo-text)' }}>
+      <h2 className="sr-only">Exercise Question</h2>
+      <div className="text-base sm:text-lg lg:text-xl xl:text-2xl leading-relaxed">
+        {sentenceParts[0]}
+        <span className="inline-block mx-1 sm:mx-2 min-w-12 sm:min-w-16 lg:min-w-24 text-center">
         {showAnswer ? (
           <span 
             className={`font-bold neo-outset-sm px-2 py-1`} 
@@ -57,8 +59,9 @@ export default function ExerciseDisplay({
             ?
           </span>
         )}
-      </span>
-      {sentenceParts[1]}
+        </span>
+        {sentenceParts[1]}
+      </div>
     </div>
   );
 }

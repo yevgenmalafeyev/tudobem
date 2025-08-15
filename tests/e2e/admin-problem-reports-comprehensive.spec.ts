@@ -22,8 +22,12 @@ test.describe('Admin Problem Reports - Comprehensive Issues Detection', () => {
     // First, submit a problem report as a user to have data
     console.log('📝 Step 1: Submit a problem report as a user')
     
-    // Navigate to learning mode to submit a report
-    await page.click('text=Verbos Irregulares')
+    // Navigate to learning mode to submit a report - work with both Portuguese and English
+    try {
+      await page.click('text=Verbos Irregulares')
+    } catch {
+      await page.click('text=Irregular Verbs')
+    }
     await page.waitForLoadState('networkidle')
     await page.waitForSelector('h2', { timeout: 10000 })
     

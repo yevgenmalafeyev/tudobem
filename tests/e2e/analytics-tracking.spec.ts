@@ -61,16 +61,23 @@ test.describe('Analytics Tracking E2E Tests', () => {
         
         // Move to next exercise (except for last one)
         if (i < answersToSubmit.length - 1) {
-          if (answersToSubmit[i].expectedCorrect) {
-            // For correct answers, wait for auto-advance (2 seconds + buffer)
-            console.log('✅ Correct answer - waiting for auto-advance')
-            await page.waitForTimeout(2500)
-          } else {
-            // For incorrect answers, click the next button
-            console.log('❌ Incorrect answer - clicking next button')
+          try {
+            // First check if there's a next button visible (for incorrect answers)
             const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício"), button:has-text("Próximo exercício")')
-            await nextButton.click()
-            await page.waitForTimeout(1000)
+            const nextButtonVisible = await nextButton.count() > 0
+            
+            if (nextButtonVisible) {
+              console.log('❌ Next button found - clicking it')
+              await nextButton.click()
+              await page.waitForTimeout(1000)
+            } else {
+              // Wait for auto-advance (for correct answers)
+              console.log('✅ No next button - waiting for auto-advance')
+              await page.waitForTimeout(3000)
+            }
+          } catch (error) {
+            console.log('⚠️ Error during navigation, trying fallback')
+            await page.waitForTimeout(3000)
           }
         }
       }

@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import { useStore } from '@/store/useStore';
+import { t } from '@/utils/translations';
 
 interface QuestionMarkupProps {
   question: string;
@@ -8,6 +10,8 @@ interface QuestionMarkupProps {
 }
 
 export default function QuestionMarkup({ question, className = '' }: QuestionMarkupProps) {
+  const { configuration } = useStore();
+  
   // Parse the question to identify and mark up different components
   const parseQuestion = (question: string) => {
     // Pattern: "Conjugue o verbo "VERB" no TENSE, PERSON"
@@ -42,7 +46,7 @@ export default function QuestionMarkup({ question, className = '' }: QuestionMar
               backgroundColor: 'var(--neo-primary)', 
               color: 'var(--neo-primary-text)' 
             }}
-            title="Verbo"
+            title={t('verb', configuration.appLanguage)}
           >
 &quot;{verb}&quot;
           </span>
@@ -53,7 +57,7 @@ export default function QuestionMarkup({ question, className = '' }: QuestionMar
               backgroundColor: 'var(--neo-accent)', 
               color: 'var(--neo-accent-text)' 
             }}
-            title="Tempo Verbal"
+            title={t('tense', configuration.appLanguage)}
           >
             {tense}
           </span>
@@ -64,7 +68,7 @@ export default function QuestionMarkup({ question, className = '' }: QuestionMar
               backgroundColor: 'var(--neo-secondary)', 
               color: 'var(--neo-secondary-text)' 
             }}
-            title="Pessoa"
+            title={t('person', configuration.appLanguage)}
           >
             {person}
           </span>
@@ -81,7 +85,7 @@ export default function QuestionMarkup({ question, className = '' }: QuestionMar
               backgroundColor: 'var(--neo-primary)', 
               color: 'var(--neo-primary-text)' 
             }}
-            title="Verbo"
+            title={t('verb', configuration.appLanguage)}
           >
 &quot;{verb}&quot;
           </span>
@@ -92,8 +96,8 @@ export default function QuestionMarkup({ question, className = '' }: QuestionMar
   };
 
   return (
-    <div className={`text-xl font-semibold leading-relaxed ${className}`} style={{ color: 'var(--neo-text)' }}>
+    <h2 className={`text-xl font-semibold leading-relaxed ${className}`} style={{ color: 'var(--neo-text)' }}>
       {parseQuestion(question)}
-    </div>
+    </h2>
   );
 }

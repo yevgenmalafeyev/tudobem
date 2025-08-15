@@ -10,8 +10,12 @@ test.describe('Irregular Verbs Enter Key Functionality', () => {
     await page.goto('/?e2e-test=true')
     await page.waitForLoadState('networkidle')
     
-    // Navigate to irregular verbs section
-    await page.click('text=Verbos Irregulares')
+    // Navigate to irregular verbs section - work with both Portuguese and English
+    try {
+      await page.click('text=Verbos Irregulares')
+    } catch {
+      await page.click('text=Irregular Verbs')
+    }
     await page.waitForLoadState('networkidle')
     
     // Wait for exercise to load

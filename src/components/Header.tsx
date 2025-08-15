@@ -95,7 +95,7 @@ export default function Header({ currentView, onViewChange }: HeaderProps) {
                       : ''
                   }`}
                 >
-                  Verbos Irregulares
+                  {t('irregularVerbs', configuration.appLanguage)}
                 </button>
                 {/* Cards button temporarily hidden */}
                 {false && (
