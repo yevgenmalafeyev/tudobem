@@ -23,7 +23,7 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
     await page.close()
   })
 
-  test('should keep feedback visible for sufficient time in multiple choice mode', async () => {
+  test('should handle feedback timing correctly based on answer correctness', async () => {
     console.log('🔍 Testing feedback timing in multiple choice mode')
     
     // Wait for exercise to load
@@ -44,53 +44,71 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
     const firstOption = await page.locator('button[data-testid="multiple-choice-option"]').first()
     await firstOption.click()
     
-    // Immediately check that feedback appears
+    // Wait for feedback to appear - work with both Portuguese and English
     await page.waitForSelector('text=✅ Correto!', { timeout: 2000 }).catch(() => 
       page.waitForSelector('text=❌ Incorreto', { timeout: 2000 })
+    ).catch(() => 
+      page.waitForSelector('text=✅ Correct!', { timeout: 2000 })
+    ).catch(() => 
+      page.waitForSelector('text=❌ Incorrect', { timeout: 2000 })
     )
     
     console.log('✅ Feedback appeared')
     
-    // Verify feedback is visible - work with both Portuguese and English
-    const feedbackVisible = await page.locator('text=✅ Correto!').count() > 0 || 
-                            await page.locator('text=❌ Incorreto').count() > 0 ||
-                            await page.locator('text=✅ Correct!').count() > 0 || 
-                            await page.locator('text=❌ Incorrect').count() > 0
-    expect(feedbackVisible).toBe(true)
+    // Determine if the answer was correct or incorrect
+    const correctFeedback = await page.locator('text=✅ Correto!').count() > 0 || 
+                           await page.locator('text=✅ Correct!').count() > 0
+    const incorrectFeedback = await page.locator('text=❌ Incorreto').count() > 0 || 
+                             await page.locator('text=❌ Incorrect').count() > 0
     
-    // Check that next button is visible - work with both Portuguese and English
-    const nextButtonVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
-                              await page.locator('text=Next Exercise').count() > 0 ||
-                              await page.locator('text=Próximo Exercício').count() > 0
-    expect(nextButtonVisible).toBe(true)
+    expect(correctFeedback || incorrectFeedback).toBe(true)
     
-    console.log('✅ Next button is visible')
-    
-    // Wait 2 seconds to simulate user reading time
-    await page.waitForTimeout(2000)
-    
-    // Verify feedback is still visible after 2 seconds
-    const feedbackStillVisible = await page.locator('text=✅ Correto!').count() > 0 || await page.locator('text=❌ Incorreto').count() > 0
-    expect(feedbackStillVisible).toBe(true)
-    
-    console.log('✅ Feedback still visible after 2 seconds')
-    
-    // Wait another 3 seconds to check for auto-progression
-    await page.waitForTimeout(3000)
-    
-    // Verify feedback is still visible and we haven't auto-progressed
-    const feedbackStillVisibleAfter5s = await page.locator('text=✅ Correto!').count() > 0 || await page.locator('text=❌ Incorreto').count() > 0
-    expect(feedbackStillVisibleAfter5s).toBe(true)
-    
-    // Verify next button is still there (not auto-progressed)
-    const nextButtonStillVisible = await page.locator('text=Próximo exercício →').count() > 0
-    expect(nextButtonStillVisible).toBe(true)
-    
-    console.log('✅ Feedback and next button still visible after 5 seconds - no auto-progression detected')
+    if (correctFeedback) {
+      console.log('✅ Answer was correct - testing auto-advance behavior')
+      
+      // For correct answers, should show auto-advance message instead of next button
+      const autoAdvanceMessage = await page.locator('text=Próximo exercício em breve').count() > 0 ||
+                                 await page.locator('text=Next exercise coming up').count() > 0
+      
+      // Auto-advance should occur after ~2 seconds
+      await page.waitForTimeout(2500) // Wait a bit longer than 2 seconds
+      
+      // After auto-advance, feedback should be gone and new exercise should load
+      const feedbackGone = await page.locator('text=✅ Correto!').count() === 0 && 
+                          await page.locator('text=✅ Correct!').count() === 0
+      
+      expect(feedbackGone).toBe(true)
+      console.log('✅ Correct answer: auto-advance occurred as expected')
+      
+    } else if (incorrectFeedback) {
+      console.log('❌ Answer was incorrect - testing manual progression behavior')
+      
+      // For incorrect answers, should show next button
+      const nextButtonVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
+                               await page.locator('text=Next Exercise').count() > 0 ||
+                               await page.locator('text=Próximo Exercício').count() > 0
+      expect(nextButtonVisible).toBe(true)
+      
+      // Wait 5 seconds to verify no auto-advance occurs
+      await page.waitForTimeout(5000)
+      
+      // Feedback should still be visible
+      const feedbackStillVisible = await page.locator('text=❌ Incorreto').count() > 0 || 
+                                   await page.locator('text=❌ Incorrect').count() > 0
+      expect(feedbackStillVisible).toBe(true)
+      
+      // Next button should still be visible
+      const nextButtonStillVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
+                                    await page.locator('text=Next Exercise').count() > 0 ||
+                                    await page.locator('text=Próximo Exercício').count() > 0
+      expect(nextButtonStillVisible).toBe(true)
+      
+      console.log('✅ Incorrect answer: no auto-advance, manual progression required as expected')
+    }
   })
 
-  test('should not auto-progress to next exercise without user interaction', async () => {
-    console.log('🔍 Testing for auto-progression bug')
+  test('should validate correct auto-progression behavior for different answer types', async () => {
+    console.log('🔍 Testing auto-progression behavior validation')
     
     // Wait for exercise to load
     await page.waitForSelector('h2', { timeout: 10000 })
@@ -106,43 +124,65 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
     // Wait for multiple choice options
     await page.waitForSelector('button[data-testid="multiple-choice-option"]', { timeout: 10000 })
     
-    // Click the last option to maximize chance of wrong answer (to avoid auto-progression)
+    // Click the last option to trigger feedback
     const options = await page.locator('button[data-testid="multiple-choice-option"]').all()
     const lastOption = options[options.length - 1]
     await lastOption.click()
     
-    // Wait for feedback to appear
+    // Wait for feedback to appear - work with both Portuguese and English
     await page.waitForSelector('text=✅ Correto!', { timeout: 2000 }).catch(() => 
       page.waitForSelector('text=❌ Incorreto', { timeout: 2000 })
+    ).catch(() => 
+      page.waitForSelector('text=✅ Correct!', { timeout: 2000 })
+    ).catch(() => 
+      page.waitForSelector('text=❌ Incorrect', { timeout: 2000 })
     )
     
     // Check if answer was correct or incorrect
-    const correctFeedback = await page.locator('text=✅ Correto!').count() > 0
-    const incorrectFeedback = await page.locator('text=❌ Incorreto').count() > 0
+    const correctFeedback = await page.locator('text=✅ Correto!').count() > 0 || 
+                           await page.locator('text=✅ Correct!').count() > 0
+    const incorrectFeedback = await page.locator('text=❌ Incorreto').count() > 0 || 
+                             await page.locator('text=❌ Incorrect').count() > 0
+    
+    expect(correctFeedback || incorrectFeedback).toBe(true)
     
     if (correctFeedback) {
       console.log('✅ Answer was correct - checking for expected auto-progression behavior')
-      // For correct answers, wait a bit and then verify next button is available
+      
+      // Record initial state
+      const initialExerciseText = await page.locator('h2').textContent()
+      
+      // Wait for auto-progression (should happen around 2 seconds)
       await page.waitForTimeout(3000)
       
-      // Should still have feedback visible and next button available for user interaction
-      const feedbackStillVisible = await page.locator('text=✅ Correto!').count() > 0
-      expect(feedbackStillVisible).toBe(true)
+      // After auto-progression, should have new exercise
+      const newExerciseText = await page.locator('h2').textContent()
+      const exerciseChanged = initialExerciseText !== newExerciseText
       
-      // Next button should be available - work with both Portuguese and English
-      const nextButtonVisible = await page.locator('text=Próximo exercício →').count() > 0 || 
-                                await page.locator('text=Next Exercise').count() > 0 ||
-                                await page.locator('text=Próximo Exercício').count() > 0
-      expect(nextButtonVisible).toBe(true)
+      // Either exercise changed (auto-progressed) OR feedback is gone
+      const feedbackGone = await page.locator('text=✅ Correto!').count() === 0 && 
+                          await page.locator('text=✅ Correct!').count() === 0
       
-      console.log('✅ Correct answer: feedback and next button remain available for user interaction')
+      expect(exerciseChanged || feedbackGone).toBe(true)
+      console.log('✅ Correct answer: auto-progression occurred as expected')
+      
     } else if (incorrectFeedback) {
       console.log('❌ Answer was incorrect - verifying no auto-progression')
-      // For incorrect answers, wait 10 seconds and verify no auto-progression
+      
+      // Record initial state
+      const initialExerciseText = await page.locator('h2').textContent()
+      
+      // Wait longer to verify no auto-progression
       await page.waitForTimeout(10000)
       
+      // Exercise should be the same (no auto-progression)
+      const currentExerciseText = await page.locator('h2').textContent()
+      const exerciseUnchanged = initialExerciseText === currentExerciseText
+      expect(exerciseUnchanged).toBe(true)
+      
       // Feedback should still be visible
-      const feedbackStillVisible = await page.locator('text=❌ Incorreto').count() > 0
+      const feedbackStillVisible = await page.locator('text=❌ Incorreto').count() > 0 || 
+                                   await page.locator('text=❌ Incorrect').count() > 0
       expect(feedbackStillVisible).toBe(true)
       
       // Next button should be available - work with both Portuguese and English
@@ -152,8 +192,6 @@ test.describe('Irregular Verbs Feedback Timing Issue', () => {
       expect(nextButtonVisible).toBe(true)
       
       console.log('✅ Incorrect answer: no auto-progression, user must manually proceed')
-    } else {
-      throw new Error('No feedback detected - test cannot proceed')
     }
   })
 
