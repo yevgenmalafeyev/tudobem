@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import { useStore } from '@/store/useStore';
 import { t } from '@/utils/translations';
+import { useSearchParams } from 'next/navigation';
 
 interface AuthFormProps {
   onSuccess?: () => void;
@@ -12,6 +13,8 @@ interface AuthFormProps {
 
 export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
   const { configuration } = useStore();
+  const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -24,6 +27,101 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  // Check for OAuth callback errors on component mount
+  useEffect(() => {
+    const oauthError = searchParams?.get('error');
+    const errorDescription = searchParams?.get('error_description');
+    
+    if (oauthError) {
+      console.log('🚨 OAuth callback error detected:', { 
+        error: oauthError, 
+        description: errorDescription 
+      });
+      
+      let errorMessage = 'OAuth authentication failed';
+      
+      // Map common OAuth errors to user-friendly messages
+      switch (oauthError) {
+        case 'Configuration':
+          errorMessage = 'OAuth is not properly configured. Please try email/password login.';
+          break;
+        case 'AccessDenied':
+          errorMessage = 'Access was denied during Google sign-in. Please try again or use email/password login.';
+          break;
+        case 'Verification':
+          errorMessage = 'OAuth verification failed. Please try again.';
+          break;
+        case 'OAuthSignin':
+          errorMessage = 'Error occurred during OAuth sign-in process. Please try again.';
+          break;
+        case 'OAuthCallback':
+          errorMessage = 'OAuth callback error. This may be a temporary issue - please try again.';
+          break;
+        case 'OAuthCreateAccount':
+          errorMessage = 'Failed to create account from OAuth. Please try email/password registration.';
+          break;
+        case 'EmailCreateAccount':
+          errorMessage = 'Failed to create account with this email. It may already be in use.';
+          break;
+        case 'Callback':
+          errorMessage = 'Authentication callback failed. Please try again.';
+          break;
+        case 'OAuthAccountNotLinked':
+          errorMessage = 'This Google account is not linked. Please try email/password login or contact support.';
+          break;
+        case 'EmailSignin':
+          errorMessage = 'Email sign-in error. Please verify your email and try again.';
+          break;
+        case 'CredentialsSignin':
+          errorMessage = 'Invalid credentials. Please check your email and password.';
+          break;
+        case 'SessionRequired':
+          errorMessage = 'Session expired. Please sign in again.';
+          break;
+        default:
+          if (errorDescription) {
+            errorMessage = `OAuth error: ${errorDescription}`;
+          } else {
+            errorMessage = `OAuth error: ${oauthError}. Please try email/password login.`;
+          }
+      }
+      
+      console.log('💬 Setting user-friendly error message:', errorMessage);
+      setError(errorMessage);
+      
+      // Clear the URL parameters to avoid showing the error repeatedly
+      if (window.history && window.history.replaceState) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('error');
+        url.searchParams.delete('error_description');
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    }
+  }, [searchParams]);
+
+  // Check for successful OAuth authentication
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      console.log('✅ OAuth authentication successful:', {
+        user: session.user.email,
+        provider: (session as any)?.provider,
+        timestamp: new Date().toISOString()
+      });
+      
+      setSuccess(`Welcome ${session.user.name || session.user.email}! You have been successfully logged in via ${(session as any)?.provider || 'OAuth'}.`);
+      
+      // Trigger success callback after a brief delay to show the success message
+      setTimeout(() => {
+        if (onSuccess) {
+          onSuccess();
+        }
+      }, 1500);
+    } else if (status === 'unauthenticated') {
+      // User is not authenticated - this is normal for the login page
+      console.log('ℹ️ User not authenticated - normal for login page');
+    }
+  }, [status, session, onSuccess]);
 
   const benefits = configuration.appLanguage === 'pt' ? {
     title: '🚀 Por que criar uma conta?',
@@ -129,14 +227,65 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
   const handleOAuthSignIn = async (provider: 'google') => {
     try {
       setLoading(true);
+      setError('');
+      
+      console.log('🚀 Starting OAuth sign-in process for provider:', provider);
+      
+      // Check if Google OAuth is properly configured
+      const response = await fetch('/api/auth/providers');
+      const providers = await response.json();
+      
+      console.log('📋 Available providers:', providers);
+      
+      if (!providers.google) {
+        const errorMsg = process.env.NODE_ENV === 'development' 
+          ? 'Google OAuth is not configured in local environment. On production, this should work with proper credentials.'
+          : 'Google login is temporarily unavailable. Please use email/password login or try again later.';
+        
+        setError(errorMsg);
+        setLoading(false);
+        return;
+      }
+      
+      console.log('✅ Google OAuth is configured, starting sign-in process');
+      
       // For OAuth providers like Google, we need to allow redirect
-      await signIn(provider, { 
-        callbackUrl: '/'
+      const result = await signIn(provider, { 
+        callbackUrl: '/',
+        redirect: true
       });
-      // This will redirect to Google, so code after this won't execute
+      
+      console.log('🔄 OAuth sign-in result:', result);
+      
+      // This will redirect to Google, so code after this won't execute normally
+      // If we reach here, it might be an error case
+      if (result?.error) {
+        console.error('❌ OAuth sign-in error:', result.error);
+        setError(`OAuth login failed: ${result.error}. Please try again or use email/password login.`);
+        setLoading(false);
+      }
     } catch (err) {
-      console.error('OAuth error:', err);
-      setError('OAuth login failed. Please try again.');
+      console.error('❌ OAuth error caught:', err);
+      
+      const errorMessage = err instanceof Error 
+        ? `OAuth login failed: ${err.message}` 
+        : 'OAuth login failed due to unexpected error';
+        
+      // Provide more specific error messages based on common issues
+      if (err instanceof Error) {
+        if (err.message.includes('Configuration')) {
+          setError('OAuth configuration error. Please contact support or try email/password login.');
+        } else if (err.message.includes('network')) {
+          setError('Network error during OAuth. Please check your connection and try again.');
+        } else if (err.message.includes('timeout')) {
+          setError('OAuth request timed out. Please try again.');
+        } else {
+          setError(`${errorMessage}. If this persists, please try email/password login.`);
+        }
+      } else {
+        setError('OAuth login failed due to unexpected error. Please try email/password login.');
+      }
+      
       setLoading(false);
     }
   };

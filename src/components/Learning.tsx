@@ -16,7 +16,11 @@ import ActionButtons from './learning/ActionButtons';
 import ProblemReportButton from './learning/ProblemReportButton';
 import NotLoggedInPrompt from './NotLoggedInPrompt';
 
-export default function Learning() {
+interface LearningProps {
+  onViewChange?: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile') => void;
+}
+
+export default function Learning({ onViewChange }: LearningProps = {}) {
   // Helper function to get topic display name
   const getTopicDisplayName = useCallback((topicId: string, language: string = 'en') => {
     const topic = topics.find(t => t.id === topicId);
@@ -171,6 +175,55 @@ export default function Learning() {
     
   }, [currentExercise, getCurrentAnswer, configuration, checkAnswer]);
 
+  const [isNextLoading, setIsNextLoading] = useState(false);
+
+  const handleNextExercise = useCallback(async () => {
+    if (isNextLoading) return; // Prevent double-clicks
+    
+    setIsNextLoading(true);
+    
+    try {
+      // Get next exercise from queue
+      const nextExercise = getNextExercise();
+      
+      if (nextExercise) {
+        setCurrentExercise(nextExercise);
+        resetState();
+        // Don't generate explanation immediately - only when answer is wrong
+        focusInput();
+      } else {
+        // No more exercises - trigger a new batch load
+        console.log('No more exercises available - loading initial batch');
+        await loadInitialBatch();
+      }
+    } catch (error) {
+      console.error('Error loading next exercise:', error);
+    } finally {
+      // Re-enable button after a brief delay to prevent rapid clicking
+      setTimeout(() => {
+        setIsNextLoading(false);
+      }, 300);
+    }
+  }, [isNextLoading, getNextExercise, setCurrentExercise, resetState, focusInput, loadInitialBatch]);
+
+  // Auto-advance after correct answers with 2-second delay
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (showAnswer && feedback?.isCorrect) {
+      console.log('✅ Correct answer detected, auto-advancing in 2 seconds');
+      timeoutId = setTimeout(() => {
+        handleNextExercise();
+      }, 2000);
+    }
+    
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [showAnswer, feedback, handleNextExercise]);
+
   // Handler for multiple choice option selection with immediate answer checking
   const handleOptionSelect = useCallback(async (selectedOption: string) => {
     if (!currentExercise) return;
@@ -186,23 +239,6 @@ export default function Learning() {
     });
     
   }, [currentExercise, setSelectedOption, configuration, checkAnswer]);
-
-  const handleNextExercise = useCallback(() => {
-    
-    // Get next exercise from queue
-    const nextExercise = getNextExercise();
-    
-    if (nextExercise) {
-      setCurrentExercise(nextExercise);
-      resetState();
-      // Don't generate explanation immediately - only when answer is wrong
-      focusInput();
-    } else {
-      // No more exercises - trigger a new batch load
-      console.log('No more exercises available - loading initial batch');
-      loadInitialBatch();
-    }
-  }, [getNextExercise, setCurrentExercise, resetState, focusInput, loadInitialBatch]);
 
   // Regenerate multiple choice options when mode changes
   useEffect(() => {
@@ -364,10 +400,12 @@ export default function Learning() {
           learningMode={learningMode}
           onCheckAnswer={handleCheckAnswer}
           onNextExercise={handleNextExercise}
+          feedback={feedback}
+          isNextLoading={isNextLoading}
         />
 
         {/* Not logged in prompt */}
-        <NotLoggedInPrompt className="mt-8" />
+        <NotLoggedInPrompt className="mt-8" onViewChange={onViewChange} />
       </div>
     </div>
   );

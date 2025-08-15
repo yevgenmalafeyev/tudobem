@@ -52,11 +52,11 @@ export default function Home() {
         ) : currentView === 'login' ? (
           <AuthForm onSuccess={handleLoginSuccess} onBack={() => setCurrentView('learning')} />
         ) : currentView === 'irregular-verbs' ? (
-          <IrregularVerbsLearning userConfig={configuration} />
+          <IrregularVerbsLearning userConfig={configuration} onViewChange={handleViewChange} />
         ) : currentView === 'profile' ? (
           <UserProfile onBack={() => setCurrentView('learning')} />
         ) : (
-          <Learning />
+          <Learning onViewChange={handleViewChange} />
         )}
       </main>
 

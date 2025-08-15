@@ -8,15 +8,18 @@ import type {
 
 import type { UserConfiguration, AppLanguage } from '@/types';
 import NotLoggedInPrompt from './NotLoggedInPrompt';
+import QuestionMarkup from './irregular-verbs/QuestionMarkup';
 
 interface IrregularVerbsLearningProps {
   userConfig: UserConfiguration;
   onConfigUpdate: (config: Partial<UserConfiguration>) => void;
   appLanguage: AppLanguage;
+  onViewChange?: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile') => void;
 }
 
 export default function IrregularVerbsLearning({ 
-  userConfig
+  userConfig,
+  onViewChange
 }: Omit<IrregularVerbsLearningProps, 'onConfigUpdate' | 'appLanguage'>) {
   const [currentExercise, setCurrentExercise] = useState<IrregularVerbExercise | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -29,6 +32,7 @@ export default function IrregularVerbsLearning({
   const [showMultipleChoice, setShowMultipleChoice] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [sessionId] = useState(`irregular-verbs-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+  const [isNextLoading, setIsNextLoading] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const exerciseContainerRef = useRef<HTMLDivElement>(null);
@@ -130,9 +134,40 @@ export default function IrregularVerbsLearning({
     }
   };
 
-  const handleNext = useCallback(() => {
-    generateExercise();
-  }, [generateExercise]);
+  const handleNext = useCallback(async () => {
+    if (isNextLoading) return; // Prevent double-clicks
+    
+    setIsNextLoading(true);
+    
+    try {
+      await generateExercise();
+    } catch (error) {
+      console.error('Error generating next exercise:', error);
+    } finally {
+      // Re-enable button after a brief delay to prevent rapid clicking
+      setTimeout(() => {
+        setIsNextLoading(false);
+      }, 300);
+    }
+  }, [isNextLoading, generateExercise]);
+
+  // Auto-advance after correct answers with 2-second delay
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (showFeedback && isCorrect) {
+      console.log('✅ Correct irregular verb answer detected, auto-advancing in 2 seconds');
+      timeoutId = setTimeout(() => {
+        handleNext();
+      }, 2000);
+    }
+    
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [showFeedback, isCorrect, handleNext]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -316,9 +351,10 @@ export default function IrregularVerbsLearning({
           </div>
           
           <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--neo-text)' }}>
-              {currentExercise.question}
-            </h2>
+            <QuestionMarkup 
+              question={currentExercise.question}
+              className="mb-4"
+            />
           </div>
 
           {currentExercise.multipleChoiceOptions && currentExercise.multipleChoiceOptions.length > 0 && showMultipleChoice ? (
@@ -425,12 +461,24 @@ export default function IrregularVerbsLearning({
           {/* Action Button */}
           <div className="flex justify-center">
             {showFeedback ? (
-              <button
-                onClick={handleNext}
-                className="neo-button neo-button-primary px-8 py-3"
-              >
-                Próximo exercício →
-              </button>
+              <>
+                {/* Only show next button for incorrect answers - correct answers auto-advance */}
+                {!isCorrect && (
+                  <button
+                    onClick={handleNext}
+                    disabled={isNextLoading}
+                    className="neo-button neo-button-primary px-8 py-3"
+                  >
+                    {isNextLoading ? 'Carregando...' : 'Próximo exercício →'}
+                  </button>
+                )}
+                {/* Show auto-advance message for correct answers */}
+                {isCorrect && (
+                  <p className="text-sm opacity-70 text-center" style={{ color: 'var(--neo-success-text)' }}>
+                    ✨ Próximo exercício em breve...
+                  </p>
+                )}
+              </>
             ) : (
               // Only show Verificar resposta button in text input mode
               !showMultipleChoice && (
@@ -447,7 +495,7 @@ export default function IrregularVerbsLearning({
         </div>
 
         {/* Not logged in prompt */}
-        <NotLoggedInPrompt className="mt-8" />
+        <NotLoggedInPrompt className="mt-8" onViewChange={onViewChange} />
       </div>
     </div>
   );

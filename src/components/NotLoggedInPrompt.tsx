@@ -6,9 +6,10 @@ import Link from 'next/link';
 
 interface NotLoggedInPromptProps {
   className?: string;
+  onViewChange?: (view: 'learning' | 'configuration' | 'flashcards' | 'login' | 'irregular-verbs' | 'profile') => void;
 }
 
-export default function NotLoggedInPrompt({ className = '' }: NotLoggedInPromptProps) {
+export default function NotLoggedInPrompt({ className = '', onViewChange }: NotLoggedInPromptProps) {
   const { configuration } = useStore();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
@@ -51,13 +52,23 @@ export default function NotLoggedInPrompt({ className = '' }: NotLoggedInPromptP
     <div className={`text-center ${className}`}>
       <div className="inline-flex items-center gap-2 text-sm" style={{ color: 'var(--neo-text-muted)' }}>
         <span>ℹ️ {content.text}</span>
-        <Link 
-          href="/auth/signin" 
-          className="underline hover:no-underline transition-all"
-          style={{ color: 'var(--neo-accent)' }}
-        >
-          {content.action}
-        </Link>
+        {onViewChange ? (
+          <button
+            onClick={() => onViewChange('login')}
+            className="underline hover:no-underline transition-all bg-transparent border-none p-0 cursor-pointer"
+            style={{ color: 'var(--neo-accent)' }}
+          >
+            {content.action}
+          </button>
+        ) : (
+          <Link 
+            href="/auth/signin" 
+            className="underline hover:no-underline transition-all"
+            style={{ color: 'var(--neo-accent)' }}
+          >
+            {content.action}
+          </Link>
+        )}
       </div>
     </div>
   );

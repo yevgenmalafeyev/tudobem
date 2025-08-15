@@ -61,9 +61,17 @@ test.describe('Analytics Tracking E2E Tests', () => {
         
         // Move to next exercise (except for last one)
         if (i < answersToSubmit.length - 1) {
-          const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício")')
-          await nextButton.click()
-          await page.waitForTimeout(1000)
+          if (answersToSubmit[i].expectedCorrect) {
+            // For correct answers, wait for auto-advance (2 seconds + buffer)
+            console.log('✅ Correct answer - waiting for auto-advance')
+            await page.waitForTimeout(2500)
+          } else {
+            // For incorrect answers, click the next button
+            console.log('❌ Incorrect answer - clicking next button')
+            const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício"), button:has-text("Próximo exercício")')
+            await nextButton.click()
+            await page.waitForTimeout(1000)
+          }
         }
       }
       
@@ -141,10 +149,19 @@ test.describe('Analytics Tracking E2E Tests', () => {
       
       await page.waitForSelector('.neo-inset', { timeout: 10000 })
       
-      // Next exercise
-      const nextButton1 = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício")')
-      await nextButton1.click()
-      await page.waitForTimeout(1000)
+      // Next exercise - handle both auto-advance and manual advance
+      console.log('🔄 Moving to next exercise')
+      // Check if next button exists (for incorrect answers) or wait for auto-advance (for correct answers)
+      const nextButton1 = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício"), button:has-text("Próximo exercício")')
+      const nextButtonExists = await nextButton1.count() > 0
+      if (nextButtonExists) {
+        console.log('❌ Next button found - clicking it')
+        await nextButton1.click()
+        await page.waitForTimeout(1000)
+      } else {
+        console.log('✅ No next button - waiting for auto-advance')
+        await page.waitForTimeout(2500)
+      }
       
       // Answer second question
       const answerInput2 = page.locator('input[type="text"]')
@@ -198,9 +215,17 @@ test.describe('Analytics Tracking E2E Tests', () => {
         
         // Move to next quickly (except last)
         if (i < rapidAnswers.length - 1) {
-          const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício")')
-          await nextButton.click()
-          await page.waitForTimeout(300)
+          // Check if next button exists (for incorrect answers) or wait for auto-advance (for correct answers)
+          const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício"), button:has-text("Próximo exercício")')
+          const nextButtonExists = await nextButton.count() > 0
+          if (nextButtonExists) {
+            console.log('❌ Next button found - clicking it')
+            await nextButton.click()
+            await page.waitForTimeout(300)
+          } else {
+            console.log('✅ No next button - waiting for auto-advance')
+            await page.waitForTimeout(2500)
+          }
         }
       }
       
@@ -366,9 +391,17 @@ test.describe('Analytics Tracking E2E Tests', () => {
         await page.waitForSelector('.neo-inset', { timeout: 10000 })
         
         if (i < testAnswers.length - 1) {
-          const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício")')
-          await nextButton.click()
-          await page.waitForTimeout(1000)
+          // Check if next button exists (for incorrect answers) or wait for auto-advance (for correct answers)
+          const nextButton = page.locator('button:has-text("Next Exercise"), button:has-text("Próximo Exercício"), button:has-text("Próximo exercício")')
+          const nextButtonExists = await nextButton.count() > 0
+          if (nextButtonExists) {
+            console.log('❌ Next button found - clicking it')
+            await nextButton.click()
+            await page.waitForTimeout(1000)
+          } else {
+            console.log('✅ No next button - waiting for auto-advance')
+            await page.waitForTimeout(2500)
+          }
         }
       }
       
