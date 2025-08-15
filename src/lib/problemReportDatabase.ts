@@ -456,57 +456,80 @@ SQL Correction: [SQL UPDATE statement if needed, or "None required"]`,
       
       console.log('✅ SQL executed successfully, now updating report status...');
       
-      // Now update the report status using the same connection approach (executeUnsafeSQL)
-      const escapedComment = adminComment.replace(/'/g, "''");
-      const escapedAiResponse = JSON.stringify(aiResponse).replace(/'/g, "''");
+      // Add a delay to allow any connection cleanup
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const updateSQL = `
-        UPDATE problem_reports 
-        SET 
-          status = 'accepted',
-          processed_by = ${processedBy ? `'${processedBy}'` : 'NULL'},
-          admin_comment = '${escapedComment}',
-          ai_response = '${escapedAiResponse}',
-          processed_at = NOW()
-        WHERE id = '${reportId}'
-        RETURNING *
-      `;
-      
-      console.log('🔍 Generated update SQL:', updateSQL);
-      console.log('🔍 Parameters:', { reportId, processedBy, escapedComment: escapedComment.substring(0, 50) + '...' });
-      
-      const updateResult = await executeUnsafeSQL(updateSQL);
-      
-      if (updateResult.rowCount === 0) {
+      // Try using the original method first as fallback
+      try {
+        console.log('🔄 Attempting to use original updateProblemReportStatus method...');
+        const updatedReport = await this.updateProblemReportStatus(
+          reportId,
+          'accepted',
+          processedBy,
+          adminComment,
+          aiResponse
+        );
+        
+        console.log('✅ Report status updated successfully via original method');
         return {
-          success: false,
-          error: 'Problem report not found for status update'
+          success: true,
+          report: updatedReport
+        };
+      } catch (originalMethodError) {
+        console.error('❌ Original method failed, trying raw SQL approach:', originalMethodError);
+        
+        // Fallback to raw SQL approach
+        const escapedComment = adminComment.replace(/'/g, "''");
+        const escapedAiResponse = JSON.stringify(aiResponse).replace(/'/g, "''");
+        
+        const updateSQL = `
+          UPDATE problem_reports 
+          SET 
+            status = 'accepted',
+            processed_by = ${processedBy ? `'${processedBy}'` : 'NULL'},
+            admin_comment = '${escapedComment}',
+            ai_response = '${escapedAiResponse}',
+            processed_at = NOW()
+          WHERE id = '${reportId}'
+          RETURNING *
+        `;
+        
+        console.log('🔍 Generated update SQL:', updateSQL);
+        console.log('🔍 Parameters:', { reportId, processedBy, escapedComment: escapedComment.substring(0, 50) + '...' });
+        
+        const updateResult = await executeUnsafeSQL(updateSQL);
+        
+        if (updateResult.rowCount === 0) {
+          return {
+            success: false,
+            error: 'Problem report not found for status update'
+          };
+        }
+        
+        const reportRow = updateResult.rows[0] as unknown as ProblemReportRow;
+        const updatedReport: ProblemReport = {
+          id: reportRow.id,
+          userId: reportRow.user_id || undefined,
+          exerciseId: reportRow.exercise_id,
+          problemType: reportRow.problem_type as ProblemType,
+          userComment: reportRow.user_comment,
+          status: reportRow.status as 'pending' | 'accepted' | 'declined',
+          processedBy: reportRow.processed_by || undefined,
+          adminComment: reportRow.admin_comment || undefined,
+          aiResponse: reportRow.ai_response ? 
+            (typeof reportRow.ai_response === 'string' ? JSON.parse(reportRow.ai_response) : reportRow.ai_response) : 
+            undefined,
+          createdAt: new Date(reportRow.created_at),
+          processedAt: reportRow.processed_at ? new Date(reportRow.processed_at) : undefined,
+        };
+        
+        console.log('✅ Report status updated successfully via raw SQL fallback');
+        
+        return {
+          success: true,
+          report: updatedReport
         };
       }
-      
-      const reportRow = updateResult.rows[0] as unknown as ProblemReportRow;
-      const updatedReport: ProblemReport = {
-        id: reportRow.id,
-        userId: reportRow.user_id || undefined,
-        exerciseId: reportRow.exercise_id,
-        problemType: reportRow.problem_type as ProblemType,
-        userComment: reportRow.user_comment,
-        status: reportRow.status as 'pending' | 'accepted' | 'declined',
-        processedBy: reportRow.processed_by || undefined,
-        adminComment: reportRow.admin_comment || undefined,
-        aiResponse: reportRow.ai_response ? 
-          (typeof reportRow.ai_response === 'string' ? JSON.parse(reportRow.ai_response) : reportRow.ai_response) : 
-          undefined,
-        createdAt: new Date(reportRow.created_at),
-        processedAt: reportRow.processed_at ? new Date(reportRow.processed_at) : undefined,
-      };
-      
-      console.log('✅ Report status updated successfully via unified method');
-      
-      return {
-        success: true,
-        report: updatedReport
-      };
       
     } catch (error) {
       console.error('❌ Unified SQL correction and status update failed:', error);
