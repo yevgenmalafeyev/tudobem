@@ -313,7 +313,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       } catch (error) {
         debugLog(`❌ [DEBUG] Error generating questions for topic "${topic}": ${error}`);
         debugLog(`❌ [DEBUG] Error stack: ${error instanceof Error ? error.stack : 'No stack trace available'}`);
-        // Continue with next topic
+        debugLog(`❌ [DEBUG] Error details: ${JSON.stringify(error, null, 2)}`);
+        
+        // Fail fast on API errors to surface the real issue
+        throw new Error(`Claude API call failed for topic "${topic}": ${error instanceof Error ? error.message : String(error)}`);
       }
     }
     
