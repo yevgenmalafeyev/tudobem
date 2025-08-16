@@ -1,8 +1,8 @@
 # Portuguese C2 Level Exercise Generation Prompt
 
-Generate **10 complete exercises** for each of the following C2 level European Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
+Generate **1 complete exercise** for each of the following C2 level European Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
 
-## C2 Topics to Generate (10 exercises each):
+## C2 Topics to Generate (1 exercise each):
 
 1. **linguagem-formal-protocolar** - Linguagem formal e protocolar
 2. **conotacoes-semanticas** - Conotações semânticas avançadas

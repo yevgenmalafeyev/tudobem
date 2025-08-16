@@ -1,8 +1,8 @@
 # Portuguese C1 Level Exercise Generation Prompt
 
-Generate **10 complete exercises** for each of the following C1 level European Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
+Generate **1 complete exercise** for each of the following C1 level European Portuguese grammar topics. Each exercise must be a fill-in-the-blank format and include all required components for database import.
 
-## C1 Topics to Generate (10 exercises each):
+## C1 Topics to Generate (1 exercise each):
 
 1. **condicional-preterito** - Condicional pretérito
 2. **hipoteses-irreais-passado** - Hipóteses irreais no passado
