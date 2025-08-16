@@ -58,6 +58,8 @@ const pool = new Pool({
 
 export async function GET(request: NextRequest) {
   debugLog(`🌐 SSE endpoint called for bulk question generation`);
+  debugLog(`⏰ SSE request timestamp: ${new Date().toISOString()}`);
+  debugLog(`🔗 Request URL: ${request.url}`);
   
   const { searchParams } = new URL(request.url);
   const level = searchParams.get('level');
@@ -71,11 +73,14 @@ export async function GET(request: NextRequest) {
   debugLog(`✅ Level parameter validated: ${level}`);
 
   // Create a readable stream for Server-Sent Events
+  debugLog(`🔄 Creating ReadableStream for SSE`);
   const stream = new ReadableStream({
     start(controller) {
+      debugLog(`🎬 SSE stream started for level ${level}`);
       const encoder = new TextEncoder();
       
       // Start the real generation using Claude API
+      debugLog(`🚀 Initiating Claude generation process for level ${level}`);
       generateQuestionsWithClaude(level, controller, encoder);
       
       // Keep the connection alive with more frequent heartbeats
@@ -117,31 +122,43 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
   try {
     // Initialize Claude API
     debugLog(`🔧 Initializing Claude API...`);
-    const anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-    });
-
+    debugLog(`🔑 Checking ANTHROPIC_API_KEY availability...`);
+    
     if (!process.env.ANTHROPIC_API_KEY) {
       logError('ANTHROPIC_API_KEY not configured');
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
-    debugLog(`✅ Claude API initialized with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
-    debugLog(`🔧 API key length: ${process.env.ANTHROPIC_API_KEY.length} characters`);
+    debugLog(`✅ ANTHROPIC_API_KEY found with length: ${process.env.ANTHROPIC_API_KEY.length} characters`);
+    debugLog(`🔑 API key prefix: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
+    
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+    debugLog(`✅ Claude Anthropic client initialized successfully`);
     
     // Test the API key with the same model that will be used for generation
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
     const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
-    debugLog(`🧪 Testing Claude API key with ${testModel} for level ${level}`);
+    debugLog(`🧪 Testing Claude API connection with ${testModel} for level ${level}`);
+    debugLog(`🔌 Attempting to establish connection to Claude API...`);
+    
     try {
+      const testStartTime = Date.now();
       const testMessage = await anthropic.messages.create({
         model: testModel,
         max_tokens: 10,
         messages: [{ role: 'user', content: 'Test' }]
       });
-      debugLog(`✅ Claude API key test successful with ${testModel}, response length: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text.length : 0}`);
+      const testDuration = Date.now() - testStartTime;
+      
+      debugLog(`✅ Claude API connection established successfully!`);
+      debugLog(`⚡ API test response time: ${testDuration}ms`);
+      debugLog(`📋 Test response: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text : 'Non-text response'}`);
+      debugLog(`🎯 Model ${testModel} is accessible and working`);
     } catch (apiTestError) {
-      logError(`Claude API key test failed with ${testModel}: ${apiTestError}`);
-      throw new Error(`Claude API key test failed with ${testModel}: ${apiTestError}`);
+      logError(`❌ Claude API connection failed with ${testModel}`);
+      logError(`❌ Connection error details: ${apiTestError}`);
+      throw new Error(`Claude API connection test failed with ${testModel}: ${apiTestError}`);
     }
 
     // Read the prompt file for the specified level
@@ -251,10 +268,14 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
 
         // Use 48K tokens for C1/C2, 8K for A1-B2
         const maxTokens = isAdvancedLevel ? 49152 : 8192;
-        debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
+        debugLog(`🤖 Preparing Claude API call for topic "${topic}"`);
+        debugLog(`🎛️ Model: ${selectedModel}, Max tokens: ${maxTokens}`);
+        debugLog(`📨 Sending prompt to Claude API...`);
         
         let message;
         try {
+          const apiCallStartTime = Date.now();
+          
           // Simple API call for all levels (same as A1-B2)
           message = await anthropic.messages.create({
             model: selectedModel,
@@ -266,7 +287,11 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
               }
             ]
           });
+          
+          const apiCallDuration = Date.now() - apiCallStartTime;
           debugLog(`✅ Claude API call successful for topic "${topic}"`);
+          debugLog(`⚡ API response time: ${apiCallDuration}ms`);
+          debugLog(`📩 Response received from ${selectedModel}`);
         } catch (claudeError) {
           logError(`Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
           logError(`Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
