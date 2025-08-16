@@ -6,6 +6,25 @@ import { Pool } from 'pg';
 import { ANTHROPIC_CONFIG } from '@/constants';
 import { calculateCost, estimateTokenCount } from '@/utils/costCalculation';
 
+// Debug logging function for production debugging
+function debugLog(message: string) {
+  console.log(message);
+  // Also store in memory for API access
+  try {
+    global.debugLogs = global.debugLogs || [];
+    const timestamp = new Date().toISOString();
+    const logEntry = `[${timestamp}] ${message}`;
+    global.debugLogs.push(logEntry);
+    
+    // Keep only the last 200 entries
+    if (global.debugLogs.length > 200) {
+      global.debugLogs.shift();
+    }
+  } catch (error) {
+    console.error('Error storing debug log:', error);
+  }
+}
+
 // Note: In production, use a proper job queue like Redis or database for progress tracking
 
 const LEVEL_PROMPTS = {
@@ -24,18 +43,18 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
-  console.log(`🌐 [DEBUG] SSE endpoint called for bulk question generation`);
+  debugLog(`🌐 [DEBUG] SSE endpoint called for bulk question generation`);
   
   const { searchParams } = new URL(request.url);
   const level = searchParams.get('level');
-  console.log(`📋 [DEBUG] Requested level: ${level}`);
+  debugLog(`📋 [DEBUG] Requested level: ${level}`);
 
   if (!level) {
-    console.log(`❌ [DEBUG] No level parameter provided`);
+    debugLog(`❌ [DEBUG] No level parameter provided`);
     return NextResponse.json({ error: 'Level parameter required' }, { status: 400 });
   }
   
-  console.log(`✅ [DEBUG] Level parameter validated: ${level}`);
+  debugLog(`✅ [DEBUG] Level parameter validated: ${level}`);
 
   // Create a readable stream for Server-Sent Events
   const stream = new ReadableStream({
@@ -78,55 +97,55 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateQuestionsWithClaude(level: string, controller: ReadableStreamDefaultController, encoder: TextEncoder) {
-  console.log(`🚀 [DEBUG] Starting generation for level: ${level}`);
+  debugLog(`🚀 [DEBUG] Starting generation for level: ${level}`);
   
   try {
     // Initialize Claude API
-    console.log(`🔧 [DEBUG] Initializing Claude API...`);
+    debugLog(`🔧 [DEBUG] Initializing Claude API...`);
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
     if (!process.env.ANTHROPIC_API_KEY) {
-      console.log(`❌ [DEBUG] ANTHROPIC_API_KEY not configured`);
+      debugLog(`❌ [DEBUG] ANTHROPIC_API_KEY not configured`);
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
-    console.log(`✅ [DEBUG] Claude API initialized successfully`);
+    debugLog(`✅ [DEBUG] Claude API initialized successfully`);
 
     // Read the prompt file for the specified level
     const promptFileName = LEVEL_PROMPTS[level as keyof typeof LEVEL_PROMPTS];
-    console.log(`📁 [DEBUG] Using prompt file: ${promptFileName} for level ${level}`);
+    debugLog(`📁 [DEBUG] Using prompt file: ${promptFileName} for level ${level}`);
     
     if (!promptFileName) {
-      console.log(`❌ [DEBUG] No prompt file mapping found for level ${level}`);
+      debugLog(`❌ [DEBUG] No prompt file mapping found for level ${level}`);
       throw new Error(`No prompt file found for level ${level}`);
     }
 
     const promptPath = path.join(process.cwd(), 'src', 'prompts', promptFileName);
-    console.log(`📍 [DEBUG] Full prompt path: ${promptPath}`);
+    debugLog(`📍 [DEBUG] Full prompt path: ${promptPath}`);
     
     if (!fs.existsSync(promptPath)) {
-      console.log(`❌ [DEBUG] Prompt file does not exist at path: ${promptPath}`);
+      debugLog(`❌ [DEBUG] Prompt file does not exist at path: ${promptPath}`);
       throw new Error(`Prompt file not found: ${promptPath}`);
     }
-    console.log(`✅ [DEBUG] Prompt file found successfully`);
+    debugLog(`✅ [DEBUG] Prompt file found successfully`);
 
     const promptContent = fs.readFileSync(promptPath, 'utf-8');
-    console.log(`📖 [DEBUG] Prompt content length: ${promptContent.length} characters`);
+    debugLog(`📖 [DEBUG] Prompt content length: ${promptContent.length} characters`);
     
     // Extract topics from the prompt content
     const topicMatches = promptContent.match(/\d+\.\s\*\*([^*]+)\*\*/g);
-    console.log(`🔍 [DEBUG] Topic regex matches found: ${topicMatches?.length || 0}`);
+    debugLog(`🔍 [DEBUG] Topic regex matches found: ${topicMatches?.length || 0}`);
     
     const topics = topicMatches ? topicMatches.map(match => {
       const topicMatch = match.match(/\*\*([^*]+)\*\*/);
       return topicMatch ? topicMatch[1] : '';
     }).filter(Boolean) : [];
 
-    console.log(`📋 [DEBUG] Extracted topics (${topics.length}):`, topics);
+    debugLog(`📋 [DEBUG] Extracted topics (${topics.length}): ${JSON.stringify(topics)}`);
 
     if (topics.length === 0) {
-      console.log(`❌ [DEBUG] No topics found in prompt file for level ${level}`);
+      debugLog(`❌ [DEBUG] No topics found in prompt file for level ${level}`);
       throw new Error(`No topics found in prompt file for level ${level}`);
     }
 
@@ -135,7 +154,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     let totalInputTokens = 0;
     let totalOutputTokens = 0;
     
-    console.log(`🎯 [DEBUG] Will process ${totalTopics} topics for level ${level}`);
+    debugLog(`🎯 [DEBUG] Will process ${totalTopics} topics for level ${level}`);
     
     // Send initial progress
     controller.enqueue(encoder.encode(`data: ${JSON.stringify({
@@ -146,10 +165,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     })}\n\n`));
 
     // Process each topic
-    console.log(`🔄 [DEBUG] Starting to process topics...`);
+    debugLog(`🔄 [DEBUG] Starting to process topics...`);
     for (let i = 0; i < topics.length; i++) {
       const topic = topics[i];
-      console.log(`\n🎯 [DEBUG] Processing topic ${i + 1}/${totalTopics}: "${topic}"`);
+      debugLog(`\n🎯 [DEBUG] Processing topic ${i + 1}/${totalTopics}: "${topic}"`);
       
       // Update progress
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({
@@ -162,14 +181,14 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       try {
         // Create topic-specific prompt
         const topicPrompt = `${promptContent}\n\nGenerate exactly 10 questions for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
-        console.log(`📝 [DEBUG] Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
+        debugLog(`📝 [DEBUG] Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
         
         // Estimate input tokens for this request
         const inputTokens = estimateTokenCount(topicPrompt);
-        console.log(`🔢 [DEBUG] Estimated input tokens: ${inputTokens}`);
+        debugLog(`🔢 [DEBUG] Estimated input tokens: ${inputTokens}`);
         
         // Call Claude API
-        console.log(`🤖 [DEBUG] Calling Claude API for topic "${topic}"...`);
+        debugLog(`🤖 [DEBUG] Calling Claude API for topic "${topic}"...`);
         const message = await anthropic.messages.create({
           model: ANTHROPIC_CONFIG.model,
           max_tokens: ANTHROPIC_CONFIG.maxTokens.exercise * 10,
@@ -180,24 +199,24 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
             }
           ]
         });
-        console.log(`✅ [DEBUG] Claude API call successful for topic "${topic}"`);
+        debugLog(`✅ [DEBUG] Claude API call successful for topic "${topic}"`);
 
         const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
-        console.log(`📄 [DEBUG] Claude response length: ${responseText.length} chars`);
-        console.log(`📄 [DEBUG] Claude response preview: ${responseText.substring(0, 200)}...`);
+        debugLog(`📄 [DEBUG] Claude response length: ${responseText.length} chars`);
+        debugLog(`📄 [DEBUG] Claude response preview: ${responseText.substring(0, 200)}...`);
         
         // Track token usage
         const outputTokens = estimateTokenCount(responseText);
         totalInputTokens += inputTokens;
         totalOutputTokens += outputTokens;
-        console.log(`📊 [DEBUG] Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
+        debugLog(`📊 [DEBUG] Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
         // Extract and parse JSON
         const startIndex = responseText.indexOf('[');
-        console.log(`🔍 [DEBUG] JSON start index: ${startIndex}`);
+        debugLog(`🔍 [DEBUG] JSON start index: ${startIndex}`);
         if (startIndex === -1) {
-          console.warn(`❌ [DEBUG] No JSON array found in Claude response for topic: ${topic}`);
-          console.log(`📄 [DEBUG] Full response: ${responseText}`);
+          debugLog(`❌ [DEBUG] No JSON array found in Claude response for topic: ${topic}`);
+          debugLog(`📄 [DEBUG] Full response: ${responseText}`);
           continue;
         }
         
@@ -217,36 +236,36 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         }
         
         const jsonString = responseText.substring(startIndex, endIndex + 1);
-        console.log(`📝 [DEBUG] Extracted JSON string length: ${jsonString.length} chars`);
-        console.log(`📝 [DEBUG] JSON preview: ${jsonString.substring(0, 300)}...`);
+        debugLog(`📝 [DEBUG] Extracted JSON string length: ${jsonString.length} chars`);
+        debugLog(`📝 [DEBUG] JSON preview: ${jsonString.substring(0, 300)}...`);
         
         let exercises;
         try {
           exercises = JSON.parse(jsonString);
-          console.log(`✅ [DEBUG] Successfully parsed JSON, found ${exercises.length} exercises`);
+          debugLog(`✅ [DEBUG] Successfully parsed JSON, found ${exercises.length} exercises`);
         } catch (parseError) {
-          console.error(`❌ [DEBUG] JSON parse error for topic "${topic}":`, parseError);
-          console.log(`📄 [DEBUG] Failed JSON string: ${jsonString}`);
+          debugLog(`❌ [DEBUG] JSON parse error for topic "${topic}": ${parseError}`);
+          debugLog(`📄 [DEBUG] Failed JSON string: ${jsonString}`);
           continue;
         }
         
         // Save exercises to database
-        console.log(`💾 [DEBUG] Connecting to database to save ${exercises.length} exercises...`);
+        debugLog(`💾 [DEBUG] Connecting to database to save ${exercises.length} exercises...`);
         const client = await pool.connect();
-        console.log(`✅ [DEBUG] Database connection established`);
+        debugLog(`✅ [DEBUG] Database connection established`);
         
         try {
           let exercisesInserted = 0;
           for (const exercise of exercises) {
-            console.log(`🔍 [DEBUG] Validating exercise: ${JSON.stringify(exercise).substring(0, 100)}...`);
+            debugLog(`🔍 [DEBUG] Validating exercise: ${JSON.stringify(exercise).substring(0, 100)}...`);
             
             // Validate exercise data
             if (!exercise.sentence || !exercise.correctAnswer || !exercise.topic || !exercise.level) {
-              console.warn(`❌ [DEBUG] Invalid exercise data, skipping:`, exercise);
+              debugLog(`❌ [DEBUG] Invalid exercise data, skipping: ${JSON.stringify(exercise)}`);
               continue;
             }
 
-            console.log(`💾 [DEBUG] Inserting exercise into database: "${exercise.sentence.substring(0, 50)}..."`);
+            debugLog(`💾 [DEBUG] Inserting exercise into database: "${exercise.sentence.substring(0, 50)}..."`);
             try {
               await client.query(
                 `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanations, created_at)
@@ -263,31 +282,31 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
               );
               totalQuestionsAdded++;
               exercisesInserted++;
-              console.log(`✅ [DEBUG] Successfully inserted exercise ${exercisesInserted}/${exercises.length} for topic "${topic}"`);
+              debugLog(`✅ [DEBUG] Successfully inserted exercise ${exercisesInserted}/${exercises.length} for topic "${topic}"`);
             } catch (insertError) {
-              console.error(`❌ [DEBUG] Database insert error for exercise:`, insertError);
-              console.log(`📄 [DEBUG] Failed exercise data:`, exercise);
+              debugLog(`❌ [DEBUG] Database insert error for exercise: ${insertError}`);
+              debugLog(`📄 [DEBUG] Failed exercise data: ${JSON.stringify(exercise)}`);
             }
           }
-          console.log(`✅ [DEBUG] Completed database operations for topic "${topic}". Inserted: ${exercisesInserted}/${exercises.length} exercises`);
+          debugLog(`✅ [DEBUG] Completed database operations for topic "${topic}". Inserted: ${exercisesInserted}/${exercises.length} exercises`);
         } finally {
           client.release();
-          console.log(`🔌 [DEBUG] Database connection released`);
+          debugLog(`🔌 [DEBUG] Database connection released`);
         }
 
-        console.log(`✅ [DEBUG] Generated ${exercises.length} questions for topic: ${topic} (Total added so far: ${totalQuestionsAdded})`);
+        debugLog(`✅ [DEBUG] Generated ${exercises.length} questions for topic: ${topic} (Total added so far: ${totalQuestionsAdded})`);
         
       } catch (error) {
-        console.error(`❌ [DEBUG] Error generating questions for topic "${topic}":`, error);
-        console.error(`❌ [DEBUG] Error stack:`, error instanceof Error ? error.stack : 'No stack trace available');
+        debugLog(`❌ [DEBUG] Error generating questions for topic "${topic}": ${error}`);
+        debugLog(`❌ [DEBUG] Error stack: ${error instanceof Error ? error.stack : 'No stack trace available'}`);
         // Continue with next topic
       }
     }
     
-    console.log(`🏁 [DEBUG] Finished processing all ${totalTopics} topics. Total questions added: ${totalQuestionsAdded}`);
+    debugLog(`🏁 [DEBUG] Finished processing all ${totalTopics} topics. Total questions added: ${totalQuestionsAdded}`);
 
     // Send final progress
-    console.log(`📤 [DEBUG] Sending final progress update...`);
+    debugLog(`📤 [DEBUG] Sending final progress update...`);
     controller.enqueue(encoder.encode(`data: ${JSON.stringify({
       type: 'progress',
       progress: 100,
@@ -296,20 +315,20 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     })}\n\n`));
 
     // Calculate total cost
-    console.log(`💰 [DEBUG] Calculating costs - Input tokens: ${totalInputTokens}, Output tokens: ${totalOutputTokens}`);
+    debugLog(`💰 [DEBUG] Calculating costs - Input tokens: ${totalInputTokens}, Output tokens: ${totalOutputTokens}`);
     const costBreakdown = calculateCost({
       inputTokens: totalInputTokens,
       outputTokens: totalOutputTokens
     });
-    console.log(`💰 [DEBUG] Cost breakdown:`, costBreakdown);
+    debugLog(`💰 [DEBUG] Cost breakdown: ${JSON.stringify(costBreakdown)}`);
 
     // Save cost data to database
-    console.log(`💾 [DEBUG] Saving cost data to database...`);
+    debugLog(`💾 [DEBUG] Saving cost data to database...`);
     try {
       const client = await pool.connect();
-      console.log(`✅ [DEBUG] Connected to database for cost saving`);
+      debugLog(`✅ [DEBUG] Connected to database for cost saving`);
       try {
-        console.log(`💾 [DEBUG] Inserting cost record: Level=${level}, Topics=${totalTopics}, Questions=${totalQuestionsAdded}, Cost=$${costBreakdown.totalCostUsd}`);
+        debugLog(`💾 [DEBUG] Inserting cost record: Level=${level}, Topics=${totalTopics}, Questions=${totalQuestionsAdded}, Cost=$${costBreakdown.totalCostUsd}`);
         await client.query(
           `INSERT INTO generation_costs (level, topics_generated, questions_generated, input_tokens, output_tokens, total_tokens, input_cost_usd, output_cost_usd, total_cost_usd)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
@@ -325,18 +344,18 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
             costBreakdown.totalCostUsd
           ]
         );
-        console.log(`✅ [DEBUG] Successfully saved cost data to database`);
+        debugLog(`✅ [DEBUG] Successfully saved cost data to database`);
       } finally {
         client.release();
-        console.log(`🔌 [DEBUG] Released database connection for cost saving`);
+        debugLog(`🔌 [DEBUG] Released database connection for cost saving`);
       }
     } catch (error) {
-      console.error(`❌ [DEBUG] Error saving cost data:`, error);
-      console.error(`❌ [DEBUG] Cost save error stack:`, error instanceof Error ? error.stack : 'No stack trace available');
+      debugLog(`❌ [DEBUG] Error saving cost data: ${error}`);
+      debugLog(`❌ [DEBUG] Cost save error stack: ${error instanceof Error ? error.stack : 'No stack trace available'}`);
     }
 
     // Send completion with cost information
-    console.log(`📤 [DEBUG] Sending completion message...`);
+    debugLog(`📤 [DEBUG] Sending completion message...`);
     const completionData = {
       type: 'complete',
       questionsAdded: totalQuestionsAdded,
@@ -348,29 +367,29 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         totalTokens: costBreakdown.totalTokens
       }
     };
-    console.log(`📤 [DEBUG] Completion data:`, completionData);
+    debugLog(`📤 [DEBUG] Completion data: ${JSON.stringify(completionData)}`);
     
     controller.enqueue(encoder.encode(`data: ${JSON.stringify(completionData)}\n\n`));
 
-    console.log(`🏁 [DEBUG] Generation completed successfully. Closing connection.`);
+    debugLog(`🏁 [DEBUG] Generation completed successfully. Closing connection.`);
     controller.close();
 
   } catch (error) {
-    console.error(`❌ [DEBUG] Critical error in generateQuestionsWithClaude:`, error);
-    console.error(`❌ [DEBUG] Error stack:`, error instanceof Error ? error.stack : 'No stack trace available');
-    console.error(`❌ [DEBUG] Error type:`, typeof error);
-    console.error(`❌ [DEBUG] Error name:`, error instanceof Error ? error.name : 'Unknown error type');
+    debugLog(`❌ [DEBUG] Critical error in generateQuestionsWithClaude: ${error}`);
+    debugLog(`❌ [DEBUG] Error stack: ${error instanceof Error ? error.stack : 'No stack trace available'}`);
+    debugLog(`❌ [DEBUG] Error type: ${typeof error}`);
+    debugLog(`❌ [DEBUG] Error name: ${error instanceof Error ? error.name : 'Unknown error type'}`);
     
     // Send error
     const errorData = {
       type: 'error',
       error: error instanceof Error ? error.message : 'Unknown error occurred'
     };
-    console.log(`📤 [DEBUG] Sending error response:`, errorData);
+    debugLog(`📤 [DEBUG] Sending error response: ${JSON.stringify(errorData)}`);
     
     controller.enqueue(encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`));
     
-    console.log(`🔚 [DEBUG] Closing connection due to error.`);
+    debugLog(`🔚 [DEBUG] Closing connection due to error.`);
     controller.close();
   }
 }
