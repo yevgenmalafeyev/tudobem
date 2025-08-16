@@ -277,9 +277,10 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         debugLog(`🤖 Preparing Claude API call for topic "${topic}"`);
         debugLog(`🎛️ Model: ${selectedModel}, Max tokens: ${maxTokens}`);
         
-        // Detailed AI interaction logging - send to frontend via SSE
+        // Minimal debug logging to prevent performance issues
         const sendDebugToFrontend = (debugMsg: string) => {
           debugLog(debugMsg);
+          // Only send critical debug messages to prevent SSE congestion
           try {
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({
               type: 'debug',
@@ -290,75 +291,42 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             debugLog(`❌ Failed to send debug message to frontend: ${enqueueError}`);
           }
         };
-
-        sendDebugToFrontend(`🔗 STEP 1: Opening connection to Claude AI (${selectedModel})...`);
-        sendDebugToFrontend(`📤 STEP 2: Preparing to send prompt for topic "${topic}"...`);
-        sendDebugToFrontend(`📏 STEP 3: Prompt size: ${topicPrompt.length} characters, estimated ${inputTokens} tokens`);
-        sendDebugToFrontend(`🚀 STEP 4: Initiating API request to Claude AI...`);
         
         let message;
         try {
           const apiCallStartTime = Date.now();
-          sendDebugToFrontend(`⏳ STEP 5: Waiting for Claude AI response...`);
           
           // Use streaming for advanced levels (C1/C2) to prevent timeouts with large token requests
           if (isAdvancedLevel) {
-            sendDebugToFrontend(`🌊 Using streaming API for advanced level ${level}...`);
+            const stream = await anthropic.messages.create({
+              model: selectedModel,
+              max_tokens: maxTokens,
+              messages: [
+                {
+                  role: 'user',
+                  content: topicPrompt
+                }
+              ],
+              stream: true
+            });
             
-            try {
-              sendDebugToFrontend(`🔧 Creating streaming connection...`);
-              const stream = await anthropic.messages.create({
-                model: selectedModel,
-                max_tokens: maxTokens,
-                messages: [
-                  {
-                    role: 'user',
-                    content: topicPrompt
-                  }
-                ],
-                stream: true
-              });
-              
-              sendDebugToFrontend(`🔧 Stream created successfully, processing chunks...`);
-              let responseText = '';
-              let chunkCount = 0;
-              
-              for await (const messageStreamEvent of stream) {
-                chunkCount++;
-                sendDebugToFrontend(`🔧 Processing chunk ${chunkCount}: ${messageStreamEvent.type}`);
-                
-                if (messageStreamEvent.type === 'content_block_delta') {
-                  if (messageStreamEvent.delta.type === 'text_delta') {
-                    responseText += messageStreamEvent.delta.text;
-                    sendDebugToFrontend(`🔧 Added text chunk, total length: ${responseText.length}`);
-                  }
-                } else if (messageStreamEvent.type === 'message_start') {
-                  sendDebugToFrontend(`🔧 Stream started`);
-                } else if (messageStreamEvent.type === 'content_block_start') {
-                  sendDebugToFrontend(`🔧 Content block started`);
-                } else if (messageStreamEvent.type === 'content_block_stop') {
-                  sendDebugToFrontend(`🔧 Content block stopped`);
-                } else if (messageStreamEvent.type === 'message_stop') {
-                  sendDebugToFrontend(`🔧 Stream ended`);
+            let responseText = '';
+            
+            for await (const messageStreamEvent of stream) {
+              if (messageStreamEvent.type === 'content_block_delta') {
+                if (messageStreamEvent.delta.type === 'text_delta') {
+                  responseText += messageStreamEvent.delta.text;
                 }
               }
-              
-              sendDebugToFrontend(`🔧 Stream processing complete. Total response length: ${responseText.length}`);
-              
-              // Create message-like object for compatibility with existing code
-              message = {
-                content: [{ type: 'text', text: responseText }]
-              };
-              
-              sendDebugToFrontend(`✅ STEP 6: Streaming response completed successfully!`);
-            } catch (streamError) {
-              sendDebugToFrontend(`❌ STREAMING ERROR: ${streamError instanceof Error ? streamError.message : String(streamError)}`);
-              throw streamError;
             }
+            
+            // Create message-like object for compatibility with existing code
+            message = {
+              content: [{ type: 'text', text: responseText }]
+            };
+            
           } else {
             // Non-streaming API call for A1-B2 levels
-            sendDebugToFrontend(`🔄 Using standard API for level ${level}...`);
-            
             message = await anthropic.messages.create({
               model: selectedModel,
               max_tokens: maxTokens,
@@ -369,30 +337,20 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
                 }
               ]
             });
-            
-            sendDebugToFrontend(`✅ STEP 6: Claude AI response received successfully!`);
           }
           
           const apiCallDuration = Date.now() - apiCallStartTime;
-          sendDebugToFrontend(`⚡ STEP 7: API response time: ${apiCallDuration}ms`);
-          sendDebugToFrontend(`📥 STEP 8: Processing response from ${selectedModel}...`);
-          sendDebugToFrontend(`📊 STEP 9: Response metadata - Model: ${selectedModel}, Duration: ${apiCallDuration}ms`);
+          debugLog(`⚡ API call completed in ${apiCallDuration}ms for topic "${topic}"`);
         } catch (claudeError) {
           const errorMsg = `❌ CLAUDE API ERROR for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`;
           sendDebugToFrontend(errorMsg);
-          sendDebugToFrontend(`❌ Error details: ${JSON.stringify(claudeError, null, 2)}`);
           
           logError(`❌ Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
-          logError(`❌ Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
-          debugLog(`❌ CLAUDE API ERROR for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
-          debugLog(`❌ Error stack: ${claudeError instanceof Error ? claudeError.stack : 'No stack available'}`);
           throw claudeError;
         }
 
         const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
-        debugLog(`📄 Claude response length: ${responseText.length} chars`);
-        debugLog(`📄 Claude response preview: ${responseText.substring(0, 200)}...`);
-        debugLog(`📄 FULL Claude response for topic "${topic}":\n${responseText}`);
+        debugLog(`📄 Claude response length: ${responseText.length} chars for topic "${topic}"`);
         
         // Track token usage
         const outputTokens = estimateTokenCount(responseText);
@@ -401,14 +359,11 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         debugLog(`📊 Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
         // Extract and parse JSON with multiple fallback strategies
-        debugLog(`🔧 Starting JSON extraction process for topic "${topic}"...`);
-        
         let jsonString = '';
         let jsonFound = false;
         
         // Strategy 1: Look for JSON array (most common case)
         const startIndex = responseText.indexOf('[');
-        debugLog(`🔍 JSON array start index: ${startIndex}`);
         
         if (startIndex !== -1) {
           let bracketCount = 0;
@@ -428,13 +383,11 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           
           jsonString = responseText.substring(startIndex, endIndex + 1);
           jsonFound = true;
-          debugLog(`✅ JSON array found: ${jsonString.substring(0, 300)}...`);
         }
         
         // Strategy 2: Look for JSON object if array not found
         if (!jsonFound) {
           const objStartIndex = responseText.indexOf('{');
-          debugLog(`🔍 JSON object start index: ${objStartIndex}`);
           
           if (objStartIndex !== -1) {
             let braceCount = 0;
@@ -455,56 +408,39 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             const objString = responseText.substring(objStartIndex, endIndex + 1);
             jsonString = `[${objString}]`; // Wrap single object in array
             jsonFound = true;
-            debugLog(`✅ JSON object found and wrapped in array: ${jsonString.substring(0, 200)}...`);
           }
         }
         
         // Strategy 3: Try to clean the response and extract JSON with regex
         if (!jsonFound) {
-          debugLog(`🔍 Attempting regex-based JSON extraction...`);
           const jsonMatch = responseText.match(/\[[\s\S]*?\]/);
           if (jsonMatch) {
             jsonString = jsonMatch[0];
             jsonFound = true;
-            debugLog(`✅ JSON found with regex: ${jsonString.substring(0, 300)}...`);
           }
         }
         
         if (!jsonFound) {
-          const jsonErrorMsg = `❌ JSON EXTRACTION FAILED for topic "${topic}" - No valid JSON found in Claude response`;
+          const jsonErrorMsg = `❌ JSON EXTRACTION FAILED for topic "${topic}"`;
           sendDebugToFrontend(jsonErrorMsg);
-          sendDebugToFrontend(`❌ Response length: ${responseText.length} chars`);
-          sendDebugToFrontend(`❌ Response preview: ${responseText.substring(0, 500)}...`);
           
           logWarning(`❌ No valid JSON found in Claude response for topic: ${topic}`);
-          logWarning(`Response length: ${responseText.length} chars`);
-          logWarning(`Response preview: ${responseText.substring(0, 1000)}`);
-          debugLog(`❌ JSON EXTRACTION FAILED for topic "${topic}"`);
-          debugLog(`❌ FULL RESPONSE that failed JSON extraction:\n${responseText}`);
           continue;
         }
         
         let exercises;
         try {
           exercises = JSON.parse(jsonString);
-          sendDebugToFrontend(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
           debugLog(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
-          debugLog(`🔍 Parsed exercises structure: ${JSON.stringify(exercises, null, 2)}`);
         } catch (parseError) {
           const parseErrorMsg = `❌ JSON PARSE ERROR for topic "${topic}": ${parseError}`;
           sendDebugToFrontend(parseErrorMsg);
-          sendDebugToFrontend(`❌ JSON that failed to parse: ${jsonString.substring(0, 500)}...`);
           
           logError(`JSON parse error for topic "${topic}": ${parseError}`);
-          logError(`JSON string that failed to parse: ${jsonString.substring(0, 500)}...`);
-          debugLog(`❌ JSON PARSE ERROR for topic "${topic}": ${parseError}`);
-          debugLog(`❌ JSON that failed to parse: ${jsonString}`);
-          debugLog(`❌ Original Claude response that led to this JSON:\n${responseText}`);
           continue;
         }
         
         // Save exercises to database IMMEDIATELY (incremental saving)
-        sendDebugToFrontend(`💾 Saving ${exercises.length} exercises for topic "${topic}" to database...`);
         debugLog(`💾 Saving ${exercises.length} exercises for topic "${topic}" to database...`);
         const client = await pool.connect();
         let topicQuestionsAdded = 0;
@@ -514,29 +450,11 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             // Validate exercise data
             if (!exercise.sentence || !exercise.correctAnswer || !exercise.topic || !exercise.level) {
               logWarning(`Invalid exercise data, skipping: ${JSON.stringify(exercise).substring(0, 100)}`);
-              debugLog(`❌ INVALID EXERCISE DATA for topic "${topic}": ${JSON.stringify(exercise, null, 2)}`);
               continue;
             }
 
             try {
-              debugLog(`💾 Attempting to insert exercise: ${JSON.stringify({
-                sentence: exercise.sentence?.substring(0, 100),
-                correctAnswer: exercise.correctAnswer,
-                topic: exercise.topic,
-                level: exercise.level
-              })}`);
-              
-              debugLog(`📝 Exercise data being inserted: ${JSON.stringify({
-                sentence: exercise.sentence,
-                correctAnswer: exercise.correctAnswer,
-                topic: exercise.topic,
-                level: exercise.level,
-                hint: exercise.hint,
-                multipleChoiceOptions: exercise.multipleChoiceOptions,
-                explanations: exercise.explanations
-              }, null, 2)}`);
-              
-              const result = await client.query(
+              await client.query(
                 `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanation_pt, explanation_en, explanation_uk, created_at)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())`,
                 [
@@ -552,21 +470,17 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
                 ]
               );
               
-              sendDebugToFrontend(`✅ Successfully inserted exercise, rows affected: ${result.rowCount}`);
-              debugLog(`✅ Successfully inserted exercise, rows affected: ${result.rowCount}`);
+              debugLog(`✅ Successfully inserted exercise for topic "${topic}"`);
               totalQuestionsAdded++;
               topicQuestionsAdded++;
             } catch (insertError) {
               logError(`❌ Database insert error for exercise: ${insertError}`);
-              logError(`❌ Exercise data that failed: ${JSON.stringify(exercise, null, 2)}`);
               debugLog(`❌ DATABASE INSERT ERROR for topic "${topic}": ${insertError}`);
-              debugLog(`❌ Failed exercise data: ${JSON.stringify(exercise, null, 2)}`);
             }
           }
           const saveSuccessMsg = `✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`;
           sendDebugToFrontend(saveSuccessMsg);
-          debugLog(saveSuccessMsg);
-          debugLog(`📊 Current generation summary: ${totalQuestionsAdded} questions across ${i + 1}/${totalTopics} topics completed`);
+          debugLog(`📊 Current progress: ${totalQuestionsAdded} questions across ${i + 1}/${totalTopics} topics completed`);
         } finally {
           client.release();
         }
