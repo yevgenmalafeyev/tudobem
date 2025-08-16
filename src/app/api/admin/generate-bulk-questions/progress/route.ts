@@ -10,7 +10,8 @@ declare global {
   var debugLogs: string[] | undefined;
 }
 
-// Debug logging function for production debugging
+// Debug logging function for production debugging  
+// CACHE_BUST: Force deployment refresh
 function debugLog(message: string) {
   console.log(message);
   // Also store in memory for API access
@@ -57,7 +58,7 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
-  debugLog(`🌐 SSE endpoint called for bulk question generation`);
+  debugLog(`🌐 SSE endpoint called for bulk question generation [BUILD: ${Date.now()}]`);
   
   const { searchParams } = new URL(request.url);
   const level = searchParams.get('level');

@@ -117,8 +117,14 @@ export default function DataManagement() {
           } else if (data.type === 'complete') {
             setGenerationProgress(prev => prev.filter(p => p.level !== level));
             const costMsg = data.cost ? ` (Cost: $${data.cost.totalCostUsd.toFixed(3)})` : '';
-            setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!${costMsg}`);
-            loadData(); // Refresh the statistics and costs
+            setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!${costMsg} Refreshing data...`);
+            
+            // Add small delay to ensure database changes are committed, then refresh
+            setTimeout(async () => {
+              await loadData(); // Refresh the statistics and costs
+              setMessage(prev => prev.replace(' Refreshing data...', ' Data updated!'));
+            }, 1000);
+            
             eventSource.close();
           } else if (data.type === 'error') {
             setGenerationProgress(prev => prev.filter(p => p.level !== level));
