@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Read the prompt file for the specified level
-    const promptPath = path.join(process.cwd(), LEVEL_PROMPTS[level as keyof typeof LEVEL_PROMPTS]);
+    const promptPath = path.join(process.cwd(), 'src', 'prompts', LEVEL_PROMPTS[level as keyof typeof LEVEL_PROMPTS]);
     
     if (!fs.existsSync(promptPath)) {
       return NextResponse.json(

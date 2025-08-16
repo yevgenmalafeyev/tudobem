@@ -88,7 +88,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       throw new Error(`No prompt file found for level ${level}`);
     }
 
-    const promptPath = path.join(process.cwd(), promptFileName);
+    const promptPath = path.join(process.cwd(), 'src', 'prompts', promptFileName);
     if (!fs.existsSync(promptPath)) {
       throw new Error(`Prompt file not found: ${promptPath}`);
     }
