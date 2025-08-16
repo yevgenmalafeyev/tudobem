@@ -3,7 +3,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { Pool } from 'pg';
-import { ANTHROPIC_CONFIG } from '@/constants';
 import { calculateCost, estimateTokenCount } from '@/utils/costCalculation';
 
 // Debug logging function for production debugging
@@ -208,11 +207,12 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         const selectedModel = isAdvancedLevel ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20241022';
         debugLog(`📋 [DEBUG] Using model ${selectedModel} for level ${level}`);
 
-        // Call Claude API
-        debugLog(`🤖 [DEBUG] Calling Claude API for topic "${topic}"...`);
+        // Call Claude API with appropriate token limits for each model
+        const maxTokens = isAdvancedLevel ? 8192 * 3 : 8192; // Opus: 24,576 tokens, Sonnet: 8,192 tokens
+        debugLog(`🤖 [DEBUG] Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
         const message = await anthropic.messages.create({
           model: selectedModel,
-          max_tokens: Math.min(ANTHROPIC_CONFIG.maxTokens.exercise * 10, 4096),
+          max_tokens: maxTokens,
           messages: [
             {
               role: 'user',
