@@ -297,20 +297,56 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           const apiCallStartTime = Date.now();
           sendDebugToFrontend(`⏳ STEP 5: Waiting for Claude AI response...`);
           
-          // Simple API call for all levels (same as A1-B2)
-          message = await anthropic.messages.create({
-            model: selectedModel,
-            max_tokens: maxTokens,
-            messages: [
-              {
-                role: 'user',
-                content: topicPrompt
+          // Use streaming for advanced levels (C1/C2) to prevent timeouts with large token requests
+          if (isAdvancedLevel) {
+            sendDebugToFrontend(`🌊 Using streaming API for advanced level ${level}...`);
+            
+            const stream = await anthropic.messages.create({
+              model: selectedModel,
+              max_tokens: maxTokens,
+              messages: [
+                {
+                  role: 'user',
+                  content: topicPrompt
+                }
+              ],
+              stream: true
+            });
+            
+            let responseText = '';
+            for await (const messageStreamEvent of stream) {
+              if (messageStreamEvent.type === 'content_block_delta') {
+                if (messageStreamEvent.delta.type === 'text_delta') {
+                  responseText += messageStreamEvent.delta.text;
+                }
               }
-            ]
-          });
+            }
+            
+            // Create message-like object for compatibility with existing code
+            message = {
+              content: [{ type: 'text', text: responseText }]
+            };
+            
+            sendDebugToFrontend(`✅ STEP 6: Streaming response completed successfully!`);
+          } else {
+            // Non-streaming API call for A1-B2 levels
+            sendDebugToFrontend(`🔄 Using standard API for level ${level}...`);
+            
+            message = await anthropic.messages.create({
+              model: selectedModel,
+              max_tokens: maxTokens,
+              messages: [
+                {
+                  role: 'user',
+                  content: topicPrompt
+                }
+              ]
+            });
+            
+            sendDebugToFrontend(`✅ STEP 6: Claude AI response received successfully!`);
+          }
           
           const apiCallDuration = Date.now() - apiCallStartTime;
-          sendDebugToFrontend(`✅ STEP 6: Claude AI response received successfully!`);
           sendDebugToFrontend(`⚡ STEP 7: API response time: ${apiCallDuration}ms`);
           sendDebugToFrontend(`📥 STEP 8: Processing response from ${selectedModel}...`);
           sendDebugToFrontend(`📊 STEP 9: Response metadata - Model: ${selectedModel}, Duration: ${apiCallDuration}ms`);

@@ -119,40 +119,47 @@ export default function DataManagement() {
         
         eventSource.onmessage = (event) => {
           console.log(`📨 SSE message received for level ${level}:`, event.data);
-          const data = JSON.parse(event.data);
-          console.log(`📋 Parsed SSE data:`, data);
           
-          if (data.type === 'progress') {
-            console.log(`📊 Progress update: ${data.progress}% - ${data.currentTopic}`);
-            setGenerationProgress(prev => prev.map(p => 
-              p.level === level 
-                ? { ...p, progress: data.progress, currentTopic: data.currentTopic, totalTopics: data.totalTopics }
-                : p
-            ));
-          } else if (data.type === 'debug') {
-            console.log(`🔧 DEBUG [${data.topic}]: ${data.message}`);
-          } else if (data.type === 'complete') {
-            console.log(`🎉 Generation completed for level ${level}:`, data);
-            setGenerationProgress(prev => prev.filter(p => p.level !== level));
-            const costMsg = data.cost ? ` (Cost: $${data.cost.totalCostUsd.toFixed(3)})` : '';
-            setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!${costMsg} Refreshing data...`);
-            
-            // Add small delay to ensure database changes are committed, then refresh
-            console.log(`🔄 Refreshing data after completion...`);
-            setTimeout(async () => {
-              await loadData(); // Refresh the statistics and costs
-              setMessage(prev => prev.replace(' Refreshing data...', ' Data updated!'));
-              console.log(`📊 Data refreshed after level ${level} completion`);
-            }, 1000);
-            
-            console.log(`🔌 Closing SSE connection for level ${level}`);
-            eventSource.close();
-          } else if (data.type === 'error') {
-            console.error(`❌ Generation error for level ${level}:`, data);
-            setGenerationProgress(prev => prev.filter(p => p.level !== level));
-            setMessage(`❌ Generation failed for ${level}: ${data.error}`);
-            console.log(`🔌 Closing SSE connection due to error for level ${level}`);
-            eventSource.close();
+          try {
+            const data = JSON.parse(event.data);
+            console.log(`📋 Parsed SSE data:`, data);
+          
+            if (data.type === 'progress') {
+              console.log(`📊 Progress update: ${data.progress}% - ${data.currentTopic}`);
+              setGenerationProgress(prev => prev.map(p => 
+                p.level === level 
+                  ? { ...p, progress: data.progress, currentTopic: data.currentTopic, totalTopics: data.totalTopics }
+                  : p
+              ));
+            } else if (data.type === 'debug') {
+              console.log(`🔧 DEBUG [${data.topic}]: ${data.message}`);
+            } else if (data.type === 'complete') {
+              console.log(`🎉 Generation completed for level ${level}:`, data);
+              setGenerationProgress(prev => prev.filter(p => p.level !== level));
+              const costMsg = data.cost ? ` (Cost: $${data.cost.totalCostUsd.toFixed(3)})` : '';
+              setMessage(`✅ Generated ${data.questionsAdded} questions for ${level} level!${costMsg} Refreshing data...`);
+              
+              // Add small delay to ensure database changes are committed, then refresh
+              console.log(`🔄 Refreshing data after completion...`);
+              setTimeout(async () => {
+                await loadData(); // Refresh the statistics and costs
+                setMessage(prev => prev.replace(' Refreshing data...', ' Data updated!'));
+                console.log(`📊 Data refreshed after level ${level} completion`);
+              }, 1000);
+              
+              console.log(`🔌 Closing SSE connection for level ${level}`);
+              eventSource.close();
+            } else if (data.type === 'error') {
+              console.error(`❌ Generation error for level ${level}:`, data);
+              setGenerationProgress(prev => prev.filter(p => p.level !== level));
+              setMessage(`❌ Generation failed for ${level}: ${data.error}`);
+              console.log(`🔌 Closing SSE connection due to error for level ${level}`);
+              eventSource.close();
+            }
+          } catch (parseError) {
+            console.error(`❌ JSON parse error for SSE message:`, parseError);
+            console.error(`❌ Raw SSE data that failed to parse:`, event.data);
+            // Don't close connection for parse errors, continue processing other messages
           }
         };
 
