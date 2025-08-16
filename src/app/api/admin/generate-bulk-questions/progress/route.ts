@@ -128,8 +128,9 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     debugLog(`✅ Claude API initialized with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
     debugLog(`🔧 API key length: ${process.env.ANTHROPIC_API_KEY.length} characters`);
     
-    // Test the API key (use Sonnet for all levels)
-    const testModel = 'claude-3-5-sonnet-20241022';
+    // Test the API key with the same model that will be used for generation
+    const isAdvancedLevel = ['C1', 'C2'].includes(level);
+    const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
     debugLog(`🧪 Testing Claude API key with ${testModel} for level ${level}`);
     try {
       const testMessage = await anthropic.messages.create({
