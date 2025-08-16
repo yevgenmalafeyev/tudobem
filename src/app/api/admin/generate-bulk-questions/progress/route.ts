@@ -112,18 +112,20 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     }
     debugLog(`✅ [DEBUG] Claude API initialized successfully with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
     
-    // Test the API key immediately with a simple call
-    debugLog(`🧪 [DEBUG] Testing Claude API key with simple call...`);
+    // Test the API key with the appropriate model for this level
+    const isAdvancedLevel = ['C1', 'C2'].includes(level);
+    const testModel = isAdvancedLevel ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20241022';
+    debugLog(`🧪 [DEBUG] Testing Claude API key with ${testModel} for level ${level}...`);
     try {
       const testMessage = await anthropic.messages.create({
-        model: 'claude-3-haiku-20240307',
+        model: testModel,
         max_tokens: 10,
         messages: [{ role: 'user', content: 'Test' }]
       });
-      debugLog(`✅ [DEBUG] Claude API key test successful, response length: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text.length : 0}`);
+      debugLog(`✅ [DEBUG] Claude API key test successful with ${testModel}, response length: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text.length : 0}`);
     } catch (apiTestError) {
-      debugLog(`❌ [DEBUG] Claude API key test failed: ${apiTestError}`);
-      throw new Error(`Claude API key test failed: ${apiTestError}`);
+      debugLog(`❌ [DEBUG] Claude API key test failed with ${testModel}: ${apiTestError}`);
+      throw new Error(`Claude API key test failed with ${testModel}: ${apiTestError}`);
     }
 
     // Read the prompt file for the specified level
@@ -201,10 +203,15 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         const inputTokens = estimateTokenCount(topicPrompt);
         debugLog(`🔢 [DEBUG] Estimated input tokens: ${inputTokens}`);
         
+        // Select model based on level: Sonnet for A1-B2, Opus for C1-C2
+        const isAdvancedLevel = ['C1', 'C2'].includes(level);
+        const selectedModel = isAdvancedLevel ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20241022';
+        debugLog(`📋 [DEBUG] Using model ${selectedModel} for level ${level}`);
+
         // Call Claude API
         debugLog(`🤖 [DEBUG] Calling Claude API for topic "${topic}"...`);
         const message = await anthropic.messages.create({
-          model: ANTHROPIC_CONFIG.model,
+          model: selectedModel,
           max_tokens: Math.min(ANTHROPIC_CONFIG.maxTokens.exercise * 10, 4096),
           messages: [
             {
