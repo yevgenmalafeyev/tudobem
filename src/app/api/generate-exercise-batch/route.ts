@@ -192,7 +192,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
         levels,
         topics: selectedTopics,
         limit: count * 2, // Get more than needed to have variety
-        userId: authenticatedUser?.id // Exclude user's correctly answered exercises
+        userId: authenticatedUser?.id, // For authenticated users: exclude their correctly answered exercises
+        sessionId: authenticatedUser ? undefined : sessionId // For anonymous users: exclude session's correctly answered exercises
       };
       console.log('📦 [DEBUG] Database filter created:', filter);
       

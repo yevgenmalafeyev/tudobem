@@ -231,6 +231,15 @@ export class LocalDatabase {
         )`;
         params.push(filter.userId);
         paramIndex++;
+      } else if (filter.sessionId) {
+        // Session-specific filtering for anonymous users: exclude exercises they've answered correctly in this session
+        query += ` AND id NOT IN (
+          SELECT DISTINCT exercise_id 
+          FROM exercise_sessions 
+          WHERE user_session_id = $${paramIndex} AND answered_correctly = true
+        )`;
+        params.push(filter.sessionId);
+        paramIndex++;
       }
 
       // Order by usage count (least used first) and creation date

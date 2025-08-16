@@ -4,12 +4,13 @@ import { createApiResponse, createApiError, parseRequestBody, withErrorHandling 
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
   try {
-    const { email, password, name, privacyPolicyAgreed, emailMarketingConsent } = await parseRequestBody<{ 
+    const { email, password, name, privacyPolicyAgreed, emailMarketingConsent, sessionId } = await parseRequestBody<{ 
       email: string; 
       password: string; 
       name: string;
       privacyPolicyAgreed: boolean;
       emailMarketingConsent: boolean;
+      sessionId?: string;
     }>(request);
 
     if (!email || !password || !name) {
@@ -25,6 +26,16 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     }
 
     const user = await UserDatabase.registerUser(name, password, email, emailMarketingConsent || false);
+
+    // Migrate session data to user profile if sessionId is provided
+    if (sessionId) {
+      try {
+        await UserDatabase.migrateSessionDataToUser(user.id, sessionId);
+      } catch (migrationError) {
+        console.error('Session migration failed during signup:', migrationError);
+        // Don't fail signup if migration fails
+      }
+    }
 
     // Generate and send email verification token
     if (email) {

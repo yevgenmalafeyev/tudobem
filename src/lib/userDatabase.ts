@@ -1170,4 +1170,88 @@ export class UserDatabase {
     return emailPrefix.length >= 3 ? emailPrefix : `user${Date.now()}`;
   }
 
+  /**
+   * Migrate session exercise data to user profile when anonymous user authenticates
+   */
+  static async migrateSessionDataToUser(userId: string, sessionId: string): Promise<void> {
+    if (!sessionId) {
+      console.log('🔄 No session ID provided for migration');
+      return;
+    }
+
+    try {
+      const pool = getPool();
+      
+      console.log(`🔄 Starting session data migration for user ${userId} from session ${sessionId}`);
+      
+      // Get all exercise sessions from the anonymous session
+      const sessionResult = await pool.query(
+        'SELECT exercise_id, answered_correctly, response_time_ms, created_at FROM exercise_sessions WHERE user_session_id = $1',
+        [sessionId]
+      );
+      
+      if (sessionResult.rows.length === 0) {
+        console.log('🔄 No session data to migrate');
+        return;
+      }
+      
+      console.log(`🔄 Found ${sessionResult.rows.length} exercise sessions to migrate`);
+      
+      // Migrate each exercise session to user_exercise_attempts
+      let migratedCount = 0;
+      for (const session of sessionResult.rows) {
+        try {
+          // Check if this exercise was already attempted by the user
+          const existingResult = await pool.query(
+            'SELECT id FROM user_exercise_attempts WHERE user_id = $1 AND exercise_id = $2',
+            [userId, session.exercise_id]
+          );
+          
+          if (existingResult.rows.length === 0) {
+            // Get exercise details for level and topic
+            const exerciseResult = await pool.query(
+              'SELECT level, topic FROM exercises WHERE id = $1',
+              [session.exercise_id]
+            );
+            
+            if (exerciseResult.rows.length > 0) {
+              const exercise = exerciseResult.rows[0];
+              
+              // Insert into user_exercise_attempts
+              await pool.query(
+                `INSERT INTO user_exercise_attempts (
+                  user_id, exercise_id, exercise_level, exercise_topic, 
+                  is_correct, user_answer, attempted_at
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                [
+                  userId,
+                  session.exercise_id,
+                  exercise.level,
+                  exercise.topic,
+                  session.answered_correctly,
+                  '', // We don't have the actual user answer from session data
+                  session.created_at
+                ]
+              );
+              
+              migratedCount++;
+            }
+          }
+        } catch (exerciseError) {
+          console.error(`🔄 Error migrating exercise ${session.exercise_id}:`, exerciseError);
+          // Continue with other exercises
+        }
+      }
+      
+      console.log(`🔄 Successfully migrated ${migratedCount} exercise attempts to user profile`);
+      
+      // Optionally clean up the session data after migration
+      // await pool.query('DELETE FROM exercise_sessions WHERE user_session_id = $1', [sessionId]);
+      
+    } catch (error) {
+      console.error('🔄 Error migrating session data to user:', error);
+      // Don't throw error - migration failure shouldn't prevent authentication
+    }
+  }
+
 }

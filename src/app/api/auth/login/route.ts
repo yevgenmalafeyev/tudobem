@@ -5,13 +5,23 @@ import { createApiResponse, createApiError, parseRequestBody, withErrorHandling 
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
   try {
-    const { email, password } = await parseRequestBody<{ email: string; password: string }>(request);
+    const { email, password, sessionId } = await parseRequestBody<{ email: string; password: string; sessionId?: string }>(request);
 
     if (!email || !password) {
       return createApiError('Email and password are required', 400);
     }
 
     const result = await UserDatabase.loginUser(email, password);
+
+    // Migrate session data to user profile if sessionId is provided
+    if (sessionId) {
+      try {
+        await UserDatabase.migrateSessionDataToUser(result.user.id, sessionId);
+      } catch (migrationError) {
+        console.error('Session migration failed during login:', migrationError);
+        // Don't fail login if migration fails
+      }
+    }
 
     // Remove password hash from user data before returning
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

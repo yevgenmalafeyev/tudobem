@@ -180,72 +180,274 @@ export class ExerciseDatabase {
     }
 
     try {
-      // Build conditions dynamically but use template literals
+      // Build the query conditionally based on filters
       let result;
       
-      if (filter.levels && filter.levels.length > 0 && filter.topics && filter.topics.length > 0 && filter.limit) {
-        // Most common case: levels, topics, and limit
-        result = await sql`
-          SELECT 
-            id, sentence, correct_answer, topic, level,
-            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-            hint, difficulty_score, usage_count,
-            created_at, updated_at
-          FROM exercises
-          WHERE level = ANY(${filter.levels}) 
-            AND topic = ANY(${filter.topics})
-          ORDER BY usage_count ASC, created_at DESC
-          LIMIT ${filter.limit}
-        `;
-      } else if (filter.levels && filter.levels.length > 0 && filter.limit) {
-        // Levels and limit only
-        result = await sql`
-          SELECT 
-            id, sentence, correct_answer, topic, level,
-            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-            hint, difficulty_score, usage_count,
-            created_at, updated_at
-          FROM exercises
-          WHERE level = ANY(${filter.levels})
-          ORDER BY usage_count ASC, created_at DESC
-          LIMIT ${filter.limit}
-        `;
-      } else if (filter.topics && filter.topics.length > 0 && filter.limit) {
-        // Topics and limit only
-        result = await sql`
-          SELECT 
-            id, sentence, correct_answer, topic, level,
-            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-            hint, difficulty_score, usage_count,
-            created_at, updated_at
-          FROM exercises
-          WHERE topic = ANY(${filter.topics})
-          ORDER BY usage_count ASC, created_at DESC
-          LIMIT ${filter.limit}
-        `;
-      } else if (filter.limit) {
-        // Limit only
-        result = await sql`
-          SELECT 
-            id, sentence, correct_answer, topic, level,
-            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-            hint, difficulty_score, usage_count,
-            created_at, updated_at
-          FROM exercises
-          ORDER BY usage_count ASC, created_at DESC
-          LIMIT ${filter.limit}
-        `;
+      if (filter.userId) {
+        // For authenticated users: exclude exercises they've answered correctly
+        if (filter.levels && filter.levels.length > 0 && filter.topics && filter.topics.length > 0) {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE level = ANY(${filter.levels}) 
+                AND topic = ANY(${filter.topics})
+                AND uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE level = ANY(${filter.levels}) 
+                AND topic = ANY(${filter.topics})
+                AND uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        } else if (filter.levels && filter.levels.length > 0) {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE level = ANY(${filter.levels})
+                AND uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE level = ANY(${filter.levels})
+                AND uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        } else {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN user_exercise_attempts uea ON e.id = uea.exercise_id::uuid 
+                AND uea.user_id = ${filter.userId} 
+                AND uea.is_correct = true
+              WHERE uea.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        }
+      } else if (filter.sessionId) {
+        // For anonymous users: exclude exercises they've answered correctly in this session
+        if (filter.levels && filter.levels.length > 0 && filter.topics && filter.topics.length > 0) {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE level = ANY(${filter.levels}) 
+                AND topic = ANY(${filter.topics})
+                AND es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE level = ANY(${filter.levels}) 
+                AND topic = ANY(${filter.topics})
+                AND es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        } else if (filter.levels && filter.levels.length > 0) {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE level = ANY(${filter.levels})
+                AND es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE level = ANY(${filter.levels})
+                AND es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        } else {
+          if (filter.limit) {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+              LIMIT ${filter.limit}
+            `;
+          } else {
+            result = await sql`
+              SELECT 
+                e.id, e.sentence, e.correct_answer, e.topic, e.level,
+                e.multiple_choice_options, e.explanation_pt, e.explanation_en, e.explanation_uk,
+                e.hint, e.difficulty_score, e.usage_count,
+                e.created_at, e.updated_at
+              FROM exercises e
+              LEFT JOIN exercise_sessions es ON e.id = es.exercise_id 
+                AND es.user_session_id = ${filter.sessionId} 
+                AND es.answered_correctly = true
+              WHERE es.exercise_id IS NULL
+              ORDER BY e.usage_count ASC, e.created_at DESC
+            `;
+          }
+        }
       } else {
-        // No filters
-        result = await sql`
-          SELECT 
-            id, sentence, correct_answer, topic, level,
-            multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
-            hint, difficulty_score, usage_count,
-            created_at, updated_at
-          FROM exercises
-          ORDER BY usage_count ASC, created_at DESC
-        `;
+        // No user or session filtering - use original logic
+        if (filter.levels && filter.levels.length > 0 && filter.topics && filter.topics.length > 0 && filter.limit) {
+          result = await sql`
+            SELECT 
+              id, sentence, correct_answer, topic, level,
+              multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+              hint, difficulty_score, usage_count,
+              created_at, updated_at
+            FROM exercises
+            WHERE level = ANY(${filter.levels}) 
+              AND topic = ANY(${filter.topics})
+            ORDER BY usage_count ASC, created_at DESC
+            LIMIT ${filter.limit}
+          `;
+        } else if (filter.levels && filter.levels.length > 0 && filter.limit) {
+          result = await sql`
+            SELECT 
+              id, sentence, correct_answer, topic, level,
+              multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+              hint, difficulty_score, usage_count,
+              created_at, updated_at
+            FROM exercises
+            WHERE level = ANY(${filter.levels})
+            ORDER BY usage_count ASC, created_at DESC
+            LIMIT ${filter.limit}
+          `;
+        } else if (filter.topics && filter.topics.length > 0 && filter.limit) {
+          result = await sql`
+            SELECT 
+              id, sentence, correct_answer, topic, level,
+              multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+              hint, difficulty_score, usage_count,
+              created_at, updated_at
+            FROM exercises
+            WHERE topic = ANY(${filter.topics})
+            ORDER BY usage_count ASC, created_at DESC
+            LIMIT ${filter.limit}
+          `;
+        } else if (filter.limit) {
+          result = await sql`
+            SELECT 
+              id, sentence, correct_answer, topic, level,
+              multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+              hint, difficulty_score, usage_count,
+              created_at, updated_at
+            FROM exercises
+            ORDER BY usage_count ASC, created_at DESC
+            LIMIT ${filter.limit}
+          `;
+        } else {
+          result = await sql`
+            SELECT 
+              id, sentence, correct_answer, topic, level,
+              multiple_choice_options, explanation_pt, explanation_en, explanation_uk,
+              hint, difficulty_score, usage_count,
+              created_at, updated_at
+            FROM exercises
+            ORDER BY usage_count ASC, created_at DESC
+          `;
+        }
       }
 
       return (result.rows as unknown as ExerciseRow[]).map((row: ExerciseRow) => ({
