@@ -249,8 +249,8 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
         debugLog(`📋 Level ${level} using model: ${selectedModel}`);
 
-        // Use 24K tokens for C1/C2, 8K for A1-B2
-        const maxTokens = isAdvancedLevel ? 24576 : 8192;
+        // Use 48K tokens for C1/C2, 8K for A1-B2
+        const maxTokens = isAdvancedLevel ? 49152 : 8192;
         debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
         
         let message;
