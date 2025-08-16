@@ -130,7 +130,8 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     
     // Test the API key with the appropriate model for this level
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
-    const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
+    // TEMPORARY: Test C1 with Sonnet to isolate Opus access issue
+    const testModel = level === 'C1' ? 'claude-3-5-sonnet-20241022' : (isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022');
     debugLog(`🧪 Testing Claude API key with ${testModel} for level ${level}...`);
     try {
       const testMessage = await anthropic.messages.create({
@@ -246,7 +247,8 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         
         // Select model based on level: Sonnet for A1-B2, Opus for C1-C2
         const isAdvancedLevel = ['C1', 'C2'].includes(level);
-        const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
+        // TEMPORARY: Test C1 with Sonnet to isolate Opus access issue
+        const selectedModel = level === 'C1' ? 'claude-3-5-sonnet-20241022' : (isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022');
         debugLog(`📋 Using model ${selectedModel} for level ${level}`);
 
         // Call Claude API with appropriate token limits for each model
