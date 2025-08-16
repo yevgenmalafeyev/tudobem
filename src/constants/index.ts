@@ -7,7 +7,7 @@ export const COMMON_PORTUGUESE_WORDS = [
 ];
 
 export const ANTHROPIC_CONFIG = {
-  model: 'claude-3-5-sonnet-20241022',
+  model: 'claude-3-haiku-20240307',
   maxTokens: {
     exercise: 1500,
     explanation: 800,
