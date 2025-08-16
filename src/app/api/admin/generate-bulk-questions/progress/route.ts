@@ -263,31 +263,71 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         totalOutputTokens += outputTokens;
         debugLog(`📊 Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
-        // Extract and parse JSON
+        // Extract and parse JSON with multiple fallback strategies
+        debugLog(`📄 Full Claude response for topic "${topic}": ${responseText}`);
+        
+        let jsonString = '';
+        let jsonFound = false;
+        
+        // Strategy 1: Look for JSON array
         const startIndex = responseText.indexOf('[');
-        debugLog(`🔍 JSON start index: ${startIndex}`);
-        if (startIndex === -1) {
-          logWarning(`No JSON array found in Claude response for topic: ${topic}`);
-          debugLog(`📄 Full response: ${responseText}`);
-          continue;
+        debugLog(`🔍 JSON array start index: ${startIndex}`);
+        
+        if (startIndex !== -1) {
+          let bracketCount = 0;
+          let endIndex = startIndex;
+          
+          for (let j = startIndex; j < responseText.length; j++) {
+            if (responseText[j] === '[') {
+              bracketCount++;
+            } else if (responseText[j] === ']') {
+              bracketCount--;
+              if (bracketCount === 0) {
+                endIndex = j;
+                break;
+              }
+            }
+          }
+          
+          jsonString = responseText.substring(startIndex, endIndex + 1);
+          jsonFound = true;
+          debugLog(`✅ JSON array found: ${jsonString.substring(0, 200)}...`);
         }
         
-        let bracketCount = 0;
-        let endIndex = startIndex;
-        
-        for (let j = startIndex; j < responseText.length; j++) {
-          if (responseText[j] === '[') {
-            bracketCount++;
-          } else if (responseText[j] === ']') {
-            bracketCount--;
-            if (bracketCount === 0) {
-              endIndex = j;
-              break;
+        // Strategy 2: Look for JSON object if array not found
+        if (!jsonFound) {
+          const objStartIndex = responseText.indexOf('{');
+          debugLog(`🔍 JSON object start index: ${objStartIndex}`);
+          
+          if (objStartIndex !== -1) {
+            let braceCount = 0;
+            let endIndex = objStartIndex;
+            
+            for (let j = objStartIndex; j < responseText.length; j++) {
+              if (responseText[j] === '{') {
+                braceCount++;
+              } else if (responseText[j] === '}') {
+                braceCount--;
+                if (braceCount === 0) {
+                  endIndex = j;
+                  break;
+                }
+              }
             }
+            
+            const objString = responseText.substring(objStartIndex, endIndex + 1);
+            jsonString = `[${objString}]`; // Wrap single object in array
+            jsonFound = true;
+            debugLog(`✅ JSON object found and wrapped in array: ${jsonString.substring(0, 200)}...`);
           }
         }
         
-        const jsonString = responseText.substring(startIndex, endIndex + 1);
+        if (!jsonFound) {
+          logWarning(`No valid JSON found in Claude response for topic: ${topic}`);
+          logWarning(`Response length: ${responseText.length} chars`);
+          logWarning(`Response preview: ${responseText.substring(0, 1000)}`);
+          continue;
+        }
         
         let exercises;
         try {
@@ -313,7 +353,14 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
             }
 
             try {
-              await client.query(
+              debugLog(`💾 Attempting to insert exercise: ${JSON.stringify({
+                sentence: exercise.sentence?.substring(0, 100),
+                correctAnswer: exercise.correctAnswer,
+                topic: exercise.topic,
+                level: exercise.level
+              })}`);
+              
+              const result = await client.query(
                 `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanations, created_at)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
                 [
@@ -326,10 +373,13 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
                   exercise.explanations ? JSON.stringify(exercise.explanations) : null
                 ]
               );
+              
+              debugLog(`✅ Successfully inserted exercise, rows affected: ${result.rowCount}`);
               totalQuestionsAdded++;
               topicQuestionsAdded++;
             } catch (insertError) {
-              logError(`Database insert error for exercise: ${insertError}`);
+              logError(`❌ Database insert error for exercise: ${insertError}`);
+              logError(`❌ Exercise data that failed: ${JSON.stringify(exercise, null, 2)}`);
             }
           }
           debugLog(`✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`);
