@@ -217,8 +217,27 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       })}\n\n`));
 
       try {
-        // Create topic-specific prompt
-        const topicPrompt = `${promptContent}\n\nGenerate exactly 1 question for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
+        // Create topic-specific prompt with explicit JSON format requirement
+        const topicPrompt = `${promptContent}
+
+IMPORTANT: Generate exactly 1 question for the topic "${topic}".
+
+CRITICAL: You MUST return ONLY a valid JSON array. Do NOT include any explanations, comments, or text outside the JSON. The response should start with [ and end with ].
+
+Example format:
+[
+  {
+    "sentence": "Example sentence with ___.",
+    "correctAnswer": "correct answer",
+    "topic": "${topic}",
+    "level": "B2",
+    "hint": {"pt": "Portuguese hint", "en": "English hint"},
+    "multipleChoiceOptions": ["option1", "option2", "option3", "option4"],
+    "explanations": {"pt": "Portuguese explanation", "en": "English explanation"}
+  }
+]
+
+Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:`;
         debugLog(`📝 Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
         
         // Estimate input tokens for this request
@@ -264,12 +283,12 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         debugLog(`📊 Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
         // Extract and parse JSON with multiple fallback strategies
-        debugLog(`📄 Full Claude response for topic "${topic}": ${responseText}`);
+        debugLog(`📄 Full Claude response for topic "${topic}": ${responseText.substring(0, 1000)}...`);
         
         let jsonString = '';
         let jsonFound = false;
         
-        // Strategy 1: Look for JSON array
+        // Strategy 1: Look for JSON array (most common case)
         const startIndex = responseText.indexOf('[');
         debugLog(`🔍 JSON array start index: ${startIndex}`);
         
@@ -291,7 +310,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
           
           jsonString = responseText.substring(startIndex, endIndex + 1);
           jsonFound = true;
-          debugLog(`✅ JSON array found: ${jsonString.substring(0, 200)}...`);
+          debugLog(`✅ JSON array found: ${jsonString.substring(0, 300)}...`);
         }
         
         // Strategy 2: Look for JSON object if array not found
@@ -322,8 +341,19 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
           }
         }
         
+        // Strategy 3: Try to clean the response and extract JSON with regex
         if (!jsonFound) {
-          logWarning(`No valid JSON found in Claude response for topic: ${topic}`);
+          debugLog(`🔍 Attempting regex-based JSON extraction...`);
+          const jsonMatch = responseText.match(/\[[\s\S]*?\]/);
+          if (jsonMatch) {
+            jsonString = jsonMatch[0];
+            jsonFound = true;
+            debugLog(`✅ JSON found with regex: ${jsonString.substring(0, 300)}...`);
+          }
+        }
+        
+        if (!jsonFound) {
+          logWarning(`❌ No valid JSON found in Claude response for topic: ${topic}`);
           logWarning(`Response length: ${responseText.length} chars`);
           logWarning(`Response preview: ${responseText.substring(0, 1000)}`);
           continue;
