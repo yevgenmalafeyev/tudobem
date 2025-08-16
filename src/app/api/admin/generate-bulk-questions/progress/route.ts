@@ -293,8 +293,10 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           debugLog(`⚡ API response time: ${apiCallDuration}ms`);
           debugLog(`📩 Response received from ${selectedModel}`);
         } catch (claudeError) {
-          logError(`Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
-          logError(`Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
+          logError(`❌ Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
+          logError(`❌ Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
+          debugLog(`❌ CLAUDE API ERROR for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
+          debugLog(`❌ Error stack: ${claudeError instanceof Error ? claudeError.stack : 'No stack available'}`);
           throw claudeError;
         }
 
@@ -383,6 +385,8 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           logWarning(`❌ No valid JSON found in Claude response for topic: ${topic}`);
           logWarning(`Response length: ${responseText.length} chars`);
           logWarning(`Response preview: ${responseText.substring(0, 1000)}`);
+          debugLog(`❌ JSON EXTRACTION FAILED for topic "${topic}"`);
+          debugLog(`❌ FULL RESPONSE that failed JSON extraction:\n${responseText}`);
           continue;
         }
         
@@ -394,6 +398,9 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         } catch (parseError) {
           logError(`JSON parse error for topic "${topic}": ${parseError}`);
           logError(`JSON string that failed to parse: ${jsonString.substring(0, 500)}...`);
+          debugLog(`❌ JSON PARSE ERROR for topic "${topic}": ${parseError}`);
+          debugLog(`❌ JSON that failed to parse: ${jsonString}`);
+          debugLog(`❌ Original Claude response that led to this JSON:\n${responseText}`);
           continue;
         }
         
@@ -407,6 +414,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             // Validate exercise data
             if (!exercise.sentence || !exercise.correctAnswer || !exercise.topic || !exercise.level) {
               logWarning(`Invalid exercise data, skipping: ${JSON.stringify(exercise).substring(0, 100)}`);
+              debugLog(`❌ INVALID EXERCISE DATA for topic "${topic}": ${JSON.stringify(exercise, null, 2)}`);
               continue;
             }
 
@@ -450,6 +458,8 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             } catch (insertError) {
               logError(`❌ Database insert error for exercise: ${insertError}`);
               logError(`❌ Exercise data that failed: ${JSON.stringify(exercise, null, 2)}`);
+              debugLog(`❌ DATABASE INSERT ERROR for topic "${topic}": ${insertError}`);
+              debugLog(`❌ Failed exercise data: ${JSON.stringify(exercise, null, 2)}`);
             }
           }
           debugLog(`✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`);
@@ -460,6 +470,10 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
 
       } catch (error) {
         logError(`Error generating questions for topic "${topic}": ${error instanceof Error ? error.message : String(error)}`);
+        debugLog(`❌ TOPIC ERROR for "${topic}": ${error instanceof Error ? error.message : String(error)}`);
+        debugLog(`❌ Error stack: ${error instanceof Error ? error.stack : 'No stack available'}`);
+        debugLog(`❌ Error type: ${typeof error}`);
+        debugLog(`❌ Full error object: ${JSON.stringify(error, null, 2)}`);
         
         // Continue with next topic instead of failing completely
         // This ensures incremental progress is preserved
