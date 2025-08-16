@@ -243,12 +243,13 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const inputTokens = estimateTokenCount(topicPrompt);
         debugLog(`🔢 Estimated input tokens: ${inputTokens}`);
         
-        // Use same model for all levels (Sonnet)
-        const selectedModel = 'claude-3-5-sonnet-20241022';
+        // Use Opus for C1/C2, Sonnet for A1-B2
+        const isAdvancedLevel = ['C1', 'C2'].includes(level);
+        const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
         debugLog(`📋 Level ${level} using model: ${selectedModel}`);
 
-        // Use same token limits for all levels
-        const maxTokens = 8192;
+        // Use 24K tokens for C1/C2, 8K for A1-B2
+        const maxTokens = isAdvancedLevel ? 24576 : 8192;
         debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
         
         let message;
