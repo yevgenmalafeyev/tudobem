@@ -230,7 +230,7 @@ Example format:
     "sentence": "Example sentence with ___.",
     "correctAnswer": "correct answer",
     "topic": "${topic}",
-    "level": "B2",
+    "level": "${level}",
     "hint": {"pt": "Portuguese hint", "en": "English hint"},
     "multipleChoiceOptions": ["option1", "option2", "option3", "option4"],
     "explanations": {"pt": "Portuguese explanation", "en": "English explanation"}
