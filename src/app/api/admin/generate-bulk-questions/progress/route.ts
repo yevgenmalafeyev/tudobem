@@ -391,8 +391,8 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
               })}`);
               
               const result = await client.query(
-                `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanations, created_at)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
+                `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanation_pt, explanation_en, explanation_uk, created_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())`,
                 [
                   exercise.sentence,
                   exercise.correctAnswer,
@@ -400,7 +400,9 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
                   exercise.level,
                   exercise.hint ? JSON.stringify(exercise.hint) : null,
                   exercise.multipleChoiceOptions ? JSON.stringify(exercise.multipleChoiceOptions) : null,
-                  exercise.explanations ? JSON.stringify(exercise.explanations) : null
+                  exercise.explanations?.pt || null,
+                  exercise.explanations?.en || null,
+                  exercise.explanations?.uk || null
                 ]
               );
               
