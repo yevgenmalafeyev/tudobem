@@ -258,7 +258,7 @@ export default function DataManagement() {
                           disabled={generationProgress.some(p => p.isGenerating)}
                         >
                           <span>🤖</span>
-                          <span className="ml-2">Generate 3 Questions per Topic</span>
+                          <span className="ml-2">Generate 1 Question per Topic</span>
                         </button>
                       )}
                     </div>

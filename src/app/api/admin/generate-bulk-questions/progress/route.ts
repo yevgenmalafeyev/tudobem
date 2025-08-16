@@ -126,6 +126,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
     debugLog(`✅ Claude API initialized with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
+    debugLog(`🔧 API key length: ${process.env.ANTHROPIC_API_KEY.length} characters`);
     
     // Test the API key with the appropriate model for this level
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
@@ -217,7 +218,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
 
       try {
         // Create topic-specific prompt
-        const topicPrompt = `${promptContent}\n\nGenerate exactly 3 questions for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
+        const topicPrompt = `${promptContent}\n\nGenerate exactly 1 question for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
         debugLog(`📝 Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
         
         // Estimate input tokens for this request
@@ -232,17 +233,25 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         // Call Claude API with appropriate token limits for each model
         const maxTokens = isAdvancedLevel ? 8192 * 3 : 8192; // Opus: 24,576 tokens, Sonnet: 8,192 tokens
         debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
-        const message = await anthropic.messages.create({
-          model: selectedModel,
-          max_tokens: maxTokens,
-          messages: [
-            {
-              role: 'user',
-              content: topicPrompt
-            }
-          ]
-        });
-        debugLog(`✅ Claude API call successful for topic "${topic}"`);
+        
+        let message;
+        try {
+          message = await anthropic.messages.create({
+            model: selectedModel,
+            max_tokens: maxTokens,
+            messages: [
+              {
+                role: 'user',
+                content: topicPrompt
+              }
+            ]
+          });
+          debugLog(`✅ Claude API call successful for topic "${topic}"`);
+        } catch (claudeError) {
+          logError(`Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
+          logError(`Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
+          throw claudeError;
+        }
 
         const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
         debugLog(`📄 Claude response length: ${responseText.length} chars`);
@@ -283,8 +292,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         let exercises;
         try {
           exercises = JSON.parse(jsonString);
+          debugLog(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
         } catch (parseError) {
           logError(`JSON parse error for topic "${topic}": ${parseError}`);
+          logError(`JSON string that failed to parse: ${jsonString.substring(0, 500)}...`);
           continue;
         }
         
