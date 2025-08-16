@@ -205,7 +205,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
         debugLog(`🤖 [DEBUG] Calling Claude API for topic "${topic}"...`);
         const message = await anthropic.messages.create({
           model: ANTHROPIC_CONFIG.model,
-          max_tokens: ANTHROPIC_CONFIG.maxTokens.exercise * 10,
+          max_tokens: Math.min(ANTHROPIC_CONFIG.maxTokens.exercise * 10, 8192),
           messages: [
             {
               role: 'user',
