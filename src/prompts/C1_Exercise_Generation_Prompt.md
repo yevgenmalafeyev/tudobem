@@ -105,7 +105,7 @@ For each exercise, generate a complete JSON object with the following exact stru
 
 ## Output Format:
 
-Provide the complete JSON array containing all 200 exercises (10 per topic × 20 topics):
+Provide the complete JSON array containing all 20 exercises (1 per topic × 20 topics):
 
 ```json
 [
@@ -113,9 +113,9 @@ Provide the complete JSON array containing all 200 exercises (10 per topic × 20
     // Exercise 1 for condicional-preterito
   },
   {
-    // Exercise 2 for condicional-preterito  
+    // Exercise 1 for hipoteses-irreais-passado  
   },
-  // ... continue for all exercises
+  // ... continue for all 20 topics (1 exercise each)
 ]
 ```
 

@@ -112,7 +112,7 @@ For each exercise, generate a complete JSON object with the following exact stru
 
 ## Output Format:
 
-Provide the complete JSON array containing all 180 exercises (10 per topic × 18 topics):
+Provide the complete JSON array containing all 18 exercises (1 per topic × 18 topics):
 
 ```json
 [
@@ -120,9 +120,9 @@ Provide the complete JSON array containing all 180 exercises (10 per topic × 18
     // Exercise 1 for linguagem-formal-protocolar
   },
   {
-    // Exercise 2 for linguagem-formal-protocolar  
+    // Exercise 1 for conotacoes-semanticas  
   },
-  // ... continue for all exercises
+  // ... continue for all 18 topics (1 exercise each)
 ]
 ```
 
