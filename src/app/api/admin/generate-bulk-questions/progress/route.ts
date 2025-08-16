@@ -276,6 +276,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
         debugLog(`📄 Claude response length: ${responseText.length} chars`);
         debugLog(`📄 Claude response preview: ${responseText.substring(0, 200)}...`);
+        debugLog(`📄 FULL Claude response for topic "${topic}":\n${responseText}`);
         
         // Track token usage
         const outputTokens = estimateTokenCount(responseText);
@@ -284,7 +285,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         debugLog(`📊 Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
         // Extract and parse JSON with multiple fallback strategies
-        debugLog(`📄 Full Claude response for topic "${topic}": ${responseText.substring(0, 1000)}...`);
+        debugLog(`🔧 Starting JSON extraction process for topic "${topic}"...`);
         
         let jsonString = '';
         let jsonFound = false;
@@ -364,6 +365,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         try {
           exercises = JSON.parse(jsonString);
           debugLog(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
+          debugLog(`🔍 Parsed exercises structure: ${JSON.stringify(exercises, null, 2)}`);
         } catch (parseError) {
           logError(`JSON parse error for topic "${topic}": ${parseError}`);
           logError(`JSON string that failed to parse: ${jsonString.substring(0, 500)}...`);
@@ -391,6 +393,16 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
                 level: exercise.level
               })}`);
               
+              debugLog(`📝 Exercise data being inserted: ${JSON.stringify({
+                sentence: exercise.sentence,
+                correctAnswer: exercise.correctAnswer,
+                topic: exercise.topic,
+                level: exercise.level,
+                hint: exercise.hint,
+                multipleChoiceOptions: exercise.multipleChoiceOptions,
+                explanations: exercise.explanations
+              }, null, 2)}`);
+              
               const result = await client.query(
                 `INSERT INTO exercises (sentence, correct_answer, topic, level, hint, multiple_choice_options, explanation_pt, explanation_en, explanation_uk, created_at)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())`,
@@ -416,6 +428,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
             }
           }
           debugLog(`✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`);
+          debugLog(`📊 Current generation summary: ${totalQuestionsAdded} questions across ${i + 1}/${totalTopics} topics completed`);
         } finally {
           client.release();
         }
@@ -471,6 +484,10 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
     }
 
     // Send completion with cost information
+    debugLog(`🎉 GENERATION COMPLETE for level ${level}:`);
+    debugLog(`📊 Final results: ${totalQuestionsAdded} questions generated across ${totalTopics} topics`);
+    debugLog(`💰 Final cost: $${costBreakdown.totalCostUsd.toFixed(4)} (Input: ${costBreakdown.inputTokens} tokens, Output: ${costBreakdown.outputTokens} tokens)`);
+    
     const completionData = {
       type: 'complete',
       questionsAdded: totalQuestionsAdded,
