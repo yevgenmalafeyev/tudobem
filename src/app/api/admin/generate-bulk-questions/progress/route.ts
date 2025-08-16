@@ -132,6 +132,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
     const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
     debugLog(`🧪 Level ${level} advanced check: ${isAdvancedLevel} → testing with model: ${testModel}`);
+    // Force cache bust - deployment verification
     try {
       const testMessage = await anthropic.messages.create({
         model: testModel,
