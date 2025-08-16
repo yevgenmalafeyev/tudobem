@@ -78,14 +78,14 @@ export async function GET(request: NextRequest) {
       // Start the real generation using Claude API
       generateQuestionsWithClaude(level, controller, encoder);
       
-      // Keep the connection alive
+      // Keep the connection alive with more frequent heartbeats
       const keepAlive = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(`: keep-alive\n\n`));
         } catch {
           clearInterval(keepAlive);
         }
-      }, 30000);
+      }, 15000); // Reduced from 30s to 15s for better connection stability
 
       // Clean up when the client disconnects
       request.signal.addEventListener('abort', () => {
@@ -111,7 +111,8 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateQuestionsWithClaude(level: string, controller: ReadableStreamDefaultController, encoder: TextEncoder) {
-  debugLog(`🚀 Starting generation for level: ${level}`);
+  const startTime = Date.now();
+  debugLog(`🚀 Starting generation for level: ${level} at ${new Date().toISOString()}`);
   
   try {
     // Initialize Claude API
@@ -198,7 +199,13 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     debugLog(`🔄 Starting to process topics...`);
     for (let i = 0; i < topics.length; i++) {
       const topic = topics[i];
-      debugLog(`\n🎯 Processing topic ${i + 1}/${totalTopics}: "${topic}"`);
+      const elapsedMinutes = (Date.now() - startTime) / 60000;
+      debugLog(`\n🎯 Processing topic ${i + 1}/${totalTopics}: "${topic}" (elapsed: ${elapsedMinutes.toFixed(1)}min)`);
+      
+      // Warn if approaching timeout limits (Vercel has ~15min limit)
+      if (elapsedMinutes > 12) {
+        logWarning(`⏰ Approaching timeout limit (${elapsedMinutes.toFixed(1)} minutes elapsed)`);
+      }
       
       // Update progress
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({
@@ -210,7 +217,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
 
       try {
         // Create topic-specific prompt
-        const topicPrompt = `${promptContent}\n\nGenerate exactly 10 questions for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
+        const topicPrompt = `${promptContent}\n\nGenerate exactly 3 questions for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
         debugLog(`📝 Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
         
         // Estimate input tokens for this request
@@ -281,8 +288,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
           continue;
         }
         
-        // Save exercises to database
+        // Save exercises to database IMMEDIATELY (incremental saving)
+        debugLog(`💾 Saving ${exercises.length} exercises for topic "${topic}" to database...`);
         const client = await pool.connect();
+        let topicQuestionsAdded = 0;
         
         try {
           for (const exercise of exercises) {
@@ -307,10 +316,12 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
                 ]
               );
               totalQuestionsAdded++;
+              topicQuestionsAdded++;
             } catch (insertError) {
               logError(`Database insert error for exercise: ${insertError}`);
             }
           }
+          debugLog(`✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`);
         } finally {
           client.release();
         }
@@ -318,8 +329,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       } catch (error) {
         logError(`Error generating questions for topic "${topic}": ${error instanceof Error ? error.message : String(error)}`);
         
-        // Fail fast on API errors to surface the real issue
-        throw new Error(`Claude API call failed for topic "${topic}": ${error instanceof Error ? error.message : String(error)}`);
+        // Continue with next topic instead of failing completely
+        // This ensures incremental progress is preserved
+        debugLog(`⚠️ Skipping topic "${topic}" due to error, continuing with next topics...`);
+        continue;
       }
     }
     
