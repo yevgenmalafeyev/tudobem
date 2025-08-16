@@ -5,13 +5,38 @@ import path from 'path';
 import { Pool } from 'pg';
 import { calculateCost, estimateTokenCount } from '@/utils/costCalculation';
 
-// Logging function for errors and warnings only
+// Declare global type for debug logs
+declare global {
+  var debugLogs: string[] | undefined;
+}
+
+// Debug logging function for production debugging
+function debugLog(message: string) {
+  console.log(message);
+  // Also store in memory for API access
+  try {
+    global.debugLogs = global.debugLogs || [];
+    const timestamp = new Date().toISOString();
+    const logEntry = `[${timestamp}] ${message}`;
+    global.debugLogs.push(logEntry);
+    
+    // Keep only the last 200 entries
+    if (global.debugLogs.length > 200) {
+      global.debugLogs.shift();
+    }
+  } catch (error) {
+    console.error('Error storing debug log:', error);
+  }
+}
+
 function logError(message: string) {
   console.error(message);
+  debugLog(`❌ ERROR: ${message}`);
 }
 
 function logWarning(message: string) {
   console.warn(message);
+  debugLog(`⚠️ WARNING: ${message}`);
 }
 
 // Note: In production, use a proper job queue like Redis or database for progress tracking
@@ -32,13 +57,18 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
+  debugLog(`🌐 SSE endpoint called for bulk question generation`);
+  
   const { searchParams } = new URL(request.url);
   const level = searchParams.get('level');
+  debugLog(`📋 Requested level: ${level}`);
 
   if (!level) {
     logError('No level parameter provided');
     return NextResponse.json({ error: 'Level parameter required' }, { status: 400 });
   }
+  
+  debugLog(`✅ Level parameter validated: ${level}`);
 
   // Create a readable stream for Server-Sent Events
   const stream = new ReadableStream({
@@ -81,8 +111,11 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateQuestionsWithClaude(level: string, controller: ReadableStreamDefaultController, encoder: TextEncoder) {
+  debugLog(`🚀 Starting generation for level: ${level}`);
+  
   try {
     // Initialize Claude API
+    debugLog(`🔧 Initializing Claude API...`);
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
@@ -91,16 +124,19 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       logError('ANTHROPIC_API_KEY not configured');
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
+    debugLog(`✅ Claude API initialized with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
     
     // Test the API key with the appropriate model for this level
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
-    const testModel = isAdvancedLevel ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20241022';
+    const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
+    debugLog(`🧪 Testing Claude API key with ${testModel} for level ${level}...`);
     try {
-      await anthropic.messages.create({
+      const testMessage = await anthropic.messages.create({
         model: testModel,
         max_tokens: 10,
         messages: [{ role: 'user', content: 'Test' }]
       });
+      debugLog(`✅ Claude API key test successful with ${testModel}, response length: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text.length : 0}`);
     } catch (apiTestError) {
       logError(`Claude API key test failed with ${testModel}: ${apiTestError}`);
       throw new Error(`Claude API key test failed with ${testModel}: ${apiTestError}`);
@@ -108,6 +144,7 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
 
     // Read the prompt file for the specified level
     const promptFileName = LEVEL_PROMPTS[level as keyof typeof LEVEL_PROMPTS];
+    debugLog(`📁 Using prompt file: ${promptFileName} for level ${level}`);
     
     if (!promptFileName) {
       logError(`No prompt file mapping found for level ${level}`);
@@ -115,21 +152,27 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     }
 
     const promptPath = path.join(process.cwd(), 'src', 'prompts', promptFileName);
+    debugLog(`📍 Full prompt path: ${promptPath}`);
     
     if (!fs.existsSync(promptPath)) {
       logError(`Prompt file does not exist at path: ${promptPath}`);
       throw new Error(`Prompt file not found: ${promptPath}`);
     }
+    debugLog(`✅ Prompt file found successfully`);
 
     const promptContent = fs.readFileSync(promptPath, 'utf-8');
+    debugLog(`📖 Prompt content length: ${promptContent.length} characters`);
     
     // Extract topics from the prompt content
     const topicMatches = promptContent.match(/\d+\.\s\*\*([^*]+)\*\*/g);
+    debugLog(`🔍 Topic regex matches found: ${topicMatches?.length || 0}`);
     
     const topics = topicMatches ? topicMatches.map(match => {
       const topicMatch = match.match(/\*\*([^*]+)\*\*/);
       return topicMatch ? topicMatch[1] : '';
     }).filter(Boolean) : [];
+
+    debugLog(`📋 Extracted topics (${topics.length}): ${JSON.stringify(topics)}`);
 
     if (topics.length === 0) {
       logError(`No topics found in prompt file for level ${level}`);
@@ -141,6 +184,8 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     let totalInputTokens = 0;
     let totalOutputTokens = 0;
     
+    debugLog(`🎯 Will process ${totalTopics} topics for level ${level}`);
+    
     // Send initial progress
     controller.enqueue(encoder.encode(`data: ${JSON.stringify({
       type: 'progress',
@@ -150,8 +195,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     })}\n\n`));
 
     // Process each topic
+    debugLog(`🔄 Starting to process topics...`);
     for (let i = 0; i < topics.length; i++) {
       const topic = topics[i];
+      debugLog(`\n🎯 Processing topic ${i + 1}/${totalTopics}: "${topic}"`);
       
       // Update progress
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({
@@ -164,16 +211,20 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       try {
         // Create topic-specific prompt
         const topicPrompt = `${promptContent}\n\nGenerate exactly 10 questions for the topic "${topic}". Return ONLY a valid JSON array of exercises following the exact format specified in the prompt.`;
+        debugLog(`📝 Created topic prompt for "${topic}" (${topicPrompt.length} chars)`);
         
         // Estimate input tokens for this request
         const inputTokens = estimateTokenCount(topicPrompt);
+        debugLog(`🔢 Estimated input tokens: ${inputTokens}`);
         
         // Select model based on level: Sonnet for A1-B2, Opus for C1-C2
         const isAdvancedLevel = ['C1', 'C2'].includes(level);
-        const selectedModel = isAdvancedLevel ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20241022';
+        const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
+        debugLog(`📋 Using model ${selectedModel} for level ${level}`);
 
         // Call Claude API with appropriate token limits for each model
         const maxTokens = isAdvancedLevel ? 8192 * 3 : 8192; // Opus: 24,576 tokens, Sonnet: 8,192 tokens
+        debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
         const message = await anthropic.messages.create({
           model: selectedModel,
           max_tokens: maxTokens,
@@ -184,18 +235,24 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
             }
           ]
         });
+        debugLog(`✅ Claude API call successful for topic "${topic}"`);
 
         const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
+        debugLog(`📄 Claude response length: ${responseText.length} chars`);
+        debugLog(`📄 Claude response preview: ${responseText.substring(0, 200)}...`);
         
         // Track token usage
         const outputTokens = estimateTokenCount(responseText);
         totalInputTokens += inputTokens;
         totalOutputTokens += outputTokens;
+        debugLog(`📊 Token usage - Input: ${inputTokens}, Output: ${outputTokens}, Total so far: Input=${totalInputTokens}, Output=${totalOutputTokens}`);
         
         // Extract and parse JSON
         const startIndex = responseText.indexOf('[');
+        debugLog(`🔍 JSON start index: ${startIndex}`);
         if (startIndex === -1) {
           logWarning(`No JSON array found in Claude response for topic: ${topic}`);
+          debugLog(`📄 Full response: ${responseText}`);
           continue;
         }
         
