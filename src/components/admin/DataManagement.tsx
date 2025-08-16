@@ -129,6 +129,8 @@ export default function DataManagement() {
                 ? { ...p, progress: data.progress, currentTopic: data.currentTopic, totalTopics: data.totalTopics }
                 : p
             ));
+          } else if (data.type === 'debug') {
+            console.log(`🔧 DEBUG [${data.topic}]: ${data.message}`);
           } else if (data.type === 'complete') {
             console.log(`🎉 Generation completed for level ${level}:`, data);
             setGenerationProgress(prev => prev.filter(p => p.level !== level));

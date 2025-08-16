@@ -277,16 +277,25 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         debugLog(`🤖 Preparing Claude API call for topic "${topic}"`);
         debugLog(`🎛️ Model: ${selectedModel}, Max tokens: ${maxTokens}`);
         
-        // Detailed AI interaction logging
-        debugLog(`🔗 STEP 1: Opening connection to Claude AI (${selectedModel})...`);
-        debugLog(`📤 STEP 2: Preparing to send prompt for topic "${topic}"...`);
-        debugLog(`📏 STEP 3: Prompt size: ${topicPrompt.length} characters, estimated ${inputTokens} tokens`);
-        debugLog(`🚀 STEP 4: Initiating API request to Claude AI...`);
+        // Detailed AI interaction logging - send to frontend via SSE
+        const sendDebugToFrontend = (debugMsg: string) => {
+          debugLog(debugMsg);
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+            type: 'debug',
+            message: debugMsg,
+            topic: topic
+          })}\\n\\n`));
+        };
+
+        sendDebugToFrontend(`🔗 STEP 1: Opening connection to Claude AI (${selectedModel})...`);
+        sendDebugToFrontend(`📤 STEP 2: Preparing to send prompt for topic "${topic}"...`);
+        sendDebugToFrontend(`📏 STEP 3: Prompt size: ${topicPrompt.length} characters, estimated ${inputTokens} tokens`);
+        sendDebugToFrontend(`🚀 STEP 4: Initiating API request to Claude AI...`);
         
         let message;
         try {
           const apiCallStartTime = Date.now();
-          debugLog(`⏳ STEP 5: Waiting for Claude AI response...`);
+          sendDebugToFrontend(`⏳ STEP 5: Waiting for Claude AI response...`);
           
           // Simple API call for all levels (same as A1-B2)
           message = await anthropic.messages.create({
@@ -301,11 +310,15 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           });
           
           const apiCallDuration = Date.now() - apiCallStartTime;
-          debugLog(`✅ STEP 6: Claude AI response received successfully!`);
-          debugLog(`⚡ STEP 7: API response time: ${apiCallDuration}ms`);
-          debugLog(`📥 STEP 8: Processing response from ${selectedModel}...`);
-          debugLog(`📊 STEP 9: Response metadata - Model: ${selectedModel}, Duration: ${apiCallDuration}ms`);
+          sendDebugToFrontend(`✅ STEP 6: Claude AI response received successfully!`);
+          sendDebugToFrontend(`⚡ STEP 7: API response time: ${apiCallDuration}ms`);
+          sendDebugToFrontend(`📥 STEP 8: Processing response from ${selectedModel}...`);
+          sendDebugToFrontend(`📊 STEP 9: Response metadata - Model: ${selectedModel}, Duration: ${apiCallDuration}ms`);
         } catch (claudeError) {
+          const errorMsg = `❌ CLAUDE API ERROR for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`;
+          sendDebugToFrontend(errorMsg);
+          sendDebugToFrontend(`❌ Error details: ${JSON.stringify(claudeError, null, 2)}`);
+          
           logError(`❌ Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
           logError(`❌ Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
           debugLog(`❌ CLAUDE API ERROR for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
@@ -395,6 +408,11 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         }
         
         if (!jsonFound) {
+          const jsonErrorMsg = `❌ JSON EXTRACTION FAILED for topic "${topic}" - No valid JSON found in Claude response`;
+          sendDebugToFrontend(jsonErrorMsg);
+          sendDebugToFrontend(`❌ Response length: ${responseText.length} chars`);
+          sendDebugToFrontend(`❌ Response preview: ${responseText.substring(0, 500)}...`);
+          
           logWarning(`❌ No valid JSON found in Claude response for topic: ${topic}`);
           logWarning(`Response length: ${responseText.length} chars`);
           logWarning(`Response preview: ${responseText.substring(0, 1000)}`);
@@ -406,9 +424,14 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         let exercises;
         try {
           exercises = JSON.parse(jsonString);
+          sendDebugToFrontend(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
           debugLog(`✅ JSON parsed successfully for topic "${topic}": ${exercises.length} exercises`);
           debugLog(`🔍 Parsed exercises structure: ${JSON.stringify(exercises, null, 2)}`);
         } catch (parseError) {
+          const parseErrorMsg = `❌ JSON PARSE ERROR for topic "${topic}": ${parseError}`;
+          sendDebugToFrontend(parseErrorMsg);
+          sendDebugToFrontend(`❌ JSON that failed to parse: ${jsonString.substring(0, 500)}...`);
+          
           logError(`JSON parse error for topic "${topic}": ${parseError}`);
           logError(`JSON string that failed to parse: ${jsonString.substring(0, 500)}...`);
           debugLog(`❌ JSON PARSE ERROR for topic "${topic}": ${parseError}`);
@@ -418,6 +441,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         }
         
         // Save exercises to database IMMEDIATELY (incremental saving)
+        sendDebugToFrontend(`💾 Saving ${exercises.length} exercises for topic "${topic}" to database...`);
         debugLog(`💾 Saving ${exercises.length} exercises for topic "${topic}" to database...`);
         const client = await pool.connect();
         let topicQuestionsAdded = 0;
@@ -465,6 +489,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
                 ]
               );
               
+              sendDebugToFrontend(`✅ Successfully inserted exercise, rows affected: ${result.rowCount}`);
               debugLog(`✅ Successfully inserted exercise, rows affected: ${result.rowCount}`);
               totalQuestionsAdded++;
               topicQuestionsAdded++;
@@ -475,7 +500,9 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
               debugLog(`❌ Failed exercise data: ${JSON.stringify(exercise, null, 2)}`);
             }
           }
-          debugLog(`✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`);
+          const saveSuccessMsg = `✅ Successfully saved ${topicQuestionsAdded} questions for topic "${topic}". Total so far: ${totalQuestionsAdded}`;
+          sendDebugToFrontend(saveSuccessMsg);
+          debugLog(saveSuccessMsg);
           debugLog(`📊 Current generation summary: ${totalQuestionsAdded} questions across ${i + 1}/${totalTopics} topics completed`);
         } finally {
           client.release();
