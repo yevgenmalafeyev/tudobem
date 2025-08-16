@@ -10,8 +10,7 @@ declare global {
   var debugLogs: string[] | undefined;
 }
 
-// Debug logging function for production debugging  
-// CACHE_BUST: Force deployment refresh
+// Debug logging function for production debugging
 function debugLog(message: string) {
   console.log(message);
   // Also store in memory for API access
@@ -58,7 +57,7 @@ const pool = new Pool({
 });
 
 export async function GET(request: NextRequest) {
-  debugLog(`🌐 SSE endpoint called for bulk question generation [BUILD: ${Date.now()}]`);
+  debugLog(`🌐 SSE endpoint called for bulk question generation`);
   
   const { searchParams } = new URL(request.url);
   const level = searchParams.get('level');
@@ -129,10 +128,9 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     debugLog(`✅ Claude API initialized with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
     debugLog(`🔧 API key length: ${process.env.ANTHROPIC_API_KEY.length} characters`);
     
-    // Test the API key with the appropriate model for this level
-    const isAdvancedLevel = ['C1', 'C2'].includes(level);
-    const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
-    debugLog(`🧪 Level ${level} advanced check: ${isAdvancedLevel} → testing with model: ${testModel}`);
+    // Test the API key (use Sonnet for all levels)
+    const testModel = 'claude-3-5-sonnet-20241022';
+    debugLog(`🧪 Testing Claude API key with ${testModel} for level ${level}`);
     try {
       const testMessage = await anthropic.messages.create({
         model: testModel,
@@ -245,59 +243,28 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const inputTokens = estimateTokenCount(topicPrompt);
         debugLog(`🔢 Estimated input tokens: ${inputTokens}`);
         
-        // Select model based on level: Sonnet for A1-B2, Opus for C1-C2
-        const isAdvancedLevel = ['C1', 'C2'].includes(level);
-        const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
-        debugLog(`📋 Level ${level} is advanced: ${isAdvancedLevel}, using model: ${selectedModel}`);
-        debugLog(`🔧 DEPLOYMENT TEST: C1=${level === 'C1'}, Advanced=${isAdvancedLevel}, Model=${selectedModel}`);
+        // Use same model for all levels (Sonnet)
+        const selectedModel = 'claude-3-5-sonnet-20241022';
+        debugLog(`📋 Level ${level} using model: ${selectedModel}`);
 
-        // Call Claude API with appropriate token limits for each model
-        const maxTokens = selectedModel.includes('opus') ? 8192 * 3 : 8192; // Opus: 24,576 tokens, Sonnet: 8,192 tokens
+        // Use same token limits for all levels
+        const maxTokens = 8192;
         debugLog(`🤖 Calling Claude API for topic "${topic}" with max_tokens: ${maxTokens}...`);
         
         let message;
         try {
-          // Use streaming for large token requests to avoid timeout
-          if (maxTokens > 10000) {
-            debugLog(`🔄 Using streaming for large token request (${maxTokens} tokens)...`);
-            const stream = await anthropic.messages.create({
-              model: selectedModel,
-              max_tokens: maxTokens,
-              messages: [
-                {
-                  role: 'user',
-                  content: topicPrompt
-                }
-              ],
-              stream: true
-            });
-            
-            // Collect streaming response
-            let responseText = '';
-            for await (const chunk of stream) {
-              if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-                responseText += chunk.delta.text;
+          // Simple API call for all levels (same as A1-B2)
+          message = await anthropic.messages.create({
+            model: selectedModel,
+            max_tokens: maxTokens,
+            messages: [
+              {
+                role: 'user',
+                content: topicPrompt
               }
-            }
-            
-            // Create message-like object for compatibility
-            message = {
-              content: [{ type: 'text', text: responseText }]
-            };
-            debugLog(`✅ Claude streaming API call successful for topic "${topic}"`);
-          } else {
-            message = await anthropic.messages.create({
-              model: selectedModel,
-              max_tokens: maxTokens,
-              messages: [
-                {
-                  role: 'user',
-                  content: topicPrompt
-                }
-              ]
-            });
-            debugLog(`✅ Claude API call successful for topic "${topic}"`);
-          }
+            ]
+          });
+          debugLog(`✅ Claude API call successful for topic "${topic}"`);
         } catch (claudeError) {
           logError(`Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
           logError(`Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
