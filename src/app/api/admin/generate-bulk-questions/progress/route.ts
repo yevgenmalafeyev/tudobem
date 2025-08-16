@@ -110,7 +110,21 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       debugLog(`❌ [DEBUG] ANTHROPIC_API_KEY not configured`);
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
-    debugLog(`✅ [DEBUG] Claude API initialized successfully`);
+    debugLog(`✅ [DEBUG] Claude API initialized successfully with key: ${process.env.ANTHROPIC_API_KEY.substring(0, 8)}...`);
+    
+    // Test the API key immediately with a simple call
+    debugLog(`🧪 [DEBUG] Testing Claude API key with simple call...`);
+    try {
+      const testMessage = await anthropic.messages.create({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'Test' }]
+      });
+      debugLog(`✅ [DEBUG] Claude API key test successful, response length: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text.length : 0}`);
+    } catch (apiTestError) {
+      debugLog(`❌ [DEBUG] Claude API key test failed: ${apiTestError}`);
+      throw new Error(`Claude API key test failed: ${apiTestError}`);
+    }
 
     // Read the prompt file for the specified level
     const promptFileName = LEVEL_PROMPTS[level as keyof typeof LEVEL_PROMPTS];
