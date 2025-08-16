@@ -140,10 +140,16 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
     const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
     debugLog(`🧪 Testing Claude API connection with ${testModel} for level ${level}`);
-    debugLog(`🔌 Attempting to establish connection to Claude API...`);
+    
+    // Detailed API test connection logging
+    debugLog(`🔗 TEST STEP 1: Opening connection to Claude AI (${testModel})...`);
+    debugLog(`📤 TEST STEP 2: Preparing test prompt...`);
+    debugLog(`🚀 TEST STEP 3: Sending test request to Claude AI...`);
     
     try {
       const testStartTime = Date.now();
+      debugLog(`⏳ TEST STEP 4: Waiting for Claude AI test response...`);
+      
       const testMessage = await anthropic.messages.create({
         model: testModel,
         max_tokens: 10,
@@ -151,10 +157,10 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
       });
       const testDuration = Date.now() - testStartTime;
       
-      debugLog(`✅ Claude API connection established successfully!`);
-      debugLog(`⚡ API test response time: ${testDuration}ms`);
-      debugLog(`📋 Test response: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text : 'Non-text response'}`);
-      debugLog(`🎯 Model ${testModel} is accessible and working`);
+      debugLog(`✅ TEST STEP 5: Claude AI test response received successfully!`);
+      debugLog(`⚡ TEST STEP 6: API test response time: ${testDuration}ms`);
+      debugLog(`📋 TEST STEP 7: Test response content: ${testMessage.content[0].type === 'text' ? testMessage.content[0].text : 'Non-text response'}`);
+      debugLog(`🎯 TEST STEP 8: Model ${testModel} is accessible and working - API key validated!`);
     } catch (apiTestError) {
       logError(`❌ Claude API connection failed with ${testModel}`);
       logError(`❌ Connection error details: ${apiTestError}`);
@@ -270,11 +276,17 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const maxTokens = isAdvancedLevel ? 49152 : 8192;
         debugLog(`🤖 Preparing Claude API call for topic "${topic}"`);
         debugLog(`🎛️ Model: ${selectedModel}, Max tokens: ${maxTokens}`);
-        debugLog(`📨 Sending prompt to Claude API...`);
+        
+        // Detailed AI interaction logging
+        debugLog(`🔗 STEP 1: Opening connection to Claude AI (${selectedModel})...`);
+        debugLog(`📤 STEP 2: Preparing to send prompt for topic "${topic}"...`);
+        debugLog(`📏 STEP 3: Prompt size: ${topicPrompt.length} characters, estimated ${inputTokens} tokens`);
+        debugLog(`🚀 STEP 4: Initiating API request to Claude AI...`);
         
         let message;
         try {
           const apiCallStartTime = Date.now();
+          debugLog(`⏳ STEP 5: Waiting for Claude AI response...`);
           
           // Simple API call for all levels (same as A1-B2)
           message = await anthropic.messages.create({
@@ -289,9 +301,10 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           });
           
           const apiCallDuration = Date.now() - apiCallStartTime;
-          debugLog(`✅ Claude API call successful for topic "${topic}"`);
-          debugLog(`⚡ API response time: ${apiCallDuration}ms`);
-          debugLog(`📩 Response received from ${selectedModel}`);
+          debugLog(`✅ STEP 6: Claude AI response received successfully!`);
+          debugLog(`⚡ STEP 7: API response time: ${apiCallDuration}ms`);
+          debugLog(`📥 STEP 8: Processing response from ${selectedModel}...`);
+          debugLog(`📊 STEP 9: Response metadata - Model: ${selectedModel}, Duration: ${apiCallDuration}ms`);
         } catch (claudeError) {
           logError(`❌ Claude API call failed for topic "${topic}": ${claudeError instanceof Error ? claudeError.message : String(claudeError)}`);
           logError(`❌ Claude API error details: ${JSON.stringify(claudeError, null, 2)}`);
