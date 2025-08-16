@@ -132,7 +132,6 @@ async function generateQuestionsWithClaude(level: string, controller: ReadableSt
     const isAdvancedLevel = ['C1', 'C2'].includes(level);
     const testModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
     debugLog(`🧪 Level ${level} advanced check: ${isAdvancedLevel} → testing with model: ${testModel}`);
-    // Force cache bust - deployment verification
     try {
       const testMessage = await anthropic.messages.create({
         model: testModel,
@@ -249,6 +248,7 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         const isAdvancedLevel = ['C1', 'C2'].includes(level);
         const selectedModel = isAdvancedLevel ? 'claude-opus-4-20250514' : 'claude-3-5-sonnet-20241022';
         debugLog(`📋 Level ${level} is advanced: ${isAdvancedLevel}, using model: ${selectedModel}`);
+        debugLog(`🔧 DEPLOYMENT TEST: C1=${level === 'C1'}, Advanced=${isAdvancedLevel}, Model=${selectedModel}`);
 
         // Call Claude API with appropriate token limits for each model
         const maxTokens = selectedModel.includes('opus') ? 8192 * 3 : 8192; // Opus: 24,576 tokens, Sonnet: 8,192 tokens
