@@ -280,11 +280,15 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
         // Detailed AI interaction logging - send to frontend via SSE
         const sendDebugToFrontend = (debugMsg: string) => {
           debugLog(debugMsg);
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({
-            type: 'debug',
-            message: debugMsg,
-            topic: topic
-          })}\\n\\n`));
+          try {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+              type: 'debug',
+              message: debugMsg,
+              topic: topic
+            })}\n\n`));
+          } catch (enqueueError) {
+            debugLog(`❌ Failed to send debug message to frontend: ${enqueueError}`);
+          }
         };
 
         sendDebugToFrontend(`🔗 STEP 1: Opening connection to Claude AI (${selectedModel})...`);
@@ -301,33 +305,56 @@ Generate exactly 1 question for topic "${topic}" and return ONLY the JSON array:
           if (isAdvancedLevel) {
             sendDebugToFrontend(`🌊 Using streaming API for advanced level ${level}...`);
             
-            const stream = await anthropic.messages.create({
-              model: selectedModel,
-              max_tokens: maxTokens,
-              messages: [
-                {
-                  role: 'user',
-                  content: topicPrompt
-                }
-              ],
-              stream: true
-            });
-            
-            let responseText = '';
-            for await (const messageStreamEvent of stream) {
-              if (messageStreamEvent.type === 'content_block_delta') {
-                if (messageStreamEvent.delta.type === 'text_delta') {
-                  responseText += messageStreamEvent.delta.text;
+            try {
+              sendDebugToFrontend(`🔧 Creating streaming connection...`);
+              const stream = await anthropic.messages.create({
+                model: selectedModel,
+                max_tokens: maxTokens,
+                messages: [
+                  {
+                    role: 'user',
+                    content: topicPrompt
+                  }
+                ],
+                stream: true
+              });
+              
+              sendDebugToFrontend(`🔧 Stream created successfully, processing chunks...`);
+              let responseText = '';
+              let chunkCount = 0;
+              
+              for await (const messageStreamEvent of stream) {
+                chunkCount++;
+                sendDebugToFrontend(`🔧 Processing chunk ${chunkCount}: ${messageStreamEvent.type}`);
+                
+                if (messageStreamEvent.type === 'content_block_delta') {
+                  if (messageStreamEvent.delta.type === 'text_delta') {
+                    responseText += messageStreamEvent.delta.text;
+                    sendDebugToFrontend(`🔧 Added text chunk, total length: ${responseText.length}`);
+                  }
+                } else if (messageStreamEvent.type === 'message_start') {
+                  sendDebugToFrontend(`🔧 Stream started`);
+                } else if (messageStreamEvent.type === 'content_block_start') {
+                  sendDebugToFrontend(`🔧 Content block started`);
+                } else if (messageStreamEvent.type === 'content_block_stop') {
+                  sendDebugToFrontend(`🔧 Content block stopped`);
+                } else if (messageStreamEvent.type === 'message_stop') {
+                  sendDebugToFrontend(`🔧 Stream ended`);
                 }
               }
+              
+              sendDebugToFrontend(`🔧 Stream processing complete. Total response length: ${responseText.length}`);
+              
+              // Create message-like object for compatibility with existing code
+              message = {
+                content: [{ type: 'text', text: responseText }]
+              };
+              
+              sendDebugToFrontend(`✅ STEP 6: Streaming response completed successfully!`);
+            } catch (streamError) {
+              sendDebugToFrontend(`❌ STREAMING ERROR: ${streamError instanceof Error ? streamError.message : String(streamError)}`);
+              throw streamError;
             }
-            
-            // Create message-like object for compatibility with existing code
-            message = {
-              content: [{ type: 'text', text: responseText }]
-            };
-            
-            sendDebugToFrontend(`✅ STEP 6: Streaming response completed successfully!`);
           } else {
             // Non-streaming API call for A1-B2 levels
             sendDebugToFrontend(`🔄 Using standard API for level ${level}...`);
