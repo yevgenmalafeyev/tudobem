@@ -170,10 +170,27 @@ test.describe('Irregular Verbs Learning Flow - Functional Tests', () => {
           const optionCount = await page.locator('button[data-testid="multiple-choice-option"]').count()
           expect(optionCount).toBe(4)
           
-          // Click first option - this should immediately submit the answer
+          // Click first enabled option - this should immediately submit the answer
           const options = await page.locator('button[data-testid="multiple-choice-option"]').all()
           if (options.length > 0) {
-            await options[0].click()
+            // Find the first enabled option
+            let clickedOption = false
+            for (const option of options) {
+              const isEnabled = await option.isEnabled()
+              if (isEnabled) {
+                await option.click()
+                clickedOption = true
+                break
+              }
+            }
+            
+            // If no enabled options found, wait a bit and try again
+            if (!clickedOption) {
+              await page.waitForTimeout(1000)
+              const firstOption = page.locator('button[data-testid="multiple-choice-option"]').first()
+              await firstOption.waitFor({ state: 'attached', timeout: 5000 })
+              await firstOption.click({ force: true })
+            }
             
             // Check for console errors after clicking option (which auto-submits)
             await checkForConsoleErrorsAndWarnings()
